@@ -1,0 +1,55 @@
+require:
+  - rubocop-rails
+
+Rails:
+  Enabled: true
+
+  Rails/NotNullColumn:
+    Enabled: false
+
+AllCops:
+  Exclude:
+    - 'db/schema.rb'
+    - 'bin/**/*'
+    - 'vendor/**/*'
+    - 'node_modules/**/*'
+    - 'tmp/**/*'
+    - 'config/**/*'
+    - 'lib/tasks/*.rake'
+    - 'Guardfile'
+    - 'Dangerfile'
+
+Documentation:
+  Enabled: false
+
+Metrics/AbcSize:
+  Exclude:
+    - 'db/**/*'
+
+Metrics/BlockLength:
+  Exclude:
+    - 'Rakefile'
+    - '**/*.rake'
+    - 'test/**/*'
+    - 'spec/**/*'
+    - 'db/migrate/**'
+
+Metrics/ClassLength:
+  Exclude:
+    - 'test/**/*'
+    - 'spec/**/*'
+
+Metrics/LineLength:
+  Max: 130
+
+Metrics/MethodLength:
+  Exclude:
+    - 'db/migrate/**'
+    - 'test/**/*'
+    - 'spec/**/*'
+
+Style/ClassAndModuleChildren:
+  EnforcedStyle: nested
+
+Style/FrozenStringLiteralComment:
+  Enabled: false

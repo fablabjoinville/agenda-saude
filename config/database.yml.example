@@ -1,0 +1,26 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  # http://guides.rubyonrails.org/configuring.html#database-pooling
+  pool: <%= ENV.fetch('RAILS_MAX_THREADS') { 5 } %>
+
+development:
+  <<: *default
+  database: <%= app_name.underscore %>_development
+  username: <%= ENV.fetch('POSTGRESQL_USERNAME') { 'postgres' } %>
+  password: <%= ENV.fetch('POSTGRESQL_PASSWORD') { '' } %>
+  host: localhost
+  port: 5432
+
+test:
+  <<: *default
+  encoding: utf8
+  host: localhost
+  timeout: 5000
+  database: <%= app_name.underscore %>_test
+
+production:
+  <<: *default
+  database: <%= app_name.underscore %>_production
+  username: <%= app_name.underscore %>
+  password: <%= ENV['POSTGRESQL_PASSWORD'] %>

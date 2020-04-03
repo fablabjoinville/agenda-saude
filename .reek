@@ -1,0 +1,48 @@
+---
+IrresponsibleModule:
+  enabled: false
+  exclude: []
+
+DuplicateMethodCall:
+  enabled: false
+
+UtilityFunction:
+  public_methods_only: true
+
+"app/controllers":
+  IrresponsibleModule:
+    enabled: false
+  NestedIterators:
+    max_allowed_nesting: 2
+  UnusedPrivateMethod:
+    enabled: false
+  InstanceVariableAssumption:
+    enabled: false
+"app/constants":
+  IrresponsibleModule:
+    enabled: false
+  UtilityFunction:
+    enabled: false
+"app/helpers":
+  IrresponsibleModule:
+    enabled: false
+  UtilityFunction:
+    enabled: false
+"app/mailers":
+  InstanceVariableAssumption:
+    enabled: false
+"test":
+  InstanceVariableAssumption:
+    enabled: false
+"db/migrate":
+  TooManyStatements:
+    enabled: false
+  UncommunicativeVariableName:
+    enabled: false
+  FeatureEnvy:
+    enabled: false
+
+exclude_paths:
+  - db
+  - test
+  - spec
