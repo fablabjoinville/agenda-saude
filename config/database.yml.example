@@ -6,7 +6,7 @@ default: &default
 
 development:
   <<: *default
-  database: <%= app_name.underscore %>_development
+  database: agendamento_vacina_development
   username: <%= ENV.fetch('POSTGRESQL_USERNAME') { 'postgres' } %>
   password: <%= ENV.fetch('POSTGRESQL_PASSWORD') { '' } %>
   host: localhost
@@ -17,10 +17,12 @@ test:
   encoding: utf8
   host: localhost
   timeout: 5000
-  database: <%= app_name.underscore %>_test
+  database: agendamento_vacina_test
+  username: <%= ENV.fetch('POSTGRESQL_USERNAME') { 'postgres' } %>
+  password: <%= ENV.fetch('POSTGRESQL_PASSWORD') { '' } %>
 
 production:
   <<: *default
-  database: <%= app_name.underscore %>_production
-  username: <%= app_name.underscore %>
+  database: agendamento_vacina_production
+  username: agendamento_vacina
   password: <%= ENV['POSTGRESQL_PASSWORD'] %>
