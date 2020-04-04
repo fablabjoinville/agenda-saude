@@ -7,7 +7,6 @@ gem 'rails', '~> 6.0.1' # Bundle edge Rails instead: gem 'rails', github: 'rails
 gem 'pg', '>= 0.18', '< 2.0' # Use postgresql as the database for Active Record
 gem 'puma', '~> 4.1' # Use Puma as the app server
 gem 'sass-rails', '>= 6' # Use SCSS for stylesheets
-gem 'webpacker', '~> 4.0' # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
 gem 'jbuilder', '~> 2.7' # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 
 # gem 'redis', '~> 4.0' # Use Redis adapter to run Action Cable in production
@@ -18,19 +17,19 @@ gem 'bootsnap', '>= 1.4.2', require: false # Reduces boot times through caching;
 
 gem 'devise'
 gem 'devise-i18n'
-
 gem 'rails-i18n'
 gem 'route_translator'
 
 gem 'activeadmin'
 
+gem 'bootstrap'
+
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw] # Call 'byebug' anywhere in the code to stop execution and get a debugger console
+  gem 'pry-rails'
 
   gem 'factory_bot_rails'
   gem 'faker'
-
-  gem 'octokit', git: 'git@github.com:octokit/octokit.rb.git' # backward compatibility with faraday.
 
   gem 'danger'
   gem 'danger-github_ext'
