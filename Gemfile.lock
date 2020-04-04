@@ -118,6 +118,7 @@ GEM
     concurrent-ruby (1.1.5)
     cork (0.3.0)
       colored2 (~> 3.1)
+    cpf_cnpj (0.5.0)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
     crass (1.0.5)
@@ -524,6 +525,7 @@ DEPENDENCIES
   bullet
   byebug
   capybara (>= 2.15)
+  cpf_cnpj
   danger
   danger-github_ext
   danger-simplecov_json
