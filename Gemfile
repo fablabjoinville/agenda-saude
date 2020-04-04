@@ -17,14 +17,16 @@ gem 'bootsnap', '>= 1.4.2', require: false # Reduces boot times through caching;
 
 gem 'devise'
 gem 'devise-i18n'
-
 gem 'rails-i18n'
 gem 'route_translator'
 
 gem 'activeadmin'
 
+gem 'bootstrap'
+
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw] # Call 'byebug' anywhere in the code to stop execution and get a debugger console
+  gem 'pry-rails'
 
   gem 'factory_bot_rails'
   gem 'faker'
