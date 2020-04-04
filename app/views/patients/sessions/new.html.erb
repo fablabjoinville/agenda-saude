@@ -1,9 +1,9 @@
-<h2><%= t('.sign_in') %></h2>
+<h2>Log in</h2>
 
 <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
   <div class="field">
-    <%= f.label :name %><br />
-    <%= f.text_field :name, autofocus: true, autocomplete: "name" %>
+    <%= f.label :email %><br />
+    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
   </div>
 
   <div class="field">
@@ -19,8 +19,8 @@
   <% end %>
 
   <div class="actions">
-    <%= f.submit t('.sign_in') %>
+    <%= f.submit "Log in" %>
   </div>
 <% end %>
 
-<%= render "devise/shared/links" %>
+<%= render "patients/shared/links" %>
