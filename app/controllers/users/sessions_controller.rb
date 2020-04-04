@@ -1,22 +1,17 @@
 # frozen_string_literal: true
 
-class Patients::SessionsController < Devise::SessionsController
+class Users::SessionsController < Devise::SessionsController
   # before_action :configure_sign_in_params, only: [:create]
 
   # GET /resource/sign_in
-  def new
-    super
-  end
+  # def new
+  #   super
+  # end
 
   # POST /resource/sign_in
-  def create
-    cpf = CPF.new(cpf_params[:cpf])
-
-    if cpf.valid?
-      return render json: 'CADASTRADO -> Pedir nome da mãe' if Patient.find_by_cpf(cpf.formatted)
-      render json: 'NÃO CADASTRADO -> Exibir cadastro'
-    end
-  end
+  # def create
+  #   super
+  # end
 
   # DELETE /resource/sign_out
   # def destroy
@@ -29,10 +24,4 @@ class Patients::SessionsController < Devise::SessionsController
   # def configure_sign_in_params
   #   devise_parameter_sanitizer.permit(:sign_in, keys: [:attribute])
   # end
-
-  private
-
-  def cpf_params
-    params.require(:patient).permit(:cpf)
-  end
 end
