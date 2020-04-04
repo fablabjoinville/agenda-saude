@@ -1,4 +1,6 @@
-class AppointmentsController < ApplicationController
+require 'pry'
+
+class AppointmentsController < PatientSessionController
   def index; end
 
   def show; end

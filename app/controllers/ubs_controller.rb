@@ -3,6 +3,8 @@ class UbsController < UserSessionController
 
   def active_hours; end
 
+  def index; end
+
   def change_active_hours
     shift_start_tod = Tod::TimeOfDay.parse(active_hour_for_attr('shift_start_date'))
     break_start_tod = Tod::TimeOfDay.parse(active_hour_for_attr('break_start_date'))
