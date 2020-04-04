@@ -1,5 +1,13 @@
 <h1>Alterar horario de funcionamento de <%= @ubs.name %></h1>
 
+<% if @ubs.errors.present? %>
+  <div id="error_explanation">
+    <ul>
+      <li>Os horários devem estar em ordem</li>
+    </ul>
+  </div>
+<% end %>
+
 <%= form_for @ubs, url: ubs_change_active_hours_path do |f| %>
   <div class="field">
     <%= f.label :shift_start, 'Inicio do expediente' %><br />
@@ -32,7 +40,6 @@
 
   <br/>
   <br/>
-
 
   <%= f.submit "Atualizar" %>
 <% end %>

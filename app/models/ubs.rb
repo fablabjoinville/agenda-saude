@@ -22,19 +22,19 @@ class Ubs < ApplicationRecord
 
   def times_must_be_ordered
     if shift_start > shift_end
-      errors.add(:shift_start, "can't be higher than shift_end")
+      errors.add(:shift_start, "não pode ser depois do final do expediente")
     end
 
     if break_start > break_end
-      errors.add(:break_start, "can't be higher than break_end")
+      errors.add(:break_start, "não pode ser depois do final da pausa")
     end
 
     if shift_start > break_start
-      errors.add(:shift_start, "can't be higher than break_start")
+      errors.add(:shift_start, "não pode ser depois do final do expediente")
     end
 
     if break_end > shift_end
-      errors.add(:break_end, "can't be higher than shift_end")
+      errors.add(:break_end, "não pode ser depois do final do expediente")
     end
   end
 end

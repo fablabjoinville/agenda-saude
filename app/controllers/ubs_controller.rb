@@ -1,6 +1,8 @@
 class UbsController < UserSessionController
   before_action :set_ubs
 
+  def active_hours; end
+
   def change_active_hours
     shift_start_tod = Tod::TimeOfDay.parse(active_hour_for_attr('shift_start_date'))
     break_start_tod = Tod::TimeOfDay.parse(active_hour_for_attr('break_start_date'))
@@ -16,7 +18,7 @@ class UbsController < UserSessionController
 
     return redirect_to ubs_active_hours_path if updated
 
-    render json: @ubs.errors
+    render ubs_active_hours_path
   end
 
   def change_slot_duration

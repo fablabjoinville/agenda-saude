@@ -30,20 +30,20 @@ group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw] # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'pry-rails'
 
-  gem 'factory_bot_rails'
-  gem 'faker'
+  # gem 'factory_bot_rails'
+  # gem 'faker'
 
-  gem 'danger'
-  gem 'danger-github_ext'
-  gem 'danger-simplecov_json'
-  gem 'danger-todoist'
+  # gem 'danger'
+  # gem 'danger-github_ext'
+  # gem 'danger-simplecov_json'
+  # gem 'danger-todoist'
 
-  # gem 'brakeman', require: false
-  # gem 'bullet'
-  # gem 'fasterer', require: false
-  # gem 'flay', require: false
-  # gem 'rails_best_practices', require: false
-  # gem 'reek', require: false
+  gem 'brakeman', require: false
+  gem 'bullet'
+  gem 'fasterer', require: false
+  gem 'flay', require: false
+  gem 'rails_best_practices', require: false
+  gem 'reek', require: false
   #
   # gem 'pronto'
   # gem 'pronto-brakeman', require: false
@@ -67,32 +67,32 @@ group :development do
   # gem 'rubocop', require: false
   # gem 'rubocop-rails'
   #
-  # gem 'guard', require: false
+  gem 'guard', require: false
   # gem 'guard-rails', require: false
   # gem 'guard-rspec', require: false
   # gem 'guard-rubocop', require: false
 end
 
-group :test do
-  # Adds support for Capybara system testing and selenium driver
-  gem 'capybara', '>= 2.15'
-  gem 'selenium-webdriver'
-  # Easy installation and use of web drivers to run system tests with browsers
-  gem 'webdrivers'
-
-  gem 'rspec'
-  gem 'rspec-rails'
-  gem 'shoulda-matchers'
-
-  gem 'database_rewinder'
-  gem 'ruby-prof'
-  gem 'timecop'
-  gem 'vcr'
-  gem 'webmock'
-
-  gem 'simplecov', require: false
-  gem 'simplecov-json'
-end
+# group :test do
+#   # Adds support for Capybara system testing and selenium driver
+#   gem 'capybara', '>= 2.15'
+#   gem 'selenium-webdriver'
+#   # Easy installation and use of web drivers to run system tests with browsers
+#   gem 'webdrivers'
+#
+#   gem 'rspec'
+#   gem 'rspec-rails'
+#   gem 'shoulda-matchers'
+#
+#   gem 'database_rewinder'
+#   gem 'ruby-prof'
+#   gem 'timecop'
+#   gem 'vcr'
+#   gem 'webmock'
+#
+#   gem 'simplecov', require: false
+#   gem 'simplecov-json'
+# end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
