@@ -1,27 +1,8 @@
 # frozen_string_literal: true
 
-class Patients::RegistrationsController < Devise::RegistrationsController
+class Users::RegistrationsController < Devise::RegistrationsController
   # before_action :configure_sign_up_params, only: [:create]
   # before_action :configure_account_update_params, only: [:update]
-
-  FIELDS = [
-    :name,
-    :cpf,
-    :mother_name,
-    :birth_date,
-    :phone,
-    :neighborhood,
-    :email,
-    :other_phone,
-    :sus
-  ].freeze
-
-  # POST /patients
-  def create
-    fields = params.require(:patient).permit(FIELDS)
-
-    Patient.new(fields).save
-  end
 
   # GET /resource/sign_up
   # def new

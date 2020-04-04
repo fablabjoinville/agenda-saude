@@ -19,8 +19,11 @@ ubs.save!
 
 p = Patient.new
 p.name = 'marvin'
-p.cpf = '000.000.000.000'
+p.cpf = '489.408.380-92'
 p.mother_name = 'num sei'
+p.birth_date = '01/01/1980'
+p.phone = '12345678'
+p.neighborhood = 'Centro'
 p.password = '424242'
 p.password_confirmation = '424242'
 p.save!

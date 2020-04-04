@@ -1,9 +1,0 @@
----
-  pt-BR:
-    activerecord:
-        errors:
-          models:
-            user:
-              attributes:
-        models:
-        attributes:
