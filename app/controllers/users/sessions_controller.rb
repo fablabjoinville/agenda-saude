@@ -10,7 +10,7 @@ class Users::SessionsController < Devise::SessionsController
 
   # POST /resource/sign_in
   def create
-    redirect_to appointments_path
+    super
   end
 
   # DELETE /resource/sign_out
