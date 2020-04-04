@@ -22,7 +22,6 @@ ubs.shift_end = '17:00'
 ubs.slot_interval_minutes = 15
 ubs.save!
 
-<<<<<<< HEAD
 patient = Patient.new
 patient.name = 'marvin'
 patient.cpf = '489.408.380-92'
@@ -31,14 +30,3 @@ patient.birth_date = '01/01/1980'
 patient.phone = '12345678'
 patient.neighborhood = 'Centro'
 patient.save!
-
-=======
-p = Patient.new
-p.name = 'marvin'
-p.cpf = '48940838092'
-p.mother_name = 'num sei'
-p.birth_date = '01/01/1980'
-p.phone = '12345678'
-p.neighborhood = 'Centro'
-p.save!
->>>>>>> master
