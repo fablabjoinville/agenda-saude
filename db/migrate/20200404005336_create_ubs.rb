@@ -4,10 +4,10 @@ class CreateUbs < ActiveRecord::Migration[6.0]
       t.string :name
       t.string :neighborhood
       t.references :user, null: false, foreign_key: true
-      t.time :shift_start
-      t.time :shift_end
-      t.time :break_start
-      t.time :break_end
+      t.string :shift_start
+      t.string :shift_end
+      t.string :break_start
+      t.string :break_end
 
       t.timestamps
     end

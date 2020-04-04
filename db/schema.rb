@@ -27,9 +27,6 @@ ActiveRecord::Schema.define(version: 2020_04_04_155339) do
 
   create_table "patients", force: :cascade do |t|
     t.string "email", default: ""
-    t.string "encrypted_password", default: "", null: false
-    t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -42,17 +39,16 @@ ActiveRecord::Schema.define(version: 2020_04_04_155339) do
     t.string "sus"
     t.string "neighborhood"
     t.index ["cpf"], name: "index_patients_on_cpf", unique: true
-    t.index ["reset_password_token"], name: "index_patients_on_reset_password_token", unique: true
   end
 
   create_table "ubs", force: :cascade do |t|
     t.string "name"
     t.string "neighborhood"
     t.bigint "user_id", null: false
-    t.time "shift_start"
-    t.time "shift_end"
-    t.time "break_start"
-    t.time "break_end"
+    t.string "shift_start"
+    t.string "shift_end"
+    t.string "break_start"
+    t.string "break_end"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_ubs_on_user_id"
