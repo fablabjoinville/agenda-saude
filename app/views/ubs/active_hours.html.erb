@@ -1,0 +1,28 @@
+<h1>Ubs#active_hours</h1>
+<p>Find me in app/views/ubs/active_hours.html.erb</p>
+
+
+<%= form_with url: ubs_active_hours_url do |f| %>
+  <div class="field">
+    <%= f.label :shift_start %><br />
+    <%= f.text_field :shift_start, autofocus: true %>
+  </div>
+
+  <div class="field">
+    <%= f.label :break_start %><br />
+    <%= f.text_field :break_start, autofocus: true %>
+  </div>
+
+  <div class="field">
+    <%= f.label :break_end %><br />
+    <%= f.text_field :break_end, autofocus: true %>
+  </div>
+
+  <div class="field">
+    <%= f.label :shift_end %><br />
+    <%= f.text_field :shift_end, autofocus: true %>
+  </div>
+
+
+  <%= f.submit "Create" %>
+<% end %>
