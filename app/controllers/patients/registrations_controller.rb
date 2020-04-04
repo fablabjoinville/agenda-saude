@@ -5,8 +5,8 @@ class Patients::RegistrationsController < Devise::RegistrationsController
   # before_action :configure_account_update_params, only: [:update]
 
   FIELDS = [
-    :name,
     :cpf,
+    :name,
     :mother_name,
     :birth_date,
     :phone,
@@ -18,11 +18,12 @@ class Patients::RegistrationsController < Devise::RegistrationsController
 
   # POST /patients
   def create
-    fields = params.require(:patient).permit(FIELDS)
+    fields = params.require(:patient).permit(*FIELDS)
 
-    Patient.new(fields).save
+    patient = Patient.new(fields)
+    patient.save
 
-    super
+    render json: { errors: patient.errors, fields: fields } unless patient.persisted?
   end
 
   # GET /resource/sign_up
