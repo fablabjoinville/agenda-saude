@@ -7,7 +7,8 @@ Rails.application.routes.draw do
   end
 
   devise_scope :user do
-    match 'ubs/active_hours', via: [:get, :post], as: :ubs_active_hours
-    match 'ubs/slot_duration', via: [:get, :post], as: :ubs_slot_duration
+    get 'ubs/active_hours', as: :ubs_active_hours
+    patch 'ubs/change_active_hours', as: :ubs_change_active_hours
+    match 'ubs/slot_duration', via: [:get, :patch], as: :ubs_slot_duration
   end
 end
