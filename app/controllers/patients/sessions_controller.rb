@@ -3,16 +3,15 @@
 class Patients::SessionsController < Devise::SessionsController
   # before_action :configure_sign_in_params, only: [:create]
 
-  # CPF logic
   # GET /resource/sign_in
   def new
     super
   end
 
   # POST /resource/sign_in
-  # def create
-  #   super
-  # end
+  def create
+    render json: 'ok' if CPF.valid?(cpf_params[:cpf])
+  end
 
   # DELETE /resource/sign_out
   # def destroy
@@ -25,4 +24,10 @@ class Patients::SessionsController < Devise::SessionsController
   # def configure_sign_in_params
   #   devise_parameter_sanitizer.permit(:sign_in, keys: [:attribute])
   # end
+
+  private
+
+  def cpf_params
+    params.require(:patient).permit(:cpf)
+  end
 end
