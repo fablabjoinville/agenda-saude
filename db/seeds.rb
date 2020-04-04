@@ -28,6 +28,5 @@ patient.mother_name = 'num sei'
 patient.birth_date = '01/01/1980'
 patient.phone = '12345678'
 patient.neighborhood = 'Centro'
-patient.password = '424242'
-patient.password_confirmation = '424242'
 patient.save!
+

@@ -1,28 +1,40 @@
-<h2>Sign up</h2>
+<h2>Cadastro</h2>
 
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
+  <%= render "patients/shared/error_messages", resource: resource %>
 
   <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+    <%= f.label :name, "Nome Completo" %><br />
+    <%= f.text_field :name, autofocus: true, autocomplete: "email", required: true %>
   </div>
 
   <div class="field">
-    <%= f.label :password %>
-    <% if @minimum_password_length %>
-    <em>(<%= @minimum_password_length %> characters minimum)</em>
-    <% end %><br />
-    <%= f.password_field :password, autocomplete: "new-password" %>
+    <%= f.label :cpf, "CPF (somente números)" %><br />
+    <%= f.text_field :cpf, autofocus: true, autocomplete: "cpf", minlength: 11, maxlength: 11, required: true %>
   </div>
 
   <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
+    <%= f.label :mother_name, "Nome da mãe" %><br />
+    <%= f.text_field :mother_name, autofocus: true, autocomplete: "mother_name", required: true %>
+  </div>
+
+  <div class="field">
+    <%= f.label :birth_date, "Data de nascimento" %><br />
+    <%= f.date_field :birth_date, autofocus: true, autocomplete: "birth_date", required: true %>
+  </div>
+
+  <div class="field">
+    <%= f.label :phone, "Telefone" %><br />
+    <%= f.text_field :phone, autofocus: true, autocomplete: "phone", required: true %>
+  </div>
+
+  <div class="field">
+    <%= f.label :neighborhood, "Bairro" %><br />
+    <%= f.text_field :neighborhood, autofocus: true, autocomplete: "neighborhood", required: true %>
   </div>
 
   <div class="actions">
-    <%= f.submit "Sign up" %>
+    <%= f.submit "Cadastrar" %>
   </div>
 <% end %>
 
