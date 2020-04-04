@@ -10,7 +10,12 @@ class Patients::SessionsController < Devise::SessionsController
 
   # POST /resource/sign_in
   def create
-    render json: 'ok' if CPF.valid?(cpf_params[:cpf])
+    cpf = CPF.new(cpf_params[:cpf])
+
+    if cpf.valid?
+      return render json: 'CADASTRADO -> Pedir nome da mãe' if Patient.find_by_cpf(cpf.formatted)
+      render json: 'NÃO CADASTRADO -> Exibir cadastro'
+    end
   end
 
   # DELETE /resource/sign_out
