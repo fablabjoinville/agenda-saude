@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :up, class: 'Ups' do
+  factory :up, class: 'Ubs' do
     name { "MyString" }
     neighborhood { "MyString" }
     user { nil }

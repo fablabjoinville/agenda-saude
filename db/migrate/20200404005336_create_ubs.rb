@@ -1,6 +1,6 @@
-class CreateUps < ActiveRecord::Migration[6.0]
+class CreateUbs < ActiveRecord::Migration[6.0]
   def change
-    create_table :ups do |t|
+    create_table :ubs do |t|
       t.string :name
       t.string :neighborhood
       t.references :user, null: false, foreign_key: true

@@ -65,7 +65,7 @@ ActiveRecord::Schema.define(version: 2020_04_04_005338) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "ups", force: :cascade do |t|
+  create_table "ubs", force: :cascade do |t|
     t.string "name"
     t.string "neighborhood"
     t.bigint "user_id", null: false
@@ -75,7 +75,7 @@ ActiveRecord::Schema.define(version: 2020_04_04_005338) do
     t.time "break_end"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["user_id"], name: "index_ups_on_user_id"
+    t.index ["user_id"], name: "index_ubs_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -91,5 +91,5 @@ ActiveRecord::Schema.define(version: 2020_04_04_005338) do
   end
 
   add_foreign_key "appointments", "patients"
-  add_foreign_key "ups", "users"
+  add_foreign_key "ubs", "users"
 end
