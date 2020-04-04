@@ -21,7 +21,14 @@ class UbsController < UserSessionController
     render ubs_active_hours_path
   end
 
+  def slot_duration; end
+
   def change_slot_duration
+    updated = @ubs.update(slot_duration_params)
+
+    return redirect_to ubs_slot_duration_path if updated
+
+    render ubs_slot_duration_path
   end
 
   private
@@ -39,6 +46,6 @@ class UbsController < UserSessionController
   end
 
   def slot_duration_params
-    params.require(:ubs).permit(:slot_duration_minutes)
+    params.require(:ubs).permit(:slot_interval_minutes)
   end
 end

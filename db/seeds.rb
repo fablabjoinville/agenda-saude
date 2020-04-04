@@ -15,10 +15,11 @@ user.save!
 ubs = Ubs.new
 ubs.name = 'UBSF America'
 ubs.user = user
-ubs.shift_start = '9:00:00'
-ubs.break_start = '12:30:00'
-ubs.break_end = '13:30:00'
-ubs.shift_end = '17:00:00'
+ubs.shift_start = '9:00'
+ubs.break_start = '12:30'
+ubs.break_end = '13:30'
+ubs.shift_end = '17:00'
+ubs.slot_interval_minutes = 15
 ubs.save!
 
 patient = Patient.new

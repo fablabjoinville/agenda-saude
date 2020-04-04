@@ -1,5 +1,7 @@
 class Ubs < ApplicationRecord
   validate :times_must_be_ordered
+  validates :slot_interval_minutes, inclusion: 15...120
+
   belongs_to :user
 
   def shift_start_date(date = Date.today)
@@ -21,19 +23,19 @@ class Ubs < ApplicationRecord
   private
 
   def times_must_be_ordered
-    if shift_start > shift_end
+    if shift_start_date > shift_end_date
       errors.add(:shift_start, "não pode ser depois do final do expediente")
     end
 
-    if break_start > break_end
+    if break_start_date > break_end_date
       errors.add(:break_start, "não pode ser depois do final da pausa")
     end
 
-    if shift_start > break_start
+    if shift_start_date > break_start_date
       errors.add(:shift_start, "não pode ser depois do final do expediente")
     end
 
-    if break_end > shift_end
+    if break_end_date > shift_end_date
       errors.add(:break_end, "não pode ser depois do final do expediente")
     end
   end
