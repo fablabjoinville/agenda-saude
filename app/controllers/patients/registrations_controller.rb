@@ -21,12 +21,14 @@ class Patients::RegistrationsController < Devise::RegistrationsController
     fields = params.require(:patient).permit(FIELDS)
 
     Patient.new(fields).save
+
+    super
   end
 
   # GET /resource/sign_up
-  # def new
-  #   super
-  # end
+  def new
+    super
+  end
 
   # POST /resource
   # def create

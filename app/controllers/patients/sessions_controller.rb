@@ -14,7 +14,7 @@ class Patients::SessionsController < Devise::SessionsController
 
     if cpf.valid?
       return render json: 'CADASTRADO -> Pedir nome da mãe' if Patient.find_by_cpf(cpf.formatted)
-      render json: 'NÃO CADASTRADO -> Exibir cadastro'
+      redirect_to new_patient_registration_path
     end
   end
 

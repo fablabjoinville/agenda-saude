@@ -1,0 +1,24 @@
+---
+  pt-BR:
+    activerecord:
+        errors:
+          models:
+            patient:
+              attributes:
+                name:
+                  blank: em branco
+                cpf:
+                  blank: em branco
+                  invalid: inválido
+                mother_name:
+                  blank: em branco
+                birth_date:
+                  blank: em branco
+                phone:
+                  blank: em branco
+                neighborhood:
+                  blank: em branco
+        models:
+          attributes:
+            cpf: CPF
+            mother_name: Nome da mãe
