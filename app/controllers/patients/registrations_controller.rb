@@ -20,7 +20,6 @@ class Patients::RegistrationsController < Devise::RegistrationsController
   def create
     fields = params.require(:patient).permit(FIELDS)
 
-    puts fields
     Patient.new(fields).save
   end
 
