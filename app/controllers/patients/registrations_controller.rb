@@ -28,6 +28,8 @@ class Patients::RegistrationsController < Devise::RegistrationsController
 
   # GET /resource/sign_up
   def new
+    @cpf = params[:cpf]
+    puts @cpf
     super
   end
 

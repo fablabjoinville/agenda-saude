@@ -15,7 +15,7 @@ class Patients::SessionsController < Devise::SessionsController
 
     return render json: 'CADASTRADO -> Pedir nome da mãe' if Patient.find_by_cpf(cpf)
 
-    redirect_to new_patient_registration_path
+    redirect_to new_patient_registration_path(cpf: cpf)
   end
 
   # DELETE /resource/sign_out
