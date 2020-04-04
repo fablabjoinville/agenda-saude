@@ -3,6 +3,6 @@ Rails.application.routes.draw do
   devise_for :users, path: 'users'
 
   devise_scope :patient do
-    root 'devise/sessions#new'
+    root 'patients/sessions#new'
   end
 end
