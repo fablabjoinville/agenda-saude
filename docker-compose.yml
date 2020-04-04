@@ -12,12 +12,9 @@ services:
       - "RAILS_ENV=development"
     depends_on:
       - postgres
-    networks:
-      - default
 
   postgres:
     image: postgres:12.1-alpine
-    container_name: postgres_agendamento_vacina
     environment:
       - "POSTGRES_USER=postgres"
       - "POSTGRES_PASSWORD="
@@ -29,6 +26,3 @@ services:
 
 volumes:
   postgres:
-
-networks:
-  default:
