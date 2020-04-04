@@ -17,12 +17,13 @@ services:
 
   postgres:
     image: postgres:12.1-alpine
+    container_name: postgres_agendamento_vacina
     environment:
       - "POSTGRES_USER=postgres"
       - "POSTGRES_PASSWORD="
       - "POSTGRES_DB=agendamento_vacina_development"
     ports:
-      - '5432'
+      - '5432:5432'
     volumes:
       - postgres:/var/lib/postgresql/data
 
