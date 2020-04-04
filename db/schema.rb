@@ -26,22 +26,22 @@ ActiveRecord::Schema.define(version: 2020_04_04_155339) do
   end
 
   create_table "patients", force: :cascade do |t|
-    t.string "email", default: "", null: false
+    t.string "email", default: ""
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "name"
-    t.string "cpf"
-    t.string "mother_name"
+    t.string "name", default: "", null: false
+    t.string "cpf", default: "", null: false
+    t.string "mother_name", default: "", null: false
     t.string "birth_date"
     t.string "phone"
     t.string "other_phone"
     t.string "sus"
     t.string "neighborhood"
-    t.index ["email"], name: "index_patients_on_email", unique: true
+    t.index ["cpf"], name: "index_patients_on_cpf", unique: true
     t.index ["reset_password_token"], name: "index_patients_on_reset_password_token", unique: true
   end
 
@@ -67,7 +67,6 @@ ActiveRecord::Schema.define(version: 2020_04_04_155339) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "name", default: "", null: false
-    t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 

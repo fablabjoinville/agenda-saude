@@ -4,7 +4,7 @@ class DeviseCreatePatients < ActiveRecord::Migration[6.0]
   def change
     create_table :patients do |t|
       ## Database authenticatable
-      t.string :email,              null: false, default: ""
+      t.string :email,              null: true, default: "", uniqueness: false
       t.string :encrypted_password, null: false, default: ""
 
       ## Recoverable
@@ -36,7 +36,6 @@ class DeviseCreatePatients < ActiveRecord::Migration[6.0]
       t.timestamps null: false
     end
 
-    add_index :patients, :email,                unique: true
     add_index :patients, :reset_password_token, unique: true
     # add_index :patients, :confirmation_token,   unique: true
     # add_index :patients, :unlock_token,         unique: true

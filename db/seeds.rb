@@ -16,3 +16,11 @@ ubs = Ubs.new
 ubs.name = 'UBSF America'
 ubs.user = u
 ubs.save!
+
+p = Patient.new
+p.name = 'marvin'
+p.cpf = '000.000.000.000'
+p.mother_name = 'num sei'
+p.password = '424242'
+p.password_confirmation = '424242'
+p.save!
