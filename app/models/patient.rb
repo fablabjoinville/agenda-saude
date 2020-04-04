@@ -11,14 +11,6 @@ class Patient < ApplicationRecord
     false
   end
 
-  def password_required?
-    false
-  end
-
-  def password_match?
-    true
-  end
-
   has_many :appointments, dependent: :destroy
 
   validates :name, presence: true

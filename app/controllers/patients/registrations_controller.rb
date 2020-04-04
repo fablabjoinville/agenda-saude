@@ -5,8 +5,8 @@ class Patients::RegistrationsController < Devise::RegistrationsController
   # before_action :configure_account_update_params, only: [:update]
 
   FIELDS = [
-    :cpf,
     :name,
+    :cpf,
     :mother_name,
     :birth_date,
     :phone,
@@ -29,7 +29,7 @@ class Patients::RegistrationsController < Devise::RegistrationsController
   # GET /resource/sign_up
   def new
     @cpf = params[:cpf]
-    puts @cpf
+
     super
   end
 
