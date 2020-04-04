@@ -12,6 +12,8 @@ services:
       - "RAILS_ENV=development"
     depends_on:
       - postgres
+    tty: true
+    stdin_open: true
 
   postgres:
     image: postgres:12.1-alpine

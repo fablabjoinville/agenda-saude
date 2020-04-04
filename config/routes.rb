@@ -1,8 +1,8 @@
 Rails.application.routes.draw do
   devise_for :patients, path: 'patients', controllers: { sessions: 'patients/sessions' }
-  devise_for :users, path: 'users'
+  devise_for :users, path: 'users', controllers: { sessions: 'users/sessions' }
 
-  devise_scope :patient do
-    root 'patients/sessions#new'
-  end
+  root to: "home#index"
+
+  resources :appointments
 end
