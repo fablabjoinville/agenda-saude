@@ -1,0 +1,22 @@
+pt-BR:
+  activerecord:
+    attributes:
+      user:
+        name: Nome
+        password: Senha
+        remember_me: Lembre-se de mim
+      patient:
+        name: Nome completo
+        cpf: CPF
+        mother_name: Nome da mãe
+        birth_date: Data de nascimento
+        phone: Telefone
+        neighborhood: Bairro
+    models:
+      user: Usuário
+      patient: Paciente
+  errors:
+    messages:
+      not_saved:
+        one: 'Não foi possível salvar %{resource}: 1 erro'
+        other: 'Não foi possível salvar %{resource}: %{count} erros.'

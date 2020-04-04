@@ -1,6 +1,5 @@
 class Patient < ApplicationRecord
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable
+  devise :database_authenticatable, :registerable, :rememberable
 
   def email_required?
     false
