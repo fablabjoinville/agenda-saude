@@ -1,3 +1,3 @@
-class Ups < ApplicationRecord
+class Ubs < ApplicationRecord
   belongs_to :user
 end
