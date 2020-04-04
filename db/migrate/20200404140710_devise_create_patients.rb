@@ -4,7 +4,7 @@ class DeviseCreatePatients < ActiveRecord::Migration[6.0]
   def change
     create_table :patients do |t|
       ## Database authenticatable
-      t.string :email,              null: true, default: "", uniqueness: false
+      t.string :email,              null: true, default: '', uniqueness: false
 
       ## Rememberable
       t.datetime :remember_created_at

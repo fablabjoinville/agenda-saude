@@ -1,7 +1,7 @@
 class Patient < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  devise :database_authenticatable, :registerable, :rememberable
+  devise :database_authenticatable, :registerable, :rememberable, :authentication_keys => [:cpf]
 
   def email_required?
     false

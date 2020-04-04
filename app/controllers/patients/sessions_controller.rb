@@ -5,17 +5,19 @@ class Patients::SessionsController < Devise::SessionsController
 
   # GET /resource/sign_in
   def new
+    puts params
+    @cpf = login_params[:cpf]
+
     super
   end
 
   # POST /resource/sign_in
   def create
-    cpf = cpf_params[:cpf]
-    return render json: {}, status: :bad_request unless CPF.valid?(cpf)
+    patient = Patient.find_by(cpf: login_params[:cpf])
 
-    return render json: 'CADASTRADO -> Pedir nome da mãe' if Patient.find_by_cpf(cpf)
+    return sign_in(patient, scope: :patient) if login_params[:password] == patient.mother_name
 
-    redirect_to new_patient_registration_path(cpf: cpf)
+    render json: { got: patient.password, }
   end
 
   # DELETE /resource/sign_out
@@ -23,16 +25,14 @@ class Patients::SessionsController < Devise::SessionsController
   #   super
   # end
 
-  # protected
+  protected
 
   # If you have extra params to permit, append them to the sanitizer.
-  # def configure_sign_in_params
-  #   devise_parameter_sanitizer.permit(:sign_in, keys: [:attribute])
-  # end
+  def configure_sign_in_params
+    devise_parameter_sanitizer.permit(:sign_in, keys: [:cpf, :password])
+  end
 
-  private
-
-  def cpf_params
-    params.require(:patient).permit(:cpf)
+  def login_params
+    params.require(:patient).permit(:cpf, :password)
   end
 end

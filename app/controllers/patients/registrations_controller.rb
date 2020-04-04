@@ -23,7 +23,7 @@ class Patients::RegistrationsController < Devise::RegistrationsController
     patient = Patient.new(fields)
     patient.save
 
-    render json: { errors: patient.errors, fields: fields } unless patient.persisted?
+    return render json: { errors: patient.errors, fields: fields } unless patient.persisted?
   end
 
   # GET /resource/sign_up
