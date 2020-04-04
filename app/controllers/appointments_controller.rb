@@ -1,5 +1,3 @@
-require 'pry'
-
 class AppointmentsController < PatientSessionController
   def index; end
 

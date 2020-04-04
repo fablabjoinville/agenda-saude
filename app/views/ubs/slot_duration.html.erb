@@ -1,0 +1,18 @@
+<h1>Alterar durações de atendimento</h1>
+
+<% if @ubs.errors.present? %>
+  <div id="error_explanation">
+    <ul>
+      <li>A duração deve ser maior que 0 e menor que 120 (2 horas)</li>
+    </ul>
+  </div>
+<% end %>
+
+<%= form_for @ubs, url: ubs_change_slot_duration_path do |f| %>
+  <div class="field">
+    <%= f.label :slot_interval_minutes, 'Duração de cada atendimento (em minutos):' %><br />
+    <%= f.number_field :slot_interval_minutes %>
+  </div>
+
+  <%= f.submit "Atualizar" %>
+<% end %>

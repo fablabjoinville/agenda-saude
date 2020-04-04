@@ -49,6 +49,7 @@ ActiveRecord::Schema.define(version: 2020_04_04_155339) do
     t.string "shift_end"
     t.string "break_start"
     t.string "break_end"
+    t.integer "slot_interval_minutes"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_ubs_on_user_id"
