@@ -1,6 +1,6 @@
 require 'pry'
 
-class AppointmentsController < PatientSessionController
+class UbsController < UserSessionController
   def index; end
 
   def show; end
