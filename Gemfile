@@ -7,7 +7,7 @@ gem 'rails', '~> 6.0.1' # Bundle edge Rails instead: gem 'rails', github: 'rails
 gem 'pg', '>= 0.18', '< 2.0' # Use postgresql as the database for Active Record
 gem 'puma', '~> 4.1' # Use Puma as the app server
 gem 'sass-rails', '>= 6' # Use SCSS for stylesheets
-gem 'jbuilder', '~> 2.7' # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
+# gem 'jbuilder', '~> 2.7' # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 
 # gem 'redis', '~> 4.0' # Use Redis adapter to run Action Cable in production
 # gem 'bcrypt', '~> 3.1.7' # Use Active Model has_secure_password
@@ -24,6 +24,8 @@ gem 'bootstrap'
 
 gem 'cpf_cnpj'
 
+gem 'tod'
+
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw] # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'pry-rails'
@@ -36,22 +38,22 @@ group :development, :test do
   gem 'danger-simplecov_json'
   gem 'danger-todoist'
 
-  gem 'brakeman', require: false
-  gem 'bullet'
-  gem 'fasterer', require: false
-  gem 'flay', require: false
-  gem 'rails_best_practices', require: false
-  gem 'reek', require: false
-
-  gem 'pronto'
-  gem 'pronto-brakeman', require: false
-  gem 'pronto-fasterer', require: false
-  gem 'pronto-flay', require: false
-  gem 'pronto-rails_best_practices', require: false
-  gem 'pronto-rails_schema', require: false
-  gem 'pronto-reek', require: false
-  gem 'pronto-rubocop', require: false
-  gem 'pronto-simplecov', require: false
+  # gem 'brakeman', require: false
+  # gem 'bullet'
+  # gem 'fasterer', require: false
+  # gem 'flay', require: false
+  # gem 'rails_best_practices', require: false
+  # gem 'reek', require: false
+  #
+  # gem 'pronto'
+  # gem 'pronto-brakeman', require: false
+  # gem 'pronto-fasterer', require: false
+  # gem 'pronto-flay', require: false
+  # gem 'pronto-rails_best_practices', require: false
+  # gem 'pronto-rails_schema', require: false
+  # gem 'pronto-reek', require: false
+  # gem 'pronto-rubocop', require: false
+  # gem 'pronto-simplecov', require: false
 end
 
 group :development do
@@ -62,13 +64,13 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
 
-  gem 'rubocop', require: false
-  gem 'rubocop-rails'
-
-  gem 'guard', require: false
-  gem 'guard-rails', require: false
-  gem 'guard-rspec', require: false
-  gem 'guard-rubocop', require: false
+  # gem 'rubocop', require: false
+  # gem 'rubocop-rails'
+  #
+  # gem 'guard', require: false
+  # gem 'guard-rails', require: false
+  # gem 'guard-rspec', require: false
+  # gem 'guard-rubocop', require: false
 end
 
 group :test do

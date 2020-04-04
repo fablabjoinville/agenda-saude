@@ -2,27 +2,39 @@
 <p>Find me in app/views/ubs/active_hours.html.erb</p>
 
 
-<%= form_with url: ubs_active_hours_url do |f| %>
+<%= form_for :ubs, url: ubs_active_hours_path(format: "json") do |f| %>
   <div class="field">
-    <%= f.label :shift_start %><br />
-    <%= f.text_field :shift_start, autofocus: true %>
+    <%= f.label :shift_start, 'Inicio do expediente' %><br />
+    <%= f.time_select :shift_start, minute_step: 15, ignore_date: true, value: @ubs.shift_start %>
   </div>
 
-  <div class="field">
-    <%= f.label :break_start %><br />
-    <%= f.text_field :break_start, autofocus: true %>
-  </div>
+  <br/>
+  <br/>
 
   <div class="field">
-    <%= f.label :break_end %><br />
-    <%= f.text_field :break_end, autofocus: true %>
+    <%= f.label :break_start, 'Inicio do intervalo' %><br />
+    <%= f.time_select :break_start, minute_step: 15, ignore_date: true, value: @ubs.break_start %>
   </div>
+
+  <br/>
+  <br/>
 
   <div class="field">
-    <%= f.label :shift_end %><br />
-    <%= f.text_field :shift_end, autofocus: true %>
+    <%= f.label :break_end, 'Final do intervalo' %><br />
+    <%= f.time_select :break_end, minute_step: 15, ignore_date: true, value: @ubs.break_end %>
   </div>
 
+  <br/>
+  <br/>
 
-  <%= f.submit "Create" %>
+  <div class="field">
+    <%= f.label :shift_end, 'Final do expediente' %><br />
+    <%= f.time_select :shift_end, minute_step: 15, ignore_date: true, value: @ubs.shift_end %>
+  </div>
+
+  <br/>
+  <br/>
+
+
+  <%= f.submit "Atualizar" %>
 <% end %>

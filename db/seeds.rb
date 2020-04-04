@@ -6,24 +6,28 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-u = User.new
-u.name = 'mlabs'
-u.password = 'dontpanic'
-u.password_confirmation = 'dontpanic'
-u.save!
+user = User.new
+user.name = 'mlabs'
+user.password = 'dontpanic'
+user.password_confirmation = 'dontpanic'
+user.save!
 
 ubs = Ubs.new
 ubs.name = 'UBSF America'
-ubs.user = u
+ubs.user = user
+ubs.shift_start = '9:00:00'
+ubs.break_start = '12:30:00'
+ubs.break_end = '13:30:00'
+ubs.shift_end = '17:00:00'
 ubs.save!
 
-p = Patient.new
-p.name = 'marvin'
-p.cpf = '489.408.380-92'
-p.mother_name = 'num sei'
-p.birth_date = '01/01/1980'
-p.phone = '12345678'
-p.neighborhood = 'Centro'
-p.password = '424242'
-p.password_confirmation = '424242'
-p.save!
+patient = Patient.new
+patient.name = 'marvin'
+patient.cpf = '489.408.380-92'
+patient.mother_name = 'num sei'
+patient.birth_date = '01/01/1980'
+patient.phone = '12345678'
+patient.neighborhood = 'Centro'
+patient.password = '424242'
+patient.password_confirmation = '424242'
+patient.save!
