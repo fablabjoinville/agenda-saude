@@ -11,3 +11,8 @@ u.name = 'mlabs'
 u.password = 'dontpanic'
 u.password_confirmation = 'dontpanic'
 u.save!
+
+ubs = Ubs.new
+ubs.name = 'UBSF America'
+ubs.user = u
+ubs.save!
