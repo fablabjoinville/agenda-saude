@@ -16,8 +16,6 @@ gem 'jbuilder', '~> 2.7' # Build JSON APIs with ease. Read more: https://github.
 gem 'bootsnap', '>= 1.4.2', require: false # Reduces boot times through caching; required in config/boot.rb
 
 gem 'devise'
-gem 'devise-i18n'
-gem 'rails-i18n'
 gem 'route_translator'
 
 gem 'activeadmin'
