@@ -10,12 +10,12 @@ class Patients::SessionsController < Devise::SessionsController
 
   # POST /resource/sign_in
   def create
-    cpf = CPF.new(cpf_params[:cpf])
+    cpf = cpf_params[:cpf]
+    return render json: {}, status: :bad_request unless CPF.valid?(cpf)
 
-    if cpf.valid?
-      return render json: 'CADASTRADO -> Pedir nome da mãe' if Patient.find_by_cpf(cpf.formatted)
-      redirect_to new_patient_registration_path
-    end
+    return render json: 'CADASTRADO -> Pedir nome da mãe' if Patient.find_by_cpf(cpf)
+
+    redirect_to new_patient_registration_path(cpf: cpf)
   end
 
   # DELETE /resource/sign_out

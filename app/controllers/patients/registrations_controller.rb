@@ -18,15 +18,18 @@ class Patients::RegistrationsController < Devise::RegistrationsController
 
   # POST /patients
   def create
-    fields = params.require(:patient).permit(FIELDS)
+    fields = params.require(:patient).permit(*FIELDS)
 
-    Patient.new(fields).save
+    patient = Patient.new(fields)
+    patient.save
 
-    super
+    render json: { errors: patient.errors, fields: fields } unless patient.persisted?
   end
 
   # GET /resource/sign_up
   def new
+    @cpf = params[:cpf]
+
     super
   end
 
