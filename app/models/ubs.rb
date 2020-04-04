@@ -1,6 +1,6 @@
 class Ubs < ApplicationRecord
   validate :times_must_be_ordered
-  validates :slot_interval_minutes, inclusion: 15...120
+  validates :slot_interval_minutes, inclusion: 1...120
 
   belongs_to :user
 
