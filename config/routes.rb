@@ -4,6 +4,11 @@ Rails.application.routes.draw do
 
   devise_scope :patient do
     root 'home#index'
+
+    resource :time_slot do
+      get '/', as: :index, to: 'time_slot#index'
+      post '/', as: :schedule, to: 'time_slot#create'
+    end
   end
 
   devise_scope :user do

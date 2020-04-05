@@ -21,16 +21,22 @@ other_user.save!
 ubs = Ubs.new
 ubs.name = 'UBSF America'
 ubs.user = user
+ubs.neighborhood = 'America'
+ubs.phone = '3443-3443'
 ubs.shift_start = '9:00'
 ubs.break_start = '12:30'
 ubs.break_end = '13:30'
 ubs.shift_end = '17:00'
 ubs.slot_interval_minutes = 15
+ubs.valid?
+puts ubs.errors.inspect
 ubs.save!
 
 other_ubs = Ubs.new
 other_ubs.name = 'UBSF Gloria'
 other_ubs.user = other_user
+other_ubs.neighborhood = 'Gloria né'
+other_ubs.phone = '3443-3455'
 other_ubs.shift_start = '9:00'
 other_ubs.break_start = '12:30'
 other_ubs.break_end = '13:30'

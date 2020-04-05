@@ -1,0 +1,2 @@
+module TimeSlotHelper
+end
