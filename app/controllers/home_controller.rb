@@ -1,5 +1,8 @@
 class HomeController < ApplicationController
-  def index; end
+  def index
+    return redirect_to index_time_slot_path if current_patient
+    return redirect_to ubs_index_path if current_user
+  end
 
   def patient_base_login
     cpf = base_login_params[:cpf]
@@ -15,7 +18,7 @@ class HomeController < ApplicationController
 
     patient.unblock!
 
-    render html: "<h1>#{patient.name.camelize} desbloqueado!</h1>".html_safe
+    render html: "<h1>#{patient.name.titleize} desbloqueado!</h1>".html_safe
   end
 
   private
