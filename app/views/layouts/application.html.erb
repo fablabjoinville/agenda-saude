@@ -10,6 +10,24 @@
   </head>
 
   <body>
-    <%= yield %>
+    <nav class="navbar navbar-default early-two-thousand">
+      <a class="navbar-brand" href=""><img src=<%= image_path('logo.svg') %>></a>
+      <% if !current_user && !current_patient %>
+        <%= button_to new_user_session_path, class: "btn btn-primary", type: "button" do %>
+          Entrar como Operador
+        <% end %>
+      <% elsif current_user %>
+        <%= button_to destroy_user_session_path, method: :delete, class: "btn btn-primary", type: "button" do %>
+          Sair
+        <% end %>
+      <% else %>
+        <%= button_to destroy_patient_session_path, method: :delete, class: "btn btn-primary", type: "button" do %>
+          Sair
+        <% end %>
+      <% end %>
+    </nav>
+    <div class="container">
+      <%= yield %>
+    </div>
   </body>
 </html>
