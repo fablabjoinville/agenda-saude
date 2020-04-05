@@ -3,7 +3,9 @@ index<br/>
 <% @appointments.each do |appointment| %>
   <div class="row">
     <div class="col"><%= appointment.start %></div>
-    <div class="col"><%= appointment.patient.name %></div>
+    <div class="col">
+      <a href=<%= "/patients/#{appointment.patient.id}" %>><%= appointment.patient.name %></a>
+    </div>
     <div class="col"><%= appointment.patient.phone %></div>
     <div class="col"><%= appointment.patient.other_phone %></div>
     <div class="col">

@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   end
 
   resources :appointments
+  resources :patients
 
   resources :ubs do
     member do
