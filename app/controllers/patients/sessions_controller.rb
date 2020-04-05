@@ -12,6 +12,8 @@ class Patients::SessionsController < Devise::SessionsController
 
     @mother_list = patient.fake_mothers
     super
+  rescue ActionController::ParameterMissing
+    redirect_to '/'
   end
 
   # POST /patient/sign_in
@@ -62,6 +64,6 @@ class Patients::SessionsController < Devise::SessionsController
 
     patient.update!(fake_mothers: [], login_attempts: 0)
 
-    render json: { msg: 'Mãe certa :)' } # TODO: Change to patient's actual root
+    redirect_to time_slot_path
   end
 end
