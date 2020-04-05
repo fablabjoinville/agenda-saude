@@ -57,10 +57,16 @@
     </div>
   </div>
 
-  <div class="actions">
-    <div class="btn-group" role="group" aria-label="Basic example">
-      <%= f.submit "Cadastrar", class: "btn btn-primary" %>
-      <%= render "patients/shared/links" %>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <%= f.submit "Cadastrar", class: "btn btn-primary pull-right" %>
+    </div>
+    <div class="form-group col-md-6">
+      <div class="text-right">
+        <%= link_to :back, class: "btn btn-secondary pull-left" do %>
+          Voltar
+        <% end %>
+      </div>
     </div>
   </div>
 <% end %>
