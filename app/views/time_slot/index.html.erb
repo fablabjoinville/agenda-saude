@@ -1,2 +1,22 @@
 <h1>TimeSlot#index</h1>
 <p>Find me in app/views/time_slot/index.html.erb</p>
+
+<% @time_slots.each do |ubs, days| %>
+  <%= ubs.identifier %>
+
+  <ul>
+    <% days.each do |day, slots| %>
+      <li>
+        <%= ApplicationHelper.humanize_date(day) %>
+
+        <ul>
+          <% slots.each do |slot| %>
+            <li> Inicio: <%= ApplicationHelper.humanize_time(slot[:slot_start]) %>. Fim: <%= ApplicationHelper.humanize_time(slot[:slot_end]) %> <%= button_to 'Agendar', schedule_time_slot_path(start_time: slot[:slot_start], ubs_id: ubs.id) %> </li>
+          <% end %>
+        </ul>
+      </li>
+    <% end %>
+  </ul>
+
+  <br/>
+<% end %>

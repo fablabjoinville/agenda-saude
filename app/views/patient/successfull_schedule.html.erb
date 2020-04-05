@@ -1,0 +1,19 @@
+<strong>Agendamento realizado com sucesso!</strong>
+<br>
+Dirija-se para a unidade abaixo no dia e hora marcados com um documento com foto:
+<br><br>
+
+<ul>
+  <li><strong>Data: </strong><%= ApplicationHelper.humanize_datetime(@appointment.start) %></li>
+  <li><strong>UBS: </strong><%= @ubs.name %></li>
+  <li><strong>Endereço: </strong><%= @ubs.address %></li>
+  <li><strong>Telefone: </strong><%= @ubs.phone %></li>
+</ul>
+
+<br>
+
+Importante: para cancelar seu agendamento, basta entrar novamente e inserir seu cpf.
+<br>
+Caso haja alteração por parte da unidade, será realizado contato pelo telefone informado no cadastro.
+<br>
+Dúvidas a respeito do agendamento, ligar no número 3481-5151.
