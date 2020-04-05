@@ -1,9 +1,9 @@
-<h2>Sign in</h2>
+<h2>Entrar</h2>
 
 <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
   <div class="field">
     <%= f.label :cpf, "CPF (somente números)" %><br />
-    <%= f.text_field :cpf, autofocus: true, autocomplete: "cpf", minlength: 11, maxlength: 11 %>
+    <%= f.text_field :cpf, autofocus: true, autocomplete: "cpf", minlength: 11, maxlength: 11, required: true %>
   </div>
 
   <div class="actions">
@@ -11,4 +11,4 @@
   </div>
 <% end %>
 
-<a href="<%= new_user_session_path %>">login operador</a><br />
+<a href="<%= new_user_session_path %>">Entrar como Operador</a>
