@@ -1,5 +1,15 @@
-<h1>TimeSlot#index</h1>
-<p>Find me in app/views/time_slot/index.html.erb</p>
+<% if @appointment.present? %>
+  <h3>Seu agendamento atual é em:</h3>
+  <ul>
+    <li><strong>Data: </strong><%= ApplicationHelper.humanize_datetime(@appointment.start) %></li>
+    <li><strong>UBS: </strong><%= @ubs.name %></li>
+    <li><strong>Endereço: </strong><%= @ubs.address %></li>
+    <li><strong>Telefone: </strong><%= @ubs.phone %></li>
+  </ul>
+  <a href=<%= cancel_time_slot_url(appointment_id: @appointment.id) %> onclick="return confirm('Você tem certeza?')" data-method="delete" >Cancelar consulta</a>
+  <% end %>
+
+<h3>Horários possíveis:</h3>
 
 <% @time_slots.each do |ubs, days| %>
   <%= ubs.identifier %>
@@ -11,7 +21,7 @@
 
         <ul>
           <% slots.each do |slot| %>
-            <li> Inicio: <%= ApplicationHelper.humanize_time(slot[:slot_start]) %>. Fim: <%= ApplicationHelper.humanize_time(slot[:slot_end]) %> <%= button_to 'Agendar', schedule_time_slot_path(start_time: slot[:slot_start], ubs_id: ubs.id) %> </li>
+            <li> Inicio: <%= ApplicationHelper.humanize_time(slot[:slot_start]) %>. Fim: <%= ApplicationHelper.humanize_time(slot[:slot_end]) %> <%= button_to @appointment.present? ? 'Substituir' : 'Agendar', schedule_time_slot_path(start_time: slot[:slot_start], ubs_id: ubs.id) %> </li>
           <% end %>
         </ul>
       </li>

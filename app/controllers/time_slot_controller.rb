@@ -16,7 +16,14 @@ class TimeSlotController < PatientSessionController
     render 'patient/successfull_schedule'
   end
 
+  def cancel
+
+  end
+
   def index
+    @appointment = current_patient.appointments.first
+    @ubs = @appointment.ubs
+
     @time_slots = Ubs.all.each_with_object({}) do |ubs, memo|
       memo[ubs] = ubs.available_time_slots(Date.today...3.days.from_now)
     end

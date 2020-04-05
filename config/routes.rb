@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     resource :time_slot do
       get '/', as: :index, to: 'time_slot#index'
       post '/', as: :schedule, to: 'time_slot#schedule'
+      delete '/', as: :cancel, to: 'time_slot#cancel'
     end
   end
 
