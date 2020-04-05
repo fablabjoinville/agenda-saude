@@ -24,7 +24,7 @@ class TimeSlotController < PatientSessionController
 
     return render json: @appointment.errors unless @appointment.save
 
-    render 'patient/successfull_schedule'
+    render 'patients/successfull_schedule'
   end
 
   def cancel

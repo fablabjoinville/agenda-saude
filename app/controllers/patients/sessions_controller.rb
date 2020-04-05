@@ -18,14 +18,14 @@ class Patients::SessionsController < Devise::SessionsController
 
   # POST /patient/sign_in
   def create
-    return render 'patient/blocked' if patient.blocked?
+    return render 'patients/blocked' if patient.blocked?
     return patient_sign_in if mother_name_matches?
 
     patient.increase_login_attempts
 
-    return render 'patient/blocked' if patient.blocked?
+    return render 'patients/blocked' if patient.blocked?
 
-    render 'patient/login_failed'
+    render 'patients/login_failed'
   end
 
   # DELETE /patient/sign_out

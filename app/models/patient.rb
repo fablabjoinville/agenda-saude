@@ -41,6 +41,6 @@ class Patient < ApplicationRecord
   end
 
   def encrypted_password
-    cpf
+    ''
   end
 end
