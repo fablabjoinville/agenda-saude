@@ -8,6 +8,7 @@ class Patients::SessionsController < Devise::SessionsController
       patient.update!(fake_mothers: mother_list)
     end
 
+    @mother_list = patient.fake_mothers
     super
   end
 
