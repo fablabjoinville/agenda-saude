@@ -3,7 +3,9 @@ class UbsController < UserSessionController
 
   def active_hours; end
 
-  def index; end
+  def index
+    @appointments = @ubs.appointments.where(active: true)
+  end
 
   def change_active_hours
     shift_start_tod = Tod::TimeOfDay.parse(active_hour_for_attr('shift_start_date'))
@@ -31,6 +33,14 @@ class UbsController < UserSessionController
     return redirect_to ubs_slot_duration_path if updated
 
     render ubs_slot_duration_path
+  end
+
+  def cancel_appointment
+    appointment = @ubs.appointments.find(params[:id])
+
+    appointment.update(active: false)
+
+    redirect_to ubs_index_path
   end
 
   private

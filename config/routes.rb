@@ -16,5 +16,9 @@ Rails.application.routes.draw do
 
   resources :appointments
 
-  resources :ubs
+  resources :ubs do
+    member do
+      get 'cancel_appointment'
+    end
+  end
 end
