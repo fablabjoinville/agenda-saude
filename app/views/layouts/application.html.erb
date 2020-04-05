@@ -11,7 +11,7 @@
 
   <body>
     <nav class="navbar navbar-default early-two-thousand">
-      <a class="navbar-brand" href=""><img src=<%= image_path('logo.svg') %>></a>
+      <a class="navbar-brand" href=""><img src=<%= image_path('logo.png') %> width="auto" height="56px"></a>
       <% if !current_user && !current_patient %>
         <%= button_to new_user_session_path, class: "btn btn-primary", type: "button" do %>
           Entrar como Operador

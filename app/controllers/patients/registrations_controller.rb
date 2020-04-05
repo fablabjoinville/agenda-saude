@@ -31,9 +31,9 @@ class Patients::RegistrationsController < Devise::RegistrationsController
     now_day = DateTime.now.strftime('%d').to_i
 
 
-    if  p_year > (now_year - 60) or 
+    if  p_year > (now_year - 60) or
       (p_year == (now_year - 60) and p_month >= now_month and p_day > now_day)
-      return render 'patient/age_not_allowed'
+      return render 'patients/age_not_allowed'
     end
 
 
