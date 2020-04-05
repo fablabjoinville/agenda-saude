@@ -18,7 +18,7 @@ index<br/>
 <a href="<%= ubs_active_hours_path %>">Alterar horário de funcionamento</a><br/>
 <a href="<%= ubs_slot_duration_path %>">Alterar durações de atendimento</a><br/>
 <a
-  href=<%= "/ubs/1/cancel_all_future_appointments" %>
+  href=<%= "/ubs/#{@ubs.id}/cancel_all_future_appointments" %>
   onclick="return confirm('Você tem certeza?')"
 >Desativar todas consultas futuras</a>
 
