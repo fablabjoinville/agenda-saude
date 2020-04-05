@@ -11,11 +11,11 @@
 <% end %>
 
 <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <%= f.hidden_field :cpf, value: @cpf %>
+  <%= f.hidden_field :cpf, value: @patient.cpf %>
 
   <div class="field">
     <%= f.label :password, "Nome da maravilinda da mãe" %><br />
-    <%= f.text_field :password, autofocus: true, autocomplete: "password" %>
+    <%= f.select :password, @patient.mother_list %>
   </div>
 
   <div class="actions">

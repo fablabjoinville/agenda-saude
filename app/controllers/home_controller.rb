@@ -10,9 +10,21 @@ class HomeController < ApplicationController
     redirect_to new_patient_registration_path(cpf: cpf)
   end
 
+  def unblock
+    patient = Patient.find_by(cpf: unblock_params[:cpf])
+
+    patient.unblock!
+
+    render html: "<h1>#{patient.name.camelize} desbloqueado!</h1>".html_safe
+  end
+
   private
 
   def base_login_params
     params.require(:patient).permit(:cpf)
+  end
+
+  def unblock_params
+    params.permit(:cpf)
   end
 end

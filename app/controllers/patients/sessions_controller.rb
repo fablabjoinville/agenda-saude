@@ -1,38 +1,60 @@
 # frozen_string_literal: true
 
 class Patients::SessionsController < Devise::SessionsController
-  # before_action :configure_sign_in_params, only: [:create]
-
-  # GET /resource/sign_in
+  # GET /patient/sign_in
   def new
-    puts params
-    @cpf = login_params[:cpf]
+    unless patient.fake_mothers.present?
+      mother_list = MotherNameService.name_list(patient.mother_name)
+      patient.update!(fake_mothers: mother_list)
+    end
 
     super
   end
 
-  # POST /resource/sign_in
+  # POST /patient/sign_in
   def create
-    patient = Patient.find_by(cpf: login_params[:cpf])
+    return render 'patient/blocked' if patient.blocked?
+    return patient_sign_in if mother_name_matches?
 
-    return sign_in(patient, scope: :patient) if login_params[:password] == patient.mother_name
+    patient.increase_login_attempts
 
-    render json: { got: patient.password, }
+    return render 'patient/blocked' if patient.blocked?
+
+    render 'patient/login_failed'
   end
 
-  # DELETE /resource/sign_out
+  # DELETE /patient/sign_out
   # def destroy
   #   super
   # end
 
   protected
 
-  # If you have extra params to permit, append them to the sanitizer.
   def configure_sign_in_params
     devise_parameter_sanitizer.permit(:sign_in, keys: [:cpf, :password])
   end
 
+  private
+
+  def patient
+    @patient ||= Patient.find_by(cpf: login_params[:cpf])
+  end
+
   def login_params
     params.require(:patient).permit(:cpf, :password)
+  end
+
+  def mother_name_matches?
+    processed_mother_name = MotherNameService.process_name(patient.mother_name)
+
+    login_params[:password] == processed_mother_name
+  end
+
+  def patient_sign_in
+    sign_in(patient, scope: :patient)
+
+    patient.update!(fake_mothers: [], login_attempts: 0)
+
+    render json: { msg: 'Mãe certa :)' } # TODO: Change to patient's actual root
   end
 end

@@ -3,13 +3,7 @@ class Patient < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable, :rememberable, :authentication_keys => [:cpf]
 
-  def email_required?
-    false
-  end
-
-  def email_changed?
-    false
-  end
+  MAX_LOGIN_ATTEMPTS = 2.freeze
 
   has_many :appointments, dependent: :destroy
 
@@ -19,4 +13,32 @@ class Patient < ApplicationRecord
   validates :birth_date, presence: true
   validates :phone, presence: true
   validates :neighborhood, presence: true
+
+  def email_required?
+    false
+  end
+
+  def email_changed?
+    false
+  end
+
+  def increase_login_attempts
+    update!(login_attempts: login_attempts + 1)
+  end
+
+  def remaining_attempts
+    MAX_LOGIN_ATTEMPTS - login_attempts
+  end
+
+  def blocked?
+    login_attempts >= MAX_LOGIN_ATTEMPTS
+  end
+
+  def unblock!
+    update!(login_attempts: 0)
+  end
+
+  def encrypted_password
+    cpf
+  end
 end
