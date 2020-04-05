@@ -8,7 +8,7 @@ module TimeSlot
   private
 
   def available_time_slots_for_day(day)
-    appointments = Appointment.where(ubs: self).from_day(day)
+    appointments = Appointment.where(ubs: self).active_from_day(day)
 
     scheduled_timestamps = appointments.map { |appointment| appointment.start }
 
