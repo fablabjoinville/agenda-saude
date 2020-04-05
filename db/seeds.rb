@@ -29,7 +29,6 @@ ubs.break_end = '13:30'
 ubs.shift_end = '17:00'
 ubs.slot_interval_minutes = 15
 ubs.valid?
-puts ubs.errors.inspect
 ubs.save!
 
 other_ubs = Ubs.new
@@ -59,6 +58,9 @@ cpfs = %w[
 
 ubss = [ubs, other_ubs]
 
+starting_time = Tod::TimeOfDay.parse('9:00')
+today = Date.today
+
 10.times do |i|
   patient = Patient.new
   patient.name = "marvin#{i}"
@@ -72,8 +74,8 @@ ubss = [ubs, other_ubs]
   appointment = Appointment.new
   appointment.patient = patient
   appointment.ubs = ubss.sample
-  appointment.start = (i * 5).minutes.from_now
-  appointment.end = (i * 5 + 10).minutes.from_now
+  appointment.start = starting_time.on(today)
+  appointment.end = (starting_time += 15.minutes).on(today)
   appointment.active = true
   appointment.save!
 end

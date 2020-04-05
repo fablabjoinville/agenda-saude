@@ -1,5 +1,6 @@
 class TimeSlotController < ApplicationController
   def schedule
+
   end
 
   def index

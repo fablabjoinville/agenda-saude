@@ -15,7 +15,7 @@ class HomeController < ApplicationController
 
     patient.unblock!
 
-    render html: "<h1>#{patient.name.camelize} desbloqueado!</h1>".html_safe
+    render html: "<h1>#{patient.name.titleize} desbloqueado!</h1>".html_safe
   end
 
   private

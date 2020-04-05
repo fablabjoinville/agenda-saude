@@ -40,7 +40,7 @@ class Ubs < ApplicationRecord
   def afternoon_shift(day)
     break_end_date(day).to_i...shift_end_date(day).to_i
   end
- 
+
   def times_must_be_ordered
     if shift_start_date > shift_end_date
       errors.add(:shift_start, "não pode ser depois do final do expediente")
