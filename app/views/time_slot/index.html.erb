@@ -1,13 +1,19 @@
 <% if @appointment.present? %>
   <h3>Seu agendamento atual é em:</h3>
   <ul>
+
     <li><strong>Data: </strong><%= ApplicationHelper.humanize_datetime(@appointment.start) %></li>
     <li><strong>UBS: </strong><%= @ubs.name %></li>
     <li><strong>Endereço: </strong><%= @ubs.address %></li>
     <li><strong>Telefone: </strong><%= @ubs.phone %></li>
+
+    <%= button_to cancel_time_slot_path(appointment_id: @appointment.id), method: :delete, data: { confirm: "Deseja realmente cancelar o agendamento?" } do %>
+      Cancelar
+    <% end %>
   </ul>
-  <a href=<%= cancel_time_slot_url(appointment_id: @appointment.id) %> onclick="return confirm('Você tem certeza?')" data-method="delete" >Cancelar consulta</a>
   <% end %>
+
+<p id="notice"><%= notice %></p>
 
 <h3>Horários possíveis:</h3>
 
