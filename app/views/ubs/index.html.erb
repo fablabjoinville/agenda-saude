@@ -7,12 +7,13 @@ index<br/>
     <div class="col"><%= appointment.patient.phone %></div>
     <div class="col"><%= appointment.patient.other_phone %></div>
     <div class="col">
-      <%= link_to 'Desativar', cancel_appointment_ubs_path(appointment.id) %>
+      <%= link_to 'Desativar consulta', cancel_appointment_ubs_path(appointment.id) %>
     </div>
   </div>
 <% end %>
 
-<a href="<%= ubs_active_hours_path %>">Alterar horario de funcionamento</a><br/>
+<a href="<%= ubs_active_hours_path %>">Alterar horário de funcionamento</a><br/>
 <a href="<%= ubs_slot_duration_path %>">Alterar durações de atendimento</a><br/>
+<%= link_to 'Desativar todas consultas futuras', cancel_all_future_appointments_ubs_path(@ubs.id) %>
 
-<%= button_to 'Exit', destroy_user_session_path, method: :delete %>
+<%= button_to 'Sair', destroy_user_session_path, method: :delete %>

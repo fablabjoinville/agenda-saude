@@ -19,6 +19,7 @@ Rails.application.routes.draw do
   resources :ubs do
     member do
       get 'cancel_appointment'
+      get 'cancel_all_future_appointments'
     end
   end
 
