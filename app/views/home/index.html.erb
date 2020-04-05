@@ -1,0 +1,14 @@
+<h2>Log in</h2>
+
+<%= form_for(:patient, url: patient_base_login_path) do |f| %>
+  <div class="field">
+    <%= f.label :cpf, "CPF (somente números)" %><br />
+    <%= f.text_field :cpf, autofocus: true, autocomplete: "cpf", minlength: 11, maxlength: 11 %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "Entrar" %>
+  </div>
+<% end %>
+
+<a href="<%= new_user_session_path %>">Entrar como Operador</a>

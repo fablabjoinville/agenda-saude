@@ -1,38 +1,61 @@
 # frozen_string_literal: true
 
 class Patients::SessionsController < Devise::SessionsController
-  # before_action :configure_sign_in_params, only: [:create]
-
-  # GET /resource/sign_in
+  # GET /patient/sign_in
   def new
+    unless patient.fake_mothers.present?
+      mother_list = MotherNameService.name_list(patient.mother_name)
+      patient.update!(fake_mothers: mother_list)
+    end
+
+    @mother_list = patient.fake_mothers
     super
   end
 
-  # POST /resource/sign_in
+  # POST /patient/sign_in
   def create
-    cpf = cpf_params[:cpf]
-    return render json: {}, status: :bad_request unless CPF.valid?(cpf)
+    return render 'patient/blocked' if patient.blocked?
+    return patient_sign_in if mother_name_matches?
 
-    return render json: 'CADASTRADO -> Pedir nome da mãe' if Patient.find_by_cpf(cpf)
+    patient.increase_login_attempts
 
-    redirect_to new_patient_registration_path(cpf: cpf)
+    return render 'patient/blocked' if patient.blocked?
+
+    render 'patient/login_failed'
   end
 
-  # DELETE /resource/sign_out
+  # DELETE /patient/sign_out
   # def destroy
   #   super
   # end
 
-  # protected
+  protected
 
-  # If you have extra params to permit, append them to the sanitizer.
-  # def configure_sign_in_params
-  #   devise_parameter_sanitizer.permit(:sign_in, keys: [:attribute])
-  # end
+  def configure_sign_in_params
+    devise_parameter_sanitizer.permit(:sign_in, keys: [:cpf, :password])
+  end
 
   private
 
-  def cpf_params
-    params.require(:patient).permit(:cpf)
+  def patient
+    @patient ||= Patient.find_by(cpf: login_params[:cpf])
+  end
+
+  def login_params
+    params.require(:patient).permit(:cpf, :password)
+  end
+
+  def mother_name_matches?
+    processed_mother_name = MotherNameService.process_name(patient.mother_name)
+
+    login_params[:password] == processed_mother_name
+  end
+
+  def patient_sign_in
+    sign_in(patient, scope: :patient)
+
+    patient.update!(fake_mothers: [], login_attempts: 0)
+
+    render json: { msg: 'Mãe certa :)' } # TODO: Change to patient's actual root
   end
 end

@@ -1,9 +1,21 @@
 <h2>Entrar</h2>
 
+<% if resource.errors.present? %>
+  <div id="error_explanation">
+    <ul>
+      <% resource.errors.each do |err| %>
+        <li><%= err.full_message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
 <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+  <%= f.hidden_field :cpf, value: @patient.cpf %>
+
   <div class="field">
-    <%= f.label :cpf, "CPF (somente números)" %><br />
-    <%= f.text_field :cpf, autofocus: true, autocomplete: "cpf", minlength: 11, maxlength: 11, required: true %>
+    <%= f.label :password, "Nome da maravilinda da mãe" %><br />
+    <%= f.select :password, @mother_list %>
   </div>
 
   <div class="actions">

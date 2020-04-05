@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_05_000646) do
+ActiveRecord::Schema.define(version: 2020_04_05_011253) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -40,6 +40,8 @@ ActiveRecord::Schema.define(version: 2020_04_05_000646) do
     t.string "other_phone"
     t.string "sus"
     t.string "neighborhood"
+    t.string "fake_mothers", default: [], array: true
+    t.integer "login_attempts", default: 0
     t.index ["cpf"], name: "index_patients_on_cpf", unique: true
   end
 
