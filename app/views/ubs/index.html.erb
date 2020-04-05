@@ -7,13 +7,19 @@ index<br/>
     <div class="col"><%= appointment.patient.phone %></div>
     <div class="col"><%= appointment.patient.other_phone %></div>
     <div class="col">
-      <%= link_to 'Desativar consulta', cancel_appointment_ubs_path(appointment.id) %>
+      <a
+        href=<%= "/ubs/#{appointment.id}/cancel_appointment" %>
+        onclick="return confirm('Você tem certeza?')"
+      >Desativar consulta</a>
     </div>
   </div>
 <% end %>
 
 <a href="<%= ubs_active_hours_path %>">Alterar horário de funcionamento</a><br/>
 <a href="<%= ubs_slot_duration_path %>">Alterar durações de atendimento</a><br/>
-<%= link_to 'Desativar todas consultas futuras', cancel_all_future_appointments_ubs_path(@ubs.id) %>
+<a
+  href=<%= "/ubs/1/cancel_all_future_appointments" %>
+  onclick="return confirm('Você tem certeza?')"
+>Desativar todas consultas futuras</a>
 
 <%= button_to 'Sair', destroy_user_session_path, method: :delete %>
