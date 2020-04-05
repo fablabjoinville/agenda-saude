@@ -1,26 +1,30 @@
-<h2>Entrar</h2>
+<div class="row text-center">
+  <div class="col">
+    <p class="h3 mb-4">Sistema de agendamento de vacinas</p>
+  </div>
+</div>
 
-<% if resource.errors.present? %>
-  <div id="error_explanation">
-    <ul>
-      <% resource.errors.each do |err| %>
-        <li><%= err.full_message %></li>
-      <% end %>
-    </ul>
+
+<% if flash[:notice] %>
+  <div class="alert alert-danger" role="alert">
+    <%= flash[:notice] %>
   </div>
 <% end %>
 
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <%= f.hidden_field :cpf, value: @patient.cpf %>
+<div class="row text-center">
+  <div class="col ">
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+      <%= f.hidden_field :cpf, value: @patient.cpf %>
 
-  <div class="field">
-    <%= f.label :password, "Nome da maravilinda da mãe" %><br />
-    <%= f.select :password, @mother_list %>
+      <div class="form-group" >
+        <%= f.label :password, "Selecione o primeiro nome da sua mãe" %><br />
+        <%= f.select :password, @mother_list, {}, { class: 'form-control' } %>
+      </div>
+
+      <div class="actions">
+        <%= f.submit "Entrar", class: "btn btn-primary" %>
+      </div>
+    <% end %>
   </div>
+</div>
 
-  <div class="actions">
-    <%= f.submit "Entrar" %>
-  </div>
-<% end %>
-
-<a href="<%= new_user_session_path %>">Entrar como Operador</a>

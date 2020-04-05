@@ -1,5 +1,17 @@
-<h2>Falha ao logar!</h2>
-<br>
-Você tem <%= @patient.remaining_attempts %> tentativa(s) restante(s)!
+<div class="row text-center">
+  <div class="col">
+    <p class="h3 mb-12">Falha ao logar!</p>
+  </div>
+</div>
 
-<%= link_to 'Voltar', :back %>>
+<div class="row text-center">
+  <div class="col">
+    <p class="h8 mb-12">Você tem <%= @patient.remaining_attempts %> tentativa(s) restante(s)!</p>
+  </div>
+</div>
+
+<div class="row text-center">
+  <div class="col">
+    <%= link_to 'Voltar', :back, class: "btn btn-primary" %>
+  </div>
+</div>

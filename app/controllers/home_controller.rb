@@ -6,7 +6,12 @@ class HomeController < ApplicationController
 
   def patient_base_login
     cpf = base_login_params[:cpf]
-    return render json: {}, status: :bad_request unless CPF.valid?(cpf)
+
+    unless CPF.valid?(cpf)
+      flash[:notice] = 'CPF Inválido'
+      redirect_to '/'
+      return
+    end
 
     return redirect_to new_patient_session_path(patient: { cpf: cpf }) if Patient.find_by_cpf(cpf)
 

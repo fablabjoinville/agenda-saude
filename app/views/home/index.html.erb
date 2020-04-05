@@ -1,18 +1,28 @@
+
 <div class="row text-center">
   <div class="col">
-    <h2>Sistema de agendamento de vacinas</h2>
+    <p class="h3 mb-4">Sistema de agendamento de vacinas</p>
   </div>
 </div>
+
+<% if flash[:notice] %>
+  <div class="alert alert-danger" role="alert">
+    <%= flash[:notice] %>
+  </div>
+<% end %>
+
 <div class="row text-center">
   <div class="col">
     <%= form_for(:patient, url: patient_base_login_path) do |f| %>
-      <div class="field">
-        <%= f.label :cpf, "CPF (somente números)" %><br />
-        <%= f.text_field :cpf, autofocus: true, autocomplete: "cpf", minlength: 11, maxlength: 11 %>
+      <div class="form-group">
+        <%= f.text_field :cpf, autofocus: true, autocomplete: "cpf", minlength: 11, maxlength: 11, class: "form-control", 'aria-describedby' => 'cpfHelpInLine', placeholder: 'CPF' %>
+        <small id="cpfHelpInLine" class="text-muted">
+          Sem pontuação, apenas números.
+        </small>
       </div>
 
       <div class="actions">
-        <%= f.submit "Entrar", class: "btn btn-default" %>
+        <%= f.submit "Entrar", class: "btn btn-primary" %>
       </div>
     <% end %>
   </div>
