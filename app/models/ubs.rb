@@ -3,6 +3,7 @@ class Ubs < ApplicationRecord
   validates :slot_interval_minutes, inclusion: 1...120
 
   belongs_to :user
+  has_many :appointments, dependent: :destroy
 
   def shift_start_date(date = Date.today)
     Tod::TimeOfDay.parse(shift_start).on(date).to_time

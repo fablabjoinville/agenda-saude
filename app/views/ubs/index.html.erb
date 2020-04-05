@@ -1,5 +1,17 @@
 index<br/>
 
+<% @appointments.each do |appointment| %>
+  <div class="row">
+    <div class="col"><%= appointment.start %></div>
+    <div class="col"><%= appointment.patient.name %></div>
+    <div class="col"><%= appointment.patient.phone %></div>
+    <div class="col"><%= appointment.patient.other_phone %></div>
+    <div class="col">
+      <%= link_to 'Desativar', cancel_appointment_ubs_path(appointment.id) %>
+    </div>
+  </div>
+<% end %>
+
 <a href="<%= ubs_active_hours_path %>">Alterar horario de funcionamento</a><br/>
 <a href="<%= ubs_slot_duration_path %>">Alterar durações de atendimento</a><br/>
 
