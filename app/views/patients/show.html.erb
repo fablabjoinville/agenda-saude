@@ -1,0 +1,99 @@
+<h2>Paciente</h2>
+
+<div class="row">
+  <div class="col">
+    <p>
+      <strong>Nome:</strong>
+      <%= @patient.name %>
+    </p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <p>
+      <strong>Email:</strong>
+      <%= @patient.email %>
+    </p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <p>
+      <strong>Cpf:</strong>
+      <%= @patient.cpf %>
+    </p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <p>
+      <strong>Nome da mãe:</strong>
+      <%= @patient.mother_name %>
+    </p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <p>
+      <strong>Data de nascimento:</strong>
+      <%= @patient.birth_date %>
+    </p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <p>
+      <strong>Telefone:</strong>
+      <%= @patient.phone %>
+    </p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <p>
+      <strong>Outro telefone:</strong>
+      <%= @patient.other_phone %>
+    </p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <p>
+      <strong>Sus:</strong>
+      <%= @patient.sus %>
+    </p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <p>
+      <strong>Bairro:</strong>
+      <%= @patient.neighborhood %>
+    </p>
+  </div>
+</div>
+
+
+<h2>Consultas</h2>
+
+<% @appointments.each do |appointment|%>
+  <div class="row">
+    <div class="col"><%= appointment.start %></div>
+    <div class="col">
+      <a
+        href=<%= "/ubs/#{appointment.id}/cancel_appointment" %>
+        onclick="return confirm('Você tem certeza?')"
+      >Desativar consulta</a>
+    </div>
+  </div>
+<% end %>
+
+<a href=<%= ubs_index_path(@ubs) %>>Voltar</a>
