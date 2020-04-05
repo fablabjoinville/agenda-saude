@@ -4,7 +4,7 @@ class UbsController < UserSessionController
   def active_hours; end
 
   def index
-    @appointments = @ubs.appointments.where(active: true)
+    @appointments = future_appointments
   end
 
   def change_active_hours
@@ -43,7 +43,21 @@ class UbsController < UserSessionController
     redirect_to ubs_index_path
   end
 
+  def cancel_all_future_appointments
+    appointments = future_appointments
+
+    appointments.update_all(active: false)
+
+    redirect_to ubs_index_path
+  end
+
   private
+
+  def future_appointments
+    @future_appointments = @ubs.appointments.where(
+      'start >= ? AND active = ?', Time.zone.now, true
+    )
+  end
 
   def active_hour_for_attr(attr_name)
     "#{active_hours_params[attr_name + '(4i)']}:#{active_hours_params[attr_name + '(5i)']}"
