@@ -22,7 +22,9 @@ ActiveRecord::Schema.define(version: 2020_04_05_011253) do
     t.boolean "active"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "ubs_id"
     t.index ["patient_id"], name: "index_appointments_on_patient_id"
+    t.index ["ubs_id"], name: "index_appointments_on_ubs_id"
   end
 
   create_table "patients", force: :cascade do |t|
@@ -51,6 +53,7 @@ ActiveRecord::Schema.define(version: 2020_04_05_011253) do
     t.string "shift_end"
     t.string "break_start"
     t.string "break_end"
+    t.integer "slot_interval_minutes"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_ubs_on_user_id"
@@ -69,5 +72,6 @@ ActiveRecord::Schema.define(version: 2020_04_05_011253) do
   end
 
   add_foreign_key "appointments", "patients"
+  add_foreign_key "appointments", "ubs", column: "ubs_id"
   add_foreign_key "ubs", "users"
 end

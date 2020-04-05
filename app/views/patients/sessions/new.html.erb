@@ -1,4 +1,4 @@
-<h2>Log in</h2>
+<h2>Entrar</h2>
 
 <% if resource.errors.present? %>
   <div id="error_explanation">
@@ -22,3 +22,5 @@
     <%= f.submit "Entrar" %>
   </div>
 <% end %>
+
+<a href="<%= new_user_session_path %>">Entrar como Operador</a>

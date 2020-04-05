@@ -1,4 +1,4 @@
-class AppointmentsController < ApplicationController
+class AppointmentsController < PatientSessionController
   def index; end
 
   def show; end

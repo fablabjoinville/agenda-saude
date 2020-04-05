@@ -8,6 +8,7 @@ class CreateUbs < ActiveRecord::Migration[6.0]
       t.string :shift_end
       t.string :break_start
       t.string :break_end
+      t.integer :slot_interval_minutes
 
       t.timestamps
     end

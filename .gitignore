@@ -41,3 +41,5 @@ yarn-debug.log*
 /.env
 /config/database.yml
 /coverage
+
+.idea/

@@ -1,6 +1,4 @@
 class Patient < ApplicationRecord
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable, :rememberable, :authentication_keys => [:cpf]
 
   MAX_LOGIN_ATTEMPTS = 2.freeze
