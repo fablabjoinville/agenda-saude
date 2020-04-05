@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Patients::SessionsController < Devise::SessionsController
+  after_action :ignore_flash
+
   # GET /patient/sign_in
   def new
     unless patient.fake_mothers.present?
@@ -10,8 +12,6 @@ class Patients::SessionsController < Devise::SessionsController
 
     @mother_list = patient.fake_mothers
     super
-  rescue ActionController::ParameterMissing
-    redirect_to '/'
   end
 
   # POST /patient/sign_in
@@ -39,6 +39,10 @@ class Patients::SessionsController < Devise::SessionsController
 
   private
 
+  def ignore_flash
+    flash.delete(:notice)
+  end
+
   def patient
     @patient ||= Patient.find_by(cpf: login_params[:cpf])
   end
@@ -58,6 +62,6 @@ class Patients::SessionsController < Devise::SessionsController
 
     patient.update!(fake_mothers: [], login_attempts: 0)
 
-    redirect_to time_slot_path
+    render json: { msg: 'Mãe certa :)' } # TODO: Change to patient's actual root
   end
 end

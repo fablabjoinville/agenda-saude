@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Users::SessionsController < Devise::SessionsController
+  after_action :ignore_flash
   # before_action :configure_sign_in_params, only: [:create]
 
   # GET /resource/sign_in
@@ -24,4 +25,10 @@ class Users::SessionsController < Devise::SessionsController
   # def configure_sign_in_params
   #   devise_parameter_sanitizer.permit(:sign_in, keys: [:attribute])
   # end
+
+  private
+
+  def ignore_flash
+    flash.delete(:notice)
+  end
 end
