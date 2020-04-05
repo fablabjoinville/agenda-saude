@@ -1,7 +1,13 @@
 module TimeSlot
-  def available_time_slots(day_range)
+  def available_time_slots(day_range, current_time)
     day_range.each_with_object({}) do |day, slots|
       slots[day] = available_time_slots_for_day(day)
+
+      if day.today?
+        slots[day].reject! do |slot|
+          slot[:slot_start].to_i < current_time.to_i
+        end
+      end
     end
   end
 
@@ -21,7 +27,7 @@ module TimeSlot
     interval_seconds = slot_interval.seconds
 
     time_range.step(interval_seconds).each_with_object([]) do |start_timestamp, slots|
-      slot_start = Time.at(start_timestamp)
+      slot_start = Time.zone.at(start_timestamp)
 
       slots << {
         slot_start: slot_start,
@@ -31,6 +37,6 @@ module TimeSlot
   end
 
   def time_of_day(time, date)
-    Tod::TimeOfDay.parse(time).on(date).to_time
+    Tod::TimeOfDay.parse(time).on(date).in_time_zone
   end
 end

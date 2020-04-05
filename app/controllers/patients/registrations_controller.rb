@@ -24,6 +24,9 @@ class Patients::RegistrationsController < Devise::RegistrationsController
     patient.save
 
     return render json: { errors: patient.errors, fields: fields } unless patient.persisted?
+
+    sign_in(patient, scope: :patient)
+    redirect_to index_time_slot_path
   end
 
   # GET /resource/sign_up

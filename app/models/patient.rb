@@ -12,6 +12,10 @@ class Patient < ApplicationRecord
   validates :phone, presence: true
   validates :neighborhood, presence: true
 
+  def active_appointments
+    appointments.select(&:active?)
+  end
+
   def email_required?
     false
   end

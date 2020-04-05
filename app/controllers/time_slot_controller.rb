@@ -36,11 +36,11 @@ class TimeSlotController < PatientSessionController
   end
 
   def index
-    @appointment = current_patient.appointments.first
+    @appointment = current_patient.active_appointments.first
     @ubs = @appointment.try(:ubs)
 
     @time_slots = Ubs.all.each_with_object({}) do |ubs, memo|
-      memo[ubs] = ubs.available_time_slots(Date.today...3.days.from_now)
+      memo[ubs] = ubs.available_time_slots(Date.today...3.days.from_now, Time.zone.now)
     end
   end
 

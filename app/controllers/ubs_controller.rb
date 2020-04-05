@@ -20,7 +20,7 @@ class UbsController < UserSessionController
                   shift_end: shift_end_tod.to_s
                 )
 
-    return redirect_to ubs_active_hours_path if updated
+    return redirect_to ubs_index_path if updated
 
     render ubs_active_hours_path
   end
@@ -30,7 +30,7 @@ class UbsController < UserSessionController
   def change_slot_duration
     updated = @ubs.update(slot_duration_params)
 
-    return redirect_to ubs_slot_duration_path if updated
+    return redirect_to ubs_index_path if updated
 
     render ubs_slot_duration_path
   end

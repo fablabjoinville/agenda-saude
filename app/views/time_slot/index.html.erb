@@ -7,7 +7,7 @@
     <li><strong>Endereço: </strong><%= @ubs.address %></li>
     <li><strong>Telefone: </strong><%= @ubs.phone %></li>
 
-    <%= button_to cancel_time_slot_path(appointment_id: @appointment.id), method: :delete, data: { confirm: "Deseja realmente cancelar o agendamento?" } do %>
+    <%= button_to cancel_time_slot_path(appointment_id: @appointment.id), method: :delete, data: { confirm: "Seu horário será desagendado. Confirmar?" } do %>
       Cancelar
     <% end %>
   </ul>
