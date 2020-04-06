@@ -34,8 +34,5 @@ module TemplateRails
     # the framework and any gems in your application.
     #
     config.action_controller.include_all_helpers = true
-
-    # Force HTTPS over HTTP
-    config.force_ssl = true
   end
 end
