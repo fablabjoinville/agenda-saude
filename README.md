@@ -20,7 +20,7 @@ Things you need to install to run this project:
 
 ```sh
 apt-get update
-apt-get postgresql postgresql-contrib postgresql-server-dev-all cmake node
+apt-get postgresql postgresql-contrib postgresql-server-dev-all cmake node libpq-dev
 gem install bundler
 ```
 
