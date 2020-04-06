@@ -1,7 +1,9 @@
 class UbsController < UserSessionController
   before_action :set_ubs
 
-  def active_hours; end
+  def active_hours
+    @appointments = future_appointments
+  end
 
   def index
     @appointments = future_appointments
@@ -37,7 +39,9 @@ class UbsController < UserSessionController
     render ubs_active_hours_path
   end
 
-  def slot_duration; end
+  def slot_duration
+    @appointments = future_appointments
+  end
 
   def change_slot_duration
     updated = @ubs.update(slot_duration_params)

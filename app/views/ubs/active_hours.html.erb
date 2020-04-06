@@ -41,5 +41,10 @@
   <br/>
   <br/>
 
-  <%= f.submit "Atualizar" %>
+  <% if @appointments.present? %>
+    <p>Não é possível modificar horário de funcionamento enquanto houverem consultas agendadas.</p>
+    <%= f.submit "Atualizar", disabled: true %>
+  <% else %>
+    <%= f.submit "Atualizar" %>
+  <% end %>
 <% end %>
