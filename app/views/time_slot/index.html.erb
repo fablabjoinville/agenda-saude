@@ -1,41 +1,119 @@
 <%= render :layout => '/shared/panel' do %>
-  <% if @appointment.present? %>
-    <h3>Seu agendamento atual é em:</h3>
-    <ul>
+  <div class="container">
+    <div class="card">
+      <div class="card-body">
+        <% if @appointment.present? %>
+          <div class="row">
+            <div class="col-9">
+              <h4>Seu agendamento atual é em:</h4>
+            </div>
+            <div class="col-3 text-right">
+              <%= button_to cancel_time_slot_path(appointment_id: @appointment.id), class: "btn btn-danger", method: :delete, data: { confirm: "Seu horário será cancelado. Confirmar?" } do %>
+                Cancelar
+              <% end %>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div class="row">
+                <div class="col">
+                  <strong>Data: </strong><%= ApplicationHelper.humanize_datetime(@appointment.start) %>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <strong>UBS: </strong><%= @ubs.name %>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <strong>Endereço: </strong><%= @ubs.address %>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <strong>Telefone: </strong><%= @ubs.phone %>
+                </div>
+              </div>
+            </div>
+            <div class="col">
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
 
-      <li><strong>Data: </strong><%= ApplicationHelper.humanize_datetime(@appointment.start) %></li>
-      <li><strong>UBS: </strong><%= @ubs.name %></li>
-      <li><strong>Endereço: </strong><%= @ubs.address %></li>
-      <li><strong>Telefone: </strong><%= @ubs.phone %></li>
-
-      <%= button_to cancel_time_slot_path(appointment_id: @appointment.id), method: :delete, data: { confirm: "Seu horário será desagendado. Confirmar?" } do %>
-        Cancelar
-      <% end %>
-    </ul>
-    <% end %>
-
+  <br/>
   <p id="notice"><%= notice %></p>
+  <hr>
+  <br/>
 
-  <h3>Horários possíveis:</h3>
+  <% if @time_slots.present? %>
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <h4>Agendamentos disponíveis:</h4>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <% @time_slots.each do |ubs, days| %>
+            <div id=<%= "ubsId#{ubs.id}Accordion" %>>
+              <div class="card">
+                <div class="card-header" id=<%= "ubsId#{ubs.id}" %>>
+                  <h5 class="mb-0">
+                    <button class="btn btn-link" data-toggle="collapse" data-target=<%= "#ubsControl#{ubs.id}" %> aria-expanded="true" aria-controls=<%= "ubsControl#{ubs.id}" %>>
+                      <%= ubs.identifier %>
+                    </button>
+                  </h5>
+                </div>
 
-  <% @time_slots.each do |ubs, days| %>
-    <%= ubs.identifier %>
+                <div id=<%= "ubsControl#{ubs.id}" %> class="collapse" aria-labelledby=<%= "ubsId#{ubs.id}" %> data-parent=<%= "#ubsId#{ubs.id}Accordion" %>>
+                  <div class="card-body">
+                    <% days.each do |day, slots| %>
+                      <div id=<%= "day#{ubs.id}Id#{day.to_s}Accordion" %>>
+                        <div class="card">
+                          <div class="card-header" id=<%= "day#{ubs.id}Id#{day.to_s}" %>>
+                            <button class="btn btn-link" data-toggle="collapse" data-target=<%= "#day#{ubs.id}Control#{day.to_s}" %> aria-expanded="true" aria-controls=<%= "day#{ubs.id}Control#{day.to_s}" %>>
+                              <%= ApplicationHelper.humanize_date(day) %>
+                            </button>
+                          </div>
+                          <div id=<%= "day#{ubs.id}Control#{day.to_s}" %> class="collapse" aria-labelledby=<%= "day#{ubs.id}Id#{day.to_s}" %> data-parent=<%= "#day#{ubs.id}Id#{day.to_s}Accordion" %>>
+                            <div class="card-body">
+                              <div class="container">
+                                <div class="card">
+                                  <div class="card-body">
+                                    <% slots.each do |slot| %>
+                                      <div class="row">
+                                        <div class="col align-middle">
+                                          Horário: <%= ApplicationHelper.humanize_time(slot[:slot_start]) %>
+                                          - <%= ApplicationHelper.humanize_time(slot[:slot_end]) %>
+                                        </div>
+                                        <div class="col text-right">
+                                          <%= button_to @appointment.present? ? 'Substituir' : 'Agendar', schedule_time_slot_path(start_time: slot[:slot_start], ubs_id: ubs.id), class: "btn btn-success" %>
+                                        </div>
+                                      </div>
+                                      <hr/>
+                                    <% end %>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-    <ul>
-      <% days.each do |day, slots| %>
-        <li>
-          <%= ApplicationHelper.humanize_date(day) %>
-
-          <ul>
-            <% slots.each do |slot| %>
-              <li> Inicio: <%= ApplicationHelper.humanize_time(slot[:slot_start]) %>. Fim: <%= ApplicationHelper.humanize_time(slot[:slot_end]) %> <%= button_to @appointment.present? ? 'Substituir' : 'Agendar', schedule_time_slot_path(start_time: slot[:slot_start], ubs_id: ubs.id) %> </li>
-            <% end %>
-          </ul>
-        </li>
-      <% end %>
-    </ul>
-
-    <br/>
+            <br/>
+          <% end %>
+        </div>
+      </div>
+    </div>
   <% end %>
 <% end %>
 
