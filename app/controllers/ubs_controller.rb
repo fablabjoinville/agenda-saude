@@ -7,6 +7,18 @@ class UbsController < UserSessionController
     @appointments = future_appointments
   end
 
+  def activate_ubs
+    updated = @ubs.update(active: true)
+
+    return redirect_to ubs_index_path if updated
+  end
+
+  def deactivate_ubs
+    updated = @ubs.update(active: false)
+
+    return redirect_to ubs_index_path if updated
+  end
+
   def change_active_hours
     shift_start_tod = Tod::TimeOfDay.parse(active_hour_for_attr('shift_start_date'))
     break_start_tod = Tod::TimeOfDay.parse(active_hour_for_attr('break_start_date'))

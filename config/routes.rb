@@ -27,6 +27,8 @@ Rails.application.routes.draw do
     member do
       get 'cancel_appointment'
       get 'cancel_all_future_appointments'
+      get 'activate_ubs'
+      get 'deactivate_ubs'
     end
   end
 
