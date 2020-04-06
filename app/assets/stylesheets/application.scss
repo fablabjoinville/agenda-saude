@@ -1,8 +1,12 @@
 @import 'bootstrap';
 
 * {
-   font-size: 22px;
-   line-height: 2;
+  font-size: 30px;
+  line-height: 1.4;
+}
+
+.container {
+  max-width: 90% !important;
 }
 
 /*!

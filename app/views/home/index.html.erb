@@ -1,16 +1,16 @@
 
-<div class="row text-center">
+<div class="row text-center mt-5 mb-5">
   <div class="col">
     <p class="h4">Campanha Nacional de Vacinação contra Gripe em Joinville</p>
-    <p>Agendamento de Vacina para idosos <strong>acima de 60 anos</strong></p>
   </div>
 </div>
 
-<div class="alert alert-secondary" role="alert">
-  A vacinação contra a gripe no período de 6 a 16 de abril 2020 será exclusiva para <strong>pessoas acima de 60 anos</strong>, após esse período, outros públicos serão atendidos. O agendamento poderá ser feito pela própria pessoa a ser vacinada, por um familiar ou outra pessoa próxima.
+<div class="alert alert-info alert-dismissable" role="alert">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  <h6 class="mb-0">A vacinação contra a gripe no período de 6 a 16 de abril de 2020 será exclusiva para <strong>pessoas acima de 60 anos</strong>. Após esse período, outros públicos serão atendidos. O agendamento poderá ser feito pela própria pessoa a ser vacinada, por um familiar ou outra pessoa próxima.</h6>
 </div>
 
-<p>Faça seu agendamento abaixo e dirija-se até a unidade escolhida com um documento de identificação em mãos.</p>
+<p class="mt-5">Faça seu agendamento abaixo e dirija-se até a unidade escolhida com um documento de identificação em mãos.</p>
 
 <% if flash[:notice] %>
   <div class="alert alert-danger" role="alert">
@@ -24,12 +24,13 @@
       <div class="form-group">
         <%= f.text_field :cpf, autofocus: true, autocomplete: "cpf", minlength: 11, maxlength: 11, required: true, class: "form-control", 'aria-describedby' => 'cpfHelpInLine', placeholder: 'CPF' %>
         <small id="cpfHelpInLine" class="text-muted">
-          Digite o CPF da pessoa a ser vacinada sem pontuação, apenas números.
+          Digite o CPF da pessoa a ser vacinada.
+          Sem pontuação, apenas números.
         </small>
       </div>
 
       <div class="actions">
-        <%= f.submit "Entrar", class: "btn btn-primary" %>
+        <%= f.submit "Entrar", class: "btn btn-primary btn-block" %>
       </div>
     <% end %>
   </div>
