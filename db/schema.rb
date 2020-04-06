@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_05_151356) do
+ActiveRecord::Schema.define(version: 2020_04_06_033051) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,17 @@ ActiveRecord::Schema.define(version: 2020_04_05_151356) do
     t.bigint "ubs_id"
     t.index ["patient_id"], name: "index_appointments_on_patient_id"
     t.index ["ubs_id"], name: "index_appointments_on_ubs_id"
+  end
+
+  create_table "neighborhoods", force: :cascade do |t|
+    t.string "name"
+  end
+
+  create_table "neighborhoods_ubs", id: false, force: :cascade do |t|
+    t.bigint "ubs_id", null: false
+    t.bigint "neighborhood_id", null: false
+    t.index ["neighborhood_id", "ubs_id"], name: "index_neighborhoods_ubs_on_neighborhood_id_and_ubs_id"
+    t.index ["ubs_id", "neighborhood_id"], name: "index_neighborhoods_ubs_on_ubs_id_and_neighborhood_id"
   end
 
   create_table "patients", force: :cascade do |t|
@@ -47,7 +58,7 @@ ActiveRecord::Schema.define(version: 2020_04_05_151356) do
 
   create_table "ubs", force: :cascade do |t|
     t.string "name"
-    t.string "neighborhood"
+    t.string "neighborhood_name"
     t.bigint "user_id", null: false
     t.string "shift_start"
     t.string "shift_end"
