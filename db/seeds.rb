@@ -18,10 +18,19 @@ other_user.password = 'dontpanic'
 other_user.password_confirmation = 'dontpanic'
 other_user.save!
 
+neighborhood = Neighborhood.new
+neighborhood.name = 'América'
+neighborhood.save!
+
+other_neighborhood = Neighborhood.new
+other_neighborhood.name = 'Glória'
+other_neighborhood.save!
+
 ubs = Ubs.new
 ubs.name = 'UBSF America'
 ubs.user = user
-ubs.neighborhood = 'America'
+ubs.neighborhood << neighborhood
+ubs.neighborhood_name = 'America'
 ubs.address = 'Rua Magrathea, 42'
 ubs.phone = '3443-3443'
 ubs.shift_start = '9:00'
@@ -35,7 +44,8 @@ ubs.save!
 other_ubs = Ubs.new
 other_ubs.name = 'UBSF Gloria'
 other_ubs.user = other_user
-other_ubs.neighborhood = 'Gloria né'
+other_ubs.neighborhood_name = 'Gloria'
+other_ubs.neighborhood << other_neighborhood
 other_ubs.address = 'Rua dos Bobos, 0'
 other_ubs.phone = '3443-3455'
 other_ubs.shift_start = '9:00'
