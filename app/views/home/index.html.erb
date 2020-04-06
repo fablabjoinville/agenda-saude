@@ -15,7 +15,7 @@
   <div class="col">
     <%= form_for(:patient, url: patient_base_login_path) do |f| %>
       <div class="form-group">
-        <%= f.text_field :cpf, autofocus: true, autocomplete: "cpf", minlength: 11, maxlength: 11, class: "form-control", 'aria-describedby' => 'cpfHelpInLine', placeholder: 'CPF' %>
+        <%= f.text_field :cpf, autofocus: true, autocomplete: "cpf", minlength: 11, maxlength: 11, required: true, class: "form-control", 'aria-describedby' => 'cpfHelpInLine', placeholder: 'CPF' %>
         <small id="cpfHelpInLine" class="text-muted">
           Sem pontuação, apenas números.
         </small>

@@ -1,8 +1,8 @@
 <%= render :layout => '/shared/panel' do %>
-  <div class="container">
-    <div class="card">
-      <div class="card-body">
-        <% if @appointment.present? %>
+  <% if @appointment.present? %>
+    <div class="container">
+      <div class="card">
+        <div class="card-body">
           <div class="row">
             <div class="col-9">
               <h4>Seu agendamento atual é em:</h4>
@@ -39,15 +39,15 @@
             <div class="col">
             </div>
           </div>
-        <% end %>
+        </div>
       </div>
     </div>
-  </div>
 
-  <br/>
-  <p id="notice"><%= notice %></p>
-  <hr>
-  <br/>
+    <br/>
+    <p id="notice"><%= notice %></p>
+    <hr>
+    <br/>
+  <% end %>
 
   <% if @time_slots.present? %>
     <div class="container">
