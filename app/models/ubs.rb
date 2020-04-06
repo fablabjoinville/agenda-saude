@@ -6,7 +6,7 @@ class Ubs < ApplicationRecord
 
   belongs_to :user
   has_many :appointments, dependent: :destroy
-  has_and_belongs_to_many :neighborhood
+  has_and_belongs_to_many :neighborhoods
 
   def identifier
     "#{name} - #{neighborhood}. Tel: #{phone}"
