@@ -9,7 +9,7 @@ class Ubs < ApplicationRecord
   has_and_belongs_to_many :neighborhoods
 
   def identifier
-    "#{name} - #{neighborhood}. Tel: #{phone}"
+    "#{name} - #{neighborhood_name}. Tel: #{phone}"
   end
 
   def shift_start_date(date = Date.today)
