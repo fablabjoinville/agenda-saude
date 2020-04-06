@@ -1,4 +1,17 @@
-index<br/>
+<% if @ubs.active %>
+  <p>Ubs ativada: aceitando agendamentos</p>
+  <a
+    href=<%= "/ubs/#{@ubs.id}/deactivate_ubs" %>
+    onclick="return confirm('Você tem certeza?')"
+  >Desativar Ubs</a><br/>
+<% else %>
+  <p>Ubs desativada: não aceitando agendamentos</p>
+  <a
+    href=<%= "/ubs/#{@ubs.id}/activate_ubs" %>
+    onclick="return confirm('Você tem certeza?')"
+  >Ativar Ubs</a><br/>
+<% end %>
+
 
 <% @appointments.each do |appointment| %>
   <div class="row">
