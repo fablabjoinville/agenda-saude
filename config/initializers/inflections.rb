@@ -8,6 +8,7 @@ ActiveSupport::Inflector.inflections do |inflect|
 #   inflect.singular /^(ox)en/i, '\1'
 #   inflect.irregular 'person', 'people'
   inflect.uncountable %w( ubs )
+  inflect.uncountable %w( cnes )
 end
 
 # These inflection rules are supported but not enabled by default:
