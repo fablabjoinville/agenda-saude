@@ -20,10 +20,12 @@ other_user.save!
 
 neighborhood = Neighborhood.new
 neighborhood.name = 'América'
+neighborhood.index = 13
 neighborhood.save!
 
 other_neighborhood = Neighborhood.new
 other_neighborhood.name = 'Glória'
+other_neighborhood.index = 14
 other_neighborhood.save!
 
 ubs = Ubs.new
