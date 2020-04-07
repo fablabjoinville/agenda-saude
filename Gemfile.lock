@@ -104,6 +104,8 @@ GEM
     erubi (1.9.0)
     erubis (2.7.0)
     execjs (2.7.0)
+    faraday (1.0.1)
+      multipart-post (>= 1.2, < 3)
     fasterer (0.8.2)
       colorize (~> 0.7)
       ruby_parser (>= 3.14.1)
@@ -174,6 +176,7 @@ GEM
     mini_portile2 (2.4.0)
     minitest (5.14.0)
     msgpack (1.3.3)
+    multipart-post (2.1.1)
     nenv (0.3.0)
     nio4r (2.5.2)
     nokogiri (1.10.9)
@@ -272,6 +275,8 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
+    sentry-raven (3.0.0)
+      faraday (>= 1.0)
     sexp_processor (4.14.1)
     shellany (0.0.1)
     smarter_csv (1.2.6)
@@ -330,6 +335,7 @@ DEPENDENCIES
   reek
   route_translator
   sass-rails (>= 6)
+  sentry-raven (~> 3.0)
   smarter_csv (~> 1.2)
   spring
   spring-watcher-listen (~> 2.0.0)

@@ -50,3 +50,5 @@ end
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
 gem "smarter_csv", "~> 1.2"
+
+gem "sentry-raven", "~> 3.0"
