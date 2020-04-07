@@ -14,5 +14,10 @@
     <%= f.number_field :slot_interval_minutes %>
   </div>
 
-  <%= f.submit "Atualizar" %>
+  <% if @appointments.present? %>
+    <p>Não é possível modificar duração da consulta enquanto houverem consultas agendadas.</p>
+    <%= f.submit "Atualizar", disabled: true %>
+  <% else %>
+    <%= f.submit "Atualizar" %>
+  <% end %>
 <% end %>

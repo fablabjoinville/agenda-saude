@@ -274,6 +274,7 @@ GEM
       tilt
     sexp_processor (4.14.1)
     shellany (0.0.1)
+    smarter_csv (1.2.6)
     spring (2.1.0)
     spring-watcher-listen (2.0.1)
       listen (>= 2.7, < 4.0)
@@ -329,6 +330,7 @@ DEPENDENCIES
   reek
   route_translator
   sass-rails (>= 6)
+  smarter_csv (~> 1.2)
   spring
   spring-watcher-listen (~> 2.0.0)
   tod

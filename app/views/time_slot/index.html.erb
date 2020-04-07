@@ -72,48 +72,51 @@
                 <div id=<%= "ubsControl#{ubs.id}" %> class="collapse" aria-labelledby=<%= "ubsId#{ubs.id}" %> data-parent=<%= "#ubsId#{ubs.id}Accordion" %>>
                   <div class="card-body">
                     <% days.each do |day, slots| %>
-                      <div id=<%= "day#{ubs.id}Id#{day.to_s}Accordion" %>>
-                        <div class="card">
-                          <div class="card-header" id=<%= "day#{ubs.id}Id#{day.to_s}" %>>
-                            <button class="btn btn-link" data-toggle="collapse" data-target=<%= "#day#{ubs.id}Control#{day.to_s}" %> aria-expanded="true" aria-controls=<%= "day#{ubs.id}Control#{day.to_s}" %>>
-                              <%= ApplicationHelper.humanize_date(day) %>
-                            </button>
-                          </div>
-                          <div id=<%= "day#{ubs.id}Control#{day.to_s}" %> class="collapse" aria-labelledby=<%= "day#{ubs.id}Id#{day.to_s}" %> data-parent=<%= "#day#{ubs.id}Id#{day.to_s}Accordion" %>>
-                            <div class="card-body">
-                              <div class="container">
-                                <div>
-                                  <div class="card-body">
-                                    <% slots.each do |slot| %>
-                                      <div class="row">
-                                        <div class="col align-middle">
-                                          Horário: <%= ApplicationHelper.humanize_time(slot[:slot_start]) %>
-                                          - <%= ApplicationHelper.humanize_time(slot[:slot_end]) %>
+                      <% if day.on_weekday? %>
+                        <div id=<%= "day#{ubs.id}Id#{day.to_s}Accordion" %>>
+                          <div class="card">
+                            <div class="card-header" id=<%= "day#{ubs.id}Id#{day.to_s}" %>>
+                              <button class="btn btn-link" data-toggle="collapse" data-target=<%= "#day#{ubs.id}Control#{day.to_s}" %> aria-expanded="true" aria-controls=<%= "day#{ubs.id}Control#{day.to_s}" %>>
+                                <%= ApplicationHelper.humanize_date(day) %>
+                              </button>
+                            </div>
+                            <div id=<%= "day#{ubs.id}Control#{day.to_s}" %> class="collapse" aria-labelledby=<%= "day#{ubs.id}Id#{day.to_s}" %> data-parent=<%= "#day#{ubs.id}Id#{day.to_s}Accordion" %>>
+                              <div class="card-body">
+                                <div class="container">
+                                  <div>
+                                    <div class="card-body">
+                                      <% slots.each do |slot| %>
+                                        <div class="row">
+                                          <div class="col align-middle">
+                                            Horário: <%= ApplicationHelper.humanize_time(slot[:slot_start]) %>
+                                            - <%= ApplicationHelper.humanize_time(slot[:slot_end]) %>
+                                          </div>
+                                          <div class="col text-right">
+                                            <%= button_to @appointment.present? ? 'Substituir' : 'Agendar', schedule_time_slot_path(start_time: slot[:slot_start], ubs_id: ubs.id), class: "btn btn-success" %>
+                                          </div>
                                         </div>
-                                        <div class="col text-right">
-                                          <%= button_to @appointment.present? ? 'Substituir' : 'Agendar', schedule_time_slot_path(start_time: slot[:slot_start], ubs_id: ubs.id), class: "btn btn-success" %>
-                                        </div>
-                                      </div>
-                                      <hr/>
-                                    <% end %>
+                                        <hr/>
+                                      <% end %>
+                                    </div>
                                   </div>
                                 </div>
                               </div>
                             </div>
                           </div>
                         </div>
-                      </div>
+                      <% end%>
                     <% end %>
                   </div>
                 </div>
               </div>
             </div>
-
             <br/>
           <% end %>
         </div>
       </div>
     </div>
+  <% else %>
+  <p>Nenhuma nova vaga para agendamento disponível no momento. Tente novamente mais tarde.</p>
   <% end %>
 <% end %>
 

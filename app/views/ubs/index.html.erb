@@ -1,6 +1,21 @@
-index<br/>
+<% if @ubs.active %>
+  <p>Ubs ativada: aceitando agendamentos</p>
+  <a
+    href=<%= "/ubs/#{@ubs.id}/deactivate_ubs" %>
+    onclick="return confirm('Você tem certeza?')"
+  >Desativar Ubs</a><br/>
+<% else %>
+  <p>Ubs desativada: não aceitando agendamentos</p>
+  <a
+    href=<%= "/ubs/#{@ubs.id}/activate_ubs" %>
+    onclick="return confirm('Você tem certeza?')"
+  >Ativar Ubs</a><br/>
+<% end %>
+
+<p>Ao cancelar ou reativar um agendamento por favor entrar em contato com o paciente.</p>
 
 <% @appointments.each do |appointment| %>
+<% if appointment.active %>
   <div class="row">
     <div class="col"><%= appointment.start %></div>
     <div class="col">
@@ -12,9 +27,27 @@ index<br/>
       <a
         href=<%= "/ubs/#{appointment.id}/cancel_appointment" %>
         onclick="return confirm('Você tem certeza?')"
-      >Desativar consulta</a>
+      >Cancelar agendamento</a>
     </div>
   </div>
+<% else %>
+  <div class="row">
+    <div class="col"><del><%= appointment.start %></del></div>
+    <div class="col">
+      <del>
+        <a href=<%= "/patients/#{appointment.patient.id}" %>><%= appointment.patient.name %></a>
+      </del>
+    </div>
+    <div class="col"><%= appointment.patient.phone %></div>
+    <div class="col"><%= appointment.patient.other_phone %></div>
+    <div class="col">
+      <a
+        href=<%= "/ubs/#{appointment.id}/activate_appointment" %>
+        onclick="return confirm('Você tem certeza?')"
+      >Reativar agendamento</a>
+    </div>
+  </div>
+<% end %>
 <% end %>
 
 <a href="<%= ubs_active_hours_path %>">Alterar horário de funcionamento</a><br/>
@@ -22,6 +55,10 @@ index<br/>
 <a
   href=<%= "/ubs/#{@ubs.id}/cancel_all_future_appointments" %>
   onclick="return confirm('Você tem certeza?')"
->Desativar todas consultas futuras</a>
+>Desativar todas consultas futuras</a><br/>
+<a
+  href=<%= "/ubs/#{@ubs.id}/activate_all_future_appointments" %>
+  onclick="return confirm('Você tem certeza?')"
+>Ativar todas consultas futuras</a>
 
 <%= button_to 'Sair', destroy_user_session_path, method: :delete %>
