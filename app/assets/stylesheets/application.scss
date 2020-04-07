@@ -2,4 +2,8 @@ $enable-responsive-font-sizes: true;
 
 $blue: #005293;
 
+.navbar.bg-primary {
+  background: #005293 url(image-path('background_menu.png')) center bottom repeat-x;
+}
+
 @import 'bootstrap';
