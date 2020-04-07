@@ -2,7 +2,7 @@ class UbsController < UserSessionController
   before_action :set_ubs
 
   def active_hours
-    @appointments = future_appointments
+    @appointments = active_future_appointments
   end
 
   def index
@@ -40,7 +40,7 @@ class UbsController < UserSessionController
   end
 
   def slot_duration
-    @appointments = future_appointments
+    @appointments = active_future_appointments
   end
 
   def change_slot_duration
@@ -59,6 +59,14 @@ class UbsController < UserSessionController
     redirect_to ubs_index_path
   end
 
+  def activate_appointment
+    appointment = @ubs.appointments.find(params[:id])
+
+    appointment.update(active: true)
+
+    redirect_to ubs_index_path
+  end
+
   def cancel_all_future_appointments
     appointments = future_appointments
 
@@ -67,11 +75,27 @@ class UbsController < UserSessionController
     redirect_to ubs_index_path
   end
 
+  def activate_all_future_appointments
+    appointments = @ubs.appointments.where(
+      'start >= ? AND active = ?', Time.zone.now, false
+    )
+
+    appointments.update_all(active: true)
+
+    redirect_to ubs_index_path
+  end
+
   private
+
+  def active_future_appointments
+    @future_appointments = @ubs.appointments.where(
+      'start >= ? AND active = ?', Time.zone.now, true
+    )
+  end
 
   def future_appointments
     @future_appointments = @ubs.appointments.where(
-      'start >= ? AND active = ?', Time.zone.now, true
+      'start >= ?', Time.zone.now
     )
   end
 
