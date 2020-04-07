@@ -26,7 +26,9 @@ Rails.application.routes.draw do
   resources :ubs do
     member do
       get 'cancel_appointment'
+      get 'activate_appointment'
       get 'cancel_all_future_appointments'
+      get 'activate_all_future_appointments'
       get 'activate_ubs'
       get 'deactivate_ubs'
     end
