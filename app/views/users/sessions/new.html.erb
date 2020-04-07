@@ -1,6 +1,6 @@
 <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
   <div class="field">
-    <%= f.label :name %><br />
+    <%= f.label :name, "CNES" %><br />
     <%= f.text_field :name, autofocus: true, autocomplete: "name" %>
   </div>
 
@@ -17,6 +17,6 @@
   <% end %>
 
   <div class="actions">
-    <%= f.submit "Entrar", :class => 'btn btn-primary' %>
+    <%= f.submit "Entrar", class: 'btn btn-primary' %>
   </div>
 <% end %>
