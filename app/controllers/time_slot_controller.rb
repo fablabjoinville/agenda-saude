@@ -36,7 +36,8 @@ class TimeSlotController < PatientSessionController
   end
 
   def index
-    @appointment = current_patient.active_appointments.first
+    # FIXME We need to change this relation to has_one or enhance the logic here
+    @appointment = current_patient.appointments.last
     @ubs = @appointment.try(:ubs)
 
     @time_slots = Ubs.all.where(active: true).each_with_object({}) do |ubs, memo|
