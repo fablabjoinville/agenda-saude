@@ -13,11 +13,13 @@
     <%= f.label :slot_interval_minutes, 'Duração de cada atendimento (em minutos):' %><br />
     <%= f.number_field :slot_interval_minutes %>
   </div>
-
+  
+  <div class="d-flex mt-3">
   <% if @appointments.present? %>
-    <p>Não é possível modificar duração da consulta enquanto houverem consultas agendadas.</p>
-    <%= f.submit "Atualizar", disabled: true %>
+  <p>Não é possível modificar duração da consulta enquanto houverem consultas agendadas.</p>
+  <%= f.submit "Atualizar", :class => 'btn btn-primary', disabled: true %>
   <% else %>
-    <%= f.submit "Atualizar" %>
+  <%= f.submit "Atualizar", :class => 'btn btn-primary' %>
   <% end %>
+  </div>
 <% end %>
