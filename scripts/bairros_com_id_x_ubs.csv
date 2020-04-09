@@ -1,0 +1,74 @@
+Id,Bairro,Nome_Unidade,Cnes
+0,Adhemar Garcia,UBSF Ulysses Guimaraes,9075712
+1,América,UBSF Gloria,2511711
+2,Anita Garibaldi,UBSF Itaum,2511479
+2,Anita Garibaldi,UBSF Gloria,2511711
+3,Atiradores,UBSF Gloria,2511711
+4,Aventureiro,UBSF Aventureiro I,2511487
+4,Aventureiro,UBSF Aventureiro III,9538461
+5,Boa Vista,UBSF Caic Vila Paranaense,2511851
+6,Boehmerwaldt,UBSF Boehmerwald,2511541
+7,Bom Retiro,UBSF Bom Retiro,2511320
+8,Bucarein,UBSF Itaum,2511479
+8,Bucarein,UBSF Gloria,2511711
+9,Centro,UBSF Gloria,2511711
+10,Comasa,UBSF Caic Vila Paranaense,2511851
+11,Costa e Silva,UBSF Willy Schossland,2511959
+11,Costa e Silva,UBSF Parque Douat,7704550
+12,Cubatão,UBSF Cubatao,2436434
+13,Distrito Industrial,UBSF Jardim Sofia,2511835
+13,Distrito Industrial,UBSF Cubatao,2436434
+13,Distrito Industrial,UBSF Aventureiro III,9538461
+13,Distrito Industrial,UBSF Bom Retiro,2511320
+14,Espinheiros,UBSF Caic Vila Paranaense,2511851
+15,Floresta,UBSF Nova Brasilia,2511304
+16,Fátima,UBSF Ulysses Guimaraes,9075712
+16,Fátima,UBSF Paranaguamirim,2511576
+17,Glória,UBSF Gloria,2511711
+17,Glória,UBSF Willy Schossland,2511959
+18,Guanabara,UBSF Itaum,2511479
+19,Iririú,UBSF Aventureiro I,2511487
+20,Itaum,UBSF Itaum,2511479
+21,Itinga,UBSF Parque Guarani,2511819
+21,Itinga,UBSF Estevao De Matos,2511746
+21,Itinga,UBSF Paranaguamirim,2511576
+21,Itinga,UBSF Itinga,2511509
+21,Itinga,UBSF Profipo,2511363
+21,Itinga,UBSF Boehmerwald,2511541
+22,Jardim Edilene,UBSF Jardim Edilene,3062724
+23,Jardim Iririú,UBSF Aventureiro I,2511487
+24,Jardim Paraíso,UBSF Jardim Paraiso III,2512009
+25,Jardim Sofia,UBSF Jardim Sofia,2511835
+25,Jardim Sofia,UBSF Bom Retiro,2511320
+26,Jarivatuba,UBSF Ulysses Guimaraes,9075712
+26,Jarivatuba,UBSF Paranaguamirim,2511576
+27,João Costa,UBSF Boehmerwald,2511541
+27,João Costa,UBSF Parque Guarani,2511819
+28,Morro Do Meio,UBSF Morro Do Meio,2511495
+29,Nova Brasília,UBSF Nova Brasilia,2511304
+29,Nova Brasília,UBSF Km 4,2511371
+30,Paranaguamirim,UBSF Paranaguamirim,2511576
+30,Paranaguamirim,UBSF Estevao De Matos,2511746
+30,Paranaguamirim,UBSF Jardim Edilene,3062724
+31,Parque Guarani,UBSF Boehmerwald,2511541
+31,Parque Guarani,UBSF Paranaguamirim,2511576
+31,Parque Guarani,UBSF Parque Guarani,2511819
+32,Petrópolis,UBSF Boehmerwald,2511541
+33,Pirabeiraba,UBSF Rio Bonito,2511282
+33,Pirabeiraba,UBSF Rio Da Prata,2511274
+33,Pirabeiraba,UBSF Jardim Sofia,2511835
+33,Pirabeiraba,UBSF Jardim Paraiso III,2512009
+34,Profipo,UBSF Profipo,2511363
+34,Profipo,UBSF Itinga,2511509
+35,Rio Bonito,UBSF Rio Bonito,2511282
+36,Rio da Prata,UBSF Rio Da Prata,2511274
+37,Saguaçu,UBSF Bom Retiro,2511320
+38,Santa Catarina,UBSF Km 4,2511371
+38,Santa Catarina,UBSF Profipo,2511363
+39,Santo Antnio,UBSF Bom Retiro,2511320
+40,São Marcos,UBSF Gloria,2511711
+41,Ulisses Guimarães,UBSF Ulysses Guimaraes,9075712
+42,Vila Nova,UBSF Vila Nova I,9529888
+42,Vila Nova,UBSF Vila Nova Rural,2568667
+23,Jardim Iririú,UBSF Dom Gregorio,3101150
+28,Morro do Meio,UBSF Lagoinha,8007535
