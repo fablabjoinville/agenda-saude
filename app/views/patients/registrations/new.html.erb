@@ -35,7 +35,7 @@
 
     <div class="form-group col-md-4">
       <%= f.label :neighborhood, "Bairro" %>
-      <%= f.select :neighborhood, NeighborhoodService.list, {},  { class: "form-control" } %>
+      <%= f.select :neighborhood, Neighborhood.pluck(:name), {},  { class: "form-control" } %>
     </div>
   </div>
 
