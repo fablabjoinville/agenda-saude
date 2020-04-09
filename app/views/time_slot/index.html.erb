@@ -81,7 +81,7 @@
                 <div id=<%= "ubsControl#{ubs.id}" %> class="collapse" aria-labelledby=<%= "ubsId#{ubs.id}" %> data-parent=<%= "#ubsId#{ubs.id}Accordion" %>>
                   <div class="card-body">
                     <% days.each do |day, slots| %>
-                      <% if day.on_weekday? && day.strftime('%d-%m-%Y') != '10-04-2020' %>
+                      <% if day.on_weekday? && day.strftime('%d-%m-%Y') != '10-04-2020' && day.strftime('%d-%m-%Y') != '09-04-2020' %>
                         <div id=<%= "day#{ubs.id}Id#{day.to_s}Accordion" %>>
                           <div class="card">
                             <div class="card-header" id=<%= "day#{ubs.id}Id#{day.to_s}" %>>

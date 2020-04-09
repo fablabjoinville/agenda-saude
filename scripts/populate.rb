@@ -36,15 +36,16 @@ def create_ubs
 end
 
 def create_relations
-  csv = SmarterCSV.process('scripts/bairros_x_unidade_referencia.csv')
+  csv = SmarterCSV.process('scripts/bairros_com_id_x_ubs.csv')
 
   csv.each do |row|
     ubs = Ubs.find_by(cnes: row[:cnes])
 
     neighborhood_name = row[:bairro]
+    neighborhood_index = row[:id]
 
-    neighborhood = Neighborhood.find_by(name: neighborhood_name)
-    neighborhood ||= Neighborhood.create(name: neighborhood_name)
+    neighborhood = Neighborhood.find_by(index: neighborhood_index)
+    neighborhood ||= Neighborhood.create(name: neighborhood_name, index: neighborhood_index)
 
     ubs.neighborhoods << neighborhood
     ubs.save!
