@@ -31,12 +31,13 @@ module TimeSlot
 
     schedules.each do |schedule|
       all_time_slots.each do |time_slot|
-        already_scheduled_time_frame = (schedule[0].to_i..schedule[1].to_i).to_a
+        already_scheduled_time_frame = (schedule[0].to_i+1..schedule[1].to_i - 1).to_a
 
-        conflicts << time_slot if time_slot[:slot_start].to_i.in?(already_scheduled_time_frame)
+        if time_slot[:slot_start].to_i.in?(already_scheduled_time_frame) || time_slot[:slot_end].to_i.in?(already_scheduled_time_frame) || time_slot[:slot_start].to_i < already_scheduled_time_frame[0] && time_slot[:slot_end].to_i > already_scheduled_time_frame[-1]
+          conflicts << time_slot
+        end
       end
     end
-
     conflicts
   end
 
