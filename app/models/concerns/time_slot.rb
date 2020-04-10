@@ -19,12 +19,25 @@ module TimeSlot
 
   def available_time_slots_for_day(day)
     appointments = Appointment.where(ubs: self).active_from_day(day)
-
-    scheduled_timestamps = appointments.map { |appointment| appointment.start }
+    schedules = appointments.map { |appointment| [appointment.start, appointment.end] }
 
     all_time_slots = time_slots(morning_shift(day)) + time_slots(afternoon_shift(day))
 
-    all_time_slots.reject { |time_slot| time_slot[:slot_start].in?(scheduled_timestamps) }
+    all_time_slots - time_slots_conflicts(all_time_slots, schedules)
+  end
+
+  def time_slots_conflicts(all_time_slots, schedules)
+    conflicts = []
+
+    schedules.each do |schedule|
+      all_time_slots.each do |time_slot|
+        already_scheduled_time_frame = (schedule[0].to_i..schedule[1].to_i).to_a
+
+        conflicts << time_slot if time_slot[:slot_start].to_i.in?(already_scheduled_time_frame)
+      end
+    end
+
+    conflicts
   end
 
   def time_slots(time_range)
