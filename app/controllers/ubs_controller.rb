@@ -6,7 +6,7 @@ class UbsController < UserSessionController
   end
 
   def index
-    @appointments = future_appointments
+    @appointments = future_appointments.order(start: :asc)
   end
 
   def activate_ubs
