@@ -19,36 +19,26 @@ module TimeSlot
 
   def available_time_slots_for_day(day)
     appointments = Appointment.where(ubs: self).active_from_day(day)
-    schedules = appointments.map { |appointment| [appointment.start, appointment.end] }
 
     all_time_slots = time_slots(morning_shift(day)) + time_slots(afternoon_shift(day))
 
-    all_time_slots - time_slots_conflicts(all_time_slots, schedules)
+    all_time_slots - time_slots_conflicts(all_time_slots, appointments)
   end
 
-  def time_slots_conflicts(all_time_slots, schedules)
-    conflicts = []
-
-    schedules.each do |schedule|
-      all_time_slots.each do |time_slot|
-        already_scheduled_time_frame = (schedule[0].to_i + 1..schedule[1].to_i - 1).to_a
-
-        start_slot = time_slot[:slot_start].to_i
-        end_slot = time_slot[:slot_end].to_i
-
-        # If the beginning of new slot is in an already scheduled appointment
-        conflicts << time_slot if start_slot.in?(already_scheduled_time_frame)
-
-        # If the end of new slot is in an already scheduled appointment
-        conflicts << time_slot if end_slot.in?(already_scheduled_time_frame)
-
-        # If the new slot contain an already scheduled appointment inside it
-        if start_slot < already_scheduled_time_frame[0] && end_slot > already_scheduled_time_frame[-1]
-          conflicts << time_slot
-        end
-      end
+  def time_slots_conflicts(time_slots, appointments)
+    conflicts = time_slots.product(appointments).select do |time_slot, appointment|
+      conflicting?(time_slot, appointment)
     end
-    conflicts
+
+    conflicts.map { |time_slot, _appointment| time_slot }
+  end
+
+  def conflicting?(time_slot, appointment)
+    start_slot = time_slot[:slot_start]
+    end_slot = time_slot[:slot_end]
+
+    start_slot.between?(appointment.start, appointment.end) ||
+      end_slot.between?(appointment.start, appointment.end)
   end
 
   def time_slots(time_range)
