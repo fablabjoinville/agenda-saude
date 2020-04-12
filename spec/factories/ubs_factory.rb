@@ -1,11 +1,16 @@
 FactoryBot.define do
-  factory :up, class: 'Ubs' do
-    name { "MyString" }
-    neighborhood { "MyString" }
-    user { nil }
-    shift_start { "2020-04-04 00:53:36" }
-    shift_end { "2020-04-04 00:53:36" }
-    break_start { "2020-04-04 00:53:36" }
-    break_end { "2020-04-04 00:53:36" }
+  factory :ubs, class: 'Ubs' do
+    name { 'UBS Norte' }
+    neighborhood { 'Centro' }
+    neighborhoods { [] }
+    user { create(:user) }
+    shift_start { '08:00' }
+    shift_end { '18:00' }
+    break_start { '12:00' }
+    break_end { '13:00' }
+    slot_interval_minutes { 15 }
+    cnes { 123 }
+    phone { '9999-8888' }
+    address { 'Rua principal, 256' }
   end
 end

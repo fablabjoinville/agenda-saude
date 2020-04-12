@@ -33,6 +33,9 @@ group :development, :test do
   gem 'flay', require: false
   gem 'rails_best_practices', require: false
   gem 'reek', require: false
+  gem 'rspec'
+  gem 'rspec-rails'
+  gem 'factory_bot_rails'
 end
 
 group :development do
