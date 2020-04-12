@@ -1,28 +1,30 @@
 Nome_Unidade,Bairro,Cnes,Telefone,Endereco
-Ubsf Aventureiro I,Aventureiro,2511487,(47) 34676046,Rua Alino Jose Alipio  Nr S/N – Aventureiro
-Ubsf Aventureiro I I I,Aventureiro,9538461,(47) 34358486,Rua Santa Luzia  Nr 1 - Aventureiro
-Ubsf Boehmerwald,Boehmerwaldt,2511541,(47) 34548066,Rua Universidade  Nr 377 - Boehmerwaldt
-Ubsf Bom Retiro,Bom Retiro,2511320,(47) 34252580,Rua Otavio Rosa Filho  Nr 01 - Bom Retiro
-Ubsf Caic Vila Paranaense,Espinheiros,2511851,(47) 34163240,Rua Agostinho dos Santos - ate 1176/1177  Nr 01 - Espinheiros
-Ubsf Cubatao,Vila Cubatao,2436434,(47) 34673818,Rua Nossa Senhora de Fatima  Nr 01 - Vila Cubatao
-Ubsf Estevao De Matos,Paranaguamirim,2511746,(47) 34639898,Rua Maria Marques Leandro  Nr 505 - Paranaguamirim
-Ubsf Gloria,Gloria,2511711,(47) 3416-3074,Rua Brigada Lopes  Nr 01 - Gloria
-Ubsf Itaum,Guanabara,2511479,(47) 34296251,Rua Guanabara - De 2002/2003 A 2600/2601  Nr 548 - Guanabara
-Ubsf Itinga,Itinga,2511509,(47) 34172783,Rua Santa Gertrudes  Nr 01 - Itinga
-Ubsf Jardim Edilene,Paranaguamirim,3062724,(47) 34637266,Avenida Kurt Meinert - ate 997/998  Nr S/N - Paranaguamirim
-Ubsf Jardim Paraiso I I I,Jardim Paraiso,2512009,(47) 34672348,Estrada Timbe - lado par  Nr 7130 - Jardim Paraiso
-Ubsf Jardim Sofia,Jardim Sofia,2511835,(47) 34730870,Rua Professor Eunaldo Verdi  Nr 01 - Jardim Sofia
-Ubsf Km 4,Santa Catarina,2511371,(47) 34541073,Rua Joao Gomes de Oliveira  Nr 01 - Santa Catarina
-Ubsf Morro Do Amaral,Paranaguamirim,2511770,(47) 34637266,Avenida Kurt Meinert - ate 997/998  Nr 01 - Paranaguamirim
-Ubsf Morro Do Meio,Morro Do Meio,2511495,(47) 3436-3500,Rua Itapeva  Nr 1 - Morro Do Meio
-Ubsf Nova Brasilia,Nova Brasilia,2511304,(47) 34549216,Rua Bom Retiro  Nr 01 - Nova Brasilia
-Ubsf Paranaguamirim,Paranaguamirim,2511576,(47) 34636589,Rua Elizabeth Rech  Nr S/N - Paranaguamirim
-Ubsf Parque Douat,Costa E Silva,7704550,(47) 3437-5513,Rua Inambu - ate 348/349  Nr 1 - Costa E Silva
-Ubsf Parque Guarani,Itinga,2511819,(47) 34382794,Rua Diovana Maria Rodrigues  Nr S/N - Itinga
-Ubsf Profipo,Profipo,2511363,(47) 34297306,Rua Cidade de Patos de Minas  Nr 01 - Profipo
-Ubsf Rio Bonito,Pirabeiraba,2511282,(47) 34641487,Rua Quinze de Outubro  Nr 4648 - Pirabeiraba
-Ubsf Rio Da Prata,Pirabeiraba,2511274,(47) 34280108,Estrada Rio da Prata  Nr 01 - Pirabeiraba
-Ubsf Ulysses Guimaraes,Ulisses Guimaraes,9075712,(47) 3438-2626,Rua Cidade de Barretos  Nr 1 - Ulisses Guimaraes
-Ubsf Vila Nova I,Vila Nova,9529888,(47) 3435-3956,Rua Arthur Hille  Nr 241 - Vila Nova
-Ubsf Vila Nova Rural,Vila Nova,2568667,(47)3130-1900,Rodovia SC-413  Nr Km 18 – Vila Nova
-Ubsf Willy Schossland,Costa E Silva,2511959,(47) 34180407,Rua Vereador Curt Alvino Monich  Nr S/N – Costa e Silva
+UBSF Aventureiro I,Aventureiro,2511487,(47) 3467-6046,Rua Alino Jose Alipio  Nr S/N – Aventureiro
+UBSF Aventureiro III,Aventureiro,9538461,(47) 3435-8486,Rua Santa Luzia  Nr 1 - Aventureiro
+UBSF Boehmerwald,Boehmerwaldt,2511541,(47) 3454-8066,Rua Universidade  Nr 377 - Boehmerwaldt
+UBSF Bom Retiro,Bom Retiro,2511320,(47) 3425-2580,Rua Otavio Rosa Filho  Nr 01 - Bom Retiro
+UBSF Willy Schossland,Costa E Silva,2511959,(47) 3418-0407,Rua Vereador Curt Alvino Monich  Nr S/N – Costa e Silva
+UBSF Parque Douat,Costa E Silva,7704550,(47) 3437-5513,Rua Inambu - ate 348/349  Nr 1 - Costa E Silva
+UBSF Caic Vila Paranaense,Espinheiros,2511851,(47) 3416-3240,Rua Agostinho dos Santos - ate 1176/1177  Nr 01 - Espinheiros
+UBSF Gloria,Gloria,2511711,(47) 3416-3074,Rua Brigada Lopes  Nr 01 - Gloria
+UBSF Itaum,Guanabara,2511479,(47) 3429-6251,Rua Guanabara - De 2002/2003 A 2600/2601  Nr 548 - Guanabara
+UBSF Parque Guarani,Itinga,2511819,(47) 3438-2794,Rua Diovana Maria Rodrigues  Nr S/N - Itinga
+UBSF Itinga,Itinga,2511509,(47) 3417-2783,Rua Santa Gertrudes  Nr 01 - Itinga
+UBSF Dom Gregorio,Jardim Iririu,3101150,(47) 3435-5112,Rua Janauba - ate 377/378  Nr 509 - Jardim Iririu
+UBSF Jardim Paraiso III,Jardim Paraiso,2512009,(47) 3467-2348,Estrada Timbe - lado par  Nr 7130 - Jardim Paraiso
+UBSF Jardim Sofia,Jardim Sofia,2511835,(47) 3473-0870,Rua Professor Eunaldo Verdi  Nr 01 - Jardim Sofia
+UBSF Morro Do Meio,Morro Do Meio,2511495,(47) 3436-3500,Rua Itapeva  Nr 1 - Morro Do Meio
+UBSF Lagoinha,Morro Do Meio,8007535,(47) 3465-1912,Rua Tancredo Neves  Nr 46 - Morro Do Meio
+UBSF Nova Brasilia,Nova Brasilia,2511304,(47) 3454-9216,Rua Bom Retiro  Nr 01 - Nova Brasilia
+UBSF Paranaguamirim,Paranaguamirim,2511576,(47) 3463-6589,Rua Elizabeth Rech  Nr S/N - Paranaguamirim
+UBSF Jardim Edilene,Paranaguamirim,3062724,(47) 3463-7266,Avenida Kurt Meinert - ate 997/998  Nr S/N - Paranaguamirim
+UBSF Estevao De Matos,Paranaguamirim,2511746,(47) 3463-9898,Rua Maria Marques Leandro  Nr 505 - Paranaguamirim
+UBSF Morro Do Amaral,Paranaguamirim,2511770,(47) 3463-7266,Avenida Kurt Meinert - ate 997/998  Nr 01 - Paranaguamirim
+UBSF Rio Bonito,Pirabeiraba,2511282,(47) 3464-1487,Rua Quinze de Outubro  Nr 4648 - Pirabeiraba
+UBSF Rio Da Prata,Pirabeiraba,2511274,(47) 3428-0108,Estrada Rio da Prata  Nr 01 - Pirabeiraba
+UBSF Profipo,Profipo,2511363,(47) 3429-7306,Rua Cidade de Patos de Minas  Nr 01 - Profipo
+UBSF Km 4,Santa Catarina,2511371,(47) 3454-1073,Rua Joao Gomes de Oliveira  Nr 01 - Santa Catarina
+UBSF Ulysses Guimaraes,Ulisses Guimaraes,9075712,(47) 3438-2626,Rua Cidade de Barretos  Nr 1 - Ulisses Guimaraes
+UBSF Cubatao,Vila Cubatao,2436434,(47) 3467-3818,Rua Nossa Senhora de Fatima  Nr 01 - Vila Cubatao
+UBSF Vila Nova I,Vila Nova,9529888,(47) 3435-3956,Rua Arthur Hille  Nr 241 - Vila Nova
+UBSF Vila Nova Rural,Vila Nova,2568667,(47) 3130-1900,Rodovia SC-413  Nr Km 18 – Vila Nova
