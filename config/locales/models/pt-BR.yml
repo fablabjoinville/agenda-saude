@@ -2,6 +2,8 @@
   pt-BR:
     activerecord:
         errors:
+          messages:
+            record_invalid: "Validation failed: %{errors}"
           models:
             patient:
               attributes:
