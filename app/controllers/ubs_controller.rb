@@ -7,6 +7,7 @@ class UbsController < UserSessionController
 
   def index
     @appointments = future_appointments
+    @bedridden_patients = @ubs.bedridden_patients
   end
 
   def activate_ubs

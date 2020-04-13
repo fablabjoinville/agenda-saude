@@ -13,4 +13,13 @@ $blue: #005293;
   }
 }
 
+
 @import 'bootstrap';
+@import "font-awesome-sprockets";
+@import "font-awesome";
+
+.far {
+  padding: 12px;
+  font-size: 70px;
+  color: $blue;
+}

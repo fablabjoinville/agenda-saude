@@ -13,12 +13,14 @@ class Patients::RegistrationsController < Devise::RegistrationsController
     :neighborhood,
     :email,
     :other_phone,
-    :sus
+    :sus,
+    :bedridden
   ].freeze
 
   # POST /patients
   def create
     fields = params.require(:patient).permit(*FIELDS)
+    fields[:bedridden] = fields[:bedridden] == '1'
 
     patient = Patient.new(fields)
 
@@ -31,7 +33,7 @@ class Patients::RegistrationsController < Devise::RegistrationsController
     now_day = DateTime.now.strftime('%d').to_i
 
 
-    if  p_year > (now_year - 60) or
+    if p_year > (now_year - 60) or
       (p_year == (now_year - 60) and p_month >= now_month and p_day > now_day)
       return render 'patients/age_not_allowed'
     end
@@ -42,6 +44,9 @@ class Patients::RegistrationsController < Devise::RegistrationsController
     return render json: { errors: patient.errors, fields: fields } unless patient.persisted?
 
     sign_in(patient, scope: :patient)
+
+    return redirect_to index_bedridden_path if patient.bedridden?
+
     redirect_to index_time_slot_path
   end
 

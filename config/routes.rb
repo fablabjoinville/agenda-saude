@@ -10,6 +10,11 @@ Rails.application.routes.draw do
       post '/', as: :schedule, to: 'time_slot#schedule'
       delete '/', as: :cancel, to: 'time_slot#cancel'
     end
+
+    resource :bedridden do
+      get '/', as: :index, to: 'bedridden#index'
+      put '/', as: :toggle, to: 'bedridden#toggle'
+    end
   end
 
   devise_scope :user do

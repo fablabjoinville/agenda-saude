@@ -4,6 +4,7 @@ class Patient < ApplicationRecord
   MAX_LOGIN_ATTEMPTS = 2.freeze
 
   has_many :appointments, dependent: :destroy
+  belongs_to :main_ubs, class_name: 'Ubs'
 
   validates :name, presence: true
   validates :cpf, presence: true, uniqueness: true, cpf_format: true
@@ -12,8 +13,16 @@ class Patient < ApplicationRecord
   validates :phone, presence: true
   validates :neighborhood, presence: true
 
+  after_initialize :set_main_ubs
+
+  scope :bedridden, -> { where(bedridden: true) }
+
   def active_appointments
     appointments.select(&:active?)
+  end
+
+  def set_main_ubs
+    self.main_ubs ||= Neighborhood.find_by(name: neighborhood)&.active_ubs&.sample || Ubs.active.sample
   end
 
   def email_required?
@@ -34,6 +43,10 @@ class Patient < ApplicationRecord
 
   def blocked?
     login_attempts >= MAX_LOGIN_ATTEMPTS
+  end
+
+  def bedridden?
+    bedridden == true
   end
 
   def unblock!
