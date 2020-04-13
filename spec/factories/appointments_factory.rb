@@ -1,8 +1,9 @@
 FactoryBot.define do
   factory :appointment do
-    start { "2020-04-04 00:53:38" }
-    add_attribute(:end) { "2020-04-04 00:53:38" }
-    patient { nil }
-    active { false }
+    start { '2020-01-01 14:00:00' }
+    add_attribute(:end) { '2020-01-01 14:15:00' }
+    patient { create(:patient) }
+    ubs { create(:ubs) }
+    active { true }
   end
 end
