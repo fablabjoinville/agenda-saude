@@ -42,6 +42,9 @@ class TimeSlotController < PatientSessionController
 
     @time_slots = Ubs.all.where(active: true).each_with_object({}) do |ubs, memo|
       memo[ubs] = ubs.available_time_slots(Time.zone.today...3.days.from_now, Time.zone.now)
+
+      # TODO: Refactor to not include these as available
+      memo.delete(ubs) if memo[ubs].empty?
     end
   end
 
