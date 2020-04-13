@@ -55,9 +55,9 @@
     </tbody>
     </table>
     <a href=<%= "/ubs/#{@ubs.id}/cancel_all_future_appointments" %>
-    onclick="return confirm('Você tem certeza?')" >Desativar todas consultas futuras</a><br/>
+    onclick="return confirm('Você tem certeza?')" >Desativar todos agendamentos futuros</a><br/>
     <a href=<%= "/ubs/#{@ubs.id}/activate_all_future_appointments" %>
-      onclick="return confirm('Você tem certeza?')">Ativar todas consultas futuras</a>
+      onclick="return confirm('Você tem certeza?')">Ativar todos agendamentos futuros</a>
   <% else %>
     <p>Nenhum paciente agendou horário até o momento.</p>
   <% end %>

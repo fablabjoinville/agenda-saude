@@ -22,7 +22,7 @@
 
   <div class="d-flex mt-3">
     <% if @appointments.present? %>
-      <div class="alert alert-warning">Não é possível modificar duração da consulta enquanto houverem consultas agendadas.</div>
+      <div class="alert alert-warning">Não é possível modificar duração da consulta enquanto houverem agendamentos.</div>
     <% else %>
       <%= f.submit "Atualizar", class: 'btn btn-primary' %>
     <% end %>
