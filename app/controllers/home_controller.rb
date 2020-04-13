@@ -1,5 +1,6 @@
 class HomeController < ApplicationController
   def index
+    return redirect_to index_bedridden_path if current_patient.try(:bedridden?)
     return redirect_to index_time_slot_path if current_patient
     return redirect_to ubs_index_path if current_user
   end
@@ -13,7 +14,7 @@ class HomeController < ApplicationController
       return
     end
 
-    return redirect_to new_patient_session_path(patient: { cpf: cpf }) if Patient.find_by_cpf(cpf)
+    return redirect_to new_patient_session_path(patient: { cpf: cpf }) if Patient.find_by(cpf: cpf)
 
     redirect_to new_patient_registration_path(cpf: cpf)
   end

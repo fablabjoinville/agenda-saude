@@ -12,6 +12,7 @@
                 cpf:
                   blank: em branco
                   invalid: inválido
+                  taken: já cadastrado
                 mother_name:
                   blank: em branco
                 birth_date:
@@ -20,6 +21,8 @@
                   blank: em branco
                 neighborhood:
                   blank: em branco
+                main_ubs:
+                  required: obrigatório
         models:
           attributes:
             cpf: CPF

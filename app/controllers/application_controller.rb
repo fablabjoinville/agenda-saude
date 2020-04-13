@@ -5,6 +5,8 @@ class ApplicationController < ActionController::Base
     if resource.is_a?(User)
       ubs_index_path
     elsif resource.is_a?(Patient)
+      return index_bedridden_path if resource.bedridden?
+
       index_time_slot_path
     else
       root_path
