@@ -1,11 +1,16 @@
+require_relative './../../helpers/time_slot_helper'
+include TimeSlotHelper
+
 module TimeSlot
   def available_time_slots(day_range, current_time)
     slots_for_day = day_range.each_with_object({}) do |day, slots|
-      slots[day] = available_time_slots_for_day(day)
+      if business_day?(day)
+        slots[day] = available_time_slots_for_day(day)
 
-      if day.today?
-        slots[day].reject! do |slot|
-          slot[:slot_start].to_i < current_time.to_i
+        if day.today?
+          slots[day].reject! do |slot|
+            slot[:slot_start].to_i < current_time.to_i
+          end
         end
       end
     end
