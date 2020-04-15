@@ -40,6 +40,10 @@ class Patient < ApplicationRecord
     update!(login_attempts: 0)
   end
 
+  def years_old
+    (Date.now.to_date - Date.parse(patient.birth_date)).to_i / 365
+  end
+
   def encrypted_password
     ''
   end
