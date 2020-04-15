@@ -37,8 +37,9 @@ module TimeSlot
     start_slot = time_slot[:slot_start]
     end_slot = time_slot[:slot_end]
 
-    start_slot.between?(appointment.start, appointment.end) ||
-      end_slot.between?(appointment.start, appointment.end)
+    start_slot.between?(appointment.start, appointment.end-1) ||
+      end_slot.between?(appointment.start+1, appointment.end)
+      # TODO fix when appointment begins and ends between start_slot and end_slot
   end
 
   def time_slots(time_range)
