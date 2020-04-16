@@ -22,13 +22,14 @@ class Patients::RegistrationsController < Devise::RegistrationsController
 
     patient = Patient.new(fields)
 
-    return render 'patients/age_not_allowed' if patient.years_old >= 60
+    return render 'patients/age_not_allowed' if patient.years_old < 60
 
     patient.save
 
     return render json: { errors: patient.errors, fields: fields } unless patient.persisted?
 
     sign_in(patient, scope: :patient)
+
     redirect_to index_time_slot_path
   end
 
