@@ -1,37 +1,20 @@
-require_relative './../../helpers/time_slot_helper'
-include TimeSlotHelper
-
 module TimeSlot
-  def available_time_slots(forward_days)
-
-    day_range = []
-    d = 0
-    i = 0
-    until d == forward_days
-      day = i.days.from_now
-      if business_day?(day)
-        day_range << day
-        puts day
-        d += 1
-      end
-      i += 1
-    end
-
+  def available_time_slots(day_range, time_now)
     slots_for_day = day_range.each_with_object({}) do |day, slots|
-      slots[day] = available_time_slots_for_day(day)
+      slots[day] = available_time_slots_for_day(day, time_now)
     end
   end
 
   private
 
-  def available_time_slots_for_day(day)
+  def available_time_slots_for_day(day, time_now)
     appointments = Appointment.where(ubs: self).active_from_day(day)
 
     all_time_slots = time_slots(morning_shift(day)) + time_slots(afternoon_shift(day))
 
     if day.today?
       all_time_slots.reject! do |slot|
-        slot[:slot_start].to_i < Time.zone.now.to_i
+        slot[:slot_start].to_i < time_now.to_i
       end
     end
 

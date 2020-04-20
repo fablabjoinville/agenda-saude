@@ -1,4 +1,10 @@
+require_relative './../helpers/time_slot_helper'
+include TimeSlotHelper
+
 class TimeSlotController < PatientSessionController
+  
+  SLOTS_WINDOW_IN_DAYS = 4
+
   def schedule
     @ubs = Ubs.find(schedule_params[:ubs_id])
     start_time = Time.parse(schedule_params[:start_time])
@@ -39,9 +45,11 @@ class TimeSlotController < PatientSessionController
     # FIXME We need to change this relation to has_one or enhance the logic here
     @appointment = current_patient.appointments.last
     @ubs = @appointment.try(:ubs)
+    
+    date_range = build_weekdays_date_range(TimeSlotController::SLOTS_WINDOW_IN_DAYS)
 
     @time_slots = Ubs.all.where(active: true).each_with_object({}) do |ubs, memo|
-      memo[ubs] = ubs.available_time_slots(4)
+      memo[ubs] = ubs.available_time_slots(date_range, Time.zone.now)
     end
   end
 
