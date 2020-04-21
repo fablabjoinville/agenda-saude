@@ -3,6 +3,10 @@ module TimeSlot
     slots_for_day = day_range.each_with_object({}) do |day, slots|
       slots[day] = available_time_slots_for_day(day, time_now)
     end
+
+    slots_for_day.reject do |_day, slots|
+      slots.empty?
+    end
   end
 
   private
