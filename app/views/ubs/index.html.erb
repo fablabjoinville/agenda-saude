@@ -1,14 +1,16 @@
+<h1><%= @ubs.name %></h1>
+
 <% if @ubs.active %>
   <div class="d-flex justify-content-between align-items-center alert alert-success" role="alert">
-    UBS ativada. Aceitando agendamentos
+    Unidade ativada: Aceitando agendamentos.
     <a class="btn btn-danger" href=<%= "/ubs/#{@ubs.id}/deactivate_ubs" %>
-    onclick="return confirm('Você tem certeza?')">Desativar UBS</a>
+    onclick="return confirm('Você tem certeza?')">Desativar Unidade</a>
   </div>
 <% else %>
   <div class="d-flex justify-content-between align-items-center alert alert-danger" role="alert">
-    UBS desativada. Não aceitando agendamentos
+    Unidade desativada: Não aceitando agendamentos.
     <a class="btn btn-success" href=<%= "/ubs/#{@ubs.id}/activate_ubs" %>
-    onclick="return confirm('Você tem certeza?')">Ativar UBS</a>
+    onclick="return confirm('Você tem certeza?')">Ativar Unidade</a>
   </div>
 <% end %>
 
@@ -20,18 +22,18 @@
     <table class="table table-hover">
       <thead>
         <tr>
-          <th scope="col">Horário Agendado</th>
+          <th scope="col">Data e Hora</th>
           <th scope="col">Paciente</th>
           <th scope="col">Telefone Principal</th>
           <th scope="col">Telefone Secundário</th>
-          <th scope="col"> </th>
+          <th scope="col">Ação Sobre o Agendamento</th>
         </tr>
       </thead>
       <tbody>
     <% @appointments.each do |appointment| %>
       <% if appointment.active %>
         <tr>
-          <th scope="row"><%= appointment.start.strftime("%H:%M - %d/%m/%Y") %></th>
+          <th scope="row"><%= appointment.start.strftime("%d/%m/%Y -- %H:%M") %></th>
           <td><a href=<%= "/patients/#{appointment.patient.id}" %>><%= appointment.patient.name %></a></td>
           <td><%= appointment.patient.phone %></td>
           <td><%= appointment.patient.other_phone %></td>
