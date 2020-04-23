@@ -81,6 +81,17 @@
   </div>
 </div>
 
+<div class="row">
+  <div class="col">
+    <p>
+      <% if @patient.chronic %>
+        <strong>Classificação:</strong> Doente crônico
+      <% else %>
+        <strong>Classificação:</strong> Idoso
+      <% end %>
+    </p>
+  </div>
+</div>
 
 <h2>Agendamentos</h2>
 
