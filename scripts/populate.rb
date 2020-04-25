@@ -54,3 +54,10 @@ def create_relations
     ubs.save!
   end
 end
+
+def rename_name_ubs
+  Ubs.find_each do |ubs|
+    ubs.name.gsub("Ubsf", "UBSF")
+    ubs.update_attributes(ubs.name)
+  end
+end
