@@ -58,11 +58,11 @@
   </div>
 
   <div class="form-row">
-    <div class="form-group col-md-4">
+    <div class="form-group col-md-6">
       <div class="checkbox-inline">
           <%= f.check_box :chronic, autofocus: true %>
-          <%= f.label :chroric, "Possuo doença crônica" %>
-          (<%= link_to "Saiba Mais", "/cartaz_doentes_cronicos.pdf", target: :_blank %>)
+          <%= f.label :chronic, "Possuo doença crônica" %> <br/>
+          <%= link_to "Verifique aqui se você possui alguma doença crônica", "/cartaz_doentes_cronicos.pdf", target: :_blank %>
       </div>
     </div>
   </div>
