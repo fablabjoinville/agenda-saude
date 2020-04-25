@@ -13,7 +13,8 @@ class Patients::RegistrationsController < Devise::RegistrationsController
     :neighborhood,
     :email,
     :other_phone,
-    :sus
+    :sus,
+    :chronic,
   ].freeze
 
   # POST /patients
@@ -22,20 +23,7 @@ class Patients::RegistrationsController < Devise::RegistrationsController
 
     patient = Patient.new(fields)
 
-    p_year = patient.birth_date[0..3].to_i
-    p_month = patient.birth_date[5..6].to_i
-    p_day = patient.birth_date[8..9].to_i
-
-    now_year = DateTime.now.strftime('%Y').to_i
-    now_month = DateTime.now.strftime('%m').to_i
-    now_day = DateTime.now.strftime('%d').to_i
-
-
-    if  p_year > (now_year - 60) or
-      (p_year == (now_year - 60) and p_month >= now_month and p_day > now_day)
-      return render 'patients/age_not_allowed'
-    end
-
+    return render 'patients/not_allowed' unless allowed_age?(patient) || patient.chronic?
 
     patient.save
 
@@ -50,6 +38,24 @@ class Patients::RegistrationsController < Devise::RegistrationsController
     @cpf = params[:cpf]
 
     super
+  end
+
+  private
+
+  def allowed_age?(patient)
+    p_year = patient.birth_date[0..3].to_i
+    p_month = patient.birth_date[5..6].to_i
+    p_day = patient.birth_date[8..9].to_i
+
+    now_year = DateTime.now.strftime('%Y').to_i
+    now_month = DateTime.now.strftime('%m').to_i
+    now_day = DateTime.now.strftime('%d').to_i
+
+
+    return false if p_year > (now_year - 60) or
+      (p_year == (now_year - 60) and p_month >= now_month and p_day > now_day)
+
+    return true
   end
 
   # POST /resource

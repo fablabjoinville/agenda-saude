@@ -21,7 +21,7 @@
 <div class="row">
   <div class="col">
     <p>
-      <strong>Cpf:</strong>
+      <strong>CPF:</strong>
       <%= @patient.cpf %>
     </p>
   </div>
@@ -66,7 +66,7 @@
 <div class="row">
   <div class="col">
     <p>
-      <strong>Sus:</strong>
+      <strong>CNS:</strong>
       <%= @patient.sus %>
     </p>
   </div>
@@ -81,6 +81,17 @@
   </div>
 </div>
 
+<div class="row">
+  <div class="col">
+    <p>
+      <% if @patient.chronic %>
+        <strong>Classificação:</strong> Possui doença crônica
+      <% else %>
+        <strong>Classificação:</strong> Idoso
+      <% end %>
+    </p>
+  </div>
+</div>
 
 <h2>Agendamentos</h2>
 
