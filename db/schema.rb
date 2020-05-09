@@ -56,6 +56,7 @@ ActiveRecord::Schema.define(version: 2020_04_12_221352) do
     t.integer "login_attempts", default: 0
     t.boolean "bedridden", default: false
     t.bigint "main_ubs_id"
+    t.boolean "chronic"
     t.index ["cpf"], name: "index_patients_on_cpf", unique: true
     t.index ["main_ubs_id"], name: "index_patients_on_main_ubs_id"
   end

@@ -22,9 +22,13 @@ class HomeController < ApplicationController
   def unblock
     patient = Patient.find_by(cpf: unblock_params[:cpf])
 
-    patient.unblock!
+    if patient
+      patient.unblock!
 
-    render html: "<h1>#{patient.name.titleize} desbloqueado!</h1>".html_safe
+      render html: "<h1>#{patient.name.titleize} desbloqueado!</h1>".html_safe
+    else
+      render html: '<h1>Paciente não encontrado</h1>'.html_safe
+    end
   end
 
   private

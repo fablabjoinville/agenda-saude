@@ -49,6 +49,10 @@ class Patient < ApplicationRecord
     MAX_LOGIN_ATTEMPTS - login_attempts
   end
 
+  def chronic?
+    chronic == true
+  end
+
   def blocked?
     login_attempts >= MAX_LOGIN_ATTEMPTS
   end
