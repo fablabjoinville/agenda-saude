@@ -43,3 +43,5 @@ yarn-debug.log*
 /coverage
 
 .idea/
+
+/cypress/videos/*
