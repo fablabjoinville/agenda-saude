@@ -1,3 +1,12 @@
+<div class="alert alert-warning text-center" role="alert">
+  <h6 class="mb-2">Caso necessite atendimento em domicílio, utilize o botão abaixo:</h6>
+  <div class="col h1">
+    <%= button_to toggle_bedridden_path, class: "btn btn-warning", method: :put, data: { confirm: "Deseja ser atendimento em domicílio?" } do %>
+      Necessito atendimento em domicílio
+    <% end %>
+  </div>
+</div>
+
 <%= render :layout => '/shared/panel' do %>
   <% if @appointment.present? %>
     <div class="container">
@@ -59,13 +68,13 @@
   <% end %>
 
   <% if @time_slots.present? %>
-    <div class="container">
+    <div class="container mt-5">
       <div class="row">
         <div class="col">
           <h4>Agendamentos disponíveis:</h4>
           <div class="alert alert-info alert-dismissable" role="alert">
             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-            <h6 class="mb-0">Veja abaixo as unidades que estão com agendamento disponível pelo site. <br/> <br/> Escolha a unidade mais próxima de sua casa ou qualquer outra que esteja disponível.</h6>
+            <h6 class="mb-0">Veja abaixo as unidades que estão com agendamento disponível pelo site. <br/><br/> Escolha a unidade mais próxima de sua casa ou qualquer outra que esteja disponível.</h6>
           </div>
         </div>
       </div>
