@@ -78,7 +78,7 @@ class UbsController < UserSessionController
 
   def activate_all_future_appointments
     appointments = @ubs.appointments.where(
-      'start >= ? AND active = ?', Time.zone.now, false
+      'start >= ? AND active = ?', Time.zone.now - @ubs.slot_interval_minutes * 60, false
     )
 
     appointments.update_all(active: true)
@@ -96,7 +96,7 @@ class UbsController < UserSessionController
 
   def future_appointments
     @future_appointments = @ubs.appointments.where(
-      'start >= ?', Time.zone.now
+      'start >= ?', Time.zone.now - @ubs.slot_interval_minutes * 60
     )
   end
 

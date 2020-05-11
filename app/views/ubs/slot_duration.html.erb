@@ -11,7 +11,7 @@
 <%= form_for @ubs, url: ubs_change_slot_duration_path do |f| %>
   <div class="field">
     <%= f.label :slot_interval_minutes, 'Duração de cada atendimento (em minutos):' %><br />
-    <% if @appointments.present? %>
+    <% if @ubs.active %>
       <%= f.number_field :slot_interval_minutes, disabled: 'disabled' %>
     <% else %>
       <div class="form-group col-md-4">
@@ -21,8 +21,8 @@
   </div>
 
   <div class="d-flex mt-3">
-    <% if @appointments.present? %>
-      <div class="alert alert-warning">Não é possível modificar duração da consulta enquanto houverem agendamentos.</div>
+    <% if @ubs.active %>
+      <div class="alert alert-warning">Não é possível modificar duração do atendimento enquanto a unidade estiver ativa.</div>
     <% else %>
       <%= f.submit "Atualizar", class: 'btn btn-primary' %>
     <% end %>

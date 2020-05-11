@@ -108,9 +108,7 @@
                                   <% slots.each do |slot| %>
                                     <div class="row">
                                       <div class="col align-middle">
-                                        Horário <br /> <%= ApplicationHelper.humanize_time(slot[:slot_start]) %>
-                                        - <%= ApplicationHelper.humanize_time(slot[:slot_end]) %>
-                                      </div>
+                                        Horário <br /> <%= ApplicationHelper.humanize_time(slot[:slot_start]) %>                                      </div>
                                       <div class="col text-right">
                                         <%= button_to @appointment.present? ? 'Substituir' : 'Agendar', schedule_time_slot_path(start_time: slot[:slot_start], ubs_id: ubs.id), class: "btn btn-success" %>
                                       </div>
