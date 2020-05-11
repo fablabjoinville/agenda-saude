@@ -1,13 +1,32 @@
-<div class="row text-center">
-  <div class="col">
-    <p class="h3 mb-4">Cadastro</p>
-  </div>
-</div>
-
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
   <%= render "patients/shared/error_messages", resource: resource %>
 
   <%= f.hidden_field :cpf, value: @cpf %>
+
+  <div class="row text-center">
+    <div class="col">
+      <p class="h4 mb-4 mt-4">Público-alvo</p>
+    </div>
+  </div>
+
+  <div class="alert alert-info alert-dismissable" role="alert">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <h6 class="mb-0">O agendamento para a vacinação contra a gripe no período de 11 de Maio a 17 de Maio de 2020 contemplará os seguintes público-alvos:  <strong>pessoas acima de 60 anos ou com doenças crônicas</strong>. Após esse período, outros públicos serão atendidos. O agendamento poderá ser feito pela própria pessoa a ser vacinada, por um familiar ou outra pessoa próxima.</h6>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <%= f.label :target_audience, "Selecione o público-alvo que melhor descreve o paciente:", class: "form-check-label" %> <br/>
+      <%= f.select :target_audience, Patient.target_audiences.map { |k, v| [I18n.t(k), v] }.sort, {},  { class: "form-control" } %>
+      <small><%= link_to "Verifique aqui se você possui alguma doença crônica", "/cartaz_doentes_cronicos.pdf", target: :_blank %></small>
+    </div>
+  </div>
+
+  <div class="row text-center">
+    <div class="col">
+      <p class="h3 mb-4">Cadastro</p>
+    </div>
+  </div>
 
   <div class="form-row">
     <div class="form-group col-md-6">
@@ -54,16 +73,6 @@
     <div class="form-group col-md-4">
       <%= f.label :sus, "Cartão SUS (somente números - opcional)" %>
       <%= f.number_field :sus, autofocus: true, autocomplete: "sus", required: false, class: "form-control" %>
-    </div>
-  </div>
-
-  <div class="form-row">
-    <div class="form-group col-md-6">
-      <div class="form-check">
-          <%= f.check_box :chronic, autofocus: true, class: "form-check-input" %>
-          <%= f.label :chronic, "Possuo doença crônica", class: "form-check-label" %> <br/>
-          <small><%= link_to "Verifique aqui se você possui alguma doença crônica", "/cartaz_doentes_cronicos.pdf", target: :_blank %></small>
-      </div>
     </div>
   </div>
 

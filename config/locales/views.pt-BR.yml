@@ -12,6 +12,7 @@ pt-BR:
         birth_date: Data de nascimento
         phone: Telefone
         neighborhood: Bairro
+        chronic: Crônico
     models:
       user: Usuário
       patient: Paciente

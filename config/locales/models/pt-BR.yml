@@ -1,5 +1,11 @@
 ---
   pt-BR:
+    elderly: Idoso (acima de 60 anos)
+    chronic: Possui doença crônica
+    disabled: Pessoa com deficiência
+    pregnant: Gravidez
+    postpartum: Pós-parto (Puérpere)
+    kid: Criança de 6 meses a 5 anos
     activerecord:
         errors:
           messages:

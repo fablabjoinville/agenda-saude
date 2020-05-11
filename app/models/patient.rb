@@ -17,6 +17,8 @@ class Patient < ApplicationRecord
 
   scope :bedridden, -> { where(bedridden: true) }
 
+  enum target_audience: [:elderly, :chronic, :disabled, :kid, :pregnant, :postpartum]
+
   def active_appointments
     appointments.select(&:active?)
   end
@@ -47,10 +49,6 @@ class Patient < ApplicationRecord
 
   def remaining_attempts
     MAX_LOGIN_ATTEMPTS - login_attempts
-  end
-
-  def chronic?
-    chronic == true
   end
 
   def blocked?

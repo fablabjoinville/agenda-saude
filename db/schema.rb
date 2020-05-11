@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_12_221352) do
+ActiveRecord::Schema.define(version: 2020_05_11_010618) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -57,6 +57,7 @@ ActiveRecord::Schema.define(version: 2020_04_12_221352) do
     t.boolean "bedridden", default: false
     t.bigint "main_ubs_id"
     t.boolean "chronic"
+    t.integer "target_audience"
     t.index ["cpf"], name: "index_patients_on_cpf", unique: true
     t.index ["main_ubs_id"], name: "index_patients_on_main_ubs_id"
   end
