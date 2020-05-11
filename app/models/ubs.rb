@@ -8,6 +8,8 @@ class Ubs < ApplicationRecord
   has_many :appointments, dependent: :destroy
   has_and_belongs_to_many :neighborhoods
 
+  scope :active, -> { where(active: true) }
+
   def identifier
     "#{name} - #{address}. Tel: #{phone}"
   end
@@ -30,6 +32,10 @@ class Ubs < ApplicationRecord
 
   def slot_interval
     slot_interval_minutes.minutes
+  end
+
+  def bedridden_patients
+    Patient.where(main_ubs: self).bedridden
   end
 
   private

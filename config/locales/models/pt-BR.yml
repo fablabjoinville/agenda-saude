@@ -1,5 +1,12 @@
 ---
   pt-BR:
+    elderly: Idoso (acima de 60 anos)
+    chronic: Possui doença crônica
+    disabled: Pessoa com deficiência
+    pregnant: Gravidez
+    postpartum: Pós-parto (Puérpere)
+    kid: Criança de 6 meses a 5 anos
+    not_target_audience: Nenhum
     activerecord:
         errors:
           messages:
@@ -12,6 +19,7 @@
                 cpf:
                   blank: em branco
                   invalid: inválido
+                  taken: já cadastrado
                 mother_name:
                   blank: em branco
                 birth_date:
@@ -20,6 +28,8 @@
                   blank: em branco
                 neighborhood:
                   blank: em branco
+                main_ubs:
+                  required: obrigatório
         models:
           attributes:
             cpf: CPF

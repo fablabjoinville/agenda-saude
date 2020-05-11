@@ -38,6 +38,7 @@ ubs.break_start = '12:30'
 ubs.break_end = '13:30'
 ubs.shift_end = '17:00'
 ubs.slot_interval_minutes = 15
+ubs.active = true
 ubs.valid?
 ubs.save!
 
@@ -80,7 +81,7 @@ today = Date.today
   patient.mother_name = 'num sei'
   patient.birth_date = '01/01/1980'
   patient.phone = '12345678'
-  patient.neighborhood = 'Centro'
+  patient.neighborhood = 'América'
   patient.save!
 
   appointment = Appointment.new

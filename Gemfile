@@ -16,6 +16,7 @@ gem 'route_translator'
 gem 'activeadmin'
 
 gem 'bootstrap'
+gem 'font-awesome-sass'
 
 gem 'cpf_cnpj'
 

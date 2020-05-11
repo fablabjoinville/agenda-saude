@@ -84,11 +84,7 @@
 <div class="row">
   <div class="col">
     <p>
-      <% if @patient.chronic %>
-        <strong>Classificação:</strong> Possui doença crônica
-      <% else %>
-        <strong>Classificação:</strong> Idoso
-      <% end %>
+      <strong>Público-alvo:</strong> <%= I18n.t(@patient.target_audience) %>
     </p>
   </div>
 </div>
