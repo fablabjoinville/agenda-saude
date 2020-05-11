@@ -8,8 +8,8 @@ describe('Bedridden flow', () => {
     expect(true).to.equal(true)
   })
 
-	describe('user already exists and has appointment', function() {
-		it('requests home care, logs out and logs in again', function() {
+  describe('user already exists and has appointment', function() {
+    it('requests home care, logs out and logs in again', function() {
       //Login
       cy.visit('/')
 
@@ -38,7 +38,7 @@ describe('Bedridden flow', () => {
 
       // Assert home care message
       cy.get('body > .container > .row > .col > .h3').contains('Pronto! Atendimento em domicílio solicitado')
-		})
+    })
   })
 })
 
