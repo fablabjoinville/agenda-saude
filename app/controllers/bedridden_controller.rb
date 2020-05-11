@@ -6,6 +6,7 @@ class BedriddenController < ApplicationController
   def toggle
     patient = current_patient
     patient.bedridden = !patient.bedridden?
+    patient.set_main_ubs
     patient.save!
 
     return redirect_to index_bedridden_path if patient.bedridden?
