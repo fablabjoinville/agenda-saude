@@ -14,7 +14,7 @@ class Patients::RegistrationsController < Devise::RegistrationsController
     :email,
     :other_phone,
     :sus,
-    :chronic,
+    :target_audience,
     :bedridden
   ].freeze
 
@@ -25,7 +25,7 @@ class Patients::RegistrationsController < Devise::RegistrationsController
 
     patient = Patient.new(fields)
 
-    return render 'patients/not_allowed' unless allowed_age?(patient) || patient.chronic?
+    return render 'patients/not_allowed' unless on_target_audience?(patient)
 
     patient.save
 
@@ -47,20 +47,14 @@ class Patients::RegistrationsController < Devise::RegistrationsController
 
   private
 
-  def allowed_age?(patient)
-    p_year = patient.birth_date[0..3].to_i
-    p_month = patient.birth_date[5..6].to_i
-    p_day = patient.birth_date[8..9].to_i
+  def on_target_audience?(patient)
+    return false if patient.not_target_audience?
+    return allowed_age?(patient) if patient.kid? || patient.elderly?
 
-    now_year = DateTime.now.strftime('%Y').to_i
-    now_month = DateTime.now.strftime('%m').to_i
-    now_day = DateTime.now.strftime('%d').to_i
-
-
-    return false if p_year > (now_year - 60) or
-      (p_year == (now_year - 60) and p_month >= now_month and p_day > now_day)
-
-    return true
+    patient.chronic? ||
+    patient.disabled? ||
+    patient.pregnant? ||
+    patient.postpartum?
   end
 
   # POST /resource

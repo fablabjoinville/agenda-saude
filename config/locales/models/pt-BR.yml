@@ -6,6 +6,7 @@
     pregnant: Gravidez
     postpartum: Pós-parto (Puérpere)
     kid: Criança de 6 meses a 5 anos
+    not_target_audience: Nenhum
     activerecord:
         errors:
           messages:
