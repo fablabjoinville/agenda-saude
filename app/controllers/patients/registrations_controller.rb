@@ -22,8 +22,11 @@ class Patients::RegistrationsController < Devise::RegistrationsController
   def create
     fields = params.require(:patient).permit(*FIELDS)
     fields[:bedridden] = fields[:bedridden] == '1'
+    fields[:target_audience] = fields[:target_audience].to_i
 
     patient = Patient.new(fields)
+    
+    patient.validate_year
 
     return render 'patients/not_allowed' unless on_target_audience?(patient)
 
@@ -49,7 +52,7 @@ class Patients::RegistrationsController < Devise::RegistrationsController
 
   def on_target_audience?(patient)
     return false if patient.not_target_audience?
-    return allowed_age?(patient) if patient.kid? || patient.elderly?
+    return patient.allowed_age? if patient.kid? || patient.elderly?
 
     patient.chronic? ||
     patient.disabled? ||

@@ -3,9 +3,9 @@
     elderly: Idoso (acima de 60 anos)
     chronic: Possui doença crônica
     disabled: Pessoa com deficiência
-    pregnant: Gravidez
+    pregnant: Gestante
     postpartum: Pós-parto (Puérpere)
-    kid: Criança de 6 meses a 5 anos
+    kid: Criança de 6 meses até 5 anos
     not_target_audience: Nenhum
     activerecord:
         errors:
