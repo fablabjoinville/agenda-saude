@@ -7,6 +7,7 @@
     postpartum: Pós-parto (Puérpere)
     kid: Criança de 6 meses até 5 anos
     not_target_audience: Nenhum
+    teacher: Professor
     activerecord:
         errors:
           messages:

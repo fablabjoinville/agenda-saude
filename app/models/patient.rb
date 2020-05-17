@@ -18,7 +18,7 @@ class Patient < ApplicationRecord
   scope :bedridden, -> { where(bedridden: true) }
 
   # TODO: remove `chronic` field from schema
-  enum target_audience: [:kid, :elderly, :chronic, :disabled, :pregnant, :postpartum, :not_target_audience]
+  enum target_audience: [:kid, :elderly, :chronic, :disabled, :pregnant, :postpartum, :not_target_audience, :teacher]
 
   def active_appointments
     appointments.select(&:active?)
@@ -78,9 +78,9 @@ class Patient < ApplicationRecord
     now_day = DateTime.now.strftime('%d').to_i
 
     if elderly?
-      # Older than 60 years old
-      return false if p_year > (now_year - 60) or
-        (p_year == (now_year - 60) and p_month >= now_month and p_day > now_day)
+      # Older than 55 years old
+      return false if p_year > (now_year - 55) or
+        (p_year == (now_year - 55) and p_month >= now_month and p_day > now_day)
     elsif kid?
       # Between 6 months and 5 years old
       return false if (now_year - p_year) * 12 + (now_month - p_month) < 6
