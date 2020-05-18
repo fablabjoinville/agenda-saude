@@ -58,7 +58,8 @@ class Patients::RegistrationsController < Devise::RegistrationsController
     patient.disabled? ||
     patient.pregnant? ||
     patient.postpartum? ||
-    patient.teacher?
+    patient.teacher? ||
+    patient.over_55?
   end
 
   # POST /resource
