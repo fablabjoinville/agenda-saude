@@ -6,7 +6,6 @@
     pregnant: Gestante
     postpartum: Pós-parto (Puérpere)
     kid: Criança de 6 meses até 5 anos
-    not_target_audience: Nenhum
     teacher: Professor
     over_55: Entre 55 anos e 59 anos
     activerecord:

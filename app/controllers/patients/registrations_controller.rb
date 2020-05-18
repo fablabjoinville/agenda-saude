@@ -51,7 +51,6 @@ class Patients::RegistrationsController < Devise::RegistrationsController
   private
 
   def on_target_audience?(patient)
-    return false if patient.not_target_audience?
     return patient.allowed_age? if patient.kid? || patient.elderly?
 
     patient.chronic? ||
