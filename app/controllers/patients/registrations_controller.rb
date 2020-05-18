@@ -25,7 +25,7 @@ class Patients::RegistrationsController < Devise::RegistrationsController
     fields[:target_audience] = fields[:target_audience].to_i
 
     patient = Patient.new(fields)
-    
+
     patient.validate_year
 
     return render 'patients/not_allowed' unless on_target_audience?(patient)
@@ -51,13 +51,14 @@ class Patients::RegistrationsController < Devise::RegistrationsController
   private
 
   def on_target_audience?(patient)
-    return false if patient.not_target_audience?
     return patient.allowed_age? if patient.kid? || patient.elderly?
 
     patient.chronic? ||
     patient.disabled? ||
     patient.pregnant? ||
-    patient.postpartum?
+    patient.postpartum? ||
+    patient.teacher? ||
+    patient.over_55?
   end
 
   # POST /resource
