@@ -5,6 +5,9 @@ Original project, it reflects the master branch
 # agendamento-covid
 Internal 'fork', it reflects the [master-covid](https://github.com/magrathealabs/agenda-saude-joinville/pull/63) branch
 
+
+## Index
+
 - [Dependencies](#dependencies)
 - [Development](#development)
 - [Staging](#staging)
@@ -176,7 +179,7 @@ vacina  https://git.heroku.com/agendamento-vacina.git (push)
 
 For the vacina app deploy you can run
 ```sh
-git push covid master
+git push vacina master
 ```
 
 And for the covid app deploy you can run
