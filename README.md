@@ -1,10 +1,16 @@
-# template-rails
+# agendamento-vacina
+Original project, it reflects the master branch
+
+
+# agendamento-covid
+Internal 'fork', it reflects the [master-covid](https://github.com/magrathealabs/agenda-saude-joinville/pull/63) branch
 
 - [Dependencies](#dependencies)
 - [Development](#development)
 - [Staging](#staging)
 - [Style Guides](#style-guides)
 - [Defaults](#defaults)
+- [Deploy](#deploy)
 
 ## Dependencies
 
@@ -71,16 +77,6 @@ You can check test coverage information by running the test suite and looking in
 ```sh
 bundle exec rails test
 open coverage/index.html
-```
-
-## Staging
-
-We're using Heroku as Staging environment. Take a look in the
-[documentation](https://devcenter.heroku.com/articles/getting-started-with-rails5) to setup Heroku in your machine.
-
-```sh
-git push heroku master
-heroku run rails db:migrate
 ```
 
 ## Style Guides
@@ -156,3 +152,34 @@ PRONTO_VERBOSE: true
 ```
 
 Take a look in the project [documentation](https://github.com/prontolabs/pronto).
+
+## Deploy
+
+Change your remotes to reflect the new application state
+```sh
+git remote set-url origin git@github.com:magrathealabs/agenda-saude-joinville.git
+git remote add vacina https://git.heroku.com/agendamento-vacina.git
+git remote add covid https://git.heroku.com/agendamento-covid.git
+```
+
+It should look like this in the end (remove any other remotes)
+```sh
+git remote -v
+
+covid https://git.heroku.com/agendamento-covid.git (fetch)
+covid https://git.heroku.com/agendamento-covid.git (push)
+origin  git@github.com:magrathealabs/agenda-saude-joinville.git (fetch)
+origin  git@github.com:magrathealabs/agenda-saude-joinville.git (push)
+vacina  https://git.heroku.com/agendamento-vacina.git (fetch)
+vacina  https://git.heroku.com/agendamento-vacina.git (push)
+```
+
+For the vacina app deploy you can run
+```sh
+git push covid master
+```
+
+And for the covid app deploy you can run
+```sh
+git push covid master-covid
+```
