@@ -179,10 +179,10 @@ vacina  https://git.heroku.com/agendamento-vacina.git (push)
 
 For the vacina app deploy you can run
 ```sh
-git push vacina master
+git push vacina master:master
 ```
 
 And for the covid app deploy you can run
 ```sh
-git push covid master-covid
+git push covid master-covid:master
 ```
