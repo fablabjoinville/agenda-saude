@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>Sistema de agendamento de vacinas de Joinville</title>
+    <title>Sistema de agendamento de testes de COVID-19 de Joinville</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
@@ -30,7 +30,7 @@
           <%= button_to new_user_session_path, class: "btn btn-primary w-100 mt-2", type: "button" do %>
             Entrar como Operador
           <% end %>
-        </div> 
+        </div>
       <% elsif current_user %>
         <%= button_to destroy_user_session_path, method: :delete, class: "btn btn-primary", type: "button" do %>
           Sair

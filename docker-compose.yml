@@ -20,7 +20,7 @@ services:
     environment:
       - "POSTGRES_USER=postgres"
       - "POSTGRES_PASSWORD="
-      - "POSTGRES_DB=agendamento_vacina_development"
+      - "POSTGRES_DB=agendamento_covid_development"
     ports:
       - '5432:5432'
     volumes:
