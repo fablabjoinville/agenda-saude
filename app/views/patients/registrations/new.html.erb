@@ -1,13 +1,3 @@
-<script>
-  function checkTargetAudience(select) {
-    if (select.options[select.selectedIndex].text === "Idoso (acima de 60 anos)") {
-      document.getElementById("target-audience-warning").style.display = 'block'
-    } else {
-      document.getElementById("target-audience-warning").style.display = 'none'
-    }
-  }
-</script>
-
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
   <%= render "patients/shared/error_messages", resource: resource %>
 
@@ -15,42 +5,16 @@
 
   <div class="row text-center">
     <div class="col">
-      <p class="h4 mb-4 mt-4">Público-alvo</p>
+      <p class="h3">Cadastro</p>
     </div>
   </div>
 
-  <div class="alert alert-info alert-dismissable" role="alert">
+  <div class="alert alert-info alert-dismissable mb-5 mt-5" role="alert">
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-    <h6 class="mb-0">Os testes rápidos para Sars Covid-19 serão realizados em toda população idosa com <strong>60 anos completos ou mais</strong>, a partir do dia
-<strong>06/07/2020</strong>, com o objetivo de medir o nível de contaminação da doença no público mais propenso ao agravamento. Não há
-contraindicações para realização do teste e o resultado sai em 15 minutos.<br/><br/>
-<strong style="color: red;">ATENÇÃO: somente pessoas com 60 anos ou mais poderão fazer o teste e ele só pode ser feio mediante agendamento prévio</strong></h6>
-  </div>
-
-  <div class="form-row">
-    <div class="form-group col-md-6">
-      <%= f.label :target_audience, "Selecione o público-alvo que melhor descreve o cidadão:", class: "form-check-label" %> <br/>
-      <%= f.select :target_audience, Patient.target_audiences.map { |k, v| [I18n.t(k), v] }, {},  { id: "select-target-audience", class: "form-control", onChange: "checkTargetAudience(this);" } %>
-      <small><%#= link_to "Verifique aqui se você possui alguma doença crônica", "/cartaz_doentes_cronicos.pdf", target: :_blank %></small>
-    </div>
-  </div>
-
-  <div id="target-audience-warning" class="alert alert-warning alert-dismissable" role="alert" style="display: none">
-    <strong style="color: red;">INFELIZMENTE VOCÊ NÃO FAZ PARTE DO PÚBLICO
-    ALVO PARA OS TESTES!</strong><br/><br/>
-    Infelizmente neste momento só serão testados idosos com 60 anos ou mais. Caso
-    você esteja sentindo algum sintoma de gripe ou falta de ar, ou mesmo outros
-    sintomas que estão lhe gerando desconforto, ligue agora para o <b>3481-5165<b> ou
-    mande mensagem via Watsapp que uma equipe de médicos e enfermeiros lhe
-    darão todas as orientações e atendimento necessário. O horário de atendimento é
-    das 08:00 às 19:00, de segunda à sexta-feira.<br/>
-    Em outros dias e horários, procure o serviço de urgência para análise do seu caso.
-  </div>
-
-  <div class="row text-center">
-    <div class="col">
-      <p class="h3 mb-4">Cadastro</p>
-    </div>
+    <h6 class="mb-0" style="text-align: center;">Os testes rápidos para SARS COVID-19 serão realizados em toda população idosa com <strong>60 anos completos ou mais</strong>, a partir do dia
+      <strong>06/07/2020</strong>, com o objetivo de medir o nível de contaminação da doença no público mais propenso ao agravamento. Não há
+      contraindicações para realização do teste e o resultado sai em 15 minutos.<br/><br/>
+      <strong style="color: red;">ATENÇÃO: somente pessoas com 60 anos ou mais poderão fazer o teste e o mesmo só pode ser feito mediante agendamento prévio.</strong></h6>
   </div>
 
   <div class="form-row">

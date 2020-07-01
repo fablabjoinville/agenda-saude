@@ -28,7 +28,7 @@ class Patients::RegistrationsController < Devise::RegistrationsController
 
     patient.validate_year
 
-    return render 'patients/not_allowed' unless on_target_audience?(patient)
+    return render 'patients/not_allowed' unless patient.allowed_age?
 
     patient.save
 
@@ -46,19 +46,6 @@ class Patients::RegistrationsController < Devise::RegistrationsController
     @cpf = params[:cpf]
 
     super
-  end
-
-  private
-
-  def on_target_audience?(patient)
-    return patient.allowed_age? if patient.kid? || patient.elderly?
-
-    patient.chronic? ||
-    patient.disabled? ||
-    patient.pregnant? ||
-    patient.postpartum? ||
-    patient.teacher? ||
-    patient.over_55?
   end
 
   # POST /resource
