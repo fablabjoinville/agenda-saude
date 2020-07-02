@@ -30,8 +30,6 @@ class Patient < ApplicationRecord
       Neighborhood.find_by(name: neighborhood)&.active_ubs&.sample ||
       # samples any active ubs
       Ubs.active.sample ||
-      # samples an inactive ubs near the patient neighborhood
-      Neighborhood.find_by(name: neighborhood)&.sample ||
       # samples any inactive ubs
       Ubs.all.sample
   end
