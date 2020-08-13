@@ -18,7 +18,7 @@ class Patient < ApplicationRecord
   scope :bedridden, -> { where(bedridden: true) }
 
   # TODO: remove `chronic` field from schema
-  enum target_audience: [:kid, :elderly, :chronic, :disabled, :pregnant, :postpartum, :teacher, :over_55]
+  enum target_audience: [:kid, :elderly, :chronic, :disabled, :pregnant, :postpartum, :teacher, :over_55, :without_target]
 
   def active_appointments
     appointments.select(&:active?)
