@@ -28,6 +28,8 @@ class Patients::RegistrationsController < Devise::RegistrationsController
 
     patient.validate_year
 
+    return render 'patients/not_allowed' unless patient.allowed_age?
+
     patient.save
 
     return render json: { errors: patient.errors, fields: fields } unless patient.persisted?
