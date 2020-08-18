@@ -6,8 +6,9 @@
 
 <div class="alert alert-info alert-dismissable mb-5 mt-5" role="alert">
   <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-  <h6 class="mb-0" style="text-align: center;">O atendimento somente será realizado para pessoas a partir de 14 anos que apresentem algum destes sintomas: mal-estar leve, coriza, tosse, espirro, dor de cabeça, perda de olfato ou perda de paladar.<br/>
-  Qualquer dúvida, entre em contato com Ligue/Web Saúde por telefone no <strong>3481-5165</strong> ou via mensagem de WhatsApp neste mesmo número.<br/></h6>
+  <h6 class="mb-0" style="text-align: center;">O atendimento é para pessoas com 14 anos completos ou mais, que apresentem um ou mais sintomas de gripe leve: mal-estar leve, coriza, tosse, espirro, dor de cabeça, perda de olfato ou perda de paladar.<br/>
+  Por ser um centro de tratamento de sintomas precoce, somente serão abertas <strong>vagas para 4 dias</strong>, se você já está com sintomas há mais de <strong>5 dias</strong>, procure uma Unidade de Saúde.<br/><br/>
+  Qualquer dúvida, entre em contato com o Ligue-Saúde ligando para <strong>3481-5165</strong> ou pelo Web-Saúde enviando uma mensagem pelo WhatsApp para este mesmo número.<br/></h6>
 </div>
 
 <!-- <p class="mt-5">Verifique <strong><%= link_to "Aqui", "/cartaz_doentes_cronicos.pdf", target: :_blank %></strong> a lista de doenças crônicas para que o cidadão possa realizar o agendamento da vacina.</p> -->
@@ -26,7 +27,7 @@
       <div class="form-group">
         <%= f.text_field :cpf, autofocus: true, autocomplete: "cpf", minlength: 11, maxlength: 11, required: true, class: "form-control", 'aria-describedby' => 'cpfHelpInLine', placeholder: 'CPF' %>
         <small id="cpfHelpInLine" class="text-muted">
-          Digite o CPF da pessoa a ser testada.
+          Digite o CPF da pessoa a ser agendada.
           Sem pontuação, apenas números.
         </small>
       </div>
