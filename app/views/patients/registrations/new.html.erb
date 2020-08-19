@@ -34,8 +34,25 @@
     </div>
 
     <div class="form-group col-md-4">
+      <%= f.label :sus, "Cartão SUS" %>
+      <%= f.number_field :sus, autofocus: true, autocomplete: "sus", required: false, class: "form-control" %>
+    </div>
+
+    <div class="form-group col-md-4">
       <%= f.label :email, "E-mail" %>
       <%= f.email_field :email, autofocus: true, autocomplete: "email", required: false, class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <%= f.label :public_place, "Endereço (Rua, Avenida)" %>
+      <%= f.text_field :public_place, autofocus: true, autocomplete: "place", required: true, class: "form-control" %>
+    </div>
+
+    <div class="form-group col-md-2">
+      <%= f.label :place_number, "Número" %>
+      <%= f.text_field :place_number, autofocus: true, required: true, class: "form-control" %>
     </div>
 
     <div class="form-group col-md-4">
@@ -53,13 +70,6 @@
     <div class="form-group col-md-6">
       <%= f.label :other_phone, "Telefone Secundário (opcional)" %>
       <%= f.text_field :other_phone, autofocus: true, autocomplete: "other_phone", required: false, class: "form-control" %>
-    </div>
-  </div>
-
-  <div class="form-row">
-    <div class="form-group col-md-4">
-      <%= f.label :sus, "Cartão SUS (somente números - opcional)" %>
-      <%= f.number_field :sus, autofocus: true, autocomplete: "sus", required: false, class: "form-control" %>
     </div>
   </div>
 

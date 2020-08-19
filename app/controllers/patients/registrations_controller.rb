@@ -15,7 +15,9 @@ class Patients::RegistrationsController < Devise::RegistrationsController
     :other_phone,
     :sus,
     :target_audience,
-    :bedridden
+    :bedridden,
+    :public_place,
+    :place_number
   ].freeze
 
   # POST /patients

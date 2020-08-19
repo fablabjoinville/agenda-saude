@@ -1,95 +1,94 @@
-<h2>Paciente</h2>
-
-<div class="row">
+<div class="row text-center">
   <div class="col">
-    <p>
-      <strong>Nome:</strong>
-      <%= @patient.name %>
-    </p>
+    <p class="h2">Paciente:</p>
   </div>
 </div>
 
-<div class="row">
-  <div class="col">
-    <p>
-      <strong>Email:</strong>
-      <%= @patient.email %>
-    </p>
-  </div>
-</div>
+</p>
 
 <div class="row">
   <div class="col">
-    <p>
-      <strong>CPF:</strong>
-      <%= @patient.cpf %>
-    </p>
+    <strong>Nome:</strong>
+    <%= @patient.name %>
+  </div>
+
+  <div class="col">
+    <strong>CPF:</strong>
+    <%= @patient.cpf %>
+  </div>
+
+  <div class="col">
+    <strong>CNS:</strong>
+    <%= @patient.sus %>
   </div>
 </div>
+
+</p>
 
 <div class="row">
   <div class="col">
-    <p>
-      <strong>Nome da mãe:</strong>
-      <%= @patient.mother_name %>
-    </p>
+    <strong>Data de nascimento:</strong>
+    <%= @patient.birth_date %>
+  </div>
+
+  <div class="col">
+    <strong>Nome da mãe:</strong>
+    <%= @patient.mother_name %>
+  </div>
+
+  <div class="col">
+    <strong>Público-alvo:</strong> <%= I18n.t(@patient.target_audience) %>
   </div>
 </div>
+
+</p>
 
 <div class="row">
   <div class="col">
-    <p>
-      <strong>Data de nascimento:</strong>
-      <%= @patient.birth_date %>
-    </p>
+    <strong>Email:</strong>
+    <%= @patient.email %>
+  </div>
+
+  <div class="col">
+    <strong>Telefone:</strong>
+    <%= @patient.phone %>
+  </div>
+
+  <div class="col">
+    <strong>Outro telefone:</strong>
+    <%= @patient.other_phone %>
   </div>
 </div>
+
+</p>
 
 <div class="row">
   <div class="col">
-    <p>
-      <strong>Telefone:</strong>
-      <%= @patient.phone %>
-    </p>
+    <strong>Endereço:</strong>
+    <%= @patient.public_place %>
   </div>
-</div>
 
-<div class="row">
   <div class="col">
-    <p>
-      <strong>Outro telefone:</strong>
-      <%= @patient.other_phone %>
-    </p>
+    <strong>Número:</strong>
+    <%= @patient.place_number %>
   </div>
-</div>
 
-<div class="row">
   <div class="col">
-    <p>
-      <strong>CNS:</strong>
-      <%= @patient.sus %>
-    </p>
+    <strong>Bairro:</strong>
+    <%= @patient.neighborhood %>
   </div>
 </div>
 
-<div class="row">
+<br/>
+</p>
+
+<div class="row text-center">
   <div class="col">
-    <p>
-      <strong>Bairro:</strong>
-      <%= @patient.neighborhood %>
-    </p>
+    <p class="h2">Agendamentos:</p>
   </div>
 </div>
 
-<div class="row">
-  <div class="col">
-    <p>
-      <strong>Público-alvo:</strong> <%= I18n.t(@patient.target_audience) %>
-    </p>
-  </div>
-</div>
-
-<h2>Agendamentos</h2>
+</p>
 
 <% @appointments.each do |appointment|%>
   <div class="row">

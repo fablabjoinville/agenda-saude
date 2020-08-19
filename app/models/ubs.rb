@@ -11,7 +11,7 @@ class Ubs < ApplicationRecord
   scope :active, -> { where(active: true) }
 
   def identifier
-    "#{name} - #{address}. Tel: #{phone}"
+    "#{name} - #{address}."
   end
 
   def shift_start_date(date = Date.today)
