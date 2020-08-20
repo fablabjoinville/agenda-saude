@@ -6,4 +6,23 @@ module TimeSlotHelper
 
     OFFICIAL_HOLIDAYS.exclude?(formated_day) && day.on_weekday?
   end
+
+  private
+
+  def build_weekdays_date_range(available_days)
+    day_range = []
+    d = 0
+    i = 0
+    until d == available_days
+      day = i.days.from_now
+      if business_day?(day)
+        day_range << day
+      end
+      # if want increment only available days, move the line below to inside 'if business_day'
+      d += 1
+      i += 1
+    end
+    day_range
+  end
+
 end

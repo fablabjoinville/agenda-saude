@@ -1,13 +1,7 @@
 module TimeSlot
-  def available_time_slots(day_range, current_time)
+  def available_time_slots(day_range, time_now)
     slots_for_day = day_range.each_with_object({}) do |day, slots|
-      slots[day] = available_time_slots_for_day(day)
-
-      if day.today?
-        slots[day].reject! do |slot|
-          slot[:slot_start].to_i < current_time.to_i
-        end
-      end
+      slots[day] = available_time_slots_for_day(day, time_now)
     end
 
     slots_for_day.reject do |_day, slots|
@@ -17,10 +11,16 @@ module TimeSlot
 
   private
 
-  def available_time_slots_for_day(day)
+  def available_time_slots_for_day(day, time_now)
     appointments = Appointment.where(ubs: self).active_from_day(day)
 
     all_time_slots = time_slots(morning_shift(day)) + time_slots(afternoon_shift(day))
+
+    if day.today?
+      all_time_slots.reject! do |slot|
+        slot[:slot_start].to_i < time_now.to_i
+      end
+    end
 
     all_time_slots - time_slots_conflicts(all_time_slots, appointments)
   end
