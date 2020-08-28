@@ -31,6 +31,20 @@ class HomeController < ApplicationController
     end
   end
 
+  def register_patient
+    cpf = register_patient_params[:cpf]
+
+    unless CPF.valid?(cpf)
+      flash[:notice] = 'CPF Inválido'
+      redirect_to '/'
+      return
+    end
+
+    return redirect_to new_patient_session_path(patient: { cpf: cpf }) if Patient.find_by(cpf: cpf)
+
+    redirect_to new_patient_registration_path(cpf: cpf)
+  end
+
   private
 
   def base_login_params
@@ -38,6 +52,10 @@ class HomeController < ApplicationController
   end
 
   def unblock_params
+    params.permit(:cpf)
+  end
+
+  def register_patient_params
     params.permit(:cpf)
   end
 end
