@@ -6,19 +6,26 @@
 
 <div class="row text-center">
   <div class="col">
-    <p class="h8 mb-12">Infelizmente no momento só estão sendo agendadas vacinas para:<br/>Idoso (acima de 60 anos);<br/>Pessoa que possui doença crônica;<br/>Pessoa com deficiência;<br/>Criança entre 6 meses a 5 anos;<br/>Gestante;<br/>Pós-parto recente (puérpera).</p>
+    <p>
+      <strong style="color: red;">AGENDAMENTO NÃO PERMITIDO!</strong>
+      <br/><br/>
+      Somente pessoas com 14 anos ou mais serão atendidas, caso o paciente tenha idade menor, 
+      procure o Hospital Infantil Jeser Amarante Faria ou uma das Unidades Básicas de Saúde conforme informativo abaixo.
+      <br/>
+    </p>
+    <img src=<%= image_path('joinville_contra_o_coronavirus_novo.jpeg') %> class="comm-img" />
+  </div>
+</div>
+
+<div class="row text-center mt-5 mb-5">
+  <div class="col">
+    <%= link_to "Voltar ao Início", root_path, class: 'btn btn-primary btn-block' %>
   </div>
 </div>
 
 <div class="row text-center">
   <div class="col">
-    <p class="h8 mb-12">Para mais informações sobre eventos de vacinação da cidade, acesse:</p>
-    <p class="h8 mb-12"><a href="https://www.joinville.sc.gov.br/?post_type=evento&tag-tipo-evento=conscientizacao&s=">https://www.joinville.sc.gov.br/evento/conscientizacao/</a></p>
-  </div>
-</div>
-
-<div class="row text-center">
-  <div class="col">
-    <%= link_to "Início", root_path, class: 'btn btn-primary' %>
+    <small class="text-muted">Para mais informações sobre eventos de saúde da cidade, acesse:<br>
+    <a href="https://www.joinville.sc.gov.br/coronavirus/">https://www.joinville.sc.gov.br/coronavirus/</a></small>
   </div>
 </div>

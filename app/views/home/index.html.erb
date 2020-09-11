@@ -1,15 +1,16 @@
-<div class="row text-center mb-5">
+<div class="row text-center">
   <div class="col">
-    <p class="h4">Campanha Nacional de Vacinação contra Gripe em Joinville</p>
+    <p class="h4">Agendamento para atendimento no Centro de Tratamento Precoce COVID-19 de Joinville</p>
   </div>
 </div>
 
-<div class="alert alert-info alert-dismissable" role="alert">
+<div class="alert alert-info alert-dismissable mb-5 mt-5" role="alert">
   <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-  <h6 class="mb-0">O agendamento para a vacinação contra a gripe a partir de 18 de Maio de 2020 contemplará os seguintes público-alvos:  <strong>Idoso (acima de 60 anos), pessoa que possui doença crônica, pessoa com deficiência, criança entre 6 meses a 5 anos, gestante, pós-parto até 45 dias (puérpera), professores e adultos com 55 anos ou mais</strong>. Após esse período, outros públicos serão atendidos. O agendamento poderá ser feito pela própria pessoa a ser vacinada, por um familiar ou outra pessoa próxima.<br/><br/><strong>Importante: Será verificado a comprovação do público-alvo pelo profissional responsável no atendimento.</strong> </h6>
+  <h6 class="mb-0" style="text-align: center;">
+  <strong>Importante</strong> que, por ser uma unidade com o fim de <strong>tratar precocemente a Covid-19</strong>, para agendar seu atendimento você <strong>deve estar com sintomas respiratórios leves</strong> (nariz escorrendo, tossindo, espirrando, dor de cabeça, não estar sentindo cheiro e gosto ou dor no corpo), <strong>há no máximo 14 dias</strong>.<br/> 
+  Caso esteja sentido esses sintomas há <strong>15 dias ou mais</strong>, procure o atendimento por demanda espontânea em uma <strong>unidade Sentinela próximo a sua residencia</strong>.
+  </h6>
 </div>
-
-<p class="mt-5">Verifique <strong><%= link_to "Aqui", "/cartaz_doentes_cronicos.pdf", target: :_blank %></strong> a lista de doenças crônicas para que o cidadão possa realizar o agendamento da vacina.</p>
 
 <p class="mt-5">Faça seu agendamento abaixo e dirija-se até a unidade escolhida com um documento de identificação em mãos.</p>
 
@@ -25,7 +26,7 @@
       <div class="form-group">
         <%= f.text_field :cpf, autofocus: true, autocomplete: "cpf", minlength: 11, maxlength: 11, required: true, class: "form-control", 'aria-describedby' => 'cpfHelpInLine', placeholder: 'CPF' %>
         <small id="cpfHelpInLine" class="text-muted">
-          Digite o CPF da pessoa a ser vacinada.
+          Digite o CPF da pessoa a ser agendada.
           Sem pontuação, apenas números.
         </small>
       </div>
@@ -39,7 +40,28 @@
 
 <div class="row text-center mt-5 mb-5">
   <div class="col">
-    <small class="text-muted">Para mais informações sobre eventos de vacinação da cidade, acesse:<br>
-    <a href="https://www.joinville.sc.gov.br/?post_type=evento&tag-tipo-evento=conscientizacao&s=">https://www.joinville.sc.gov.br/evento/conscientizacao/</a></small>
+    <img class="disk-health-banner" src=<%= image_path('joinville_contra_o_coronavirus_novo.jpeg') %> class="comm-img" />
   </div>
 </div>
+
+<div class="row text-center mt-5 mb-5">
+  <div class="col">
+    <small class="text-muted">Para mais informações sobre a COVID-19 no município, acesse:<br>
+    <a href="https://www.joinville.sc.gov.br/coronavirus/">https://www.joinville.sc.gov.br/coronavirus/</a></small>
+  </div>
+</div>
+
+
+<style type="text/css">
+  @media only screen and (min-width: 600px) {
+    .disk-health-banner {
+      width: 80%;
+    }
+  }
+
+  @media only screen and (max-width: 600px) {
+    .disk-health-banner {
+      width: 100%;
+    }
+  }
+</style>

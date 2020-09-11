@@ -15,20 +15,22 @@ class Patients::RegistrationsController < Devise::RegistrationsController
     :other_phone,
     :sus,
     :target_audience,
-    :bedridden
+    :bedridden,
+    :public_place,
+    :place_number
   ].freeze
 
   # POST /patients
   def create
     fields = params.require(:patient).permit(*FIELDS)
     fields[:bedridden] = fields[:bedridden] == '1'
-    fields[:target_audience] = fields[:target_audience].to_i
+    fields[:target_audience] = Patient.target_audiences["without_target"]
 
     patient = Patient.new(fields)
 
     patient.validate_year
 
-    return render 'patients/not_allowed' unless on_target_audience?(patient)
+    return render 'patients/not_allowed' unless patient.allowed_age?
 
     patient.save
 
@@ -46,19 +48,6 @@ class Patients::RegistrationsController < Devise::RegistrationsController
     @cpf = params[:cpf]
 
     super
-  end
-
-  private
-
-  def on_target_audience?(patient)
-    return patient.allowed_age? if patient.kid? || patient.elderly?
-
-    patient.chronic? ||
-    patient.disabled? ||
-    patient.pregnant? ||
-    patient.postpartum? ||
-    patient.teacher? ||
-    patient.over_55?
   end
 
   # POST /resource
