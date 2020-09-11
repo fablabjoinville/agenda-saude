@@ -1,0 +1,61 @@
+<div class="row text-center">
+  <div class="col">
+    <p class="h4">Agendamento para o teste rápido da COVID-19 em Joinville</p>
+  </div>
+</div>
+
+<div class="alert alert-info alert-dismissable mb-5 mt-5" role="alert">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  <h6 class="mb-0" style="text-align: center;">
+    O teste rápido para a COVID-19 poderá ser feito por qualquer pessoa mediante agendamento neste site.<br/>
+    Não poderá ser feito mais de um teste rápido em um período menor que 30 dias.<br/><br/>
+  Qualquer dúvida, entre em contato com o Ligue-Saúde ligando para <strong>3481-5165</strong> ou pelo Web-Saúde enviando uma mensagem pelo WhatsApp para este mesmo número.<br/>
+  </h6>
+</div>
+
+<p class="mt-5">Faça seu agendamento abaixo e dirija-se até a unidade escolhida com um documento de identificação em mãos.</p>
+
+
+<div class="row text-center">
+  <div class="col">
+    <%= form_for(:patient, url: patient_base_login_path) do |f| %>
+      <div class="form-group">
+        <%= f.text_field :cpf, autofocus: true, autocomplete: "cpf", minlength: 11, maxlength: 11, required: true, class: "form-control", 'aria-describedby' => 'cpfHelpInLine', placeholder: 'CPF' %>
+        <small id="cpfHelpInLine" class="text-muted">
+          Cadastre seu CPF para fazer o agendamento do seu teste rápido para COVID-19
+        </small>
+      </div>
+
+      <div class="actions">
+        <%= f.submit "Entrar", class: "btn btn-primary btn-block" %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<div class="row text-center mt-5 mb-5">
+  <div class="col">
+    <img class="disk-health-banner" src=<%= image_path('joinville_contra_o_coronavirus_novo.jpeg') %> class="comm-img" />
+  </div>
+</div>
+
+<div class="row text-center mt-5 mb-5">
+  <div class="col">
+    <small class="text-muted">Para mais informações sobre a COVID-19 no município, acesse:<br>
+    <a href="https://www.joinville.sc.gov.br/coronavirus/">https://www.joinville.sc.gov.br/coronavirus/</a></small>
+  </div>
+</div>
+
+<style type="text/css">
+  @media only screen and (min-width: 600px) {
+    .disk-health-banner {
+      width: 80%;
+    }
+  }
+
+  @media only screen and (max-width: 600px) {
+    .disk-health-banner {
+      width: 100%;
+    }
+  }
+</style>

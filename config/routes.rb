@@ -4,6 +4,7 @@ Rails.application.routes.draw do
 
   devise_scope :patient do
     root 'home#index'
+    get '/home_teste_rapido', to: 'home#home_teste_rapido'
 
     resource :time_slot do
       get '/', as: :index, to: 'time_slot#index'
