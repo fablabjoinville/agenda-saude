@@ -27,6 +27,7 @@ class Patients::RegistrationsController < Devise::RegistrationsController
     fields[:target_audience] = Patient.target_audiences["without_target"]
 
     patient = Patient.new(fields)
+    patient.last_appointment = nil
 
     patient.validate_year
 

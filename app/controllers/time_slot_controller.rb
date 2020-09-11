@@ -28,6 +28,10 @@ class TimeSlotController < PatientSessionController
       )
     end
 
+    @patient = Patient.find(current_patient.id)
+    @patient.last_appointment = start_time
+    @patient.save
+
     return render json: @appointment.errors unless @appointment.save
 
     render 'patients/successfull_schedule'
@@ -35,8 +39,11 @@ class TimeSlotController < PatientSessionController
 
   def cancel
     @appointment = Appointment.find(cancel_params[:appointment_id])
-
     @appointment.destroy
+
+    @patient = Patient.find(current_patient.id)
+    @patient.last_appointment = nil
+    @patient.save
 
     redirect_to time_slot_path
   end

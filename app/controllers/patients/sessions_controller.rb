@@ -10,6 +10,9 @@ class Patients::SessionsController < Devise::SessionsController
       patient.update!(fake_mothers: mother_list)
     end
 
+    # Verifica se o paciente fez agendamento em menos de DAYS_FOR_NEW_APPOINTMENT dias
+    return render 'patients/appoitment_blocked' if patient.wait_appointment_time?
+
     @mother_list = patient.fake_mothers
     super
   rescue ActionController::ParameterMissing

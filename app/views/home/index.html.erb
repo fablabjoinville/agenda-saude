@@ -1,22 +1,43 @@
 <div class="row text-center">
   <div class="col">
-    <p class="h4">Agendamento para atendimento no Centro de Tratamento Precoce COVID-19 de Joinville</p>
+    <p class="h4">Agendamento para o teste rápido da COVID-19 em Joinville</p>
   </div>
 </div>
 
 <div class="alert alert-info alert-dismissable mb-5 mt-5" role="alert">
   <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-  <h5 class="mb-0" style="text-align: center;"><strong>ATENÇÃO!</strong><br/>
-  O Centro de Tratamento Precoce do COVID-19 continua atendendo normalmente, no entanto, para fazer o agendamento é preciso <strong>ligar para o número 3481-5165</strong> ou mandar mensagem via WhatsApp para este mesmo número. Uma equipe de médicos e enfermeiros lhe atenderá e passará todas as orientações necessárias.</h5>
-</div>
-
-<div class="row text-center mt-5 mb-5">
-  <div class="col">
-    <%= link_to 'CLIQUE AQUI PARA FAZER SEU AGENDAMENTO VIA LIGUE/WEB SAÚDE', "https://api.whatsapp.com/send?phone=554734815165&text=Desejo%20agendar%20uma%20consulta%20no%20Centro%20de%20Tratamento%20Precoce%20Covid-19", class: "btn btn-danger btn-block" %>
-  </div>
+  <h6 class="mb-0" style="text-align: center;">O atendimento é para pessoas com 14 anos completos ou mais, que apresentem um ou mais sintomas de gripe leve: mal-estar leve, coriza, tosse, espirro, dor de cabeça, perda de olfato ou perda de paladar.<br/>
+  Por ser um centro de tratamento de sintomas precoce, somente serão abertas <strong>vagas para 4 dias</strong>, se você já está com sintomas há mais de <strong>5 dias</strong>, procure uma Unidade de Saúde.<br/><br/>
+  Qualquer dúvida, entre em contato com o Ligue-Saúde ligando para <strong>3481-5165</strong> ou pelo Web-Saúde enviando uma mensagem pelo WhatsApp para este mesmo número.<br/></h6>
 </div>
 
 <!-- <p class="mt-5">Verifique <strong><%= link_to "Aqui", "/cartaz_doentes_cronicos.pdf", target: :_blank %></strong> a lista de doenças crônicas para que o cidadão possa realizar o agendamento da vacina.</p> -->
+
+<p class="mt-5">Faça seu agendamento abaixo e dirija-se até a unidade escolhida com um documento de identificação em mãos.</p>
+
+<% if flash[:notice] %>
+  <div class="alert alert-danger" role="alert">
+    <%= flash[:notice] %>
+  </div>
+<% end %>
+
+<div class="row text-center">
+  <div class="col">
+    <%= form_for(:patient, url: patient_base_login_path) do |f| %>
+      <div class="form-group">
+        <%= f.text_field :cpf, autofocus: true, autocomplete: "cpf", minlength: 11, maxlength: 11, required: true, class: "form-control", 'aria-describedby' => 'cpfHelpInLine', placeholder: 'CPF' %>
+        <small id="cpfHelpInLine" class="text-muted">
+          Digite o CPF da pessoa a ser agendada.
+          Sem pontuação, apenas números.
+        </small>
+      </div>
+
+      <div class="actions">
+        <%= f.submit "Entrar", class: "btn btn-primary btn-block" %>
+      </div>
+    <% end %>
+  </div>
+</div>
 
 <div class="row text-center mt-5 mb-5">
   <div class="col">

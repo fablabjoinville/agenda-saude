@@ -3,6 +3,8 @@ class Patient < ApplicationRecord
 
   MAX_LOGIN_ATTEMPTS = 2
 
+  DAYS_FOR_NEW_APPOINTMENT = 30
+
   has_many :appointments, dependent: :destroy
   belongs_to :main_ubs, class_name: 'Ubs'
 
@@ -56,6 +58,12 @@ class Patient < ApplicationRecord
 
   def bedridden?
     bedridden == true
+  end
+
+  def wait_appointment_time?
+    last_appointment != nil and 
+    last_appointment < Time.zone.now and 
+    Time.zone.now < last_appointment + DAYS_FOR_NEW_APPOINTMENT.days
   end
 
   def unblock!

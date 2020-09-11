@@ -6,7 +6,7 @@
 
 <div class="row text-center">
   <div class="col">
-    <p class="h8 mb-12">Dirija-se para a unidade abaixo no dia e hora marcados com um documento com foto e com 15 minutos de antecedência:</p>
+    <p class="h8 mb-12">Dirija-se para a unidade abaixo no dia e hora marcados com um documento com foto e cartão SUS (caso tenha) e com 15 minutos de antecedência:</p>
   </div>
 </div>
 
@@ -15,7 +15,7 @@
     <div class="d-flex">
       <ul class="list-inline mx-auto justify-content-center">
         <li><strong>Data: </strong><%= ApplicationHelper.humanize_datetime(@appointment.start) %></li>
-        <li><strong>UBS: </strong><%= @ubs.name %></li>
+        <li><strong>Unidade: </strong><%= @ubs.name %></li>
         <li><strong>Endereço: </strong><%= @ubs.address %></li>
         <li><strong>Telefone: </strong><%= @ubs.phone %></li>
       </ul>
