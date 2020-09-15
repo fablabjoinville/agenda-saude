@@ -73,23 +73,6 @@
     </div>
   </div>
 
-  <div class="row text-center">
-    <div class="col">
-      <p class="h4 mb-4 mt-4">Situação</p>
-    </div>
-  </div>
-
-  <div class="form-row">
-    <div class="form-group col-md-12">
-      <div class="form-check">
-        <%= f.check_box :bedridden, autofocus: true, class: "form-check-input" %>
-        <%= f.label :bedridden, "Caso o paciente esteja acamado ou possui algum outro impeditivo de se locomover, solicite atendimento em domicílio.\n
-        Uma equipe de saúde fará contato nos telefones informados para agendar a visita domiciliar.", class: "form-check-label" %>
-        <small class="form-text text-muted">Marque esta opção se necessita de atendimento domiciliar</small>
-      </div>
-    </div>
-  </div>
-
   <div class="form-row">
     <div class="form-group col-md-6">
       <%= f.submit "Cadastrar", class: "btn btn-primary btn-block pull-right" %>
