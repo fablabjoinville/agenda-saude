@@ -23,7 +23,7 @@ class Patients::RegistrationsController < Devise::RegistrationsController
   # POST /patients
   def create
     fields = params.require(:patient).permit(*FIELDS)
-    fields[:bedridden] = fields[:bedridden] == '1'
+    fields[:bedridden] = false
     fields[:target_audience] = Patient.target_audiences["without_target"]
 
     patient = Patient.new(fields)

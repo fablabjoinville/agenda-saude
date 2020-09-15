@@ -17,6 +17,15 @@
 <div class="alert alert-info">Ao cancelar ou reativar um agendamento por favor entrar em contato com o paciente.</div>
 
 <div class="mt-5">
+  <hr><h4>Opções Administrativas</h4>
+  <tr>
+    <td><a class="btn btn-primary" href="<%= ubs_active_hours_path %>">Alterar horário de funcionamento</a></td>
+    <td><a class="btn btn-primary" href="<%= ubs_slot_duration_path %>">Alterar durações de atendimento</a></td>
+  </tr>
+  <hr>
+</div>
+
+<div class="mt-5">
   <h3> Lista de Agendamentos </h3>
   <% if @appointments.present? %>
     <table class="table table-hover">
@@ -56,43 +65,15 @@
     <% end %>
     </tbody>
     </table>
-    <a href=<%= "/ubs/#{@ubs.id}/cancel_all_future_appointments" %>
-    onclick="return confirm('Você tem certeza?')" >Desativar todos agendamentos futuros</a><br/>
-    <a href=<%= "/ubs/#{@ubs.id}/activate_all_future_appointments" %>
-      onclick="return confirm('Você tem certeza?')">Ativar todos agendamentos futuros</a>
+    <p>
+    <a class="btn btn-danger" href=<%= "/ubs/#{@ubs.id}/cancel_all_future_appointments" %>
+    onclick="return confirm('Você tem certeza?')">Desativar todos agendamentos futuros</a>
+    <a class="btn btn-success" href=<%= "/ubs/#{@ubs.id}/activate_all_future_appointments" %>
+    onclick="return confirm('Você tem certeza?')">Ativar todos agendamentos futuros</a>
+    <br/>
+    </p>
   <% else %>
     <p>Nenhum paciente agendou horário até o momento.</p>
   <% end %>
 </div>
 
-<div class="mt-5">
-  <h3> Pacientes Acamados </h3>
-  <% if @bedridden_patients.present? %>
-    <table class="table table-hover">
-      <thead>
-        <tr>
-          <th scope="col">Paciente</th>
-          <th scope="col">Telefone Principal</th>
-          <th scope="col">Telefone Secundário</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @bedridden_patients.each do |patient| %>
-          <tr>
-            <td><a href=<%= "/patients/#{patient.id}" %>><%= patient.name %></a></td>
-            <td><%= patient.phone %></td>
-            <td><%= patient.other_phone %></td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-  <% else %>
-    <p>Nenhum paciente acamado até o momento.</p>
-  <% end %>
-</div>
-
-<div class="mt-5">
-  <hr><h4>Opções Administrativas</h4><hr>
-  <a href="<%= ubs_active_hours_path %>">Alterar horário de funcionamento</a><br/>
-  <a href="<%= ubs_slot_duration_path %>">Alterar durações de atendimento</a><br/>
-</div>
