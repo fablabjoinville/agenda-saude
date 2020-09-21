@@ -69,6 +69,8 @@ class Patients::SessionsController < Devise::SessionsController
 
     return redirect_to index_bedridden_path if patient.bedridden?
 
+    return render 'patients/not_allowed' unless patient.allowed_age?
+
     redirect_to time_slot_path
   end
 end
