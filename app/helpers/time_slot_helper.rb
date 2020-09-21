@@ -17,9 +17,9 @@ module TimeSlotHelper
       day = i.days.from_now
       if business_day?(day)
         day_range << day
+        d += 1
       end
       # if want increment only available days, move the line below to inside 'if business_day'
-      d += 1
       i += 1
     end
     day_range

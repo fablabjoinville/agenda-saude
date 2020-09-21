@@ -31,7 +31,7 @@ class Patients::RegistrationsController < Devise::RegistrationsController
 
     patient.validate_year
 
-    # return render 'patients/not_allowed' unless patient.allowed_age?
+    return render 'patients/not_allowed' unless patient.allowed_age?
 
     patient.save
 
