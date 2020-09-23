@@ -39,7 +39,6 @@ yarn-debug.log*
 
 .DS_Store
 /.env
-/config/database.yml
 /coverage
 
 .idea/
