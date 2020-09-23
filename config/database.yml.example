@@ -2,7 +2,8 @@ default: &default
   adapter: postgresql
   encoding: unicode
   # http://guides.rubyonrails.org/configuring.html#database-pooling
-  pool: <%= ENV.fetch('RAILS_MAX_THREADS') { 5 } %>
+  pool: <%= ENV.fetch('RAILS_POSTGRESQL_POOL') { 5 } %>
+  timeout: <%= ENV.fetch('RAILS_POSTGRESQL_TIMEOUT') { 5000 } %>
 
 development:
   <<: *default
