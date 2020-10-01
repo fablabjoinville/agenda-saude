@@ -3,7 +3,7 @@ include TimeSlotHelper
 
 class TimeSlotController < PatientSessionController
 
-  SLOTS_WINDOW_IN_DAYS = 6
+  SLOTS_WINDOW_IN_DAYS = 21
 
   def schedule
     @ubs = Ubs.find(schedule_params[:ubs_id])
