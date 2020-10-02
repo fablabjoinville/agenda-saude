@@ -35,8 +35,13 @@ def create_ubs
         break_start: '12:30',
         break_end: '13:30',
         shift_end: '17:00',
+        saturday_shift_start: '9:00',
+        saturday_break_start: '12:30',
+        saturday_break_end: '13:30',
+        saturday_shift_end: '17:00',
         slot_interval_minutes: 15,
-        active: false
+        active: false,
+        open_saturday: false
       )
     rescue
       puts "UBS ja cadastrada."

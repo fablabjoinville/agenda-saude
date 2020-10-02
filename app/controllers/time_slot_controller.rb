@@ -1,5 +1,5 @@
 require_relative './../helpers/time_slot_helper'
-include TimeSlotHelper
+# include TimeSlotHelper
 
 class TimeSlotController < PatientSessionController
 
@@ -53,10 +53,8 @@ class TimeSlotController < PatientSessionController
     @appointment = current_patient.appointments.last
     @ubs = @appointment.try(:ubs)
 
-    date_range = build_weekdays_date_range(TimeSlotController::SLOTS_WINDOW_IN_DAYS)
-
     @time_slots = Ubs.all.where(active: true).each_with_object({}) do |ubs, memo|
-      memo[ubs] = ubs.available_time_slots(date_range, Time.zone.now)
+      memo[ubs] = ubs.available_time_slots(Time.zone.now, TimeSlotController::SLOTS_WINDOW_IN_DAYS)
       # TODO: Refactor to not include these as available
       memo.delete(ubs) if memo[ubs].empty?
     end
