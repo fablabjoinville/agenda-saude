@@ -33,7 +33,7 @@ class UbsController < UserSessionController
     break_end_sat_tod = Tod::TimeOfDay.parse(active_hour_for_attr('break_end_saturday'))
     shift_end_sat_tod = Tod::TimeOfDay.parse(active_hour_for_attr('shift_end_saturday'))
 
-    open_on_saturday = active_hour_for_attr('open_saturday').to_i == 1
+    open_on_saturday = active_hours_params['open_saturday'].to_i == 1
 
     updated = @ubs.update(
                   shift_start: shift_start_tod.to_s,
