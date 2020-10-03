@@ -1,21 +1,19 @@
-Please introduce what you're delivering in this PR. Add context about the bug or feature.
+Escreva aqui um resumo da alteração que você está propondo, dando o contexto necessário para quem for revisar este PR.
 
 ## :computer: SCREENSHOTS
 
-If you made UI changes, add here the screenshots.
+Se você fez alterações na UI adicione aqui screenshots. Se não fez, remova esta sessão.
 
-## :squirrel: TESTS
+## :squirrel: TESTES
 
-### SCENARIO ONE
+Descreva nessa sessão como testar a alteração que você fez. Por exemplo, qual comando deve ser executado para executar os testes automatizados, ou quais passos na UI precisam ser seguidos para se testar manualmente.
 
-Describe the test scenario the reviewer show execute in staging to test the new feature or the bug fix.
+1. Passo 1
+2. Passo 2
+3. Passo N
 
-1. Step 1
-2. Step 2
-3. Step N
-
-Describe what the expected results are.
+Indique qual é o resultado esperado ao executar os passos.
 
 ## :package: DEPLOY
 
-If necessary, this section should be used to describe the deploy process.
+Indique aqui se existir alguma condição especial para se fazer o deploy. Se não, remova ela.
