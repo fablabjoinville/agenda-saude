@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :patient do
-    name { 'MyString' }
+    name { 'My String' }
     cpf { '81220540056' }
     mother_name { 'MyString' }
     birth_date { 'MyString' }

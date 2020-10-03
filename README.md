@@ -74,7 +74,7 @@ Para executar os testes da aplicação e verificar se tudo está funcionando com
 esperado execute:
 
 ```sh
-bundle exec rails test
+bundle exec rspec
 ```
 
 E para verificar o estilo do código:
