@@ -28,11 +28,23 @@ class UbsController < UserSessionController
     break_end_tod = Tod::TimeOfDay.parse(active_hour_for_attr('break_end_date'))
     shift_end_tod = Tod::TimeOfDay.parse(active_hour_for_attr('shift_end_date'))
 
+    shift_start_sat_tod = Tod::TimeOfDay.parse(active_hour_for_attr('shift_start_saturday'))
+    break_start_sat_tod = Tod::TimeOfDay.parse(active_hour_for_attr('break_start_saturday'))
+    break_end_sat_tod = Tod::TimeOfDay.parse(active_hour_for_attr('break_end_saturday'))
+    shift_end_sat_tod = Tod::TimeOfDay.parse(active_hour_for_attr('shift_end_saturday'))
+
+    open_on_saturday = active_hours_params['open_saturday'].to_i == 1
+
     updated = @ubs.update(
                   shift_start: shift_start_tod.to_s,
                   break_start: break_start_tod.to_s,
                   break_end: break_end_tod.to_s,
-                  shift_end: shift_end_tod.to_s
+                  shift_end: shift_end_tod.to_s,
+                  open_saturday: open_on_saturday,
+                  saturday_shift_start: shift_start_sat_tod.to_s,
+                  saturday_break_start: break_start_sat_tod.to_s,
+                  saturday_break_end: break_end_sat_tod.to_s,
+                  saturday_shift_end: shift_end_sat_tod.to_s
                 )
 
     return redirect_to ubs_index_path if updated
@@ -109,7 +121,8 @@ class UbsController < UserSessionController
   end
 
   def active_hours_params
-    params.require(:ubs).permit(:shift_start_date, :shift_end_date, :break_start_date, :break_end_date)
+    params.require(:ubs).permit(:shift_start_date, :shift_end_date, :break_start_date, :break_end_date,
+    :shift_start_saturday, :break_start_saturday, :break_end_saturday, :shift_end_saturday, :open_saturday)
   end
 
   def slot_duration_params

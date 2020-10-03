@@ -9,41 +9,97 @@
 <% end %>
 
 <%= form_for @ubs, url: ubs_change_active_hours_path do |f| %>
-  <div class="d-flex mt-5 align-items-center justify-content-between">
 
-  <div class="field">
-    <%= f.label :shift_start, 'Inicio do expediente' %><br />
-    <%= f.time_select :shift_start_date, minute_step: 15, ignore_date: true %>
+  <div class="form-row">
+    <div class="form-group col-md-2">
+      <%= f.label :shift_start, 'Inicio do expediente' %><br />
+      <%= f.time_select :shift_start_date, minute_step: 15, ignore_date: true %>
+    </div>
+
+    <br/>
+    <br/>
+
+    <div class="form-group col-md-2">
+      <%= f.label :break_start, 'Inicio do intervalo' %><br />
+      <%= f.time_select :break_start_date, minute_step: 15, ignore_date: true %>
+    </div>
+
+    <br/>
+    <br/>
+
+    <div class="form-group col-md-2">
+      <%= f.label :break_end, 'Final do intervalo' %><br />
+      <%= f.time_select :break_end_date, minute_step: 15, ignore_date: true %>
+    </div>
+
+    <br/>
+    <br/>
+
+    <div class="form-group col-md-2">
+      <%= f.label :shift_end, 'Final do expediente' %><br />
+      <%= f.time_select :shift_end_date, minute_step: 15, ignore_date: true %>
+    </div>
+
+  </div>
+
+  <br/>
+  <br/>
+
+  <div class="form-row">
+    <div class="row text-center">
+      <div class="col">
+        <p class="h3">Definição de horário para Sábado:</p>
+      </div>
+    </div>
   </div>
 
   <br/>
-  <br/>
 
-  <div class="field">
-    <%= f.label :break_start, 'Inicio do intervalo' %><br />
-    <%= f.time_select :break_start_date, minute_step: 15, ignore_date: true %>
+  <div class="form-row">
+    <div class="field">
+      <%= f.label :open_saturday, 'Abrir aos sábados'%><br />
+      <%# TODO salvar o estado do checkbox para 'ubs_controller'%>
+      <%= f.check_box :open_saturday%><br />
+    </div>
   </div>
 
   <br/>
-  <br/>
 
-  <div class="field">
-    <%= f.label :break_end, 'Final do intervalo' %><br />
-    <%= f.time_select :break_end_date, minute_step: 15, ignore_date: true %>
+  <div class="form-row">
+    <div class="form-group col-md-2">
+      <%= f.label :saturday_shift_start, 'Inicio do expediente' %><br />
+      <%= f.time_select :shift_start_saturday, minute_step: 15, ignore_date: true %>
+    </div>
+
+    <br/>
+    <br/>
+
+    <div class="form-group col-md-2">
+      <%= f.label :saturday_break_start, 'Inicio do intervalo' %><br />
+      <%= f.time_select :break_start_saturday, minute_step: 15, ignore_date: true %>
+    </div>
+
+    <br/>
+    <br/>
+
+    <div class="form-group col-md-2">
+      <%= f.label :saturday_break_end, 'Final do intervalo' %><br />
+      <%= f.time_select :break_end_saturday, minute_step: 15, ignore_date: true %>
+    </div>
+
+    <br/>
+    <br/>
+
+    <div class="form-group col-md-2">
+      <%= f.label :saturday_shift_end, 'Final do expediente' %><br />
+      <%= f.time_select :shift_end_saturday, minute_step: 15, ignore_date: true %>
+    </div>
+
+    <br/>
+    <br/>
   </div>
 
-  <br/>
-  <br/>
 
-  <div class="field">
-    <%= f.label :shift_end, 'Final do expediente' %><br />
-    <%= f.time_select :shift_end_date, minute_step: 15, ignore_date: true %>
-  </div>
-
-  <br/>
-  <br/>
-
-  </div>
   <div class="d-flex mt-5 justify-content-center">
   <% if @ubs.active %>
     <div class="alert alert-warning">Não é possível modificar horário de funcionamento enquanto a unidade estiver ativa.</div>
