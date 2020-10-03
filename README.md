@@ -33,7 +33,7 @@ Docker Compose ou instalando manualmente as dependências.
 
 **Usando o Docker Compose**
 
-A forma mais fácil de executar este projeto no seu anbiente é usando o
+A forma mais fácil de executar este projeto no seu ambiente é usando o
 Docker Compose, ferramenta responsável por criar um ambiente virtualizado e
 instalar todas as outras dependências.
 
