@@ -24,6 +24,8 @@ gem 'jquery-rails'
 gem 'smarter_csv', '~> 1.2'
 gem 'sentry-raven', '~> 3.0'
 
+gem 'newrelic_rpm'
+
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw] # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'pry-rails'
