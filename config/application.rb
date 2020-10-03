@@ -4,7 +4,6 @@ require_relative 'boot'
 
 require 'rails'
 
-
 # action_cable/engine
 # action_mailbox/engine
 # action_text/engine
