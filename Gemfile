@@ -6,26 +6,26 @@ ruby '2.6.5'
 gem 'rails', '~> 6.0.1' # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'pg', '>= 0.18', '< 2.0' # Use postgresql as the database for Active Record
 gem 'puma', '~> 4.3' # Use Puma as the app server
-gem 'sass-rails', '>= 6' # Use SCSS for stylesheets
 
-gem 'bootsnap', '>= 1.4.2', require: false # Reduces boot times through caching; required in config/boot.rb
+gem 'bootsnap', '>= 1.4.2', require: false
 
 gem 'devise'
 gem 'route_translator'
 
 gem 'bootstrap'
 gem 'font-awesome-sass'
+gem 'jquery-rails'
+gem 'sass-rails', '>= 6' # Use SCSS for stylesheets
 
 gem 'cpf_cnpj'
-
 gem 'tod'
 
-gem 'jquery-rails'
-gem 'smarter_csv', '~> 1.2'
 gem 'sentry-raven', '~> 3.0'
 
+gem 'smarter_csv', '~> 1.2', require: false
+
 group :development, :test do
-  gem 'byebug', platforms: %i[mri mingw x64_mingw] # Call 'byebug' anywhere in the code to stop execution and get a debugger console
+  gem 'byebug'
   gem 'pry-rails'
 
   gem 'brakeman', require: false
@@ -40,10 +40,9 @@ group :development, :test do
 end
 
 group :development do
-  # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
   gem 'listen', '>= 3.0.5', '< 3.2'
   gem 'web-console', '>= 3.3.0'
-  # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
+
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
 
