@@ -40,7 +40,7 @@ instalar todas as outras dependências.
 Depois de clonar o repositório, você pode executar o seguinte na pasta de origem:
 
 ```sh
-docker-compuse up
+docker-compose up
 ```
 
 **Instalando as dependências manualmente**
