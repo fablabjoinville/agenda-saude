@@ -1,23 +1,52 @@
-# Agenda Vacina
+# Agenda Saúde
+
+**Agenda Saúde** é um projeto de código aberto desenvolvido de forma colaborativa para fornecer
+um sistema de agendamento de vacinação e exames de COVID-19 para a prefeitura de Joinville.
 
 > **master** Projeto original para agendamento de vacinação
 
 > **master-covid** Fork para agendamento de exames de COVID-19
 
-## Índice
-
 - [Dependências](#dependencias)
-- [Desenvolvimento](#desenvolvimento
+- [Desenvolvimento](#desenvolvimento)
+- [Testes](#testes)
 - [Style Guides](#style-guides)
 - [Deploy](#deploy)
 
 ## Dependências
 
+Este projeto usa o framework de desenvolvimento Web Ruby on Rails e possui as seguintes
+dependências:
+
 - Ruby >= 2.6.5
 - Node >= 13.2.0
-- PostgreSQL 12.1
+- PostgreSQL == 12.1
+- Docker
 
-**Ubuntu**
+## Desenvolvimento
+
+Se você quiser executar este projeto no seu ambiente de desenvolvimento,
+você deve clonar este código-fonte, compilá-lo e executá-lo localmente.
+
+Existem duas formas de configurar o projeto no seu ambiente. Usando o
+Docker Compose ou instalando manualmente as dependências.
+
+**Usando o Docker Compose**
+
+A forma mais fácil de executar este projeto no seu anbiente é usando o
+Docker Compose, ferramenta responsável por criar um ambiente virtualizado e
+instalar todas as outras dependências.
+
+Depois de clonar o repositório, você pode executar o seguinte na pasta de origem:
+
+```sh
+docker-compuse up
+```
+
+**Instalando as dependências manualmente**
+
+Caso você queira instalar manualmente todas as dependências no seu ambiente, precisará
+executar os seguintes comandos:
 
 ```sh
 apt-get update
@@ -25,15 +54,7 @@ apt-get postgresql postgresql-contrib postgresql-server-dev-all cmake node libpq
 gem install bundler
 ```
 
-**MacOS**
-
-```sh
-brew update
-brew install postgres node
-gem install bundler
-```
-
-## Desenvolvimento
+Para instalar as bibliotecas e configurar o banco de dados execute:
 
 ```sh
 bundle install
@@ -41,22 +62,25 @@ cp config/database.yml.example config/database.yml
 bin/rails db:setup
 ```
 
-Acesse no ambiente local  [http://localhost:3000](http://localhost:3000):
+E acesse no ambiente local [http://localhost:3000](http://localhost:3000):
 
 ```sh
 bundle exec rails serve
 ```
 
-Para verificar o estilo do código:
+## Testes
 
-```sh
-bundle exec rubocop
-```
-
-Para executar os testes:
+Para executar os testes da aplicação e verificar se tudo está funcionando como
+esperado execute:
 
 ```sh
 bundle exec rails test
+```
+
+E para verificar o estilo do código:
+
+```sh
+bundle exec rubocop
 ```
 
 ## Style Guides
@@ -65,7 +89,7 @@ bundle exec rails test
 - [Rails style guide](https://github.com/bbatsov/rails-style-guide)
 - [JavaScript style guide](https://github.com/airbnb/javascript)
 
-## deploy
+## Deploy
 
 É necessário modificar os _remotes_ para refletir as duas aplicações na Heroku:
 
