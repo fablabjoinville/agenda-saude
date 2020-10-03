@@ -13,8 +13,6 @@ gem 'bootsnap', '>= 1.4.2', require: false # Reduces boot times through caching;
 gem 'devise'
 gem 'route_translator'
 
-gem 'activeadmin'
-
 gem 'bootstrap'
 gem 'font-awesome-sass'
 
@@ -23,6 +21,8 @@ gem 'cpf_cnpj'
 gem 'tod'
 
 gem 'jquery-rails'
+gem 'smarter_csv', '~> 1.2'
+gem 'sentry-raven', '~> 3.0'
 
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw] # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -48,11 +48,6 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
 
   gem 'guard', require: false
+  gem 'derailed_benchmarks'
+  gem 'stackprof'
 end
-
-# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
-
-gem "smarter_csv", "~> 1.2"
-
-gem "sentry-raven", "~> 3.0"
