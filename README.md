@@ -101,13 +101,15 @@ git remote add covid https://git.heroku.com/agendamento-covid.git
 
 Deve ficar parecido com o exemplo abaixo:
 
-> git remote -v
-> covid https://git.heroku.com/agendamento-covid.git (fetch)
-> covid https://git.heroku.com/agendamento-covid.git (push)
-> origin  git@github.com:magrathealabs/agenda-saude-joinville.git (fetch)
-> origin  git@github.com:magrathealabs/agenda-saude-joinville.git (push)
-> vacina  https://git.heroku.com/agendamento-vacina.git (fetch)
-> vacina  https://git.heroku.com/agendamento-vacina.git (push)
+``` sh
+git remote -v
+covid https://git.heroku.com/agendamento-covid.git (fetch)
+covid https://git.heroku.com/agendamento-covid.git (push)
+origin  git@github.com:magrathealabs/agenda-saude-joinville.git (fetch)
+origin  git@github.com:magrathealabs/agenda-saude-joinville.git (push)
+vacina  https://git.heroku.com/agendamento-vacina.git (fetch)
+vacina  https://git.heroku.com/agendamento-vacina.git (push)
+```
 
 Para fazer deploy da branch da agenda de vacinação:
 
