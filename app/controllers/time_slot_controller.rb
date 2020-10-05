@@ -3,7 +3,7 @@ require_relative './../helpers/time_slot_helper'
 
 class TimeSlotController < PatientSessionController
 
-  SLOTS_WINDOW_IN_DAYS = 21
+  SLOTS_WINDOW_IN_DAYS = 11
 
   def schedule
     @ubs = Ubs.find(schedule_params[:ubs_id])
