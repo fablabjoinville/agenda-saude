@@ -37,6 +37,10 @@ ubs.shift_start = '9:00'
 ubs.break_start = '12:30'
 ubs.break_end = '13:30'
 ubs.shift_end = '17:00'
+ubs.saturday_shift_start = '9:00'
+ubs.saturday_break_start = '12:30'
+ubs.saturday_break_end = '13:30'
+ubs.saturday_shift_end = '17:00'
 ubs.slot_interval_minutes = 15
 ubs.active = true
 ubs.valid?
@@ -53,6 +57,10 @@ other_ubs.shift_start = '9:00'
 other_ubs.break_start = '12:30'
 other_ubs.break_end = '13:30'
 other_ubs.shift_end = '17:00'
+other_ubs.saturday_shift_start = '9:00'
+other_ubs.saturday_break_start = '12:30'
+other_ubs.saturday_break_end = '13:30'
+other_ubs.saturday_shift_end = '17:00'
 other_ubs.slot_interval_minutes = 15
 other_ubs.save!
 
