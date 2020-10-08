@@ -122,3 +122,4 @@ Para fazer deploy da branch da agenda de covid:
 ```sh
 git push covid master-covid:master
 ```
+## Stay Home,Stay Safe
