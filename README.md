@@ -57,7 +57,7 @@ bundle exec rubocop
 Run tests with:
 
 ```sh
-bundle exec rails test
+bundle exec rspec
 ```
 
 Use guard to run tests and check code style as you code:

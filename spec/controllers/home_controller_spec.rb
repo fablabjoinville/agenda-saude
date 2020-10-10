@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe HomeController, type: :controller do
-  let(:patient) { Patient.last }
+  let(:patient) { create(:patient, main_ubs: create(:ubs)) }
 
   describe 'GET #unblock' do
     context 'when patient exists' do
