@@ -4,10 +4,10 @@ require_relative 'boot'
 
 require 'rails'
 
-# action_cable/engine
 # action_mailbox/engine
 # action_text/engine
 %w(
+  action_cable/engine
   active_record/railtie
   active_storage/engine
   action_controller/railtie
