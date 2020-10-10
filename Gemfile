@@ -22,7 +22,7 @@ gem 'tod'
 
 gem 'sentry-raven', '~> 3.0'
 
-gem 'smarter_csv', '~> 1.2', require: false
+gem 'newrelic_rpm'
 
 group :development, :test do
   gem 'byebug'
