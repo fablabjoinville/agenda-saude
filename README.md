@@ -3,10 +3,6 @@
 **Agenda Saúde** é um projeto de código aberto desenvolvido de forma colaborativa para fornecer
 um sistema de agendamento de vacinação e exames de COVID-19 para a prefeitura de Joinville.
 
-> **master** Projeto original para agendamento de vacinação
-
-> **master-covid** Fork para agendamento de exames de COVID-19
-
 - [Dependências](#dependencias)
 - [Desenvolvimento](#desenvolvimento)
 - [Testes](#testes)
@@ -91,34 +87,25 @@ bundle exec rubocop
 
 ## Deploy
 
-É necessário modificar os _remotes_ para refletir as duas aplicações na Heroku:
+É necessário adicionar o remote da Heroku:
 
 ```sh
-git remote set-url origin git@github.com:magrathealabs/agenda-saude-joinville.git
-git remote add vacina https://git.heroku.com/agendamento-vacina.git
-git remote add covid https://git.heroku.com/agendamento-covid.git
+git remote set-url origin git@github.com:MakersNetwork/agenda-saude.git
+git remote add heroku https://git.heroku.com/agendamento-covid.git
 ```
 
 Deve ficar parecido com o exemplo abaixo:
 
 ``` sh
 git remote -v
-covid https://git.heroku.com/agendamento-covid.git (fetch)
-covid https://git.heroku.com/agendamento-covid.git (push)
-origin  git@github.com:magrathealabs/agenda-saude-joinville.git (fetch)
-origin  git@github.com:magrathealabs/agenda-saude-joinville.git (push)
-vacina  https://git.heroku.com/agendamento-vacina.git (fetch)
-vacina  https://git.heroku.com/agendamento-vacina.git (push)
+heroku https://git.heroku.com/agendamento-covid.git (fetch)
+heroku https://git.heroku.com/agendamento-covid.git (push)
+origin  git@github.com:MakersNetwork/agenda-saude.git (fetch)
+origin  git@github.com:MakersNetwork/agenda-saude.git (push)
 ```
 
-Para fazer deploy da branch da agenda de vacinação:
+Para fazer deploy da aplicaço:
 
 ```sh
-git push vacina master:master
-```
-
-Para fazer deploy da branch da agenda de covid:
-
-```sh
-git push covid master-covid:master
+git push heroku main
 ```
