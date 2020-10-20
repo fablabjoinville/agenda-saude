@@ -1,4 +1,4 @@
-version: '2'
+version: "2"
 services:
   web:
     build: .
@@ -7,7 +7,7 @@ services:
       - .:/var/app
       - ~/.bash_history:/root/.bash_history
     ports:
-      - "4000:3000"
+      - "3000:3000"
     environment:
       - "RAILS_ENV=development"
     depends_on:
@@ -22,7 +22,7 @@ services:
       - "POSTGRES_PASSWORD="
       - "POSTGRES_DB=agendamento_covid_development"
     ports:
-      - '5432:5432'
+      - "5432:5432"
     volumes:
       - postgres:/var/lib/postgresql/data
 
