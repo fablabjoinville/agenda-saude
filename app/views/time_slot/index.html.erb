@@ -59,6 +59,22 @@
     <br/>
   <% end %>
 
+  <nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+      <li class="page-item active <%= "disabled" if @gap_in_days < 1 %>">
+        <a class="page-link" href="?gap_in_days=<%= @gap_in_days - 1 %>" tabindex="-1">&laquo; Dia anterior</a>
+      </li>
+      <li class="page-item active disabled">
+        <a class="page-link" href="#">
+          <%= ApplicationHelper.humanize_date(@current_day) %>
+        </a>
+      </li>
+      <li class="page-item active <%= "disabled" if @gap_in_days >= TimeSlotController::SLOTS_WINDOW_IN_DAYS %>">
+        <a class="page-link" href="?gap_in_days=<%= @gap_in_days + 1 %>" tabindex="-1">Próximo dia &raquo;</a>
+      </li>
+    </ul>
+  </nav>
+
   <% if @time_slots.present? %>
     <div class="container mt-5">
       <div class="row">
@@ -125,7 +141,7 @@
     <h4>Nenhuma vaga disponível no momento!</h4>
     <div class="alert alert-info alert-dismissable" role="alert">
       <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-      <h6 class="mb-0">Prezado usuário, no momento todas as vagas estão ocupadas.<br/>Mas não se preocupe que diariamente novas vagas são geradas ou as vagas de cancelamentos voltam para o sistema, pedimos que tente novamente no dia seguinte ou mais tarde!
+      <h6 class="mb-0">Prezado usuário, no momento todas as vagas deste dia estão ocupadas.<br/>Mas não se preocupe que diariamente novas vagas são geradas ou as vagas de cancelamentos voltam para o sistema, pedimos que tente novamente no dia seguinte ou mais tarde!
         <br/></h6>
     </div>
   <% end %>
