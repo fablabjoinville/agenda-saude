@@ -40,6 +40,11 @@
                   <strong>Telefone: </strong><%= @ubs.phone %>
                 </div>
               </div>
+
+              <p class="h8 mb-12">
+                <br/>Dirija-se até a unidade escolhida com <strong>15 minutos de antecedência</strong>, leve um <strong>documento com foto e seu Cartão SUS (CNS)</strong> e reserve pelo menos <strong>1 hora para o procedimento<strong>.
+              </p>
+
             </div>
           </div>
           <div class="row mt-3">
@@ -82,7 +87,9 @@
           <h4>Agendamentos disponíveis:</h4>
           <div class="alert alert-info alert-dismissable" role="alert">
             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-            <h6 class="mb-0">Veja abaixo as unidades que estão com agendamento disponível pelo site. <br/><br/> Escolha a unidade mais próxima de sua casa ou qualquer outra que esteja disponível.</h6>
+            <h6 class="mb-0">
+              <strong>Após escolher</strong> o local, box, dia e hora de seu teste e confirmar, <strong>entre novamente no site para verificar seu agendamento</strong>.
+            </h6>
           </div>
         </div>
       </div>
@@ -138,11 +145,13 @@
       </div>
     </div>
   <% else %>
-    <h4>Nenhuma vaga disponível no momento!</h4>
+    <h4>Nenhuma vaga disponível para este dia!</h4>
     <div class="alert alert-info alert-dismissable" role="alert">
       <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-      <h6 class="mb-0">Prezado usuário, no momento todas as vagas deste dia estão ocupadas.<br/>Mas não se preocupe que diariamente novas vagas são geradas ou as vagas de cancelamentos voltam para o sistema, pedimos que tente novamente no dia seguinte ou mais tarde!
-        <br/></h6>
+      <h6 class="mb-0">
+        Prezado usuário, no momento todas as vagas deste dia estão ocupadas.<br/>
+        Tente acessar os próximos dias para verificar se há agendamento disponível.<br/>
+      </h6>
     </div>
   <% end %>
 <% end %>
