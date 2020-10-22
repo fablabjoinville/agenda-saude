@@ -3,7 +3,7 @@ require_relative './../helpers/time_slot_helper'
 
 class TimeSlotController < PatientSessionController
 
-  SLOTS_WINDOW_IN_DAYS = 21
+  SLOTS_WINDOW_IN_DAYS = 30
 
   def schedule
     @ubs = Ubs.find(schedule_params[:ubs_id])
@@ -16,8 +16,6 @@ class TimeSlotController < PatientSessionController
 
         return
       end
-
-      current_patient.appointments.destroy_all
 
       @appointment = Appointment.create(
         patient: current_patient,
