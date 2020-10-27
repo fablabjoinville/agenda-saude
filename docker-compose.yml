@@ -6,6 +6,7 @@ services:
     volumes:
       - .:/var/app
       - ~/.bash_history:/root/.bash_history
+      - ./config/database.yml:/var/config/database.yml
     ports:
       - "3000:3000"
     environment:
