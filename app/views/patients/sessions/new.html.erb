@@ -16,8 +16,13 @@
       <%= f.hidden_field :cpf, value: @patient.cpf %>
 
       <div class="form-group" >
-        <%= f.label :password, "Selecione o primeiro nome da sua mãe" %><br />
-        <%= f.select :password, @mother_list, {}, { class: 'form-control' } %>
+        <%= f.label :password, "Selecione o primeiro nome da sua mãe:" %><br />
+        <div style="text-align: left; padding-left: 42%;" >
+          <% @mother_list.each do |mother| %>
+            <%= f.radio_button(:password, mother) %>
+            <%= f.label(:password, mother) %><br/>
+          <% end %>
+        </div>
       </div>
 
       <div class="actions">
