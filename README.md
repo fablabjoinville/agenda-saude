@@ -39,6 +39,8 @@ Depois de clonar o repositório, você pode executar o seguinte na pasta de orig
 docker-compose up
 ```
 
+E acesse no ambiente local [http://localhost:4000](http://localhost:4000).
+
 **Instalando as dependências manualmente**
 
 Caso você queira instalar manualmente todas as dependências no seu ambiente, precisará
@@ -58,7 +60,7 @@ cp config/database.yml.example config/database.yml
 bin/rails db:setup
 ```
 
-E acesse no ambiente local [http://localhost:3000](http://localhost:3000):
+E acesse no ambiente local [http://localhost:4000](http://localhost:4000):
 
 ```sh
 bundle exec rails serve
