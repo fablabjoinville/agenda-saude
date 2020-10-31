@@ -38,7 +38,9 @@
   <div class="form-row">
     <div class="form-group col-md-4">
       <%= f.label :birth_date, "Data de nascimento" %>
-      <%= f.date_field :birth_date, autofocus: true, autocomplete: "birth_date", required: true, class: "form-control" %>
+      <div class="form-row">
+        <%= f.date_select :birth_date, { start_year: 1900, with_css_classes: true } , autofocus: true, autocomplete: "birth_date", required: true, class: "form-control" %>
+      </div>
     </div>
 
     <div class="form-group col-md-4">

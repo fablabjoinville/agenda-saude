@@ -78,8 +78,8 @@ today = Date.today
   patient = Patient.new
   patient.name = "marvin#{i}"
   patient.cpf = cpfs[i]
-  patient.mother_name = 'num sei'
-  patient.birth_date = '01/01/1980'
+  patient.mother_name = 'Natureza'
+  patient.birth_date = '1979-06-24'
   patient.phone = '12345678'
   patient.neighborhood = 'América'
   patient.save!
