@@ -26,6 +26,10 @@ class Patient < ApplicationRecord
     appointments.select(&:active?)
   end
 
+  def current_appointment
+    active_appointments.last
+  end
+
   def set_main_ubs
     self.main_ubs =
       # samples an active ubs near the patient neighborhood

@@ -47,28 +47,19 @@ class TimeSlotController < PatientSessionController
   end
 
   def index
-    # FIXME We need to change this relation to has_one or enhance the logic here
-    @appointment = current_patient.appointments.last
+    @appointment = current_patient.current_appointment
     @ubs = @appointment.try(:ubs)
 
-    @gap_in_days = params[:gap_in_days].to_i || 0
+    @gap_in_days = slot_params[:gap_in_days].to_i || 0
     @current_day = Time.zone.now + @gap_in_days.days
 
-    @gap_in_days > TimeSlotController::SLOTS_WINDOW_IN_DAYS
-
-    @time_slots = []
-    if !@current_day.past? && !@current_day.sunday? && !(@gap_in_days > TimeSlotController::SLOTS_WINDOW_IN_DAYS)
-      @time_slots = Ubs.all.where(active: true).each_with_object({}) do |ubs, memo|
+    @time_slots = {}
+    unless @current_day.past? || @current_day.sunday? || @gap_in_days > TimeSlotController::SLOTS_WINDOW_IN_DAYS
+      @time_slots = Ubs.where(active: true).each_with_object({}) do |ubs, memo|
         next unless ubs.business_day?(@current_day, ubs.open_saturday?)
 
-        slots = {}
-        slots[@current_day] = ubs.available_time_slots_for_day(@current_day, Time.zone.now)
-        slots.delete(@current_day) if slots[@current_day].empty?
-
-        memo[ubs] = slots
-
-        # TODO: Refactor to not include these as available
-        memo.delete(ubs) if memo[ubs].empty?
+        day_slots = ubs.available_time_slots_for_day(@current_day, Time.zone.now)
+        memo[ubs] = day_slots if day_slots.any?
       end
     end
   end
