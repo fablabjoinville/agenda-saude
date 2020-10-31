@@ -11,7 +11,7 @@ class TimeSlotController < PatientSessionController
 
     Appointment.transaction do
       if Appointment.where(start: start_time, ubs: @ubs).present?
-        flash[:notice] = 'Opa! O horário foi reservado enquanto você escolhia, tente outro!'
+        flash[:alert] = 'Opa! O horário foi reservado enquanto você escolhia, tente outro!'
         redirect_to time_slot_path
 
         return

@@ -1,5 +1,13 @@
 
 <%= render :layout => '/shared/panel' do %>
+  <% if flash[:notice] %>
+    <div class="alert alert-info alert-dismissable" role="alert">
+      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+      <h6 class="mb-0">
+        <%= flash[:notice] %>
+      </h6>
+    </div>
+  <% end %>
   <% if @appointment.present? %>
     <div class="container">
       <div class="card">
@@ -49,6 +57,11 @@
           </div>
           <div class="row mt-3">
             <div class="col">
+              <%= button_to "patients/edit", class: "btn btn-primary btn-block", method: :get do %>
+                Alterar meus dados
+              <% end %>
+            </div>
+              <div class="col">
               <%= button_to cancel_time_slot_path(appointment_id: @appointment.id), class: "btn btn-danger btn-block", method: :delete, data: { confirm: "Seu horário será cancelado. Confirmar?" } do %>
                 Cancelar
               <% end %>
@@ -57,12 +70,18 @@
         </div>
       </div>
     </div>
-
-    <br/>
-    <p id="notice"><%= notice %></p>
-    <hr>
-    <br/>
   <% end %>
+
+  <br/>
+  <% if flash[:alert] %>
+    <div class="alert alert-danger alert-dismissable" role="alert">
+      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+      <h6 class="mb-0">
+        <%= flash[:alert] %>
+      </h6>
+    </div>
+  <% end %>
+  <hr>
 
   <nav aria-label="Page navigation example">
     <ul class="pagination justify-content-center">
