@@ -25,11 +25,10 @@ class Patients::RegistrationsController < Devise::RegistrationsController
     fields = params.require(:patient).permit(*FIELDS)
     fields[:bedridden] = false
     fields[:target_audience] = Patient.target_audiences["without_target"]
+    fields = convert_birth_date(fields)
 
     patient = Patient.new(fields)
     patient.last_appointment = nil
-
-    patient.validate_year
 
     # return render 'patients/not_allowed' unless patient.allowed_age?
 
@@ -49,6 +48,17 @@ class Patients::RegistrationsController < Devise::RegistrationsController
     @cpf = params[:cpf]
 
     super
+  end
+
+  private
+
+  def convert_birth_date(fields)
+    day = fields.delete("birth_date(3i)")
+    month = fields.delete("birth_date(2i)")
+    year = fields.delete("birth_date(1i)")
+
+    fields[:birth_date] = '%04d-%02d-%02d' % [year, month, day]
+    fields
   end
 
   # POST /resource
