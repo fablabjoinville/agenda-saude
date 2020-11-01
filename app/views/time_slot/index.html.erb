@@ -70,6 +70,26 @@
         </div>
       </div>
     </div>
+  <% else %>
+    <div class="row">
+      <div class="col">
+        <h4 class="text-center">Você não possui nenhum agendamento no momento</h4>
+      </div>
+    </div>
+
+    <div class="row mt-3">
+      <div class="col-2">
+      </div>
+      <div class="col-8">
+        <%= button_to "patients/edit", class: "btn btn-primary btn-block", method: :get do %>
+          Alterar meus dados
+        <% end %>
+      </div>
+      <div class="col-2">
+      </div>
+    </div>
+
+    <hr>
   <% end %>
 
   <br/>
@@ -81,7 +101,6 @@
       </h6>
     </div>
   <% end %>
-  <hr>
 
   <nav aria-label="Page navigation example">
     <ul class="pagination justify-content-center">
