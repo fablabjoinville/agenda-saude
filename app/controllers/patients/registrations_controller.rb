@@ -43,11 +43,31 @@ class Patients::RegistrationsController < Devise::RegistrationsController
     redirect_to index_time_slot_path
   end
 
-  # GET /resource/sign_up
+  # GET /patients/sign_up
   def new
     @cpf = params[:cpf]
 
     super
+  end
+
+  # GET /patients/edit
+  def edit
+    super
+  end
+
+  # PUT /patients
+  def update
+    fields = params.require(:patient).permit(*FIELDS)
+    fields = convert_birth_date(fields)
+
+    @patient = Patient.find_by(cpf: fields[:cpf])
+
+    if @patient.update_without_password(fields)
+      flash[:notice] = 'Dados editados com sucesso!'
+      redirect_to index_time_slot_path
+    else
+      return render json: { errors: patient.errors, fields: fields }
+    end
   end
 
   private
@@ -60,21 +80,6 @@ class Patients::RegistrationsController < Devise::RegistrationsController
     fields[:birth_date] = '%04d-%02d-%02d' % [year, month, day]
     fields
   end
-
-  # POST /resource
-  # def create
-  #   super
-  # end
-
-  # GET /resource/edit
-  # def edit
-  #   super
-  # end
-
-  # PUT /resource
-  # def update
-  #   super
-  # end
 
   # DELETE /resource
   # def destroy

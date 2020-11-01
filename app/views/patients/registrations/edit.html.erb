@@ -1,43 +1,89 @@
-<h2>Edit <%= resource_name.to_s.humanize %></h2>
-
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
   <%= render "devise/shared/error_messages", resource: resource %>
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+  <%= f.hidden_field :cpf, value: @patient.cpf %>
+
+  <div class="row text-center">
+    <div class="col">
+      <p class="h3">Edite seus dados</p>
+    </div>
   </div>
 
-  <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
-    <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
-  <% end %>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <%= f.label :name, "Nome Completo" %>
+      <%= f.text_field :name, autofocus: true, autocomplete: "name", required: true, class: "form-control" %>
+    </div>
 
-  <div class="field">
-    <%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
-    <%= f.password_field :password, autocomplete: "new-password" %>
-    <% if @minimum_password_length %>
-      <br />
-      <em><%= @minimum_password_length %> characters minimum</em>
-    <% end %>
+    <div class="form-group col-md-6">
+      <%= f.label :mother_name, "Nome da mãe" %>
+      <%= f.text_field :mother_name, autofocus: true, autocomplete: "mother_name", required: true, class: "form-control" %>
+    </div>
   </div>
 
-  <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
+  <div class="form-row">
+    <div class="form-group col-md-4">
+      <%= f.label :birth_date, "Data de nascimento" %>
+      <div class="form-row">
+        <%
+          year = @patient.birth_date[0..3].to_i
+          month = @patient.birth_date[5..6].to_i
+          day = @patient.birth_date[8..9].to_i
+        %>
+        <%= f.date_select :birth_date, { selected: { year: year, month: month, day: day }, start_year: 1900 , with_css_classes: true } , autofocus: true, autocomplete: "birth_date", required: true, class: "form-control" %>
+      </div>
+    </div>
+
+    <div class="form-group col-md-4">
+      <%= f.label :sus, "Cartão SUS" %>
+      <%= f.number_field :sus, autofocus: true, autocomplete: "sus", required: false, class: "form-control" %>
+    </div>
+
+    <div class="form-group col-md-4">
+      <%= f.label :email, "E-mail" %>
+      <%= f.email_field :email, autofocus: true, autocomplete: "email", required: false, class: "form-control" %>
+    </div>
   </div>
 
-  <div class="field">
-    <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
-    <%= f.password_field :current_password, autocomplete: "current-password" %>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <%= f.label :public_place, "Endereço (Rua, Avenida)" %>
+      <%= f.text_field :public_place, autofocus: true, autocomplete: "place", required: true, class: "form-control" %>
+    </div>
+
+    <div class="form-group col-md-2">
+      <%= f.label :place_number, "Número" %>
+      <%= f.text_field :place_number, autofocus: true, required: true, class: "form-control" %>
+    </div>
+
+    <div class="form-group col-md-4">
+      <%= f.label :neighborhood, "Bairro" %>
+      <%= f.select :neighborhood, Neighborhood.pluck(:name), {},  { class: "form-control" } %>
+    </div>
   </div>
 
-  <div class="actions">
-    <%= f.submit "Update" %>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <%= f.label :phone, "Telefone" %>
+      <%= f.text_field :phone, autofocus: true, autocomplete: "phone", required: true, class: "form-control" %>
+    </div>
+
+    <div class="form-group col-md-6">
+      <%= f.label :other_phone, "Telefone Secundário (opcional)" %>
+      <%= f.text_field :other_phone, autofocus: true, autocomplete: "other_phone", required: false, class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <%= f.submit "Salvar", class: "btn btn-primary btn-block pull-right" %>
+    </div>
+    <div class="form-group col-md-6">
+      <div class="text-right">
+        <%= link_to :back, class: "btn btn-secondary btn-block pull-left" do %>
+          Voltar
+        <% end %>
+      </div>
+    </div>
   </div>
 <% end %>
-
-<h3>Cancel my account</h3>
-
-<p>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete %></p>
-
-<%= link_to "Back", :back %>
