@@ -11,7 +11,7 @@ class Patients::SessionsController < Devise::SessionsController
     end
 
     # Verifica se o paciente fez agendamento em menos de DAYS_FOR_NEW_APPOINTMENT dias
-    return render 'patients/appoitment_blocked' if patient.wait_appointment_time?
+    # return render 'patients/appoitment_blocked' if patient.wait_appointment_time?
 
     @mother_list = patient.fake_mothers
     super
