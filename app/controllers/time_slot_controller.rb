@@ -3,7 +3,7 @@ require_relative './../helpers/time_slot_helper'
 
 class TimeSlotController < PatientSessionController
 
-  SLOTS_WINDOW_IN_DAYS = 14
+  SLOTS_WINDOW_IN_DAYS = 11
 
   def schedule
     @ubs = Ubs.find(schedule_params[:ubs_id])
@@ -54,7 +54,7 @@ class TimeSlotController < PatientSessionController
     @current_day = Time.zone.now + @gap_in_days.days
 
     @time_slots = {}
-    unless @current_day.past? || @current_day.sunday? || @gap_in_days > TimeSlotController::SLOTS_WINDOW_IN_DAYS
+    unless @gap_in_days < 0 || @current_day.sunday? || @gap_in_days > TimeSlotController::SLOTS_WINDOW_IN_DAYS
       @time_slots = Ubs.where(active: true).each_with_object({}) do |ubs, memo|
         next unless ubs.business_day?(@current_day, ubs.open_saturday?)
 
