@@ -41,12 +41,6 @@ class TimeSlotController < PatientSessionController
     @appointment = Appointment.find(cancel_params[:appointment_id])
     @appointment.destroy
 
-    if Appointment.where("patient_id = ? AND start > ?", current_patient.id, Time.zone.now).last != nil
-      Appointment.where("patient_id = ? AND start > ?", current_patient.id, Time.zone.now).find_each do |appointment|
-        appointment.destroy
-      end
-    end
-
     @patient = Patient.find(current_patient.id)
     @patient.last_appointment = nil
     @patient.save
