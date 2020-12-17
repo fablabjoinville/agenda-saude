@@ -17,11 +17,7 @@ class TimeSlotController < PatientSessionController
         return
       end
 
-      if Appointment.where("patient_id = ? AND start > ?", current_patient.id, Time.zone.now).last != nil
-        Appointment.where("patient_id = ? AND start > ?", current_patient.id, Time.zone.now).find_each do |appointment|
-          appointment.destroy
-        end
-      end
+      current_patient.appointments.where('start > ?', Time.zone.now).destroy_all
 
       @appointment = Appointment.create(
         patient: current_patient,
