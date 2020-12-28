@@ -1,0 +1,22 @@
+headers = ['', 'Agenda_Inicio', 'Nome', 'CPF', 'Telefone',
+           'Data_Nascimento', 'Rua', 'Numero', 'Bairro']
+
+xlsx_package.workbook.add_worksheet do |sheet|
+  sheet.add_row headers
+
+  @appointments.each_with_index do |appointment, index|
+    patient = appointment.patient
+
+    sheet.add_row [
+        index,
+        l(appointment.start, format: :american),
+        patient.name,
+        patient.cpf,
+        patient.phone,
+        patient.birth_date,
+        patient.public_place,
+        patient.place_number,
+        patient.neighborhood
+      ]
+  end
+end

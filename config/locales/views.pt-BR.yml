@@ -22,6 +22,9 @@ pt-BR:
       - :month
       - :year
     month_names: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
+  time:
+      formats:
+        american: '%Y-%m-%d %H:%M'
   errors:
     messages:
       not_saved:

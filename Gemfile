@@ -24,6 +24,9 @@ gem 'tod'
 
 gem 'newrelic_rpm'
 
+gem 'caxlsx'
+gem 'caxlsx_rails'
+
 group :development, :test do
   gem 'byebug'
   gem 'pry-rails'
