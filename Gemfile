@@ -20,7 +20,6 @@ gem 'jquery-rails'
 gem 'sass-rails', '>= 6' # Use SCSS for stylesheets
 
 gem 'cpf_cnpj'
-gem 'phonelib'
 gem 'tod'
 
 gem 'newrelic_rpm'
