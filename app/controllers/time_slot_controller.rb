@@ -17,6 +17,8 @@ class TimeSlotController < PatientSessionController
         return
       end
 
+      current_patient.appointments.futures.destroy_all
+
       @appointment = Appointment.create(
         patient: current_patient,
         ubs: @ubs,
