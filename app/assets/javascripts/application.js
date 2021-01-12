@@ -3,7 +3,7 @@
 //= require_tree .
 
 $(document).ready(function(){
-  $('.sp_celphones').mask(SPMaskBehavior, spOptions);
+  $('.sp-celphones').mask(SPMaskBehavior, spOptions);
 });
 
 var SPMaskBehavior = function (val) {
@@ -14,4 +14,3 @@ spOptions = {
       field.mask(SPMaskBehavior.apply({}, arguments), options);
     }
 };
-
