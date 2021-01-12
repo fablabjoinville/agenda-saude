@@ -28,6 +28,7 @@
                   blank: em branco
                 phone:
                   blank: em branco
+                  invalid: telefone inválido                
                 neighborhood:
                   blank: em branco
                 main_ubs:
