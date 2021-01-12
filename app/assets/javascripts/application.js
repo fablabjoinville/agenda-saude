@@ -11,6 +11,6 @@ var SPMaskBehavior = function (val) {
 },
 spOptions = {
   onKeyPress: function(val, e, field, options) {
-      field.mask(SPMaskBehavior.apply({}, arguments), options);
-    }
+    field.mask(SPMaskBehavior.apply({}, arguments), options);
+  }
 };
