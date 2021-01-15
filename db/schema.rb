@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_11_010618) do
+ActiveRecord::Schema.define(version: 2021_01_15_144558) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -77,6 +77,7 @@ ActiveRecord::Schema.define(version: 2020_05_11_010618) do
     t.string "address", default: ""
     t.string "cnes"
     t.boolean "active", default: false
+    t.integer "appointments_per_time_slot", default: 1
     t.index ["cnes"], name: "index_ubs_on_cnes", unique: true
     t.index ["user_id"], name: "index_ubs_on_user_id"
   end

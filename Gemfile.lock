@@ -347,7 +347,7 @@ DEPENDENCIES
   rspec-rails
   sass-rails (>= 6)
   sentry-raven (~> 3.0)
-  smarter_csv (~> 1.2)
+  smarter_csv
   spring
   spring-watcher-listen (~> 2.0.0)
   stackprof
