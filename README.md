@@ -48,7 +48,7 @@ executar os seguintes comandos:
 
 ```sh
 apt-get update
-apt-get postgresql postgresql-contrib postgresql-server-dev-all cmake node libpq-dev
+apt-get postgresql postgresql-contrib postgresql-server-dev-all cmake nodejs libpq-dev
 gem install bundler
 ```
 
