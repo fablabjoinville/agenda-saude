@@ -34,6 +34,7 @@ class Patients::RegistrationsController < Devise::RegistrationsController
 
     patient.save
 
+    return redirect_to home_teste_rapido_path if patient.cpf.blank?
     return redirect_to new_patient_registration_path(cpf: patient.cpf), alert: patient.errors unless patient.persisted?
 
     sign_in(patient, scope: :patient)

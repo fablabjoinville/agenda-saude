@@ -28,7 +28,7 @@
                   blank: em branco
                 phone:
                   blank: em branco
-                  invalid: telefone inválido                
+                  invalid: inválido
                 neighborhood:
                   blank: em branco
                 main_ubs:
@@ -37,3 +37,12 @@
           attributes:
             cpf: CPF
             mother_name: Nome da mãe
+            phone: Telefone
+            email: Email
+            name: Nome
+            birth_date: Data de nascimento
+            other_phone: Telefone Secundário
+            neighborhood: Bairro
+            public_place: Endereço
+            place_number: Número
+

@@ -1,7 +1,8 @@
 <% if flash[:alert].present? %>
-  <% flash.each do |type, msg| %>
+  <% flash[:alert].each do |msg| %>
     <div class="alert alert-danger">
-      <%= msg.values.flatten %>
+      <%= I18n.t("activerecord.models.attributes.#{msg.first}") %>
+      <%= msg.second %>
     </div>
   <% end %>
 <% end %>
