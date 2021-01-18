@@ -6,14 +6,15 @@ xlsx_package.workbook.add_worksheet do |sheet|
 
   @appointments.each_with_index do |appointment, index|
     patient = appointment.patient
+    birth_date = Date.parse patient.birth_date
 
     sheet.add_row [
         index,
-        l(appointment.start, format: :american),
+        l(appointment.start, format: :default),
         patient.name,
         patient.cpf,
         patient.phone,
-        patient.birth_date,
+        l(birth_date, format: :default),
         patient.public_place,
         patient.place_number,
         patient.neighborhood
