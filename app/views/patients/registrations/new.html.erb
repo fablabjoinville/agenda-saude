@@ -1,7 +1,9 @@
-<% flash.each do |type, msg| %>
-  <div class="alert alert-danger">
-    <%= msg.values.flatten %>
-  </div>
+<% if flash[:alert].present? %>
+  <% flash.each do |type, msg| %>
+    <div class="alert alert-danger">
+      <%= msg.values.flatten %>
+    </div>
+  <% end %>
 <% end %>
 
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
