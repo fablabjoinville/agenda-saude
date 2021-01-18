@@ -1,3 +1,12 @@
+<% if flash[:alert].present? %>
+  <% flash[:alert].each do |msg| %>
+    <div class="alert alert-danger">
+      <%= I18n.t("activerecord.models.attributes.#{msg.first}") %>
+      <%= msg.second %>
+    </div>
+  <% end %>
+<% end %>
+
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
   <%= render "devise/shared/error_messages", resource: resource %>
 

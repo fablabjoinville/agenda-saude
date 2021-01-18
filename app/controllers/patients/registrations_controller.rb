@@ -67,7 +67,7 @@ class Patients::RegistrationsController < Devise::RegistrationsController
       flash[:notice] = 'Dados editados com sucesso!'
       redirect_to index_time_slot_path
     else
-      return render json: { errors: patient.errors, fields: fields }
+      return redirect_to edit_patient_registration_path(@patient), alert: @patient.errors
     end
   end
 
