@@ -17,10 +17,10 @@ class TimeSlotController < PatientSessionController
         return
       end
 
-      current_patient.appointments.futures.destroy_all
+      Appointment.find_by(patient_id: current_patient.id)&.futures&.destroy_all
 
       @appointment = Appointment.create(
-        patient: current_patient,
+        patient_id: Patient.find(current_patient.id).id,
         ubs: @ubs,
         start: start_time,
         end: start_time + @ubs.slot_interval,
