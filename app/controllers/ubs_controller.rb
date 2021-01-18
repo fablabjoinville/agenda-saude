@@ -10,6 +10,17 @@ class UbsController < UserSessionController
     @bedridden_patients = @ubs.bedridden_patients
   end
 
+  def today_appointments
+    @appointments = @ubs.appointments.today.order(:start)
+
+    respond_to do |format|
+      format.xlsx {
+        response.headers['Content-Disposition'] =
+          "attachment; filename=\"agendamentos_#{Date.current}.xlsx\""
+      }
+    end
+  end
+
   def activate_ubs
     updated = @ubs.update(active: true)
 

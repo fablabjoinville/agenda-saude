@@ -37,6 +37,7 @@ Rails.application.routes.draw do
       get 'activate_all_future_appointments'
       get 'activate_ubs'
       get 'deactivate_ubs'
+      get 'today_appointments'
     end
   end
 
