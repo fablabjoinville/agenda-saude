@@ -11,6 +11,13 @@ class UbsController < UserSessionController
   end
 
   def activate_ubs
+    options = set_ubs_options
+    service = TimeSlotGenerationService.new(
+      create_slot: create_slot
+    )
+
+    service.execute(options)
+
     updated = @ubs.update(active: true)
 
     return redirect_to ubs_index_path if updated
@@ -127,5 +134,39 @@ class UbsController < UserSessionController
 
   def slot_duration_params
     params.require(:ubs).permit(:slot_interval_minutes)
+  end
+
+  def set_ubs_options
+    options = TimeSlotGenerationService::Options.new(
+      start_date: DateTime.new(2021, 1, 1),
+      end_date: DateTime.new(2021, 12, 31),
+      time_windows: [
+        (7.hours + 30.minutes)..12.hours,
+        13.hours..18.hours
+      ],
+      excluded_dates: TimeSlot::OFFICIAL_HOLIDAYS,
+      weekdays: [*0..6],
+      appointment_duration: 20.minutes,
+      num_spots: 19,
+      ubs_id: @ubs.id
+    )
+  end
+
+  def create_slot
+    lambda { |attrs|
+      slot = Appointment.new(
+        patient_id: nil,
+        ubs_id: attrs['ubs_id'],
+        start: attrs['start'],
+        end: attrs['end'],
+        active: true
+      )
+
+      puts(slot.inspect)
+    }
+  end
+
+  def all_generated_attributes
+    []
   end
 end
