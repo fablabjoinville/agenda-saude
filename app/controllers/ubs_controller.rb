@@ -133,10 +133,11 @@ class UbsController < UserSessionController
 
   def active_hours_params
     params.require(:ubs).permit(:shift_start_date, :shift_end_date, :break_start_date, :break_end_date,
-    :shift_start_saturday, :break_start_saturday, :break_end_saturday, :shift_end_saturday, :open_saturday)
+                                :shift_start_saturday, :break_start_saturday, :break_end_saturday,
+                                :shift_end_saturday, :open_saturday)
   end
 
   def slot_duration_params
-    params.require(:ubs).permit(:slot_interval_minutes)
+    params.require(:ubs).permit(:slot_interval_minutes, :appointments_per_time_slot)
   end
 end

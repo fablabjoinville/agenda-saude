@@ -3,6 +3,7 @@ class Ubs < ApplicationRecord
 
   validate :times_must_be_ordered
   validates :slot_interval_minutes, inclusion: 1...120
+  validates :appointments_per_time_slot, numericality: { greater_than: 0 }
 
   belongs_to :user
   has_many :appointments, dependent: :destroy
