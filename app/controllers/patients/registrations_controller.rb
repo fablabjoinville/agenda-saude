@@ -34,7 +34,7 @@ class Patients::RegistrationsController < Devise::RegistrationsController
 
     patient.save
 
-    return render json: { errors: patient.errors, fields: fields } unless patient.persisted?
+    return redirect_to new_patient_registration_path(cpf: patient.cpf), alert: patient.errors unless patient.persisted?
 
     sign_in(patient, scope: :patient)
 
