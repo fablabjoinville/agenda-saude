@@ -11,13 +11,24 @@
 <%= form_for @ubs, url: ubs_change_slot_duration_path do |f| %>
   <div class="field">
     <%= f.label :slot_interval_minutes, 'Duração de cada atendimento (em minutos):' %><br />
-    <% if @ubs.active %>
-      <%= f.number_field :slot_interval_minutes, disabled: 'disabled' %>
+    <div class="form-group col-md-4">
+      <% if @ubs.active %>
+        <%= f.number_field :slot_interval_minutes, disabled: 'disabled' %>
     <% else %>
-      <div class="form-group col-md-4">
-        <%= f.select :slot_interval_minutes, [5, 10, 15, 20, 30, 45, 60], {},  { class: "form-control" } %>
-      </div>
+        <%= f.select :slot_interval_minutes, [5, 10, 15, 20, 30, 45, 60], {}, { class: "form-control" } %>
     <% end %>
+    </div>
+  </div>
+
+  <div class="field">
+    <%= f.label :appointments_per_time_slot, 'Número de atendimentos por horário:' %><br />
+    <div class="form-group col-md-4">
+      <% if @ubs.active %>
+        <%= f.number_field :appointments_per_time_slot, disabled: 'disabled' %>
+      <% else %>
+        <%= f.number_field :appointments_per_time_slot, { min: 1, class: "form-control" }  %>
+      <% end %>
+    </div>
   </div>
 
   <div class="d-flex mt-3">
