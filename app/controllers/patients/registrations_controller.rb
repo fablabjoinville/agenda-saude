@@ -34,7 +34,8 @@ class Patients::RegistrationsController < Devise::RegistrationsController
 
     patient.save
 
-    return render json: { errors: patient.errors, fields: fields } unless patient.persisted?
+    return redirect_to home_teste_rapido_path if patient.cpf.blank?
+    return redirect_to new_patient_registration_path(cpf: patient.cpf), alert: patient.errors unless patient.persisted?
 
     sign_in(patient, scope: :patient)
 
@@ -66,7 +67,7 @@ class Patients::RegistrationsController < Devise::RegistrationsController
       flash[:notice] = 'Dados editados com sucesso!'
       redirect_to index_time_slot_path
     else
-      return render json: { errors: patient.errors, fields: fields }
+      return redirect_to edit_patient_registration_path(@patient), alert: @patient.errors
     end
   end
 

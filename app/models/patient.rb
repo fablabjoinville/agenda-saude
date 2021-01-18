@@ -12,7 +12,7 @@ class Patient < ApplicationRecord
   validates :cpf, presence: true, uniqueness: true, cpf_format: true
   validates :mother_name, presence: true
   validates :birth_date, presence: true
-  validates :phone, presence: true
+  validates :phone, presence: true, phone_format: true
   validates :neighborhood, presence: true
 
   after_initialize :set_main_ubs
@@ -65,8 +65,8 @@ class Patient < ApplicationRecord
   end
 
   def wait_appointment_time?
-    last_appointment != nil and 
-    last_appointment < Time.zone.now and 
+    last_appointment != nil and
+    last_appointment < Time.zone.now and
     Time.zone.now < last_appointment + DAYS_FOR_NEW_APPOINTMENT.days
   end
 
