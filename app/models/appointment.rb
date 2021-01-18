@@ -1,5 +1,4 @@
 class Appointment < ApplicationRecord
-  belongs_to :patient
   belongs_to :ubs
 
   scope :active_from_day, ->(day) do

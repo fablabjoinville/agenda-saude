@@ -137,7 +137,7 @@ class UbsController < UserSessionController
   end
 
   def set_ubs_options
-    options = TimeSlotGenerationService::Options.new(
+    TimeSlotGenerationService::Options.new(
       start_date: DateTime.new(2021, 1, 1),
       end_date: DateTime.new(2021, 12, 31),
       time_windows: [
@@ -154,19 +154,13 @@ class UbsController < UserSessionController
 
   def create_slot
     lambda { |attrs|
-      slot = Appointment.new(
+      Appointment.create!(
         patient_id: nil,
         ubs_id: attrs['ubs_id'],
         start: attrs['start'],
         end: attrs['end'],
         active: true
       )
-
-      puts(slot.inspect)
     }
-  end
-
-  def all_generated_attributes
-    []
   end
 end
