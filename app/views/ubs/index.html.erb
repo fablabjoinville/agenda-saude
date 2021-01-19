@@ -65,11 +65,19 @@
     <% end %>
     </tbody>
     </table>
+
     <p>
-    <a class="btn btn-danger" href=<%= "/ubs/#{@ubs.id}/cancel_all_future_appointments" %>
-    onclick="return confirm('Você tem certeza?')">Desativar todos agendamentos futuros</a>
-    <a class="btn btn-success" href=<%= "/ubs/#{@ubs.id}/activate_all_future_appointments" %>
-    onclick="return confirm('Você tem certeza?')">Ativar todos agendamentos futuros</a><br/>
+      <%= link_to 'Exportar agendamentos do dia',
+                  today_appointments_ubs_path(@ubs, format: 'xlsx'),
+                  class: 'btn btn-primary' %>
+      <%= link_to 'Desativar todos agendamentos futuros',
+                  cancel_all_future_appointments_ubs_path(@ubs),
+                  class: 'btn btn-danger',
+                  data: { confirm: 'Você tem certeza?' } %>
+      <%= link_to 'Ativar todos agendamentos futuros',
+                  activate_all_future_appointments_ubs_path(@ubs),
+                  class: 'btn btn-success',
+                  data: { confirm: 'Você tem certeza?' } %>
     </p>
   <% else %>
     <p>Nenhum paciente agendou horário até o momento.</p>

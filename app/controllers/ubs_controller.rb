@@ -10,6 +10,17 @@ class UbsController < UserSessionController
     @bedridden_patients = @ubs.bedridden_patients
   end
 
+  def today_appointments
+    @appointments = @ubs.appointments.today.order(:start)
+
+    respond_to do |format|
+      format.xlsx {
+        response.headers['Content-Disposition'] =
+          "attachment; filename=\"agendamentos_#{Date.current}.xlsx\""
+      }
+    end
+  end
+
   def activate_ubs
     options = set_ubs_options
     service = TimeSlotGenerationService.new(
@@ -129,11 +140,12 @@ class UbsController < UserSessionController
 
   def active_hours_params
     params.require(:ubs).permit(:shift_start_date, :shift_end_date, :break_start_date, :break_end_date,
-    :shift_start_saturday, :break_start_saturday, :break_end_saturday, :shift_end_saturday, :open_saturday)
+                                :shift_start_saturday, :break_start_saturday, :break_end_saturday,
+                                :shift_end_saturday, :open_saturday)
   end
 
   def slot_duration_params
-    params.require(:ubs).permit(:slot_interval_minutes)
+    params.require(:ubs).permit(:slot_interval_minutes, :appointments_per_time_slot)
   end
 
   def set_ubs_options
