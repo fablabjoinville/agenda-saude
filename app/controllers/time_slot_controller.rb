@@ -10,9 +10,7 @@ class TimeSlotController < PatientSessionController
     start_time = Time.parse(schedule_params[:start_time])
 
     Appointment.transaction do
-      # TODO we need to get this value from ubs
-      appointments_per_time_slot = 19
-      if Appointment.where(start: start_time, ubs: @ubs).where.not(patient_id: nil).count == appointments_per_time_slot
+      if Appointment.where(start: start_time, ubs: @ubs).where.not(patient_id: nil).count == @ubs.appointments_per_time_slot
         flash[:alert] = 'Opa! O horário foi reservado enquanto você escolhia, tente outro!'
         redirect_to time_slot_path
 
@@ -52,7 +50,6 @@ class TimeSlotController < PatientSessionController
 
     @time_slots = {}
 
-    # TODO this will break if no ubs is active
     Ubs.where(active: true).each do |ubs|
       slots = []
       appointments = Appointment.where(start: @current_day..@current_day.end_of_day, ubs: ubs, patient_id: nil)

@@ -166,13 +166,11 @@ class UbsController < UserSessionController
 
   def create_slot
     lambda { |attrs|
-      Appointment.create!(
-        patient_id: nil,
-        ubs_id: attrs['ubs_id'],
-        start: attrs['start'],
-        end: attrs['end'],
-        active: true
-      )
+      now = Time.zone.now.to_s(:db)
+
+      sql = "INSERT INTO appointments (start,\"end\",active,created_at,updated_at,ubs_id) VALUES ('#{attrs['start'].to_s(:db)}', '#{attrs['end'].to_s(:db)}', #{true}, '#{now}', '#{now}', #{attrs['ubs_id']})"
+
+      ActiveRecord::Base.connection.execute(sql)
     }
   end
 end
