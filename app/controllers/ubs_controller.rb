@@ -6,7 +6,7 @@ class UbsController < UserSessionController
   end
 
   def index
-    @appointments = future_appointments.order(start: :asc)
+    @appointments = future_appointments.where.not(patient_id: nil).order(start: :asc)
     @bedridden_patients = @ubs.bedridden_patients
   end
 
