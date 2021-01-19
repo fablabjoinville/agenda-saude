@@ -23,12 +23,15 @@ class Patients::RegistrationsController < Devise::RegistrationsController
   # POST /patients
   def create
     fields = params.require(:patient).permit(*FIELDS)
+    groups_ids = params.require(:patient).permit(groups: [])['groups']
+
     fields[:bedridden] = false
     fields[:target_audience] = Patient.target_audiences["without_target"]
     fields = convert_birth_date(fields)
 
     patient = Patient.new(fields)
     patient.last_appointment = nil
+    patient.groups = Group.where(id: groups_ids)
 
     # return render 'patients/not_allowed' unless patient.allowed_age?
 
