@@ -62,9 +62,11 @@ class Patients::RegistrationsController < Devise::RegistrationsController
   # PUT /patients
   def update
     fields = params.require(:patient).permit(*FIELDS)
+    groups_ids = params.require(:patient).permit(groups: [])['groups']
     fields = convert_birth_date(fields)
 
     @patient = Patient.find_by(cpf: fields[:cpf])
+    @patient.groups = Group.where(id: groups_ids)
 
     if @patient.update_without_password(fields)
       flash[:notice] = 'Dados editados com sucesso!'
