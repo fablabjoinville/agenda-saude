@@ -19,14 +19,14 @@
         <%= f.label :password, "Selecione o primeiro nome da sua mãe:" %><br />
         <div style="text-align: left; padding-left: 42%;" >
           <% @mother_list.each do |mother| %>
-            <%= f.radio_button(:password, mother) %>
+            <%= f.radio_button(:password, mother, data: { cy: "#{mother}Buttom" }) %>
             <%= f.label(:password, mother) %><br/>
           <% end %>
         </div>
       </div>
 
       <div class="actions">
-        <%= f.submit "Entrar", class: "btn btn-primary btn-block" %>
+        <%= f.submit "Entrar", class: "btn btn-primary btn-block", data: { cy: "loginButtom" } %>
       </div>
     <% end %>
   </div>
