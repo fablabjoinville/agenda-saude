@@ -27,6 +27,7 @@ $blue: #005293;
 .comm-img {
   width: 100%;
   height: auto;
+  margin-top: 15px;
 }
 
 .day {
@@ -39,4 +40,12 @@ $blue: #005293;
 
 .year {
   width: 30%;
+}
+
+.form-check {
+  margin-left: 3%;
+}
+
+.simple-link {
+  text-decoration: underline;
 }

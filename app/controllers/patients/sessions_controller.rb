@@ -67,9 +67,9 @@ class Patients::SessionsController < Devise::SessionsController
 
     patient.update!(fake_mothers: [], login_attempts: 0)
 
-    return redirect_to index_bedridden_path if patient.bedridden?
+    return render 'patients/not_allowed' unless patient.can_schedule?
 
-    # return render 'patients/not_allowed' unless patient.allowed_age?
+    return redirect_to index_bedridden_path if patient.bedridden?
 
     redirect_to time_slot_path
   end

@@ -23,12 +23,15 @@ class Patients::RegistrationsController < Devise::RegistrationsController
   # POST /patients
   def create
     fields = params.require(:patient).permit(*FIELDS)
+    groups_ids = params.require(:patient).permit(groups: [])['groups']
+
     fields[:bedridden] = false
     fields[:target_audience] = Patient.target_audiences["without_target"]
     fields = convert_birth_date(fields)
 
     patient = Patient.new(fields)
     patient.last_appointment = nil
+    patient.groups = Group.where(id: groups_ids)
 
     # return render 'patients/not_allowed' unless patient.allowed_age?
 
@@ -38,6 +41,8 @@ class Patients::RegistrationsController < Devise::RegistrationsController
     return redirect_to new_patient_registration_path(cpf: patient.cpf), alert: patient.errors unless patient.persisted?
 
     sign_in(patient, scope: :patient)
+
+    return render 'patients/not_allowed' unless patient.can_schedule?
 
     return redirect_to index_bedridden_path if patient.bedridden?
 
@@ -59,12 +64,16 @@ class Patients::RegistrationsController < Devise::RegistrationsController
   # PUT /patients
   def update
     fields = params.require(:patient).permit(*FIELDS)
+    groups_ids = params.require(:patient).permit(groups: [])['groups']
     fields = convert_birth_date(fields)
 
     @patient = Patient.find_by(cpf: fields[:cpf])
+    @patient.groups = Group.where(id: groups_ids)
 
     if @patient.update_without_password(fields)
       flash[:notice] = 'Dados editados com sucesso!'
+      return render 'patients/not_allowed' unless @patient.can_schedule?
+
       redirect_to index_time_slot_path
     else
       return redirect_to edit_patient_registration_path(@patient), alert: @patient.errors

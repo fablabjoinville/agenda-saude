@@ -5,7 +5,15 @@ class Patient < ApplicationRecord
 
   DAYS_FOR_NEW_APPOINTMENT = 30
 
+  CONDITIONS = {
+    'Trabalhador(a) da Saúde' => ->(patient) { patient.in_group?('Trabalhador(a) da Saúde') },
+    'Pessoa acima de 75 anos' => ->(patient) { patient.age >= 75 },
+    'Pessoas de 60 anos ou mais institucionalizadas' => ->(patient) { patient.age >= 60 && patient.in_group?('Institucionalizado(a)') },
+    'População Indígena' => ->(patient) { patient.in_group?('Indígena') },
+  }
+
   has_many :appointments, dependent: :destroy
+  has_and_belongs_to_many :groups
   belongs_to :main_ubs, class_name: 'Ubs'
 
   validates :name, presence: true
@@ -28,6 +36,16 @@ class Patient < ApplicationRecord
 
   def current_appointment
     active_appointments.last
+  end
+
+  def can_schedule?
+    CONDITIONS.values.any? do |condition|
+      condition.call(self)
+    end
+  end
+
+  def in_group?(name)
+    groups.map(&:name).include?(name)
   end
 
   def set_main_ubs
@@ -78,19 +96,7 @@ class Patient < ApplicationRecord
     ''
   end
 
-  def allowed_age?
-    p_year = birth_date[0..3].to_i
-    p_month = birth_date[5..6].to_i
-    p_day = birth_date[8..9].to_i
-
-    now_year = DateTime.now.strftime('%Y').to_i
-    now_month = DateTime.now.strftime('%m').to_i
-    now_day = DateTime.now.strftime('%d').to_i
-
-    # Older than 60 years old
-    return false if p_year > (now_year - 2) or
-      (p_year == (now_year - 2) and p_month >= now_month and p_day > now_day)
-
-    return true
+  def age
+    ((Time.zone.now - birth_date.to_time) / 1.year.seconds).floor
   end
 end
