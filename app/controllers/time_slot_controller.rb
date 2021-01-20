@@ -9,6 +9,9 @@ class TimeSlotController < PatientSessionController
     @ubs = Ubs.find(schedule_params[:ubs_id])
     start_time = Time.parse(schedule_params[:start_time])
 
+    @patient = Patient.find(current_patient.id)
+    return render 'patients/not_allowed' unless @patient.can_schedule?
+
     Appointment.transaction do
       if Appointment.where(start: start_time, ubs: @ubs).present?
         flash[:alert] = 'Opa! O horário foi reservado enquanto você escolhia, tente outro!'
@@ -28,7 +31,6 @@ class TimeSlotController < PatientSessionController
       )
     end
 
-    @patient = Patient.find(current_patient.id)
     @patient.last_appointment = start_time
     @patient.save
 

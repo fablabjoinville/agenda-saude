@@ -42,6 +42,8 @@ class Patients::RegistrationsController < Devise::RegistrationsController
 
     sign_in(patient, scope: :patient)
 
+    return render 'patients/not_allowed' unless patient.can_schedule?
+
     return redirect_to index_bedridden_path if patient.bedridden?
 
     redirect_to index_time_slot_path
@@ -70,6 +72,8 @@ class Patients::RegistrationsController < Devise::RegistrationsController
 
     if @patient.update_without_password(fields)
       flash[:notice] = 'Dados editados com sucesso!'
+      return render 'patients/not_allowed' unless @patient.can_schedule?
+
       redirect_to index_time_slot_path
     else
       return redirect_to edit_patient_registration_path(@patient), alert: @patient.errors
