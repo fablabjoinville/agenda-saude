@@ -80,7 +80,7 @@ today = Date.today
   patient.cpf = cpfs[i]
   patient.mother_name = 'Natureza'
   patient.birth_date = '1979-06-24'
-  patient.phone = '12345678'
+  patient.phone = '(47) 91234-5678'
   patient.neighborhood = 'América'
   patient.save!
 
@@ -92,3 +92,16 @@ today = Date.today
   appointment.active = true
   appointment.save!
 end
+
+[
+  'Trabalhador(a) da Saúde',
+  'Institucionalizado(a)',
+  'Indígena',
+  'Portador(a) de comorbidade*',
+  'Professor(a)',
+  'Profissional das forças de seguranças e salvamento',
+  'Funcionário(a) do sistema prisional',
+].each do |name|
+  Group.create(name: name)
+end
+

@@ -6,6 +6,7 @@ class Patient < ApplicationRecord
   DAYS_FOR_NEW_APPOINTMENT = 30
 
   has_many :appointments, dependent: :destroy
+  has_and_belongs_to_many :groups
   belongs_to :main_ubs, class_name: 'Ubs'
 
   validates :name, presence: true
