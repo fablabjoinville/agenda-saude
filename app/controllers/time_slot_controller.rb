@@ -3,11 +3,16 @@ require_relative './../helpers/time_slot_helper'
 
 class TimeSlotController < PatientSessionController
 
+  before_action :render_patient_not_allowed
+
   SLOTS_WINDOW_IN_DAYS = 10
 
   def schedule
     @ubs = Ubs.find(schedule_params[:ubs_id])
     start_time = Time.parse(schedule_params[:start_time])
+
+    @patient = Patient.find(current_patient.id)
+    return render 'patients/not_allowed' unless @patient.can_schedule?
 
     Appointment.transaction do
       if Appointment.where(start: start_time, ubs: @ubs).present?
@@ -28,7 +33,6 @@ class TimeSlotController < PatientSessionController
       )
     end
 
-    @patient = Patient.find(current_patient.id)
     @patient.last_appointment = start_time
     @patient.save
 
@@ -67,6 +71,10 @@ class TimeSlotController < PatientSessionController
   end
 
   private
+
+  def render_patient_not_allowed
+    return render 'patients/not_allowed' unless current_patient.can_schedule?
+  end
 
   def slot_params
     params.permit(:gap_in_days)
