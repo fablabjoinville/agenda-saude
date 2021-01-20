@@ -22,13 +22,6 @@ class UbsController < UserSessionController
   end
 
   def activate_ubs
-    options = set_ubs_options
-    service = TimeSlotGenerationService.new(
-      create_slot: create_slot
-    )
-
-    service.execute(options)
-
     updated = @ubs.update(active: true)
 
     return redirect_to ubs_index_path if updated
@@ -146,31 +139,5 @@ class UbsController < UserSessionController
 
   def slot_duration_params
     params.require(:ubs).permit(:slot_interval_minutes, :appointments_per_time_slot)
-  end
-
-  def set_ubs_options
-    TimeSlotGenerationService::Options.new(
-      start_date: DateTime.new(2021, 1, 1),
-      end_date: DateTime.new(2021, 12, 31),
-      time_windows: [
-        (7.hours + 30.minutes)..12.hours,
-        13.hours..18.hours
-      ],
-      excluded_dates: TimeSlot::OFFICIAL_HOLIDAYS,
-      weekdays: [*0..6],
-      appointment_duration: 20.minutes,
-      num_spots: 19,
-      ubs_id: @ubs.id
-    )
-  end
-
-  def create_slot
-    lambda { |attrs|
-      now = Time.zone.now.to_s(:db)
-
-      sql = "INSERT INTO appointments (start,\"end\",active,created_at,updated_at,ubs_id) VALUES ('#{attrs['start'].to_s(:db)}', '#{attrs['end'].to_s(:db)}', #{true}, '#{now}', '#{now}', #{attrs['ubs_id']})"
-
-      ActiveRecord::Base.connection.execute(sql)
-    }
   end
 end

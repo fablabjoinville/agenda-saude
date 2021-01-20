@@ -90,6 +90,8 @@ class TimeSlotGenerationService
   end
 
   def generate_time_slots_for_time_window(date, window, options)
+    date = date.to_datetime.change(offset: Time.zone.now.strftime('%z')).in_time_zone
+
     window.step(options.appointment_duration).lazy.each do |time|
       window_end = date + window.end
       appointment_start = date + time

@@ -52,13 +52,20 @@ class TimeSlotController < PatientSessionController
 
     Ubs.where(active: true).each do |ubs|
       slots = []
-      appointments = Appointment.where(start: @current_day..@current_day.end_of_day, ubs: ubs, patient_id: nil)
 
-      appointments.each do |appointment|
-        slots << { slot_start: appointment.start, slot_end: appointment.end }
+      if @gap_in_days < TimeSlotController::SLOTS_WINDOW_IN_DAYS && @gap_in_days > 0 && !@current_day.sunday?
+        if @current_day.today?
+          appointments = Appointment.where(start: @current_day..@current_day.end_of_day, ubs: ubs, patient_id: nil)
+        else
+          appointments = Appointment.where(start: @current_day.at_beginning_of_day..@current_day.end_of_day, ubs: ubs, patient_id: nil)
+        end
+
+        appointments.each do |appointment|
+          slots << { slot_start: appointment.start, slot_end: appointment.end }
+        end
+
+        @time_slots[ubs] = slots.uniq
       end
-
-      @time_slots[ubs] = slots
     end
   end
 
