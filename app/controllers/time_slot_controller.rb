@@ -3,6 +3,8 @@ require_relative './../helpers/time_slot_helper'
 
 class TimeSlotController < PatientSessionController
 
+  before_action :render_patient_not_allowed
+
   SLOTS_WINDOW_IN_DAYS = 10
 
   def schedule
@@ -69,6 +71,10 @@ class TimeSlotController < PatientSessionController
   end
 
   private
+
+  def render_patient_not_allowed
+    return render 'patients/not_allowed' unless current_patient.can_schedule?
+  end
 
   def slot_params
     params.permit(:gap_in_days)
