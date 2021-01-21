@@ -25,6 +25,6 @@ test:
 
 production:
   <<: *default
-  database: agendamento_covid_production
-  username: agendamento_covid
+  database: <%= ENV['POSTGRESQL_DATABASE'] %>
+  username: <%= ENV['POSTGRESQL_USERNAME'] %>
   password: <%= ENV['POSTGRESQL_PASSWORD'] %>
