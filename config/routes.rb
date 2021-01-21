@@ -38,7 +38,12 @@ Rails.application.routes.draw do
       get 'activate_ubs'
       get 'deactivate_ubs'
       get 'today_appointments'
+      get 'check_in_patient'
     end
+
+    get 'check_in', as: :search, to: 'check_in#search'
+    post 'find_patient', as: :find_patient, to: 'check_in#find_patient'
+    get 'results', as: :results, to: 'check_in#results'
   end
 
   post 'home/patient_base_login', as: :patient_base_login, to: 'home#patient_base_login'

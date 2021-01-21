@@ -3,6 +3,8 @@
 <% if @ubs.active %>
   <div class="d-flex justify-content-between align-items-center alert alert-success" role="alert">
     Unidade ativada: Aceitando agendamentos.
+    <a class="btn btn-info" href=<%= "/ubs/#{@ubs.id}/check_in" %>>Check-In</a>
+    <a class="btn btn-info" href=<%= "/ubs/" %>>Agendamentos</a>
     <a class="btn btn-danger" href=<%= "/ubs/#{@ubs.id}/deactivate_ubs" %>
     onclick="return confirm('Você tem certeza?')">Desativar Unidade</a>
   </div>
