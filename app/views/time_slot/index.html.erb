@@ -1,7 +1,7 @@
 
 <%= render :layout => '/shared/panel' do %>
   <% if flash[:notice] %>
-    <div class="alert alert-info alert-dismissable" role="alert">
+    <div class="alert alert-info alert-dismissable", data-cy="alertMessage" role="alert">
       <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
       <h6 class="mb-0">
         <%= flash[:notice] %>
@@ -22,7 +22,7 @@
             </div>
           <% end %>
           <div class="row">
-            <div class="col">
+            <div class="col", data-cy="currentAppointmentText">
               <h4>Seu agendamento atual é em:</h4>
             </div>
           </div>
@@ -57,12 +57,12 @@
           </div>
           <div class="row mt-3">
             <div class="col">
-              <%= button_to "patients/edit", class: "btn btn-primary btn-block", method: :get do %>
+              <%= button_to "patients/edit", class: "btn btn-primary btn-block", data: { cy: "editPatientButton" }, method: :get do %>
                 Alterar meus dados
               <% end %>
             </div>
               <div class="col">
-              <%= button_to cancel_time_slot_path(appointment_id: @appointment.id), class: "btn btn-danger btn-block", method: :delete, data: { confirm: "Seu horário será cancelado. Confirmar?" } do %>
+              <%= button_to cancel_time_slot_path(appointment_id: @appointment.id), class: "btn btn-danger btn-block", method: :delete, data: { cy: "cancelAppointmentButton", confirm: "Seu horário será cancelado. Confirmar?" } do %>
                 Cancelar
               <% end %>
             </div>
@@ -73,7 +73,7 @@
   <% else %>
     <div class="row">
       <div class="col">
-        <h4 class="text-center">Você não possui nenhum agendamento no momento</h4>
+        <h4 class="text-center" data-cy="noAppointmentYetText">Você não possui nenhum agendamento no momento</h4>
       </div>
     </div>
 
@@ -138,7 +138,7 @@
               <div class="card">
                 <div class="card-header" id=<%= "ubsId#{ubs.id}" %>>
                   <h5 class="mb-0">
-                    <button class="btn btn-link" data-toggle="collapse" data-target=<%= "#ubsControl#{ubs.id}" %> aria-expanded="true" aria-controls=<%= "ubsControl#{ubs.id}" %>>
+                    <button class="btn btn-link" data-cy="ubsTimeSlots" data-toggle="collapse" data-target=<%= "#ubsControl#{ubs.id}" %> aria-expanded="true" aria-controls=<%= "ubsControl#{ubs.id}" %>>
                       <%= ubs.identifier %>
                     </button>
                   </h5>
@@ -152,7 +152,7 @@
                             Horário <br /> <%= ApplicationHelper.humanize_time(slot[:slot_start]) %>
                           </div>
                           <div class="col text-right">
-                            <%= button_to @appointment.present? ? 'Substituir' : 'Agendar', schedule_time_slot_path(start_time: slot[:slot_start], ubs_id: ubs.id), class: "btn btn-success" %>
+                            <%= button_to @appointment.present? ? 'Substituir' : 'Agendar', schedule_time_slot_path(start_time: slot[:slot_start], ubs_id: ubs.id), class: "btn btn-success", data: { cy: "ubsSlot#{slot[:slot_start]}" } %>
                           </div>
                         </div>
                         <hr/>

@@ -23,7 +23,25 @@
   },
   "version": "0.1.0",
   "devDependencies": {
-    "cypress": "^4.5.0",
+    "cypress": "^4.12.1",
     "webpack-dev-server": "^3.9.0"
-  }
+  },
+  "description": "**Agenda Saúde** é um projeto de código aberto desenvolvido de forma colaborativa para fornecer um sistema de agendamento de vacinação e exames de COVID-19 para a prefeitura de Joinville.",
+  "main": "babel.config.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MakersNetwork/agenda-saude.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MakersNetwork/agenda-saude/issues"
+  },
+  "homepage": "https://github.com/MakersNetwork/agenda-saude#readme"
 }

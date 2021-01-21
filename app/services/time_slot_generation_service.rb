@@ -3,24 +3,24 @@ class TimeSlotGenerationService
     Names = [
       #
       # Date from which time slots should be generated
-      # 
+      #
       # type: DateTime
       #
       :start_date,
       #
       # Final date for which time slots should be generated
-      # 
+      #
       # type: DateTime
       #
       :end_date,
-      # 
-      # An array with duration ranges 
+      #
+      # An array with duration ranges
       #
       # type: [Range<ActiveSupport::Duration>]
       # example: [(7.hours + 30.minutes)..12.hours, 13.hours..18.hours]
       #
       :time_windows,
-      # 
+      #
       # Self-explanatory
       #
       :ubs_id,
@@ -31,18 +31,18 @@ class TimeSlotGenerationService
       # example: 20.minutes
       #
       :appointment_duration,
-      # 
+      #
       # Number of vaccination spots (i.e. parallel appointments)
-      # 
+      #
       # type: Integer
       #
       :num_spots,
-      # 
+      #
       # Operating weekdays. Sunday = 0
       #
       # type: [Int]
       # example: [*1..5] # Monday to Friday
-      # 
+      #
       :weekdays,
       #
       # Dates for which time slots should not be generated
@@ -62,10 +62,10 @@ class TimeSlotGenerationService
       super(options)
     end
   end
-  # 
-  # create_slot: 
+  #
+  # create_slot:
   #   A function receiving a hash with generated time slot attributes
-  # 
+  #
   def initialize(create_slot:)
     @create_slot = create_slot
   end
@@ -90,15 +90,16 @@ class TimeSlotGenerationService
   end
 
   def generate_time_slots_for_time_window(date, window, options)
+    date = date.to_datetime.change(offset: Time.zone.now.strftime('%z')).in_time_zone
+
     window.step(options.appointment_duration).lazy.each do |time|
-      window_start = date + window.begin
       window_end = date + window.end
       appointment_start = date + time
       appointment_end = appointment_start + options.appointment_duration
 
       next if appointment_end > window_end
 
-      options.num_spots.times do 
+      options.num_spots.times do
         @create_slot.({
           ubs_id: options.ubs_id,
           start: appointment_start,

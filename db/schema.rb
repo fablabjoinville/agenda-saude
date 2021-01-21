@@ -18,12 +18,11 @@ ActiveRecord::Schema.define(version: 2021_01_19_115107) do
   create_table "appointments", force: :cascade do |t|
     t.datetime "start"
     t.datetime "end"
-    t.bigint "patient_id", null: false
     t.boolean "active"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "ubs_id"
-    t.index ["patient_id"], name: "index_appointments_on_patient_id"
+    t.integer "patient_id"
     t.index ["ubs_id"], name: "index_appointments_on_ubs_id"
   end
 
@@ -114,7 +113,6 @@ ActiveRecord::Schema.define(version: 2021_01_19_115107) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  add_foreign_key "appointments", "patients"
   add_foreign_key "appointments", "ubs"
   add_foreign_key "patients", "ubs", column: "main_ubs_id"
   add_foreign_key "ubs", "users"

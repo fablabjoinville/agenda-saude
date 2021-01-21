@@ -14,7 +14,7 @@
 
   <div class="row text-center">
     <div class="col">
-      <p class="h3">Cadastro</p>
+      <p data-cy="signUpText" class="h3">Cadastro</p>
     </div>
   </div>
 
@@ -36,12 +36,12 @@
   <div class="form-row">
     <div class="form-group col-md-6">
       <%= f.label :name, "Nome Completo" %>
-      <%= f.text_field :name, autofocus: true, autocomplete: "name", required: true, class: "form-control" %>
+      <%= f.text_field :name, autofocus: true, autocomplete: "name", required: true, class: "form-control", data: { cy: "newPatientNameInputField" } %>
     </div>
 
     <div class="form-group col-md-6">
       <%= f.label :email, "E-mail" %>
-      <%= f.email_field :email, autofocus: true, autocomplete: "email", required: false, class: "form-control" %>
+      <%= f.email_field :email, autofocus: true, autocomplete: "email", required: false, class: "form-control", data: { cy: "newPatientEmailInputField" } %>
     </div>
   </div>
 
@@ -55,7 +55,7 @@
 
     <div class="form-group col-md-6">
       <%= f.label :mother_name, "Nome da mãe" %>
-      <%= f.text_field :mother_name, autofocus: true, autocomplete: "mother_name", required: true, class: "form-control" %>
+      <%= f.text_field :mother_name, autofocus: true, autocomplete: "mother_name", required: true, class: "form-control", data: { cy: "newPatientMotherNameInputField" } %>
     </div>
   </div>
 
@@ -74,7 +74,7 @@
 
     <div class="form-group col-md-6">
       <%= f.label :sus, "Cartão SUS" %>
-      <%= f.number_field :sus, autofocus: true, autocomplete: "sus", required: false, class: "form-control" %>
+      <%= f.number_field :sus, autofocus: true, autocomplete: "sus", required: false, class: "form-control", data: { cy: "newPatientSusNumberInputField" } %>
     </div>
   </div>
 
@@ -83,29 +83,29 @@
   <div class="form-row">
     <div class="form-group col-md-6">
       <%= f.label :public_place, "Endereço (Rua, Avenida)" %>
-      <%= f.text_field :public_place, autofocus: true, autocomplete: "place", required: true, class: "form-control" %>
+      <%= f.text_field :public_place, autofocus: true, autocomplete: "place", required: true, class: "form-control", data: { cy: "newPatientStreetNameInputField" } %>
     </div>
 
     <div class="form-group col-md-2">
       <%= f.label :place_number, "Número" %>
-      <%= f.text_field :place_number, autofocus: true, required: true, class: "form-control" %>
+      <%= f.text_field :place_number, autofocus: true, required: true, class: "form-control", data: { cy: "newPatientStreetNumberInputField" } %>
     </div>
 
     <div class="form-group col-md-4">
       <%= f.label :neighborhood, "Bairro" %>
-      <%= f.select :neighborhood, Neighborhood.pluck(:name), {},  { class: "form-control" } %>
+      <%= f.select :neighborhood, Neighborhood.pluck(:name), {}, { class: "form-control", data: { cy: "newPatientNeighborhoodNameInputField" } } %>
     </div>
   </div>
 
   <div class="form-row">
     <div class="form-group col-md-6">
       <%= f.label :phone, "Telefone" %>
-      <%= f.text_field :phone, autofocus: true, autocomplete: "phone", required: true, class: "form-control sp-celphones" %>
+      <%= f.text_field :phone, autofocus: true, autocomplete: "phone", required: true, class: "form-control sp-celphones", data: { cy: "newPatientPhoneNumberInputField" } %>
     </div>
 
     <div class="form-group col-md-6">
       <%= f.label :other_phone, "Telefone Secundário (opcional)" %>
-      <%= f.text_field :other_phone, autofocus: true, autocomplete: "other_phone", required: false, class: "form-control sp-celphones" %>
+      <%= f.text_field :other_phone, autofocus: true, autocomplete: "other_phone", required: false, class: "form-control sp-celphones", data: { cy: "newPatientOtherPhoneNumberInputField" } %>
     </div>
   </div>
 
@@ -118,7 +118,7 @@
       </div>
     </div>
     <div class="form-group col-md-6">
-      <%= f.submit "Cadastrar", class: "btn btn-primary btn-block pull-right" %>
+      <%= f.submit "Cadastrar", class: "btn btn-primary btn-block pull-right", data: { cy: "newPatientSubmitButton" } %>
     </div>
   </div>
 <% end %>

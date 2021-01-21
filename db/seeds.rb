@@ -32,7 +32,7 @@ ubs.user = user
 ubs.neighborhoods << neighborhood
 ubs.neighborhood = neighborhood
 ubs.address = 'Rua Magrathea, 42'
-ubs.phone = '3443-3443'
+ubs.phone = '(47) 3443-3443'
 ubs.shift_start = '9:00'
 ubs.break_start = '12:30'
 ubs.break_end = '13:30'
@@ -48,7 +48,7 @@ other_ubs.user = other_user
 other_ubs.neighborhood = other_neighborhood
 other_ubs.neighborhoods << other_neighborhood
 other_ubs.address = 'Rua dos Bobos, 0'
-other_ubs.phone = '3443-3455'
+other_ubs.phone = '(47) 3443-3455'
 other_ubs.shift_start = '9:00'
 other_ubs.break_start = '12:30'
 other_ubs.break_end = '13:30'
@@ -85,7 +85,7 @@ today = Date.today
   patient.save!
 
   appointment = Appointment.new
-  appointment.patient = patient
+  appointment.patient_id = patient.id
   appointment.ubs = ubss.sample
   appointment.start = starting_time.on(today)
   appointment.end = (starting_time += 15.minutes).on(today)

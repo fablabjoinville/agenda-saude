@@ -15,39 +15,33 @@ class TimeSlotController < PatientSessionController
     return render 'patients/not_allowed' unless @patient.can_schedule?
 
     Appointment.transaction do
-      if Appointment.where(start: start_time, ubs: @ubs).present?
+      if Appointment.where(start: start_time, ubs: @ubs).where.not(patient_id: nil).count == @ubs.appointments_per_time_slot
         flash[:alert] = 'Opa! O horário foi reservado enquanto você escolhia, tente outro!'
         redirect_to time_slot_path
 
         return
       end
 
-      current_patient.appointments.futures.destroy_all
+      Appointment.where(patient_id: current_patient.id).futures.each do |appointment|
+        appointment.update(patient_id: nil)
+      end
 
-      @appointment = Appointment.create(
-        patient: current_patient,
-        ubs: @ubs,
-        start: start_time,
-        end: start_time + @ubs.slot_interval,
-        active: true
-      )
+      # TODO this will break if no appointment is found
+      @appointment = Appointment.where(start: start_time, ubs: @ubs, patient_id: nil).first
+
+      return render json: @appointment.errors unless @appointment.update!(patient_id: current_patient.id)
     end
 
-    @patient.last_appointment = start_time
-    @patient.save
-
-    return render json: @appointment.errors unless @appointment.save
+    @current_patient.update(last_appointment: start_time)
 
     render 'patients/successfull_schedule'
   end
 
   def cancel
     @appointment = Appointment.find(cancel_params[:appointment_id])
-    @appointment.destroy
+    @appointment.update(patient_id: nil)
 
-    @patient = Patient.find(current_patient.id)
-    @patient.last_appointment = nil
-    @patient.save
+    @current_patient.update(last_appointment: nil)
 
     redirect_to time_slot_path
   end
@@ -60,12 +54,22 @@ class TimeSlotController < PatientSessionController
     @current_day = Time.zone.now + @gap_in_days.days
 
     @time_slots = {}
-    unless @gap_in_days < 0 || @current_day.sunday? || @gap_in_days > TimeSlotController::SLOTS_WINDOW_IN_DAYS
-      @time_slots = Ubs.where(active: true).each_with_object({}) do |ubs, memo|
-        next unless ubs.business_day?(@current_day, ubs.open_saturday?)
 
-        day_slots = ubs.available_time_slots_for_day(@current_day, Time.zone.now)
-        memo[ubs] = day_slots if day_slots.any?
+    Ubs.where(active: true).each do |ubs|
+      slots = []
+
+      if @gap_in_days < TimeSlotController::SLOTS_WINDOW_IN_DAYS && @gap_in_days >= 0 && !@current_day.sunday?
+        if @current_day.today?
+          appointments = Appointment.where(start: @current_day..@current_day.end_of_day, ubs: ubs, patient_id: nil)
+        else
+          appointments = Appointment.where(start: @current_day.at_beginning_of_day..@current_day.end_of_day, ubs: ubs, patient_id: nil)
+        end
+
+        appointments.each do |appointment|
+          slots << { slot_start: appointment.start, slot_end: appointment.end }
+        end
+
+        @time_slots[ubs] = slots.uniq
       end
     end
   end

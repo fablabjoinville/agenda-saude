@@ -17,15 +17,6 @@
 <div class="alert alert-info">Ao cancelar ou reativar um agendamento por favor entrar em contato com o paciente.</div>
 
 <div class="mt-5">
-  <hr><h4>Opções Administrativas</h4>
-  <tr>
-    <td><a class="btn btn-primary" href="<%= ubs_active_hours_path %>">Alterar horário de funcionamento</a></td>
-    <td><a class="btn btn-primary" href="<%= ubs_slot_duration_path %>">Alterar durações de atendimento</a></td>
-  </tr>
-  <hr>
-</div>
-
-<div class="mt-5">
   <h3> Lista de Agendamentos </h3>
   <% if @appointments.present? %>
     <table class="table table-hover">
@@ -43,9 +34,9 @@
       <% if appointment.active %>
         <tr>
           <th scope="row"><%= appointment.start.strftime("%d/%m/%Y -- %H:%M") %></th>
-          <td><a href=<%= "/patients/#{appointment.patient.id}" %>><%= appointment.patient.name %></a></td>
-          <td><%= appointment.patient.phone %></td>
-          <td><%= appointment.patient.other_phone %></td>
+          <td><a href=<%= "/patients/#{appointment.patient_id}" %>><%= find_appointment_patient(appointment.patient_id).name %></a></td>
+          <td><%= find_appointment_patient(appointment.patient_id).phone %></td>
+          <td><%= find_appointment_patient(appointment.patient_id).other_phone %></td>
           <td><a class="btn btn-primary" href=<%= "/ubs/#{appointment.id}/cancel_appointment" %>
             onclick="return confirm('Você tem certeza?')"
           >Suspender agendamento</a></td>
@@ -54,9 +45,9 @@
       <% else %>
         <tr>
           <th scope="row"><del><%= appointment.start.strftime("%H:%M - %d/%m/%Y") %></del></th>
-          <td><del><a href=<%= "/patients/#{appointment.patient.id}" %>><%= appointment.patient.name %></a></del></td>
-          <td><%= appointment.patient.phone %></td>
-          <td><%= appointment.patient.other_phone %></td>
+          <td><del><a href=<%= "/patients/#{appointment.patient_id}" %>><%= find_appointment_patient(appointment.patient_id).name %></a></del></td>
+          <td><%= find_appointment_patient(appointment.patient_id).phone %></td>
+          <td><%= find_appointment_patient(appointment.patient_id).other_phone %></td>
           <td><a class="btn btn-primary" href=<%= "/ubs/#{appointment.id}/activate_appointment" %>
               onclick="return confirm('Você tem certeza?')"
           >Reativar agendamento</a></td>
