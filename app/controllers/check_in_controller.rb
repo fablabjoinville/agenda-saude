@@ -18,8 +18,18 @@ class CheckInController < UserSessionController
   end
 
   def patient_details
-    @patient = Patient.find(params[:patient_id])
-    @appointments = Appointment.where(patient_id: @patient.id)
+    patient = Patient.find(params[:patient_id])
+
+    @patient = {
+      id: patient.id,
+      age: calculate_age(patient.birth_date),
+      name: patient.name,
+      cpf: patient.cpf,
+      health_professional: patient.groups.include?(Group.first),
+      chronic_disability: patient.groups.include?(Group.fourth)
+    }
+
+    @appointments = Appointment.where(patient_id: patient.id)
 
     render 'ubs/check_in/patient_details'
   end
@@ -48,7 +58,6 @@ class CheckInController < UserSessionController
     # TODO: Verify what happens with a patient which has his appointment canceled
 
     render 'ubs/check_in/cancelled_appointment'
-
   end
 
   def check_out_patients
@@ -64,5 +73,13 @@ class CheckInController < UserSessionController
     end
 
     render 'ubs/check_in/check_out_patients'
+  end
+
+  private
+
+  def calculate_age(age)
+    birth_date = age.to_time
+
+    ((Time.zone.now - birth_date.to_time) / 1.year.seconds).floor
   end
 end
