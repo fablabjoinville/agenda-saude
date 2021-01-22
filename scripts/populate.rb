@@ -42,7 +42,7 @@ def create_ubs
         slot_interval_minutes: 15,
         active: false,
         open_saturday: false,
-        aapointment_per_time_slot: 2
+        appointments_per_time_slot: 2
       )
     rescue
       puts "UBS ja cadastrada."
