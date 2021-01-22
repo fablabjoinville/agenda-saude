@@ -42,6 +42,15 @@ class CheckInController < UserSessionController
     render 'ubs/check_in/patient_details'
   end
 
+  def cancel_appointment
+    @patient = Patient.find(params[:patient_id])
+    @appointment = Appointment.where(patient_id: @patient.id).last
+    # TODO: Verify what happens with a patient which has his appointment canceled
+
+    render 'ubs/check_in/cancelled_appointment'
+
+  end
+
   def check_out_patients
     today_range = Time.zone.now.beginning_of_day..Time.zone.now.end_of_day
     @check_out_appointments = Appointment.where.not(check_in: nil).where(start: today_range, check_out: nil)

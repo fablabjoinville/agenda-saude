@@ -48,6 +48,7 @@ Rails.application.routes.draw do
     get 'check_in/patient_details', as: :patient_details, to: 'check_in#patient_details'
     post 'check_in/confirm_check_in', as: :confirm_check_in, to: 'check_in#confirm_check_in'
     post 'check_in/confirm_check_out', as: :confirm_check_out, to: 'check_in#confirm_check_out'
+    post 'check_in/cancel_appointment', as: :cancel_appointment, to: 'check_in#cancel_appointment'
     get 'check_in/check_out_patients', as: :check_out_patients, to: 'check_in#check_out_patients'
   end
 
