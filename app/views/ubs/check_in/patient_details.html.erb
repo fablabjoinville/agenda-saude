@@ -20,8 +20,12 @@
     <button type="submit" onclick="return confirm('Você tem certeza?')">Cancelar este agendamento</button>
   </form>
   <br/>
-  <form action=<%= ubs_confirm_check_in_path(patient_id: @patient[:id]) %> method="post">
-    <input type="hidden" name="authenticity_token" value="/flyz5zuR6luhnW3lZP8YCOLixMKHjugPoNgwD60BZEhKrbnML6PJK1FGU2alZKfPz6Yzdt/0hHF3Pz22OP+8Q==">
-    <button type="submit" onclick="return confirm('Você tem certeza?')">Fazer check in</button>
-  </form>
+  <% if @appointments&.last.start <= 30.minutes.from_now %>
+    <form action=<%= ubs_confirm_check_in_path(patient_id: @patient[:id]) %> method="post">
+      <input type="hidden" name="authenticity_token" value="/flyz5zuR6luhnW3lZP8YCOLixMKHjugPoNgwD60BZEhKrbnML6PJK1FGU2alZKfPz6Yzdt/0hHF3Pz22OP+8Q==">
+      <button type="submit" onclick="return confirm('Você tem certeza?')">Fazer check in</button>
+    </form>
+  <% else %>
+    <p>não pode fazer checkin tanto tempo antes</p>
+  <% end %>
 <% end %>
