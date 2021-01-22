@@ -1,0 +1,21 @@
+<p>Nome: <%= @patient.name %></p>
+<p>CPF: <%= @patient.cpf %></p>
+<p>Grupos: <%= @patient.groups.pluck(:name) %></p>
+<p>Check-In? <%= @appointments&.last.check_in.present? ? 'Sim' : 'Não' %></p>
+<p>Check-Out? <%= @appointments&.last.check_out.present? ? 'Sim' : 'Não' %></p>
+
+<% if @appointments&.last.check_in.present? %>
+  <% if @appointments&.last.check_out.present? %>
+    Feito
+  <% else %>
+    <form action=<%= ubs_confirm_check_out_path(patient_id: @patient.id) %> method="post">
+      <input type="hidden" name="authenticity_token" value="/flyz5zuR6luhnW3lZP8YCOLixMKHjugPoNgwD60BZEhKrbnML6PJK1FGU2alZKfPz6Yzdt/0hHF3Pz22OP+8Q==">
+      <button type="submit" onclick="return confirm('Você tem certeza?')">Fazer check out</button>
+    </form>
+  <% end %>
+<% else %>
+  <form action=<%= ubs_confirm_check_in_path(patient_id: @patient.id) %> method="post">
+    <input type="hidden" name="authenticity_token" value="/flyz5zuR6luhnW3lZP8YCOLixMKHjugPoNgwD60BZEhKrbnML6PJK1FGU2alZKfPz6Yzdt/0hHF3Pz22OP+8Q==">
+    <button type="submit" onclick="return confirm('Você tem certeza?')">Fazer check in</button>
+  </form>
+<% end %>

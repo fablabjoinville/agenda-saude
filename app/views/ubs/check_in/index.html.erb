@@ -4,6 +4,7 @@
   <div class="d-flex justify-content-between align-items-center alert alert-success" role="alert">
     Unidade ativada: Aceitando agendamentos.
     <a class="btn btn-info" href=<%= "/ubs/#{@ubs.id}/check_in" %>>Check-In</a>
+    <a class="btn btn-info" href=<%= "/ubs/#{@ubs.id}/check_in/check_out_patients" %>>Check-Out</a>
     <a class="btn btn-info" href=<%= "/ubs/" %>>Agendamentos</a>
     <a class="btn btn-danger" href=<%= "/ubs/#{@ubs.id}/deactivate_ubs" %>
     onclick="return confirm('Você tem certeza?')">Desativar Unidade</a>
@@ -21,7 +22,7 @@
 <div class="mt-5">
   <h3> Check-In de Agendamentos </h3>
 
-  <form action=<%= ubs_find_patient_path %> accept-charset="UTF-8" method="post"><input type="hidden" name="authenticity_token" value="/flyz5zuR6luhnW3lZP8YCOLixMKHjugPoNgwD60BZEhKrbnML6PJK1FGU2alZKfPz6Yzdt/0hHF3Pz22OP+8Q==">
+  <form action=<%= ubs_find_patients_path %> accept-charset="UTF-8" method="post"><input type="hidden" name="authenticity_token" value="/flyz5zuR6luhnW3lZP8YCOLixMKHjugPoNgwD60BZEhKrbnML6PJK1FGU2alZKfPz6Yzdt/0hHF3Pz22OP+8Q==">
     <div class="form-group">
       <input autofocus="autofocus" autocomplete="cpf" minlength="11" maxlength="11" class="form-control" aria-describedby="cpfHelpInLine" placeholder="Busca pelo CPF" size="11" type="text" name="patient[cpf]" id="patient_cpf">
       <small>OU</small>
@@ -33,6 +34,3 @@
     </div>
   </form>
 </div>
-
-
-<%= render "ubs/check_in/found_patients", locals: { patient: @patient } %>

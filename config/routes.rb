@@ -42,8 +42,13 @@ Rails.application.routes.draw do
     end
 
     get 'check_in', as: :search, to: 'check_in#search'
-    post 'find_patient', as: :find_patient, to: 'check_in#find_patient'
-    get 'results', as: :results, to: 'check_in#results'
+
+    post 'check_in/find_patients', as: :find_patients, to: 'check_in#find_patients'
+    get 'check_in/found_patients', as: :found_patients, to: 'check_in#found_patients'
+    get 'check_in/patient_details', as: :patient_details, to: 'check_in#patient_details'
+    post 'check_in/confirm_check_in', as: :confirm_check_in, to: 'check_in#confirm_check_in'
+    post 'check_in/confirm_check_out', as: :confirm_check_out, to: 'check_in#confirm_check_out'
+    get 'check_in/check_out_patients', as: :check_out_patients, to: 'check_in#check_out_patients'
   end
 
   post 'home/patient_base_login', as: :patient_base_login, to: 'home#patient_base_login'

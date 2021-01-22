@@ -1,0 +1,9 @@
+<% if @appointments_patients.present? %>
+  <% @appointments_patients.each do |appointment| %>
+    <p>Nome: <%= appointment[:name] %></p>
+    <p>CPF: <%= appointment[:cpf] %></p>
+    <p>Horário: <%= appointment[:start] %></p>
+  <% end %>
+<% else %>
+  Sem pacientes para o dia
+<% end %>
