@@ -1,7 +1,7 @@
 class CheckInController < UserSessionController
-  def search
-    @ubs = Ubs.find(params[:ubs_id])
+  before_action :ubs
 
+  def search
     render 'ubs/check_in/index'
   end
 
@@ -53,7 +53,7 @@ class CheckInController < UserSessionController
 
     @appointments&.last.update(check_out: Time.zone.now)
 
-    render 'ubs/check_in/patient_details'
+    render 'ubs/check_in/check_out_patients'
   end
 
   def cancel_appointment
@@ -74,14 +74,25 @@ class CheckInController < UserSessionController
       patient = Patient.find(appointment.patient_id)
 
       @appointments_patients << {
-        start: appointment.start, name: patient.name, cpf: patient.cpf
+        id: patient.id,
+        name: patient.name,
+        cpf: patient.cpf,
+        appointment_day: appointment.start.strftime('%d/%m'),
+        appointment_hour: appointment.start.strftime('%H:%M'),
+        appointment_start: appointment.start
       }
     end
+
+    @appointments_patients = @appointments_patients.sort_by { |appointment| appointment[:appointment_start] }
 
     render 'ubs/check_in/check_out_patients'
   end
 
   private
+
+  def ubs
+    @ubs ||= Ubs.find(params[:ubs_id])
+  end
 
   def build_appointments_patients(patients)
     appointments_patients = []

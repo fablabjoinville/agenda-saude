@@ -1,8 +1,31 @@
+<h1><%= @ubs.name %></h1>
+
+<% if @ubs.active %>
+  <div class="d-flex justify-content-between align-items-center alert alert-success" role="alert">
+    Unidade ativada: Aceitando agendamentos.
+    <a class="btn btn-info" href=<%= "/ubs/#{@ubs.id}/check_in" %>>Check-In</a>
+    <a class="btn btn-info" href=<%= "/ubs/#{@ubs.id}/check_in/check_out_patients" %>>Check-Out</a>
+    <a class="btn btn-info" href=<%= "/ubs/" %>>Agendamentos</a>
+    <a class="btn btn-danger" href=<%= "/ubs/#{@ubs.id}/deactivate_ubs" %>
+    onclick="return confirm('Você tem certeza?')">Desativar Unidade</a>
+  </div>
+<% else %>
+  <div class="d-flex justify-content-between align-items-center alert alert-danger" role="alert">
+    Unidade desativada: Não aceitando agendamentos.
+    <a class="btn btn-success" href=<%= "/ubs/#{@ubs.id}/activate_ubs" %>
+    onclick="return confirm('Você tem certeza?')">Ativar Unidade</a>
+  </div>
+<% end %>
+
+<div class="alert alert-info">Ao cancelar ou reativar um agendamento por favor entrar em contato com o paciente.</div>
+
+<h3> Check-Out de Agendamentos </h3>
+
 <% if @appointments_patients.present? %>
-  <% @appointments_patients.each do |appointment| %>
-    <p>Nome: <%= appointment[:name] %></p>
-    <p>CPF: <%= appointment[:cpf] %></p>
-    <p>Horário: <%= appointment[:start] %></p>
+  <% @appointments_patients.each do |patient| %>
+    <a href=<%= ubs_patient_details_path(patient_id: patient[:id]) %>>
+      <p><%= patient[:name] %> - <%= patient[:cpf] %> - <%= patient[:appointment_day] %> - <%= patient[:appointment_hour] %></p>
+    </a>
   <% end %>
 <% else %>
   Sem pacientes para o dia
