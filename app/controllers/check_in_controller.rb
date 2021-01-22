@@ -10,8 +10,10 @@ class CheckInController < UserSessionController
 
     if params[:patient][:cpf].present?
       @patients = Patient.where(cpf: params[:patient][:cpf])
+      @appointments_patients = build_appointments_patients(@patients)
     elsif params[:patient][:name].present?
       @patients = Patient.where(name: params[:patient][:name])
+      @appointments_patients = build_appointments_patients(@patients)
     end
 
     render 'ubs/check_in/found_patients'
@@ -69,13 +71,38 @@ class CheckInController < UserSessionController
     @check_out_appointments.each do |appointment|
       patient = Patient.find(appointment.patient_id)
 
-      @appointments_patients << { start: appointment.start, name: patient.name, cpf: patient.cpf }
+      @appointments_patients << {
+        start: appointment.start, name: patient.name, cpf: patient.cpf
+      }
     end
 
     render 'ubs/check_in/check_out_patients'
   end
 
   private
+
+  def build_appointments_patients(patients)
+    appointments_patients = []
+
+    patients.each do |patient|
+      appointment = Appointment.find_by(patient_id: patient.id)
+
+      next if appointment.nil?
+
+      appointments_patients << {
+        id: patient.id,
+        name: patient.name,
+        cpf: patient.cpf,
+        appointment_day: appointment.start.strftime('%d/%m'),
+        appointment_hour: appointment.start.strftime('%H:%M'),
+        appointment_start: appointment.start
+      }
+    end
+
+    appointments_patients = appointments_patients.sort_by { |appointment| appointment[:appointment_start] }
+
+    appointments_patients
+  end
 
   def calculate_age(age)
     birth_date = age.to_time
