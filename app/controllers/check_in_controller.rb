@@ -10,9 +10,11 @@ class CheckInController < UserSessionController
 
     if params[:patient][:cpf].present?
       @patients = Patient.where(cpf: params[:patient][:cpf])
+
       @appointments_patients = build_appointments_patients(@patients)
     elsif params[:patient][:name].present?
-      @patients = Patient.where(name: params[:patient][:name])
+      @patients = Patient.where('name ~* ?', params[:patient][:name])
+
       @appointments_patients = build_appointments_patients(@patients)
     end
 
