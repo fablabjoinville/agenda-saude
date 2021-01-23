@@ -55,21 +55,24 @@ class TimeSlotController < PatientSessionController
 
     @time_slots = {}
 
-    Ubs.where(active: true).each do |ubs|
-      slots = []
+    # TODO: oq fazer se um paciente tentar fazer um agendamento enquanto esta esperando o check out?
+    unless Appointment.where(patient_id: current_patient.id).pluck(:check_out).any?
+      Ubs.where(active: true).each do |ubs|
+        slots = []
 
-      if @gap_in_days < TimeSlotController::SLOTS_WINDOW_IN_DAYS && @gap_in_days >= 0 && !@current_day.sunday?
-        if @current_day.today?
-          appointments = Appointment.where(start: @current_day..@current_day.end_of_day, ubs: ubs, patient_id: nil)
-        else
-          appointments = Appointment.where(start: @current_day.at_beginning_of_day..@current_day.end_of_day, ubs: ubs, patient_id: nil)
+        if @gap_in_days < TimeSlotController::SLOTS_WINDOW_IN_DAYS && @gap_in_days >= 0 && !@current_day.sunday?
+          if @current_day.today?
+            appointments = Appointment.where(start: @current_day..@current_day.end_of_day, ubs: ubs, patient_id: nil)
+          else
+            appointments = Appointment.where(start: @current_day.at_beginning_of_day..@current_day.end_of_day, ubs: ubs, patient_id: nil)
+          end
+
+          appointments.each do |appointment|
+            slots << { slot_start: appointment.start, slot_end: appointment.end }
+          end
+
+          @time_slots[ubs] = slots.uniq
         end
-
-        appointments.each do |appointment|
-          slots << { slot_start: appointment.start, slot_end: appointment.end }
-        end
-
-        @time_slots[ubs] = slots.uniq
       end
     end
   end

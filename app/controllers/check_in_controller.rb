@@ -98,7 +98,7 @@ class CheckInController < UserSessionController
     appointments_patients = []
 
     patients.each do |patient|
-      appointment = Appointment.find_by(patient_id: patient.id)
+      appointment = Appointment.find_by(patient_id: patient.id, start: 1.hour.ago..Time.zone.now.end_of_day)
 
       next if appointment.nil?
 
