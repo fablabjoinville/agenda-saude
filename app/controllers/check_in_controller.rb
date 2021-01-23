@@ -24,6 +24,7 @@ class CheckInController < UserSessionController
   def patient_details
     patient = Patient.find(params[:patient_id])
 
+    # usar CONDITIONS do model de patient
     @patient = {
       id: patient.id,
       age: calculate_age(patient.birth_date),
@@ -98,12 +99,8 @@ class CheckInController < UserSessionController
   private
 
   def create_second_dose_appointment(current_appointment)
-    # TODO como acertamos a data dessa segunda dose? Podemos usar intervalo de semanas
-    # podemos usar variaveis de ambiente pra controlar melhor esse 4 semanas e chorinho de 1 dia
-    range = (current_appointment.start + 4.weeks)..(current_appointment.start + 4.weeks + 1.day)
-
-    # confirmar como sera a 2 dose, se via começar 50% da capacidade ou não?
-    next_appointment = Appointment.where(start: range).first
+    # podemos usar variaveis de ambiente pra controlar melhor esse 4 semanas
+    next_appointment = Appointment.where(start: current_appointment.start + 4.weeks).first
 
     next_appointment.patient_id = current_appointment.patient_id
     next_appointment.past_appointments << current_appointment.id
@@ -117,6 +114,8 @@ class CheckInController < UserSessionController
   def build_appointments_patients(patients)
     appointments_patients = []
 
+    # podemos parametrizar melhor essa range para pegar casos de pacientes 'perdidos'
+    # n + 1 quando a pessoa faz uma busca muito simple por exemplo: 'a'
     patients.each do |patient|
       appointment = Appointment.find_by(patient_id: patient.id, start: 1.hour.ago..Time.zone.now.end_of_day)
 

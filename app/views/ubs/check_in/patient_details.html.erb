@@ -38,6 +38,7 @@
       <h3> Realizar check in </h3>
 
       <p><%= @patient[:name] %> - <%= @patient[:cpf] %></p>
+      <!-- melhorar essa visualização usando tagas pras condições que são preenchidas -->
       <p>Mais de 75 anos? <%= @patient[:age] >= 75 ? 'Sim' : 'Não' %> <%= "(#{@patient[:age]}) anos" %></p>
       <p>É profisional da saúde? <%= @patient[:health_professional] ? 'Sim' : 'Não' %></p>
       <p>Comorbidades? <%= @patient[:chronic_disability] ? 'Sim' : 'Não' %></p>
