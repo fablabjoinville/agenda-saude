@@ -61,11 +61,13 @@
                 Alterar meus dados
               <% end %>
             </div>
+            <% unless @appointment.past_appointments.count >= 1 %>
               <div class="col">
-              <%= button_to cancel_time_slot_path(appointment_id: @appointment.id), class: "btn btn-danger btn-block", method: :delete, data: { cy: "cancelAppointmentButton", confirm: "Seu horário será cancelado. Confirmar?" } do %>
-                Cancelar
-              <% end %>
-            </div>
+                <%= button_to cancel_time_slot_path(appointment_id: @appointment.id), class: "btn btn-danger btn-block", method: :delete, data: { cy: "cancelAppointmentButton", confirm: "Seu horário será cancelado. Confirmar?" } do %>
+                  Cancelar
+                <% end %>
+              </div>
+            <% end %>
           </div>
         </div>
       </div>

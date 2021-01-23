@@ -44,14 +44,21 @@ class CheckInController < UserSessionController
 
     @appointments&.last.update(check_in: Time.zone.now)
 
-    render 'ubs/check_in/patient_details'
+    redirect_to ubs_patient_details_path(patient_id: @patient.id)
   end
 
   def confirm_check_out
     @patient = Patient.find(params[:patient_id])
     @appointments = Appointment.where(patient_id: @patient.id)
 
-    @appointments&.last.update(check_out: Time.zone.now)
+    # TODO: ruim ficar usando last nas coisas, melhorar aqui
+    current_appointment = @appointments&.last
+    current_appointment.update(check_out: Time.zone.now)
+
+    # TODO usar uma variavel de ambiente pra setar o numero de doses da vacina?
+    if current_appointment.past_appointments.count == 0
+      create_second_dose_appointment(current_appointment)
+    end
 
     render 'ubs/check_in/check_out_patients'
   end
@@ -59,7 +66,7 @@ class CheckInController < UserSessionController
   def cancel_appointment
     @patient = Patient.find(params[:patient_id])
     @appointment = Appointment.where(patient_id: @patient.id).last
-    # TODO: Verify what happens with a patient which has his appointment canceled
+    # TODO: O que fazer quando um appointment é cancelado?
 
     render 'ubs/check_in/cancelled_appointment'
   end
@@ -89,6 +96,19 @@ class CheckInController < UserSessionController
   end
 
   private
+
+  def create_second_dose_appointment(current_appointment)
+    # TODO como acertamos a data dessa segunda dose? Podemos usar intervalo de semanas
+    # podemos usar variaveis de ambiente pra controlar melhor esse 4 semanas e chorinho de 1 dia
+    range = (current_appointment.start + 4.weeks)..(current_appointment.start + 4.weeks + 1.day)
+
+    # confirmar como sera a 2 dose, se via começar 50% da capacidade ou não?
+    next_appointment = Appointment.where(start: range).first
+
+    next_appointment.patient_id = current_appointment.patient_id
+    next_appointment.past_appointments << current_appointment.id
+    next_appointment.save!
+  end
 
   def ubs
     @ubs ||= Ubs.find(params[:ubs_id])
