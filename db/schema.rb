@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_23_183941) do
+ActiveRecord::Schema.define(version: 2021_01_23_214703) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -76,6 +76,11 @@ ActiveRecord::Schema.define(version: 2021_01_23_183941) do
     t.datetime "last_appointment"
     t.index ["cpf"], name: "index_patients_on_cpf", unique: true
     t.index ["main_ubs_id"], name: "index_patients_on_main_ubs_id"
+  end
+
+  create_table "time_slot_generator_executions", primary_key: "date", id: :date, force: :cascade do |t|
+    t.text "status"
+    t.text "details"
   end
 
   create_table "ubs", force: :cascade do |t|
