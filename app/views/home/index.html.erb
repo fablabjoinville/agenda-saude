@@ -14,12 +14,12 @@
   <tbody>
     <tr>
       <td>
-        <% if Appointment.where('patient_id IS NULL AND start > ?', Time.zone.now).count > 0 %>
-          <i class="fa fa-circle" aria-hidden="true" style="color: green;"></i> Em aberto
-        <% elsif Ubs.where(active: true) %>
-          <i class="fa fa-circle" aria-hidden="true" style="color: red;"></i> SEM HORÁRIO DISPONÍVEL
-        <% else %>
+        <% if Ubs.where(active: true).blank? %>
           <i class="fa fa-circle" aria-hidden="true" style="color: red;"></i> Sem estoque
+        <% elsif Appointment.where('patient_id IS NULL AND start > ?', Time.zone.now).count > 0 %>
+          <i class="fa fa-circle" aria-hidden="true" style="color: green;"></i> Em aberto
+        <% else %>
+          <i class="fa fa-circle" aria-hidden="true" style="color: red;"></i> SEM HORÁRIO DISPONÍVEL
         <% end %>
       </td>
       <td>
@@ -28,7 +28,7 @@
         <% end %>
       </td>
     </tr>
-      </tbody>
+  </tbody>
 </table>
 
 <p>Este é o sistema para agendamento da vacinação contra o Covid-19 que acontece na Central de Imunização no Centreventos.</p>
@@ -41,10 +41,10 @@
     <p class="card-text"><b>CENTREVENTOS CAU HANSEN</b><br>
       Av. José Vieira, 315 - América, Joinville - SC, 89204-110<br>
       Telefone: (47) 3422-5951
-</p>
+    </p>
 
     <%= form_for(:patient, url: patient_base_login_path) do |f| %>
-    <div class="form-row"">
+      <div class="form-row"">
         <div class="form-group col-md-9">
           <%= f.text_field :cpf, autofocus: true, autocomplete: "cpf", minlength: 11, maxlength: 11, required: true, class: "form-control", 'aria-describedby' => 'cpfHelpInLine', placeholder: 'CPF', data: { cy: "cpfInputField" } %>
         </div>
@@ -52,7 +52,7 @@
         <div class="form-group col-md-3">
           <%= f.submit "Agendar Vacinação", class: "btn btn-primary btn-block", data: { cy: "signUpButton" } %>
         </div>
-    </div>
+      </div>
     <% end %>
   </div>
 </div>
@@ -71,15 +71,15 @@
 </div>
 
 <style type="text/css">
- @media only screen and (min-width: 600px) {
-   .disk-health-banner {
-     width: 80%;
-   }
- }
+  @media only screen and (min-width: 600px) {
+  .disk-health-banner {
+  width: 80%;
+  }
+  }
 
- @media only screen and (max-width: 600px) {
-   .disk-health-banner {
-     width: 100%;
-   }
- }
+  @media only screen and (max-width: 600px) {
+  .disk-health-banner {
+  width: 100%;
+  }
+  }
 </style>
