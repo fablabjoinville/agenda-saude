@@ -67,10 +67,7 @@ class TimeSlotGenerationWorker
             generation_options = TimeSlotGenerationService::Options.new(
               start_date: date.to_datetime,
               end_date: date.to_datetime,
-              ubs_id: ubs.id,
-              time_windows: build_ubs_time_windows(ubs),
-              appointment_duration: ubs.slot_interval_minutes.minutes,
-              num_spots: ubs.appointments_per_time_slot,
+              ubs: ubs,
               # These don't exist or are incomplete on 
               # UBS record, so they must be changed here
               weekdays: [*0..6],
