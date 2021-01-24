@@ -114,7 +114,6 @@ class UbsController < UserSessionController
   def patient_details
     patient = Patient.find(params[:patient_id])
     
-    # usar CONDITIONS do model de patient
     groups = []
     Patient::CONDITIONS.each do |cond, func|
       groups << cond if func.call(patient)

@@ -13,13 +13,24 @@
     font-weight: bold;
 }
 
+.icons {
+    position: absolute;
+    top: 5rem;
+    right: 1.5rem;
+    font-size: 4rem;
+}
+
 .patient-muted {
     font-style: italic;
     color: gray;
 }
 
-.pills {
+.pills-groups {
     font-size: large;
+}
+
+.pills-info {
+    font-size: x-large;
 }
 
 .buttons-datails {
