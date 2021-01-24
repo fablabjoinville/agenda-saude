@@ -11,17 +11,19 @@ class UbsController < UserSessionController
   end
 
   def find_patients
-    if params['cpf'].present?
-      @patients = Patient.where(cpf: params['cpf'])
+    @cpf = params['cpf']
+    @name = params['name']
+
+    if @cpf.present?
+      @patients = Patient.where(cpf: @cpf)
 
       @appointments_patients = build_appointments_patients(@patients)
-    elsif params['name'].present?
-      @patients = Patient.where('name ~* ?', params['name'])
+    elsif @name.present?
+      @patients = Patient.where('name ~* ?', @name)
 
       @appointments_patients = build_appointments_patients(@patients)
     end
 
-    # redirect_to list_checkin_path(params: { appointments_patients: @appointments_patients })
     render 'ubs/checkin'
   end
 

@@ -3,11 +3,11 @@
     <div class="col-12">
       <%= form_with url: find_patients_path, method: :post, local: true do |f| %>
         <div class="input-group input-group-lg" style="margin-bottom: 3%;">
-          <%= f.text_field :cpf, autofocus: true, minlength: 11, maxlength: 11, class: "form-control", placeholder: 'CPF' %>
+          <%= f.text_field :cpf, autofocus: true, minlength: 11, maxlength: 11, class: "form-control", placeholder: 'CPF', value: @cpf %>
           <div class="input-group-prepend">
             <span class="input-group-text" id="">OU</span>
           </div>
-          <%= f.text_field :name, autofocus: true, autocomplete: "name", class: "form-control", placeholder: 'Nome' %>
+          <%= f.text_field :name, autofocus: true, autocomplete: "name", class: "form-control", placeholder: 'Nome', value: @name %>
           <div class="input-group-append">
             <%= f.submit "Buscar", class: "btn btn-outline-secondary" %>
           </div>
