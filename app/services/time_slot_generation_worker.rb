@@ -61,7 +61,7 @@ class TimeSlotGenerationWorker
       begin
         Ubs.active.each do |ubs|
           first_date = current_time + options.max_appointment_time_ahead + 1.day
-          second_dose_date = first_date + options.second_dose_interval + 1.day
+          second_dose_date = first_date + options.second_dose_interval
 
           [first_date, second_dose_date].each do |date|
             generation_options = TimeSlotGenerationService::Options.new(
