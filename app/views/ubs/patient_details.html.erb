@@ -58,16 +58,6 @@
 
     <% end %>
 
-    <div class="col-md-4">
-      <a class="btn btn-secondary btn-block btn-lg" href=<%= "/ubs/#{@appointment.id}/cancel_appointment" %>
-        onclick="return confirm('Você tem certeza que deseja CANCELAR este agendamento?\nSerá necessário criar um novo agendamento para esta pessoa.')"
-      >Cancelar agendamento</a>
-    </div>
-
-    <div class="col-md-4">
-      <%= link_to "Voltar", :back, class: "btn-lg" %>
-    </div>
-
   </div>
 </div>
 
