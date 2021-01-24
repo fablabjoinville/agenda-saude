@@ -114,4 +114,6 @@ Rails.application.configure do
   Raven.configure do |config|
     config.dsn = 'https://fccc168d07354b9c89b6f7ef8faa7e98:b61db538150d495da760cc558f3c525c@o71631.ingest.sentry.io/5191494'
   end
+
+  ENV['SECOND_DOSE_INTERVAL'] ||= '4'
 end

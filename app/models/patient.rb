@@ -15,6 +15,7 @@ class Patient < ApplicationRecord
   has_many :appointments, dependent: :destroy
   has_and_belongs_to_many :groups
   belongs_to :main_ubs, class_name: 'Ubs'
+  belongs_to :last_appointment, class_name: 'Appointment', optional: true
 
   validates :name, presence: true
   validates :cpf, presence: true, uniqueness: true, cpf_format: true
@@ -84,8 +85,8 @@ class Patient < ApplicationRecord
 
   def wait_appointment_time?
     last_appointment != nil and
-    last_appointment < Time.zone.now and
-    Time.zone.now < last_appointment + DAYS_FOR_NEW_APPOINTMENT.days
+    last_appointment.start < Time.zone.now and
+    Time.zone.now < last_appointment.start + DAYS_FOR_NEW_APPOINTMENT.days
   end
 
   def unblock!

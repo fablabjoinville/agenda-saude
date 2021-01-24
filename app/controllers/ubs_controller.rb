@@ -10,6 +10,23 @@ class UbsController < UserSessionController
     @bedridden_patients = @ubs.bedridden_patients
   end
 
+  def find_patients
+    @cpf = params['cpf']
+    @name = params['name']
+
+    if @cpf.present?
+      @patients = Patient.where(cpf: @cpf)
+
+      @appointments_patients = build_appointments_patients(@patients)
+    elsif @name.present?
+      @patients = Patient.where('name ~* ?', @name)
+
+      @appointments_patients = build_appointments_patients(@patients)
+    end
+
+    render 'ubs/checkin'
+  end
+
   def today_appointments
     @appointments = @ubs.appointments.today.order(:start)
 
@@ -47,16 +64,16 @@ class UbsController < UserSessionController
     open_on_saturday = active_hours_params['open_saturday'].to_i == 1
 
     updated = @ubs.update(
-                  shift_start: shift_start_tod.to_s,
-                  break_start: break_start_tod.to_s,
-                  break_end: break_end_tod.to_s,
-                  shift_end: shift_end_tod.to_s,
-                  open_saturday: open_on_saturday,
-                  saturday_shift_start: shift_start_sat_tod.to_s,
-                  saturday_break_start: break_start_sat_tod.to_s,
-                  saturday_break_end: break_end_sat_tod.to_s,
-                  saturday_shift_end: shift_end_sat_tod.to_s
-                )
+      shift_start: shift_start_tod.to_s,
+      break_start: break_start_tod.to_s,
+      break_end: break_end_tod.to_s,
+      shift_end: shift_end_tod.to_s,
+      open_saturday: open_on_saturday,
+      saturday_shift_start: shift_start_sat_tod.to_s,
+      saturday_break_start: break_start_sat_tod.to_s,
+      saturday_break_end: break_end_sat_tod.to_s,
+      saturday_shift_end: shift_end_sat_tod.to_s
+    )
 
     return redirect_to ubs_index_path if updated
 
@@ -132,6 +149,31 @@ class UbsController < UserSessionController
   end
 
   private
+
+  def build_appointments_patients(patients)
+    appointments_patients = []
+
+    # FIXME: Should we reduce the scope of this search to improve performance?
+    appointments = Appointment.where(patient_id: patients.map(&:id))
+
+    return [] unless appointments.any?
+
+    appointments.each do |appointment|
+      patient = appointment.patient
+
+      appointments_patients << {
+        id: patient.id,
+        name: patient.name,
+        cpf: patient.cpf,
+        start: appointment.start,
+        time_delta: (appointment[:start] - Time.zone.now).abs
+      }
+    end
+
+    appointments_patients = appointments_patients.sort_by { |appointment| appointment[:time_delta] }
+
+    appointments_patients
+  end
 
   def active_future_appointments
     @future_appointments = @ubs.appointments.where(

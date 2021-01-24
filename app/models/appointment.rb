@@ -1,5 +1,6 @@
 class Appointment < ApplicationRecord
   belongs_to :ubs
+  belongs_to :patient
 
   scope :today, -> { where('date(start) = ?', Date.current) }
   scope :active_from_day, ->(day) do
