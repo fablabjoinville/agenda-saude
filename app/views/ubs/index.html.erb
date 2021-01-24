@@ -1,77 +1,62 @@
-<h1><%= @ubs.name %></h1>
+<%= render :layout => '/ubs/nav' do %>
 
-<% if @ubs.active %>
-  <div class="d-flex justify-content-between align-items-center alert alert-success" role="alert">
-    Unidade ativada: Aceitando agendamentos.
-    <a class="btn btn-danger" href=<%= "/ubs/#{@ubs.id}/deactivate_ubs" %>
-    onclick="return confirm('Você tem certeza?')">Desativar Unidade</a>
-  </div>
-<% else %>
-  <div class="d-flex justify-content-between align-items-center alert alert-danger" role="alert">
-    Unidade desativada: Não aceitando agendamentos.
-    <a class="btn btn-success" href=<%= "/ubs/#{@ubs.id}/activate_ubs" %>
-    onclick="return confirm('Você tem certeza?')">Ativar Unidade</a>
-  </div>
-<% end %>
+  <div class="mt-5">
+    <h3> Lista de Agendamentos </h3>
+    <% if @appointments.present? %>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Data e Hora</th>
+            <th scope="col">Paciente</th>
+            <th scope="col">Telefone Principal</th>
+            <th scope="col">Telefone Secundário</th>
+            <th scope="col">Ação Sobre o Agendamento</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @appointments.each do |appointment| %>
+            <% if appointment.active %>
+              <tr>
+                <th scope="row"><%= appointment.start.strftime("%d/%m/%Y -- %H:%M") %></th>
+                <td><a href=<%= "/patients/#{appointment.patient_id}" %>><%= find_appointment_patient(appointment.patient_id).name %></a></td>
+                <td><%= find_appointment_patient(appointment.patient_id).phone %></td>
+                <td><%= find_appointment_patient(appointment.patient_id).other_phone %></td>
+                <td><a class="btn btn-primary" href=<%= "/ubs/#{appointment.id}/cancel_appointment" %>
+                              onclick="return confirm('Você tem certeza?')"
+                    >Suspender agendamento</a></td>
+              </tr>
 
-<div class="alert alert-info">Ao cancelar ou reativar um agendamento por favor entrar em contato com o paciente.</div>
+            <% else %>
+              <tr>
+                <th scope="row"><del><%= appointment.start.strftime("%H:%M - %d/%m/%Y") %></del></th>
+                <td><del><a href=<%= "/patients/#{appointment.patient_id}" %>><%= find_appointment_patient(appointment.patient_id).name %></a></del></td>
+                <td><%= find_appointment_patient(appointment.patient_id).phone %></td>
+                <td><%= find_appointment_patient(appointment.patient_id).other_phone %></td>
+                <td><a class="btn btn-primary" href=<%= "/ubs/#{appointment.id}/activate_appointment" %>
+                              onclick="return confirm('Você tem certeza?')"
+                    >Reativar agendamento</a></td>
+              </tr>
+            <% end %>
+          <% end %>
+        </tbody>
+      </table>
 
-<div class="mt-5">
-  <h3> Lista de Agendamentos </h3>
-  <% if @appointments.present? %>
-    <table class="table table-hover">
-      <thead>
-        <tr>
-          <th scope="col">Data e Hora</th>
-          <th scope="col">Paciente</th>
-          <th scope="col">Telefone Principal</th>
-          <th scope="col">Telefone Secundário</th>
-          <th scope="col">Ação Sobre o Agendamento</th>
-        </tr>
-      </thead>
-      <tbody>
-    <% @appointments.each do |appointment| %>
-      <% if appointment.active %>
-        <tr>
-          <th scope="row"><%= appointment.start.strftime("%d/%m/%Y -- %H:%M") %></th>
-          <td><a href=<%= "/patients/#{appointment.patient_id}" %>><%= find_appointment_patient(appointment.patient_id).name %></a></td>
-          <td><%= find_appointment_patient(appointment.patient_id).phone %></td>
-          <td><%= find_appointment_patient(appointment.patient_id).other_phone %></td>
-          <td><a class="btn btn-primary" href=<%= "/ubs/#{appointment.id}/cancel_appointment" %>
-            onclick="return confirm('Você tem certeza?')"
-          >Suspender agendamento</a></td>
-        </tr>
-
-      <% else %>
-        <tr>
-          <th scope="row"><del><%= appointment.start.strftime("%H:%M - %d/%m/%Y") %></del></th>
-          <td><del><a href=<%= "/patients/#{appointment.patient_id}" %>><%= find_appointment_patient(appointment.patient_id).name %></a></del></td>
-          <td><%= find_appointment_patient(appointment.patient_id).phone %></td>
-          <td><%= find_appointment_patient(appointment.patient_id).other_phone %></td>
-          <td><a class="btn btn-primary" href=<%= "/ubs/#{appointment.id}/activate_appointment" %>
-              onclick="return confirm('Você tem certeza?')"
-          >Reativar agendamento</a></td>
-        </tr>
-      <% end %>
+      <p>
+        <%= link_to 'Exportar agendamentos do dia',
+              today_appointments_ubs_path(@ubs, format: 'xlsx'),
+         class: 'btn btn-primary' %>
+        <%= link_to 'Desativar todos agendamentos futuros',
+         cancel_all_future_appointments_ubs_path(@ubs),
+         class: 'btn btn-danger',
+         data: { confirm: 'Você tem certeza?' } %>
+        <%= link_to 'Ativar todos agendamentos futuros',
+         activate_all_future_appointments_ubs_path(@ubs),
+         class: 'btn btn-success',
+         data: { confirm: 'Você tem certeza?' } %>
+      </p>
+    <% else %>
+      <p>Nenhum paciente agendou horário até o momento.</p>
     <% end %>
-    </tbody>
-    </table>
+  </div>
 
-    <p>
-      <%= link_to 'Exportar agendamentos do dia',
-                  today_appointments_ubs_path(@ubs, format: 'xlsx'),
-                  class: 'btn btn-primary' %>
-      <%= link_to 'Desativar todos agendamentos futuros',
-                  cancel_all_future_appointments_ubs_path(@ubs),
-                  class: 'btn btn-danger',
-                  data: { confirm: 'Você tem certeza?' } %>
-      <%= link_to 'Ativar todos agendamentos futuros',
-                  activate_all_future_appointments_ubs_path(@ubs),
-                  class: 'btn btn-success',
-                  data: { confirm: 'Você tem certeza?' } %>
-    </p>
-  <% else %>
-    <p>Nenhum paciente agendou horário até o momento.</p>
-  <% end %>
-</div>
-
+<% end %>

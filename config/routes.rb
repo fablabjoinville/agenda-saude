@@ -24,6 +24,11 @@ Rails.application.routes.draw do
 
     get 'ubs/slot_duration', as: :ubs_slot_duration
     patch 'ubs/change_slot_duration', as: :ubs_change_slot_duration
+
+    get 'ubs/status', as: :status
+    get 'ubs/checkin', as: :list_checkin
+    post 'ubs/find_patients', as: :find_patients
+    get 'ubs/checkout', as: :list_checkout
   end
 
   resources :appointments

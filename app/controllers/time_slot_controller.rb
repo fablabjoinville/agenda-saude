@@ -32,7 +32,7 @@ class TimeSlotController < PatientSessionController
       return render json: @appointment.errors unless @appointment.update!(patient_id: current_patient.id)
     end
 
-    @current_patient.update(last_appointment: start_time)
+    @current_patient.update(last_appointment: @appointment)
 
     render 'patients/successfull_schedule'
   end
