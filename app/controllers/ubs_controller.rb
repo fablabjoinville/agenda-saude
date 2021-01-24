@@ -132,7 +132,7 @@ class UbsController < UserSessionController
     # FIXME: Should we reduce the scope of this search to improve performance?
     appointments = Appointment.where(patient_id: patients.map(&:id), second_dose: false)
 
-    return unless appointments.any?
+    return [] unless appointments.any?
 
     appointments.each do |appointment|
       patient = appointment.patient

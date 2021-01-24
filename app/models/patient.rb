@@ -15,6 +15,7 @@ class Patient < ApplicationRecord
   has_many :appointments, dependent: :destroy
   has_and_belongs_to_many :groups
   belongs_to :main_ubs, class_name: 'Ubs'
+  belongs_to :last_appointment, class_name: 'Appointment'
 
   validates :name, presence: true
   validates :cpf, presence: true, uniqueness: true, cpf_format: true
