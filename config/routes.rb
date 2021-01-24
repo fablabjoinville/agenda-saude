@@ -30,7 +30,8 @@ Rails.application.routes.draw do
     get 'ubs/checkin', as: :list_checkin
     post 'ubs/find_patients', as: :find_patients
     get 'ubs/checkout', as: :list_checkout
-
+    get 'ubs/confirm_check_in', as: :confirm_check_in
+    get 'ubs/confirm_check_out', as: :confirm_check_out
   end
 
   resources :appointments

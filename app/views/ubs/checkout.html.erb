@@ -1,3 +1,29 @@
 <%= render :layout => '/ubs/nav' do %>
-  TODO
+  <% if @appointments_patients.present? %>
+    <table class="table table-hover text-large">
+      <thead>
+        <tr>
+          <th scope="col">Data e Hora</th>
+          <th scope="col">Nome</th>
+          <th scope="col">CPF</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @appointments_patients.each do |appointment| %>
+          <tr>
+            <th scope="row"><%= appointment[:start].strftime("%d/%m/%Y") %><br><%= appointment[:start].strftime("%Hh%M") %></th>
+            <td><%= appointment[:name] %></td>
+            <td><%= ApplicationHelper.humanize_cpf(appointment[:cpf]) %></td>
+            <td><a class="btn btn-success" href=<%= patient_details_ubs_path(id: appointment[:id], check_out: true) %> >Check-Out</a></td>
+          </tr>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <div class="text-center" style="padding: 10%">
+      <h3>Pessoa não encontrada</h3>
+    </div>
+  <% end %>
 <% end %>
