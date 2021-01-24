@@ -132,7 +132,7 @@ class UbsController < UserSessionController
     appointments_patients = []
 
     # FIXME: Should we reduce the scope of this search to improve performance?
-    appointments = Appointment.where(patient_id: patients.map(&:id), second_dose: false)
+    appointments = Appointment.where(patient_id: patients.map(&:id))
 
     return [] unless appointments.any?
 
