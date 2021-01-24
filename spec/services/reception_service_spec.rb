@@ -38,8 +38,12 @@ RSpec.describe ReceptionService, type: :service do
     end
 
     context "when the pacient check's out from second dose appointment" do
+      before { service.check_out }
+
       it 'does not schedules a new appointment' do
-        # TODO
+        patient_appointments = Appointment.where(patient_id: patient.id)
+
+        expect { service.check_out }.not_to change { patient_appointments.reload.count }
       end
     end
   end
