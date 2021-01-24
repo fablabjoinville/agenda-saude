@@ -32,7 +32,6 @@
             <th scope="row"><%= appointment[:start].strftime("%d/%m/%Y") %><br><%= appointment[:start].strftime("%Hh%M") %></th>
             <td><%= appointment[:name] %></td>
             <td><%= ApplicationHelper.humanize_cpf(appointment[:cpf]) %></td>
-            <!-- TODO: Link for patient details view -->
             <% if appointment[:time_delta] < 3000.minutes %>
               <td><a class="btn btn-success" href=<%= patient_details_ubs_path(id: appointment[:id], check_in: true) %> >Check-In</a></td>
             <% else %>
