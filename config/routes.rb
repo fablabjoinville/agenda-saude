@@ -24,6 +24,8 @@ Rails.application.routes.draw do
 
     get 'ubs/slot_duration', as: :ubs_slot_duration
     patch 'ubs/change_slot_duration', as: :ubs_change_slot_duration
+
+    get 'ubs/patient_details', as: :ubs_patient_details, to: 'ubs#patient_details'
   end
 
   resources :appointments
@@ -38,6 +40,7 @@ Rails.application.routes.draw do
       get 'activate_ubs'
       get 'deactivate_ubs'
       get 'today_appointments'
+      get 'patient_details'
     end
   end
 

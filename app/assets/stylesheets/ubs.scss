@@ -1,3 +1,28 @@
 // Place all the styles related to the ubs controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: https://sass-lang.com/
+
+.card-header {
+    background-color: rgb(219, 223, 231);
+    font-size: large;
+    color: rgb(63, 63, 59);
+}
+
+.patient-name {
+    font-size: x-large;
+    font-weight: bold;
+}
+
+.patient-muted {
+    font-style: italic;
+    color: gray;
+}
+
+.pills {
+    font-size: large;
+}
+
+.buttons-datails {
+    padding-left: 10%;
+    padding-top: 4%;
+}

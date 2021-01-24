@@ -1,0 +1,75 @@
+<div class="row">
+  <div class="col-12">
+    <h3>Check-in</h3>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <% if @appointment.active %>
+      <%= ApplicationHelper.humanize_datetime(@appointment.start) %>
+    <% else %>
+      <del> <%= ApplicationHelper.humanize_datetime(@appointment.start) %> </del>
+    <% end %>
+  </div>
+  <div class="card-body">
+    <div class="patient-name"> <%= @patient[:name] %> </div>
+    <div class="patient-muted"> <%= ApplicationHelper.humanize_cpf(@patient[:cpf]) %> </div> 
+    <p style="padding-top: 2%">
+      <% @patient[:groups].each do |group| %>
+        <span class="badge badge-pill badge-primary pills"> <%= group %> </span>
+      <% end %>
+    </p>
+
+    <p>
+      <% if @appointment.active %>
+        <% if Time.zone.now + 30.minutes < @appointment.start %>
+          <span class="badge badge-pill badge-warning pills">Check-in distante*</span>
+        <% end %>
+      <% else %>
+        <span class="badge badge-pill badge-danger pills">Agendamento Cancelado</span>
+      <% end %>
+    </p>
+
+    <p class="patient-muted">* Check-in fica disponível 30 minutos ou menos antes do horário agendado </div>
+  </div>
+</div>
+
+<div class="buttons-datails">
+  <div class="row text-center">
+    <% if @appointment.active %>
+
+      <div class="col-md-4">
+        <a class="btn btn-secondary btn-block btn-lg" href=<%= "/ubs/#{@appointment.id}/cancel_appointment" %>
+          onclick="return confirm('Você tem certeza que deseja CANCELAR este agendamento?\nSerá necessário criar um novo agendamento para esta pessoa.')"
+        >Cancelar agendamento</a>
+      </div>
+
+      <div class="col-md-4">
+        <%= link_to "Voltar", :back, class: "btn-lg" %>
+      </div>
+
+    <% else %>
+
+      <div class="col-md-4">
+        <%# TODO: Link to check-in page %>
+        <%= link_to "Voltar para check-in", :back, class: "btn-lg" %>
+      </div>
+
+    <% end %>
+
+    <div class="col-md-4">
+      <a class="btn btn-secondary btn-block btn-lg" href=<%= "/ubs/#{@appointment.id}/cancel_appointment" %>
+        onclick="return confirm('Você tem certeza que deseja CANCELAR este agendamento?\nSerá necessário criar um novo agendamento para esta pessoa.')"
+      >Cancelar agendamento</a>
+    </div>
+
+    <div class="col-md-4">
+      <%= link_to "Voltar", :back, class: "btn-lg" %>
+    </div>
+
+  </div>
+</div>
+
+
+<%= stylesheet_link_tag 'ubs.css' %>
