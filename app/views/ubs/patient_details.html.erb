@@ -26,9 +26,6 @@
       <i class="fa fa-times-circle icons" aria-hidden="true" style="color: red;"></i>
     <% end %>
 
-
-
-
     <div class="patient-muted"> <%= ApplicationHelper.humanize_cpf(@patient[:cpf]) %> </div> 
     <p style="padding-top: 2%">
       <% @patient[:groups].each do |group| %>
@@ -53,7 +50,7 @@
   </div>
 </div>
 
-<div class="buttons-datails">
+<div class="buttons-details">
   <% if @appointment.active %>
     <% if @appointment.check_in.present? %>
       <div class="row text-center">
@@ -102,12 +99,10 @@
     <% end %>
 
   <% else %>
-
       <div class="col-md-4">
         <%# TODO: Link to check-in page %>
         <%= link_to "Voltar para check-in", :back, class: "btn-lg" %>
       </div>
-
   <% end %>
 
   </div>

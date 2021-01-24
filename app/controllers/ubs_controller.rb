@@ -121,7 +121,6 @@ class UbsController < UserSessionController
 
     @patient = {
       id: patient.id,
-      age: calculate_age(patient.birth_date),
       name: patient.name,
       cpf: patient.cpf,
       groups: groups 
@@ -162,12 +161,6 @@ class UbsController < UserSessionController
 
   def slot_duration_params
     params.require(:ubs).permit(:slot_interval_minutes, :appointments_per_time_slot)
-  end
-
-  def calculate_age(age)
-    birth_date = age.to_time
-
-    ((Time.zone.now - birth_date.to_time) / 1.year.seconds).floor
   end
 
 end

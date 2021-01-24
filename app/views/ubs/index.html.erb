@@ -16,10 +16,6 @@
 
 <div class="alert alert-info">Ao cancelar ou reativar um agendamento por favor entrar em contato com o paciente.</div>
 
-<p>
-  <a class="btn btn-primary" href=<%= ubs_patient_details_path(ubs_id: @ubs.id, patient_id: Patient.find(12).id) %>>Detalhes Primeiro Paciente</a>
-</p>
-
 <div class="mt-5">
   <h3> Lista de Agendamentos </h3>
   <% if @appointments.present? %>
