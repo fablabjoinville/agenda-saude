@@ -32,7 +32,6 @@ class TimeSlotController < PatientSessionController
       return render json: @appointment.errors unless @appointment.update!(patient_id: current_patient.id)
     end
 
-    start_time = start_time.to_datetime.change(offset: Time.zone.now.strftime('%z')).in_time_zone
     @current_patient.update(last_appointment: @appointment)
 
     render 'patients/successfull_schedule'
