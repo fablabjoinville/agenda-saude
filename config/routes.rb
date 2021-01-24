@@ -27,6 +27,7 @@ Rails.application.routes.draw do
 
     get 'ubs/status', as: :status
     get 'ubs/checkin', as: :list_checkin
+    post 'ubs/find_patients', as: :find_patients
     get 'ubs/checkout', as: :list_checkout
   end
 
