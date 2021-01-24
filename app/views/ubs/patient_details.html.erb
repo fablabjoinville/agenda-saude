@@ -1,0 +1,111 @@
+<div class="row">
+  <div class="col-12">
+    <% if  @appointment.check_in.present? and @appointment.active %>
+      <h3>Check-in Realizado</h3>
+    <% elsif !@appointment.active %>
+      <h3>Agendamento Cancelado</h3>
+    <% else %>
+      <h3>Check-in</h3>
+    <% end %>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <% if @appointment.active %>
+      <%= ApplicationHelper.humanize_datetime(@appointment.start) %>
+    <% else %>
+      <del> <%= ApplicationHelper.humanize_datetime(@appointment.start) %> </del>
+    <% end %>
+  </div>
+  <div class="card-body">
+    <div class="patient-name"> <%= @patient[:name] %> </div>
+    <% if @appointment.check_in.present? %>
+      <i class="fa fa-check-circle icons" aria-hidden="true" style="color: green;"></i>
+    <% elsif !@appointment.active %>
+      <i class="fa fa-times-circle icons" aria-hidden="true" style="color: red;"></i>
+    <% end %>
+
+    <div class="patient-muted"> <%= ApplicationHelper.humanize_cpf(@patient[:cpf]) %> </div> 
+    <p style="padding-top: 2%">
+      <% @patient[:groups].each do |group| %>
+        <span class="badge badge-pill badge-primary pills-groups"> <%= group %> </span>
+      <% end %>
+    </p>
+
+    <p>
+      <% if @appointment.active %>
+        <% if @appointment.check_in.present? %>
+          <span class="badge badge-pill badge-success pills-info">Check-in OK</span>
+        <% else %>
+          <% if Time.zone.now + 30.minutes < @appointment.start %>
+            <span class="badge badge-pill badge-warning pills-info">Check-in distante*</span>
+            <p class="patient-muted">* Check-in fica disponível 30 minutos ou menos antes do horário agendado </div>
+          <% end %>
+        <% end %>
+      <% else %>
+        <span class="badge badge-pill badge-danger pills-info">Agendamento Cancelado</span>
+      <% end %>
+    </p>
+  </div>
+</div>
+
+<div class="buttons-details">
+  <% if @appointment.active %>
+    <% if @appointment.check_in.present? %>
+      <div class="row text-center">
+        <div class="col-md-4">
+          <%# TODO: Link to check-in page %>
+          <%= link_to "Voltar para check-in", :back, class: "btn-lg" %>
+        </div>
+
+        <div class="col-md-4">
+          <%# TODO link to confirm_check_out_path %>
+          <a class="btn btn-success btn-block btn-lg" href=<%= :back %>
+            onclick="return confirm('Confirme para sinalizar que esta pessoa fez o check-in e está pronta para entrar e receber a vacina.')"
+          >Realizar Check-out</a>
+        </div>
+      </div>
+
+    <% elsif Time.zone.now + 30.days < @appointment.start %>
+      <div class="row text-center">
+        <div class="col-md-4">
+          <a class="btn btn-secondary btn-block btn-lg" href=<%= "/ubs/#{@appointment.id}/cancel_appointment" %>
+            onclick="return confirm('Você tem certeza que deseja CANCELAR este agendamento?\nSerá necessário criar um novo agendamento para esta pessoa.')"
+          >Cancelar agendamento</a>
+        </div>
+
+        <div class="col-md-4">
+          <%= link_to "Voltar", :back, class: "btn-lg" %>
+        </div>
+      </div>
+    <% else %>
+      <div class="row text-center">
+        <div class="col-md-4">
+          <a class="btn btn-secondary btn-block btn-lg" href=<%= "/ubs/#{@appointment.id}/cancel_appointment" %>
+            onclick="return confirm('Você tem certeza que deseja CANCELAR este agendamento?\nSerá necessário criar um novo agendamento para esta pessoa.')"
+          >Cancelar agendamento*</a>
+        </div>
+
+        <div class="col-md-4">
+          <%# TODO link to confirm_check_in_path %>
+          <a class="btn btn-success btn-block btn-lg" href=<%= :back %>
+            onclick="return confirm('Confirme para sinalizar que esta pessoa fez o check-in e está pronta para entrar e receber a vacina.')"
+          >Realizar Check-in</a>
+        </div>
+      </div>
+
+      <p class="patient-muted" style="padding-top: 2%;">* Um agendamento é cancelado quando as informações não conferem </div>
+    <% end %>
+
+  <% else %>
+      <div class="col-md-4">
+        <%# TODO: Link to check-in page %>
+        <%= link_to "Voltar para check-in", :back, class: "btn-lg" %>
+      </div>
+  <% end %>
+
+  </div>
+</div>
+
+<%= stylesheet_link_tag 'ubs.css' %>

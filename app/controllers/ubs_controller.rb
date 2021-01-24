@@ -97,7 +97,9 @@ class UbsController < UserSessionController
 
     appointment.update(active: false)
 
-    redirect_to ubs_index_path
+    patient_id = appointment.patient_id
+
+    redirect_to ubs_patient_details_path(ubs_id: @ubs.id, patient_id: patient_id)
   end
 
   def activate_appointment
@@ -124,6 +126,26 @@ class UbsController < UserSessionController
     appointments.update_all(active: true)
 
     redirect_to ubs_index_path
+  end
+
+  def patient_details
+    patient = Patient.find(params[:patient_id])
+    
+    groups = []
+    Patient::CONDITIONS.each do |cond, func|
+      groups << cond if func.call(patient)
+    end
+
+    @patient = {
+      id: patient.id,
+      name: patient.name,
+      cpf: patient.cpf,
+      groups: groups 
+    }
+
+    @appointment = Appointment.where(patient_id: patient.id, check_out: nil).last
+
+    render ubs_patient_details_path
   end
 
   private
@@ -182,4 +204,5 @@ class UbsController < UserSessionController
   def slot_duration_params
     params.require(:ubs).permit(:slot_interval_minutes, :appointments_per_time_slot)
   end
+
 end
