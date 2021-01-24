@@ -10,6 +10,22 @@ class UbsController < UserSessionController
     @bedridden_patients = @ubs.bedridden_patients
   end
 
+  def confirm_check_in
+    @patient = Patient.find(params[:id])
+
+    ReceptionService.new(@patient).check_in
+
+    redirect_to ubs_patient_details_path(id: @patient.id)
+  end
+
+  def confirm_check_out
+    @patient = Patient.find(params[:id])
+
+    ReceptionService.new(@patient).check_out
+
+    redirect_to list_checkout_path
+  end
+
   def find_patients
     @cpf = params['cpf']
     @name = params['name']
@@ -25,6 +41,17 @@ class UbsController < UserSessionController
     end
 
     render 'ubs/checkin'
+  end
+
+  def checkout
+    now = 1.day.from_now
+
+    patients_ids = Appointment.where.not(check_in: nil).where(check_out: nil, start: now.beginning_of_day..now.end_of_day).pluck(:patient_id)
+    @patients = Patient.find(patients_ids)
+
+    @appointments_patients = build_appointments_patients(@patients, check_out: true)
+
+    render 'ubs/checkout'
   end
 
   def today_appointments
@@ -129,8 +156,8 @@ class UbsController < UserSessionController
   end
 
   def patient_details
-    patient = Patient.find(params[:patient_id])
-    
+    patient = Patient.find(params[:id])
+
     groups = []
     Patient::CONDITIONS.each do |cond, func|
       groups << cond if func.call(patient)
@@ -140,7 +167,7 @@ class UbsController < UserSessionController
       id: patient.id,
       name: patient.name,
       cpf: patient.cpf,
-      groups: groups 
+      groups: groups
     }
 
     @appointment = Appointment.where(patient_id: patient.id, check_out: nil).last
@@ -150,11 +177,20 @@ class UbsController < UserSessionController
 
   private
 
-  def build_appointments_patients(patients)
+  def build_appointments_patients(patients, check_out: false)
     appointments_patients = []
 
     # FIXME: Should we reduce the scope of this search to improve performance?
-    appointments = Appointment.where(patient_id: patients.map(&:id))
+    if check_out
+      appointments = Appointment.where(
+        patient_id: patients.map(&:id),
+      ).where.not(check_in: nil)
+    else
+      appointments = Appointment.where(
+        patient_id: patients.map(&:id),
+        check_in: nil
+      )
+    end
 
     return [] unless appointments.any?
 

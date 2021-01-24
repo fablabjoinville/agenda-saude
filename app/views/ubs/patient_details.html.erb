@@ -26,7 +26,7 @@
       <i class="fa fa-times-circle icons" aria-hidden="true" style="color: red;"></i>
     <% end %>
 
-    <div class="patient-muted"> <%= ApplicationHelper.humanize_cpf(@patient[:cpf]) %> </div> 
+    <div class="patient-muted"> <%= ApplicationHelper.humanize_cpf(@patient[:cpf]) %> </div>
     <p style="padding-top: 2%">
       <% @patient[:groups].each do |group| %>
         <span class="badge badge-pill badge-primary pills-groups"> <%= group %> </span>
@@ -56,17 +56,22 @@
       <div class="row text-center">
         <div class="col-md-4">
           <%# TODO: Link to check-in page %>
-          <%= link_to "Voltar para check-in", :back, class: "btn-lg" %>
+          <% if @check_in %>
+            <%= link_to "Voltar para check-in", list_checkin_path, class: "btn-lg" %>
+          <% else %>
+            <%= link_to "Voltar para check-out", list_checkout_path, class: "btn-lg" %>
+          <% end %>
         </div>
 
         <div class="col-md-4">
           <%# TODO link to confirm_check_out_path %>
-          <a class="btn btn-success btn-block btn-lg" href=<%= :back %>
+          <a class="btn btn-success btn-block btn-lg" href=<%= confirm_check_out_path(id: @patient[:id]) %>
             onclick="return confirm('Confirme para sinalizar que esta pessoa fez o check-in e está pronta para entrar e receber a vacina.')"
           >Realizar Check-out</a>
         </div>
       </div>
 
+    <!-- reverter isso para 30 minutos -->
     <% elsif Time.zone.now + 30.days < @appointment.start %>
       <div class="row text-center">
         <div class="col-md-4">
@@ -81,27 +86,36 @@
       </div>
     <% else %>
       <div class="row text-center">
-        <div class="col-md-4">
+        <div class="col-md-6">
           <a class="btn btn-secondary btn-block btn-lg" href=<%= "/ubs/#{@appointment.id}/cancel_appointment" %>
             onclick="return confirm('Você tem certeza que deseja CANCELAR este agendamento?\nSerá necessário criar um novo agendamento para esta pessoa.')"
           >Cancelar agendamento*</a>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-6">
           <%# TODO link to confirm_check_in_path %>
-          <a class="btn btn-success btn-block btn-lg" href=<%= :back %>
+          <a class="btn btn-success btn-block btn-lg" href=<%= confirm_check_in_path(id: @patient[:id]) %>
             onclick="return confirm('Confirme para sinalizar que esta pessoa fez o check-in e está pronta para entrar e receber a vacina.')"
           >Realizar Check-in</a>
         </div>
       </div>
 
-      <p class="patient-muted" style="padding-top: 2%;">* Um agendamento é cancelado quando as informações não conferem </div>
+      <div class="row text-center">
+        <div class="col-md-12">
+          <p class="patient-muted" style="padding-top: 2%;">* Um agendamento é cancelado quando as informações não conferem</p>
+        </div>
+      </div>
+
+      <div class="row text-center">
+        <div class="col-md-12">
+          <%= link_to "Voltar para check-in", list_checkin_path, class: "btn-lg" %>
+        </div>
+      </div>
     <% end %>
 
   <% else %>
       <div class="col-md-4">
-        <%# TODO: Link to check-in page %>
-        <%= link_to "Voltar para check-in", :back, class: "btn-lg" %>
+        <%= link_to "Voltar para check-in", list_checkin_path, class: "btn-lg" %>
       </div>
   <% end %>
 
