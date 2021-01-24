@@ -26,7 +26,7 @@ RSpec.describe ReceptionService, type: :service do
     end
 
     it 'updates the patient last_appointment attribute' do
-      expect { service.check_out }.to change { patient.reload.last_appointment }.from(appointment.start).to(next_appointment.start)
+      expect { service.check_out }.to change { patient.reload.last_appointment }.from(appointment).to(next_appointment)
     end
 
     it 'marks next_appointment as a second dose appointment' do
@@ -50,6 +50,6 @@ RSpec.describe ReceptionService, type: :service do
 
   def schedule_appointment
     appointment.update!(patient_id: patient.id)
-    patient.update!(last_appointment: appointment.start)
+    patient.update!(last_appointment: appointment)
   end
 end
