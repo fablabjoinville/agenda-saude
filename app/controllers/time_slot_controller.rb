@@ -33,7 +33,7 @@ class TimeSlotController < PatientSessionController
     end
 
     start_time = start_time.to_datetime.change(offset: Time.zone.now.strftime('%z')).in_time_zone
-    @current_patient.update(last_appointment: start_time)
+    @current_patient.update(last_appointment: @appointment)
 
     render 'patients/successfull_schedule'
   end

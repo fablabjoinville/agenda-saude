@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_23_183941) do
+ActiveRecord::Schema.define(version: 2021_01_24_172656) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -73,8 +73,9 @@ ActiveRecord::Schema.define(version: 2021_01_23_183941) do
     t.integer "target_audience"
     t.string "public_place"
     t.string "place_number"
-    t.datetime "last_appointment"
+    t.bigint "last_appointment_id"
     t.index ["cpf"], name: "index_patients_on_cpf", unique: true
+    t.index ["last_appointment_id"], name: "index_patients_on_last_appointment_id"
     t.index ["main_ubs_id"], name: "index_patients_on_main_ubs_id"
   end
 
@@ -117,6 +118,7 @@ ActiveRecord::Schema.define(version: 2021_01_23_183941) do
   end
 
   add_foreign_key "appointments", "ubs"
+  add_foreign_key "patients", "appointments", column: "last_appointment_id"
   add_foreign_key "patients", "ubs", column: "main_ubs_id"
   add_foreign_key "ubs", "users"
 end
