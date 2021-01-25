@@ -60,7 +60,7 @@
   </div>
 
   <div class="form-row">
-    <div class="form-group col-md-6">
+    <div class="form-group col-md-6" data-cy="patientGroups">
       <%= f.label :groups, "Grupo(s) que faz parte (opcional):" %>
       <div class="form-check">
         <%= f.collection_check_boxes :groups, Group.all, :id, :name do |b| %>

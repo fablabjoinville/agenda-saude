@@ -93,6 +93,18 @@ today = Date.today
   appointment.save!
 end
 
+starting_time = Tod::TimeOfDay.parse('9:00')
+today = Date.today
+10.times do
+  appointment = Appointment.new
+  appointment.patient_id = nil
+  appointment.ubs = Ubs.first
+  appointment.start = starting_time.on(today)
+  appointment.end = (starting_time += 15.minutes).on(today)
+  appointment.active = true
+  appointment.save!
+end
+
 [
   'Trabalhador(a) da Saúde',
   'Institucionalizado(a)',
