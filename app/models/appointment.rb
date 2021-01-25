@@ -12,4 +12,8 @@ class Appointment < ApplicationRecord
   def active?
     active == true
   end
+
+  def in_allowed_check_in_window?
+    start > Time.zone.now.beginning_of_day && start < Time.zone.now.end_of_day
+  end
 end
