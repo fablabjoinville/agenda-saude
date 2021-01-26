@@ -28,12 +28,14 @@
 <% end %>
 
 <div class="card">
-  <div class="card-header">
-    <% if @appointment.active %>
-      <%= ApplicationHelper.humanize_datetime(@appointment.start) %>
-    <% else %>
-      <del> <%= ApplicationHelper.humanize_datetime(@appointment.start) %> </del>
-    <% end %>
+  <div class="card-header" style="font-size: 1.5rem;">
+    <b>
+      <% if @appointment.active %>
+        <%= ApplicationHelper.humanize_datetime(@appointment.start) %>
+      <% else %>
+        <del> <%= ApplicationHelper.humanize_datetime(@appointment.start) %> </del>
+      <% end %>
+    </b>
   </div>
   <div class="card-body">
     <div class="patient-name"> <%= @patient[:name] %> </div>
@@ -76,26 +78,32 @@
 <div class="buttons-details">
   <% if @appointment.active %>
     <div class="row text-center">
-      <div class="col-md-6">
-        <a class="btn btn-danger btn-block btn-lg" href=<%= "/ubs/#{@appointment.id}/suspend_appointment" %>
-                  onclick="return confirm('Você tem certeza que deseja SUSPENDER este agendamento?\nSerá necessário criar um novo agendamento para esta pessoa.')"
-        >Suspender agendamento</a>
-      </div>
       <!-- check in button rule -->
-      <% if @appointment.in_allowed_check_in_window? && @appointment.check_in.nil? %>
-        <div class="col-md-6">
-          <a class="btn btn-success btn-block btn-lg" href=<%= confirm_check_in_path(id: @appointment.id) %>
-            onclick="return confirm('Confirme para sinalizar que esta pessoa fez o check-in e está pronta para entrar e receber a vacina.')"
-          >Realizar Check-in</a>
+      <% if @appointment.check_in.nil? %>
+        <div class="col-md-12">
+          <% if @appointment.in_allowed_check_in_window?  %>
+            <a class="btn btn-success btn-block btn-lg" href=<%= confirm_check_in_path(id: @appointment.id) %>
+                      onclick="return confirm('Confirme para sinalizar que esta pessoa fez o check-in e está pronta para entrar e receber a vacina.')"
+            >Realizar Check-in</a>
+          <% else %>
+            <a class="btn btn-secondary btn-block btn-lg" href="#"
+               onclick="return alert('Não é possível fazer check in de pacientes de outro dia')"
+            >Realizar Check-in</a>
+          <% end %>
         </div>
-      <% end %>
-      <!-- not allowed check in button rule -->
-      <% if !@appointment.in_allowed_check_in_window? && @appointment.check_in.nil? %>
-        <div class="col-md-6">
-          <a class="btn btn-secondary btn-block btn-lg" href="#"
-            onclick="return alert('Não é possível fazer check in de pacientes de outro dia')"
-          >Realizar Check-in</a>
-        </div>
+    </div>
+    <div class="row text-center" style="padding-top:3%">
+      <div class="col-md-12">
+        <%= form_with url: suspend_appointment_ubs_path(id: @appointment.id), method: :get, local: true do |f| %>
+          <div class="input-group mb-3">
+            <%= f.text_field :reason, required: true, class: "form-control", placeholder: 'Informe o motivo da suspensão' %>
+            <div class="input-group-append">
+              <%= f.submit "Suspender agendamento", class: "btn btn-outline-danger" %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
       <% end %>
       <!-- check out button rule -->
       <% if @appointment.check_in.present? && @appointment.check_out.nil? %>
