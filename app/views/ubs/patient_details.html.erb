@@ -77,9 +77,9 @@
   <% if @appointment.active %>
     <div class="row text-center">
       <div class="col-md-6">
-        <a class="btn btn-danger btn-block btn-lg" href=<%= "/ubs/#{@appointment.id}/cancel_appointment" %>
-                  onclick="return confirm('Você tem certeza que deseja CANCELAR este agendamento?\nSerá necessário criar um novo agendamento para esta pessoa.')"
-        >Cancelar agendamento</a>
+        <a class="btn btn-danger btn-block btn-lg" href=<%= "/ubs/#{@appointment.id}/suspend_appointment" %>
+                  onclick="return confirm('Você tem certeza que deseja SUSPENDER este agendamento?\nSerá necessário criar um novo agendamento para esta pessoa.')"
+        >Suspender agendamento</a>
       </div>
       <!-- check in button rule -->
       <% if @appointment.in_allowed_check_in_window? && @appointment.check_in.nil? %>

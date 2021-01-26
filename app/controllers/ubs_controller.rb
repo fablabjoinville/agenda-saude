@@ -145,7 +145,7 @@ class UbsController < UserSessionController
     render ubs_slot_duration_path
   end
 
-  def cancel_appointment
+  def suspend_appointment
     appointment = @ubs.appointments.find(params[:id])
 
     appointment.update(active: false)
