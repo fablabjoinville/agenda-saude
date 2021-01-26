@@ -145,14 +145,12 @@ class UbsController < UserSessionController
     render ubs_slot_duration_path
   end
 
-  def cancel_appointment
+  def suspend_appointment
     appointment = @ubs.appointments.find(params[:id])
 
     appointment.update(active: false)
 
-    patient_id = appointment.patient_id
-
-    redirect_to ubs_patient_details_path(ubs_id: @ubs.id, patient_id: patient_id)
+    redirect_to ubs_patient_details_path(ubs_id: @ubs.id, id: appointment.id)
   end
 
   def activate_appointment
@@ -208,7 +206,8 @@ class UbsController < UserSessionController
         name: patient.name,
         cpf: patient.cpf,
         start: appointment.start,
-        time_delta: (appointment[:start] - Time.zone.now).abs
+        time_delta: (appointment[:start] - Time.zone.now).abs,
+        active: appointment.active
       }
     end
 
