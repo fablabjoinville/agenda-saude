@@ -82,6 +82,10 @@ ActiveRecord::Schema.define(version: 2021_01_31_212505) do
     t.index ["main_ubs_id"], name: "index_patients_on_main_ubs_id"
   end
 
+  create_table "time_slot_generation_configs", primary_key: "ubs_id", id: :serial, force: :cascade do |t|
+    t.text "content"
+  end
+
   create_table "time_slot_generator_executions", primary_key: "date", id: :date, force: :cascade do |t|
     t.text "status"
     t.text "details"

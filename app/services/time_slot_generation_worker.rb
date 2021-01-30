@@ -3,6 +3,7 @@ class TimeSlotGenerationWorker
     Defaults = {
       sleep_interval: 60.seconds,
       execution_hour: 22,
+      # TODO: move everything below to TimeSlotGenerationConfig
       second_dose_interval: 28.days,
       # Max time ahead users will be able to see free time slots
       max_appointment_time_ahead: 3.days
@@ -42,7 +43,7 @@ class TimeSlotGenerationWorker
 
       # If we ever scale to multiple nodes, this ensures only one job will run
       result = ActiveRecord::Base.connection.execute(
-        "INSERT INTO time_slot_generator_executions (date, status)" \
+        "INSERT INTO time_slot_generator_executions (date, status) " \
           "VALUES ('#{current_time.to_date.to_s(:db)}', 'running') " \
           "ON CONFLICT DO NOTHING RETURNING true AS inserted"
       )
@@ -60,43 +61,64 @@ class TimeSlotGenerationWorker
 
       begin
         Ubs.active.each do |ubs|
-          first_date = current_time + options.max_appointment_time_ahead + 1.day
-          second_dose_date = first_date + options.second_dose_interval
-
-          [first_date, second_dose_date].each do |date|
-            generation_options = TimeSlotGenerationService::Options.new(
-              start_date: date.to_datetime,
-              end_date: date.to_datetime,
-              ubs: ubs,
-              # These don't exist or are incomplete on 
-              # UBS record, so they must be changed here
-              weekdays: [*0..6],
-              excluded_dates: []
-            )
-
-            @time_slot_generation_service.execute(generation_options)
-          end
+          generate_ubs_time_slots(ubs, options, current_time)
         end
 
         TimeSlotGeneratorExecution
           .where(date: current_time.to_date)
           .update_all(status: 'done')
-          
+           
         send_slack_message("✅ Geração de time slots finalizada com sucesso")
+      rescue => exception
+        error = "#{exception.class.name}: #{exception.message}"
+
+        TimeSlotGeneratorExecution
+          .where(date: current_time.to_date)
+          .update_all(status: 'failed', details: exception.backtrace.join("\n"))
+
+        send_slack_message(
+          "‼️ ERRO: Geração de time slots falhou (#{error}). Mais detalhes no registro TimeSlotGeneratorExecution."
+        )
+
+        # TODO: enable after sentry-raven -> sentry-ruby migration
+        # Sentry.capture_exception(exception)
       end
-    rescue => exception
-      error = "#{exception.class.name}: #{exception.message}"
+    end
+  end
 
-      TimeSlotGeneratorExecution
-        .where(date: current_time.to_date)
-        .update_all(status: 'failed', details: error)
+  def generate_ubs_time_slots(ubs, options, current_time)
+    config = ubs.time_slot_generation_config
 
-      send_slack_message(
-        "‼️ ERRO: Geração de time slots falhou (#{error}). Mais detalhes no Sentry."
-      )
+    return if config.blank?
+    
+    first_date = current_time + options.max_appointment_time_ahead + 1.day
+    second_dose_date = first_date + options.second_dose_interval
 
-      # TODO: enable after sentry-raven -> sentry-ruby migration
-      # Sentry.capture_exception(exception)
+    [first_date, second_dose_date].each do |date|
+      config[:windows].each do |window|
+        generation_options = TimeSlotGenerationService::Options.new(
+          start_date: date.to_datetime,
+          end_date: date.to_datetime,
+          # This is a hack... :X
+          ubs: OpenStruct.new(
+            id: ubs.id,
+            shift_start: window[:start_time],
+            break_start: window[:end_time],
+            # Generated time slot end time will 
+            # be out of window, so it'll be ignored
+            break_end: '01:00',
+            shift_end: '01:00',
+            appointments_per_time_slot: window[:slots],
+            slot_interval_minutes: ubs.slot_interval_minutes
+          ),
+          # These don't exist or are incomplete on 
+          # UBS record, so they must be changed here
+          weekdays: [*0..6],
+          excluded_dates: []
+        )
+
+        @time_slot_generation_service.execute(generation_options)
+      end
     end
   end
 

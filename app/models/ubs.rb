@@ -8,6 +8,7 @@ class Ubs < ApplicationRecord
   belongs_to :user
   has_many :appointments, dependent: :destroy
   has_and_belongs_to_many :neighborhoods
+  has_one :time_slot_generation_config
 
   scope :active, -> { where(active: true) }
 
