@@ -62,19 +62,31 @@
   <div class="form-row">
     <div class="form-group col-md-6" data-cy="patientGroups">
       <%= f.label :groups, "Grupo(s) que faz parte (opcional):" %>
-      <div class="form-check">
-        <%= f.collection_check_boxes :groups, Group.all, :id, :name do |b| %>
+      <div class="form-check" onclick="checkForComorbidities()">
+        <%= f.collection_check_boxes :groups, Group.where(comorbidity: false), :id, :name do |b| %>
           <div class="row">
-            <%= b.label { b.check_box(class: "form-check-input") + b.text } %>
+            <%= b.label { b.check_box(checked: @patient.groups.map(&:id).include?(b.value), class: "form-check-input") + b.text }%>
           </div>
         <% end %>
       </div>
-      <div class="small">*Diabetes mellitus, hipertensão, doença pulmonar obstrutiva crônica, doença renal, doenças cardiovasculares e cerebrovasculares, indivíduos transplantados de órgão sólido, anemia falciforme, câncer, obesidade grave (IMC &GreaterEqual; 40)</div>
     </div>
 
     <div class="form-group col-md-6">
       <%= f.label :sus, "Cartão SUS" %>
       <%= f.number_field :sus, autofocus: true, autocomplete: "sus", required: false, class: "form-control", data: { cy: "newPatientSusNumberInputField" } %>
+    </div>
+  </div>
+
+  <div class="form-row" hidden=true id="comorbidities-list">
+    <div class="form-group col-md-6" data-cy="patientGroups">
+      <%= f.label :groups, "Comorbidades:" %>
+      <div class="form-check">
+        <%= f.collection_check_boxes :groups, Group.where(comorbidity: true), :id, :name do |b| %>
+          <div class="row">
+            <%= b.label { b.check_box(checked: @patient.groups.map(&:id).include?(b.value), class: "form-check-input") + b.text } %>
+          </div>
+        <% end %>
+      </div>
     </div>
   </div>
 
@@ -122,3 +134,9 @@
     </div>
   </div>
 <% end %>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    checkForComorbidities();
+  });
+</script>
