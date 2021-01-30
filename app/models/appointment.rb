@@ -1,6 +1,6 @@
 class Appointment < ApplicationRecord
   belongs_to :ubs
-  belongs_to :patient
+  belongs_to :patient, optional: true
 
   scope :today, -> { where('date(start) = ?', Date.current) }
   scope :active_from_day, ->(day) do
@@ -11,5 +11,9 @@ class Appointment < ApplicationRecord
 
   def active?
     active == true
+  end
+
+  def in_allowed_check_in_window?
+    start > Time.zone.now.beginning_of_day && start < Time.zone.now.end_of_day
   end
 end

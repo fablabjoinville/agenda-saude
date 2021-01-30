@@ -12,7 +12,7 @@ describe('happy patient flow', () => {
     cy.get('#patient_birth_date_2i').select('Janeiro')
     cy.get('#patient_birth_date_1i').select('1900')
     cy.get('[data-cy=newPatientMotherNameInputField]').type('Tristeza')
-    cy.get('#patient_groups_4').check()
+    cy.get('[data-cy=patientGroups]').get('[type="checkbox"]').first().check()
     cy.get('[data-cy=newPatientSusNumberInputField]').type('957774523900005')
     cy.get('[data-cy=newPatientStreetNameInputField]').type('Galáxia')
     cy.get('[data-cy=newPatientStreetNumberInputField]').type('X9')

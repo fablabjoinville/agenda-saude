@@ -21,7 +21,7 @@
                 <td><a href=<%= "/patients/#{appointment.patient_id}" %>><%= find_appointment_patient(appointment.patient_id).name %></a></td>
                 <td><%= find_appointment_patient(appointment.patient_id).phone %></td>
                 <td><%= find_appointment_patient(appointment.patient_id).other_phone %></td>
-                <td><a class="btn btn-primary" href=<%= "/ubs/#{appointment.id}/cancel_appointment" %>
+                <td><a class="btn btn-primary" href=<%= "/ubs/#{appointment.id}/suspend_appointment" %>
                               onclick="return confirm('Você tem certeza?')"
                     >Suspender agendamento</a></td>
               </tr>

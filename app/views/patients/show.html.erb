@@ -95,9 +95,9 @@
     <div class="col"><%= appointment.start %></div>
     <div class="col">
       <a
-        href=<%= "/ubs/#{appointment.id}/cancel_appointment" %>
+        href=<%= "/ubs/#{appointment.id}/suspend_appointment" %>
         onclick="return confirm('Você tem certeza?')"
-      >Excluir agendamento</a>
+      >Suspender agendamento</a>
     </div>
   </div>
 <% end %>

@@ -10,6 +10,25 @@ class UbsController < UserSessionController
     @bedridden_patients = @ubs.bedridden_patients
   end
 
+  def confirm_check_in
+    appointment = Appointment.find(params[:id])
+
+    ReceptionService.new(appointment.patient).check_in
+
+    redirect_to ubs_patient_details_path(id: appointment.id, check_in: true)
+  end
+
+  def confirm_check_out
+    appointment = Appointment.find(params[:id])
+    patient = appointment.patient
+
+    ReceptionService.new(patient).check_out
+
+    @second_dose_appointment = patient.reload.last_appointment
+
+    redirect_to ubs_patient_details_path(id: appointment.id, second_dose_appointment: @second_dose_appointment, check_out: true)
+  end
+
   def find_patients
     @cpf = params['cpf']
     @name = params['name']
@@ -25,6 +44,40 @@ class UbsController < UserSessionController
     end
 
     render 'ubs/checkin'
+  end
+
+  def checkout
+    now = Time.zone.now
+
+    patients_ids = Appointment.where.not(check_in: nil).where(check_out: nil, start: now.beginning_of_day..now.end_of_day).pluck(:patient_id)
+    @patients = Patient.find(patients_ids)
+
+    @appointments_patients = build_appointments_patients(@patients, check_out: true)
+
+    render 'ubs/checkout'
+  end
+
+  def patient_details
+    @appointment = Appointment.find(params[:id])
+    @second_dose_appointment = Appointment.find(params[:second_dose_appointment]) if params[:second_dose_appointment]
+    @check_out = params[:check_out]
+    @check_in = params[:check_in]
+
+    patient = @appointment.patient
+
+    groups = []
+    Patient::CONDITIONS.each do |cond, func|
+      groups << cond if func.call(patient)
+    end
+
+    @patient = {
+      id: patient.id,
+      name: patient.name,
+      cpf: patient.cpf,
+      groups: groups
+    }
+
+    render ubs_patient_details_path
   end
 
   def today_appointments
@@ -92,12 +145,12 @@ class UbsController < UserSessionController
     render ubs_slot_duration_path
   end
 
-  def cancel_appointment
+  def suspend_appointment
     appointment = @ubs.appointments.find(params[:id])
 
     appointment.update(active: false)
 
-    redirect_to ubs_index_path
+    redirect_to ubs_patient_details_path(ubs_id: @ubs.id, id: appointment.id)
   end
 
   def activate_appointment
@@ -128,11 +181,20 @@ class UbsController < UserSessionController
 
   private
 
-  def build_appointments_patients(patients)
+  def build_appointments_patients(patients, check_out: false)
     appointments_patients = []
 
     # FIXME: Should we reduce the scope of this search to improve performance?
-    appointments = Appointment.where(patient_id: patients.map(&:id))
+    if check_out
+      appointments = Appointment.where(
+        patient_id: patients.map(&:id),
+      ).where.not(check_in: nil)
+    else
+      appointments = Appointment.where(
+        patient_id: patients.map(&:id),
+        check_in: nil
+      )
+    end
 
     return [] unless appointments.any?
 
@@ -140,11 +202,12 @@ class UbsController < UserSessionController
       patient = appointment.patient
 
       appointments_patients << {
-        id: patient.id,
+        id: appointment.id,
         name: patient.name,
         cpf: patient.cpf,
         start: appointment.start,
-        time_delta: (appointment[:start] - Time.zone.now).abs
+        time_delta: (appointment[:start] - Time.zone.now).abs,
+        active: appointment.active
       }
     end
 
@@ -182,4 +245,5 @@ class UbsController < UserSessionController
   def slot_duration_params
     params.require(:ubs).permit(:slot_interval_minutes, :appointments_per_time_slot)
   end
+
 end

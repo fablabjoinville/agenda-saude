@@ -3,12 +3,10 @@ class Patient < ApplicationRecord
 
   MAX_LOGIN_ATTEMPTS = 2
 
-  DAYS_FOR_NEW_APPOINTMENT = 30
-
   CONDITIONS = {
     'Trabalhador(a) da Saúde' => ->(patient) { patient.in_group?('Trabalhador(a) da Saúde') },
     'Pessoa acima de 75 anos' => ->(patient) { patient.age >= 75 },
-    'Pessoas de 60 anos ou mais institucionalizadas' => ->(patient) { patient.age >= 60 && patient.in_group?('Institucionalizado(a)') },
+    'Maiores de 60 anos institucionalizadas' => ->(patient) { patient.age >= 60 && patient.in_group?('Institucionalizado(a)') },
     'População Indígena' => ->(patient) { patient.in_group?('Indígena') },
   }
 
@@ -81,12 +79,6 @@ class Patient < ApplicationRecord
 
   def bedridden?
     bedridden == true
-  end
-
-  def wait_appointment_time?
-    last_appointment != nil and
-    last_appointment.start < Time.zone.now and
-    Time.zone.now < last_appointment.start + DAYS_FOR_NEW_APPOINTMENT.days
   end
 
   def unblock!

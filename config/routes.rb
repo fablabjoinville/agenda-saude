@@ -25,10 +25,13 @@ Rails.application.routes.draw do
     get 'ubs/slot_duration', as: :ubs_slot_duration
     patch 'ubs/change_slot_duration', as: :ubs_change_slot_duration
 
+    get 'ubs/patient_details', as: :ubs_patient_details, to: 'ubs#patient_details'
     get 'ubs/status', as: :status
     get 'ubs/checkin', as: :list_checkin
     post 'ubs/find_patients', as: :find_patients
     get 'ubs/checkout', as: :list_checkout
+    get 'ubs/confirm_check_in', as: :confirm_check_in
+    get 'ubs/confirm_check_out', as: :confirm_check_out
   end
 
   resources :appointments
@@ -36,13 +39,14 @@ Rails.application.routes.draw do
 
   resources :ubs do
     member do
-      get 'cancel_appointment'
+      get 'suspend_appointment'
       get 'activate_appointment'
       get 'cancel_all_future_appointments'
       get 'activate_all_future_appointments'
       get 'activate_ubs'
       get 'deactivate_ubs'
       get 'today_appointments'
+      get 'patient_details'
     end
   end
 

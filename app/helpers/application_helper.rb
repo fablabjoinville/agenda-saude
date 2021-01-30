@@ -11,6 +11,10 @@ module ApplicationHelper
     date.strftime("%H:%M")
   end
 
+  def self.humanize_cpf(cpf)
+    cpf[0..2] + "." + cpf[3..5] + "." + cpf[6..8] + "-" + cpf[9..11]
+  end
+
   def business_day?(day, open_sat)
     formated_day = day.strftime('%d-%m')
 

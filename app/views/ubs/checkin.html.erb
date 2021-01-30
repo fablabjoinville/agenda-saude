@@ -20,7 +20,8 @@
     <table class="table table-hover text-large">
       <thead>
         <tr>
-          <th scope="col">Data e Hora</th>
+          <th scope="col">Data</th>
+          <th scope="col">Hora</th>
           <th scope="col">Nome</th>
           <th scope="col">CPF</th>
           <th scope="col"></th>
@@ -29,14 +30,17 @@
       <tbody>
         <% @appointments_patients.each do |appointment| %>
           <tr>
-            <th scope="row"><%= appointment[:start].strftime("%d/%m/%Y") %><br><%= appointment[:start].strftime("%Hh%M") %></th>
+            <td><%= appointment[:start].strftime("%d/%m/%Y") %></td>
+            <td><b><%= appointment[:start].strftime("%Hh%M") %></b></td>
             <td><%= appointment[:name] %></td>
-            <td><%= appointment[:cpf] %></td>
-            <!-- TODO: Link for patient details view -->
-            <% if appointment[:time_delta] < 30.minutes %>
-              <td><a class="btn btn-success" href=<%= '#' %> >Check-In</a></td>
+            <td><%= ApplicationHelper.humanize_cpf(appointment[:cpf]) %></td>
+            <% if !appointment[:active] %>
+              <td><a class="btn btn-danger" href=<%= patient_details_ubs_path(id: appointment[:id], check_in: true) %> >Cancelado</a></td>
+            <!-- Tempo que controla a permissão de entrar na tela de check in do paciente: qualquer horário no mesmo dia que não tenha sido mais do que ENV['LATE_PATIENT_TOLERANCE_MINUTES'] horas atrás-->
+            <% elsif appointment[:start] < Time.zone.now.end_of_day %>
+              <td><a class="btn btn-success" href=<%= patient_details_ubs_path(id: appointment[:id], check_in: true) %> >Check-In</a></td>
             <% else %>
-              <td><a class="btn btn-secondary" href=<%= '#' %> >Check-In</a></td>
+              <td><a class="btn btn-secondary" href=<%= patient_details_ubs_path(id: appointment[:id], check_in: true) %> >Check-In</a></td>
             <% end %>
           </tr>
         </tr>

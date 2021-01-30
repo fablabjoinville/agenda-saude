@@ -47,4 +47,6 @@ Rails.application.configure do
   # config.action_view.raise_on_missing_translations = true
 
   ENV['SECOND_DOSE_INTERVAL'] ||= '4'
+  ENV['LATE_PATIENT_TOLERANCE_MINUTES'] ||= '10'
+  ENV['EARLY_PATIENT_WARNING_MINUTES'] ||= '30'
 end
