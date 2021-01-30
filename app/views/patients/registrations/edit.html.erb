@@ -38,8 +38,9 @@
           year = @patient.birth_date[0..3].to_i
           month = @patient.birth_date[5..6].to_i
           day = @patient.birth_date[8..9].to_i
+          start_year = (Date.current.year.to_i) - 18
         %>
-        <%= f.date_select :birth_date, { selected: { year: year, month: month, day: day }, start_year: 1900 , with_css_classes: true } , autofocus: true, autocomplete: "birth_date", required: true, class: "form-control" %>
+        <%= f.date_select :birth_date, { selected: { year: year, month: month, day: day }, start_year: start_year, end_year: 1900, with_css_classes: true } , autofocus: true, autocomplete: "birth_date", required: true, class: "form-control" %>
       </div>
     </div>
 
