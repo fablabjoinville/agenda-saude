@@ -10,19 +10,24 @@ RSpec.describe TimeSlotGenerationService, type: :service do
       create_slot: create_slot
     )
   end
+  let(:ubs) do
+    OpenStruct.new(
+      id: 1,
+      shift_start: '7:30',
+      break_start: '12:00',
+      break_end: '13:00',
+      shift_end: '18:00',
+      slot_interval_minutes: 20,
+      appointments_per_time_slot: 19
+    )
+  end
   let(:options) do
     TimeSlotGenerationService::Options.new(
       start_date: DateTime.new(2021, 1, 1),
       end_date: DateTime.new(2021, 2, 15),
-      time_windows: [
-        (7.hours + 30.minutes)..12.hours,
-        13.hours..18.hours
-      ],
+      ubs: ubs,
       excluded_dates: [Date.new(2021, 1, 4)],
       weekdays: [*1..5], # 0 = Sunday
-      appointment_duration: 20.minutes,
-      num_spots: 19,
-      ubs_id: 1
     )
   end
   let(:expected_time_slot_attributes_file) do
@@ -83,7 +88,11 @@ RSpec.describe TimeSlotGenerationService, type: :service do
     # Generating an array with timestamps of every minute 
     # within the windows is easier than using date ranges 
     # because it's not necessary to iterate every window
-    allowed_timestamps = options.time_windows.flat_map do |window|
+    time_windows = [
+      (7.hours + 30.minutes)..12.hours,
+      13.hours..18.hours
+    ]
+    allowed_timestamps = time_windows.flat_map do |window|
       base_date = random_time_slot[:start].at_beginning_of_day
       ((base_date + window.begin).to_i..(base_date + window.end).to_i).step(1.minute).to_a
     end
