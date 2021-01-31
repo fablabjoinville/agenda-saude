@@ -28,9 +28,8 @@ class TimeSlotGenerationWorker
     end
   end
 
-  def initialize(time_slot_generation_service:, slack_webhook_url: nil)
+  def initialize(time_slot_generation_service:)
     @time_slot_generation_service = time_slot_generation_service
-    @slack_webhook_url = slack_webhook_url
   end
 
   def execute(options: TimeSlotGenerationWorker::Options.new)
@@ -51,14 +50,14 @@ class TimeSlotGenerationWorker
       # Record already exists 
       # (SQL 'RETURNING' does not return anything on conflict)
       if result.none?
-        Rails.logger.debug('Job locked by other process')
+        Rails.logger.debug('Already executed today. Skipping')
         # Sleep longer to avoid hitting the db every sleep interval, 
         # as current_time.hour == execution_hour will be true consecutively
         sleep(30.minutes.to_i)
         next
       end
 
-      send_slack_message("ℹ️ Iniciando geração de time slots")
+      SlackNotifier.info("Iniciando geração de time slots")
 
       begin
         Ubs.active.each do |ubs|
@@ -69,20 +68,19 @@ class TimeSlotGenerationWorker
           .where(date: current_time.to_date)
           .update_all(status: 'done')
            
-        send_slack_message("✅ Geração de time slots finalizada com sucesso")
+        SlackNotifier.success("Geração de time slots finalizada com sucesso")
       rescue => exception
         error = "#{exception.class.name}: #{exception.message}"
 
         TimeSlotGeneratorExecution
           .where(date: current_time.to_date)
-          .update_all(status: 'failed', details: exception.backtrace.join("\n"))
+          .update_all(status: 'failed', details: error)
 
-        send_slack_message(
-          "‼️ ERRO: Geração de time slots falhou (#{error}). Mais detalhes no registro TimeSlotGeneratorExecution."
+        SlackNotifier.error(
+          "Geração de time slots falhou (#{error}). Mais detalhes no Sentry."
         )
 
-        # TODO: enable after sentry-raven -> sentry-ruby migration
-        # Sentry.capture_exception(exception)
+        Sentry.capture_exception(exception)
       end
     end
   end
@@ -121,19 +119,5 @@ class TimeSlotGenerationWorker
         @time_slot_generation_service.execute(generation_options)
       end
     end
-  end
-
-  def send_slack_message(text)
-    return if @slack_webhook_url.blank?
-
-    uri = URI(@slack_webhook_url)
-    https = Net::HTTP.new(uri.host, uri.port)
-    https.use_ssl = true
-
-    request = Net::HTTP::Post.new(uri.path)
-    request['Content-Type'] = 'application/json'
-    request.body = { text: text }.to_json
-
-    https.request(request)
   end
 end

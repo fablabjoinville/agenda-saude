@@ -6,8 +6,7 @@ Thread.new do
   generation_service = TimeSlotGenerationService.new(create_slot: create_slot)
   
   worker = TimeSlotGenerationWorker.new(
-    time_slot_generation_service: generation_service,
-    slack_webhook_url: ENV['SLACK_WEBHOOK_URL']
+    time_slot_generation_service: generation_service
   )
 
   worker_options = TimeSlotGenerationWorker::Options.new(
