@@ -116,6 +116,14 @@ Rails.application.configure do
   end
 
   ENV['SECOND_DOSE_INTERVAL'] ||= '4'
+  #
+  # Hour of the day the time slot generation worker will run
+  #
+  ENV['TIMESLOTGEN_EXECUTION_HOUR'] ||= '22'
+  #
+  # Max number of days the user can see ahead when listing time slots
+  #
+  ENV['MAX_APPOINTMENT_DAYS_AHEAD'] ||= '3'
   ENV['LATE_PATIENT_TOLERANCE_MINUTES'] ||= '10'
   ENV['EARLY_PATIENT_WARNING_MINUTES'] ||= '30'
 end
