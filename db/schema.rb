@@ -31,7 +31,6 @@ ActiveRecord::Schema.define(version: 2021_01_31_171135) do
 
   create_table "groups", force: :cascade do |t|
     t.string "name"
-    t.boolean "comorbidity", default: false
     t.bigint "parent_group_id"
     t.index ["parent_group_id"], name: "index_groups_on_parent_group_id"
   end

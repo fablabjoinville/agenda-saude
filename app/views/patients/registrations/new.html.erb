@@ -63,7 +63,7 @@
     <div class="form-group col-md-6" data-cy="patientGroups">
       <%= f.label :groups, "Grupo(s) que faz parte (opcional):" %>
       <div class="form-check">
-        <%= f.collection_check_boxes :groups, Group.where(comorbidity: false), :id, :name do |b| %>
+        <%= f.collection_check_boxes :groups, Group.where(parent_group_id: nil), :id, :name do |b| %>
           <div class="row">
             <%= b.label { b.check_box(checked: @patient.groups.map(&:id).include?(b.value), class: "form-check-input", onclick: "updateSubGroups(#{b.value});") + b.text }%>
           </div>
