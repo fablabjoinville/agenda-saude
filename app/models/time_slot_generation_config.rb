@@ -11,6 +11,5 @@ class TimeSlotGenerationConfig < ActiveRecord::Base
   def []=(key, value)
     self.content ||= {}
     content[key] = value
-    save!
   end
 end
