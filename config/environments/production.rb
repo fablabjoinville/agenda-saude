@@ -111,8 +111,9 @@ Rails.application.configure do
   # config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
 
   # Sentry DSN
-  Raven.configure do |config|
-    config.dsn = 'https://fccc168d07354b9c89b6f7ef8faa7e98:b61db538150d495da760cc558f3c525c@o71631.ingest.sentry.io/5191494'
+  Sentry.init do |config|
+    config.dsn = ENV['SENTRY_DSN']
+    config.breadcrumbs_logger = [:active_support_logger]
   end
 
   ENV['SECOND_DOSE_INTERVAL'] ||= '4'
