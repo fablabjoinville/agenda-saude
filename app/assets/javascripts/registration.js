@@ -12,3 +12,14 @@ function updateSubGroups(group_id) {
     subGroupsList.hidden = true;
   }
 };
+
+function consentHealthWorker() {
+  var healthWorker = document.getElementById(`patient_groups_8`);
+  var consntTerm = document.getElementById(`consent-health-worker`);
+
+  if(healthWorker.checked) {
+    consntTerm.hidden = false;
+  } else {
+    consntTerm.hidden = true;
+  }
+}
