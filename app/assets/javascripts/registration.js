@@ -1,11 +1,10 @@
-function checkForComorbidities() {
-  // hardcoded stuff :-(we need a better way to get the comorbidity group checkbox state)
-  var comorbidityGroup = document.getElementById('patient_groups_4');
-  var comorbiditiesList = document.getElementById('comorbidities-list');
+function updateSubGroups(group_id) {
+  var parentCheckbox = document.getElementById(`patient_groups_${group_id}`);
+  var subGroupsList = document.getElementById(`subgroups-list-${group_id}`);
 
-  if(comorbidityGroup.checked) {
-    comorbiditiesList.hidden = false;
+  if(parentCheckbox.checked) {
+    subGroupsList.hidden = false;
   } else {
-    comorbiditiesList.hidden = true;
+    subGroupsList.hidden = true;
   }
 };
