@@ -107,12 +107,18 @@ end
 
 [
   'Trabalhador(a) da Saúde',
-  'Institucionalizado(a)',
-  'Indígena',
+  'Trabalhador(a) da Educação',
+  'Trabalhador(a) das Forças de Seguranças e Salvamento',
+  'Forças Armadas',
   'Portador(a) de comorbidade',
-  'Professor(a)',
-  'Profissional das forças de seguranças e salvamento',
-  'Funcionário(a) do sistema prisional',
+  'Trabalhador(a) de transporte coletivo rodoviário de passageiros urbano e de longoprazo',
+  'Trabalhador(a) de transporte metroviário e ferroviário',
+  'Trabalhador(a) do transporte aéreo',
+  'Trabalhador(a) do transporte aquaviário',
+  'Caminhoneiro(a)',
+  'Trabalhador(a) portuário',
+  'Trabalhador(a) da construção civil',
+  'Pessoa com deficiência permanente grave'
 ].each do |name|
   Group.create(name: name)
 end
@@ -130,4 +136,25 @@ end
   'Síndrome de down',
 ].each do |subgroup|
   Group.create(name: subgroup, parent_group_id: Group.find_by(name: 'Portador(a) de comorbidade').id)
+end
+
+[
+  'Área da assistência/tratamento',
+  'Administrativo e outros setores',
+].each do |subgroup|
+  Group.create(name: subgroup, parent_group_id: Group.find_by(name: 'Trabalhador(a) da Saúde').id)
+end
+
+[
+  'Professor(a) em sala de aula',
+  'Administrativo e outros setores',
+].each do |subgroup|
+  Group.create(name: subgroup, parent_group_id: Group.find_by(name: 'Trabalhador(a) da Educação').id)
+end
+
+[
+  'Oficial em atividade de linha de frente',
+  'Oficial em atividade administrativa',
+].each do |subgroup|
+  Group.create(name: subgroup, parent_group_id: Group.find_by(name: 'Trabalhador(a) das Forças de Seguranças e Salvamento').id)
 end
