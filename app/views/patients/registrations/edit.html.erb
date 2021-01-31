@@ -54,13 +54,26 @@
     <div class="form-group col-md-6" data-cy="patientGroups">
       <%= f.label :groups, "Grupo(s) que faz parte (opcional):" %>
       <div class="form-check">
-        <%= f.collection_check_boxes :groups, Group.all, :id, :name do |b| %>
+        <%= f.collection_check_boxes :groups, Group.where(parent_group_id: nil), :id, :name do |b| %>
           <div class="row">
-            <%= b.label { b.check_box(checked: @patient.groups.map(&:id).include?(b.value), class: "form-check-input") + b.text } %>
+            <%= b.label { b.check_box(checked: @patient.groups.map(&:id).include?(b.value), class: "form-check-input", onclick: "updateSubGroups(#{b.value});") + b.text } %>
           </div>
+
+          <% if Group.where(parent_group_id: b.value).any? %>
+          <div class="form-row" hidden=true id="<%= "subgroups-list-#{b.value}" %>">
+            <div class="form-group col-md-8" data-cy="patientGroups">
+              <div class="form-check">
+                <%= f.collection_check_boxes :groups, Group.where(parent_group_id: b.value), :id, :name do |s| %>
+                  <div class="row">
+                    <%= s.label { s.check_box(checked: @patient.groups.map(&:id).include?(s.value), class: "form-check-input") + s.text } %>
+                  </div>
+                <% end %>
+                </div>
+              </div>
+            </div>
+          <% end %>
         <% end %>
       </div>
-      <div class="small">*Diabetes mellitus, hipertensão, doença pulmonar obstrutiva crônica, doença renal, doenças cardiovasculares e cerebrovasculares, indivíduos transplantados de órgão sólido, anemia falciforme, câncer, obesidade grave (IMC &GreaterEqual; 40)</div>
     </div>
   </div>
 
@@ -108,3 +121,11 @@
     </div>
   </div>
 <% end %>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    <% Group.where(parent_group_id: nil).each do |group| %>
+      <%= "updateSubGroups(#{group.id});" %>
+    <% end %>
+  });
+</script>
