@@ -77,8 +77,15 @@
                 <div class="form-check">
                   <%= f.collection_check_boxes :groups, Group.where(parent_group_id: b.value), :id, :name do |s| %>
                     <div class="row">
-                      <%= s.label { s.check_box(checked: @patient.groups.map(&:id).include?(s.value), class: "form-check-input") + s.text } %>
+                      <%= s.label { s.check_box(checked: @patient.groups.map(&:id).include?(s.value), class: "form-check-input #{"specificComorbidity" if s.text == "Outra(as)"}") + s.text } %>
                     </div>
+                    <% if s.text == "Outra(as)" %>
+                      <div class="row" id="specific-comorbidity-input">
+                        <div class="form-group col-md-12">
+                          <%= f.text_field :specific_comorbidity, autofocus: true, required: false, class: "form-control" %>
+                        </div>
+                      </div>
+                    <% end %>
                   <% end %>
                 </div>
               </div>
@@ -144,5 +151,8 @@
     <% Group.where(parent_group_id: nil).each do |group| %>
     <%= "updateSubGroups(#{group.id});" %>
     <% end %>
+
+    initializeSpecificComorbidityOnChange();
+    toggleSpecificComorbidity();
   });
 </script>

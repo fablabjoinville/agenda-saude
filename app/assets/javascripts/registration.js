@@ -12,3 +12,20 @@ function updateSubGroups(group_id) {
     subGroupsList.hidden = true;
   }
 };
+
+function initializeSpecificComorbidityOnChange() {
+  var specificComorbidity = document.getElementsByClassName("specificComorbidity")[0];
+
+  specificComorbidity.setAttribute("onchange", "toggleSpecificComorbidity()");
+}
+
+function toggleSpecificComorbidity() {
+  var specificComorbidity = document.getElementsByClassName("specificComorbidity")[0];
+  var specificComorbidityInput = document.getElementById("specific-comorbidity-input");
+
+  if(specificComorbidity.checked) {
+    specificComorbidityInput.hidden = false;
+  } else {
+    specificComorbidityInput.hidden = true;
+  }
+}
