@@ -29,3 +29,20 @@ function toggleSpecificComorbidity() {
     specificComorbidityInput.hidden = true;
   }
 }
+
+function initializeHealthWorkerOnChange() {
+  var healthWorker = document.getElementsByClassName("healthWorker")[0];
+
+  healthWorker.setAttribute("onchange", "toggleHealthWorker()");
+}
+
+function toggleHealthWorker() {
+  var healthWorker = document.getElementsByClassName("healthWorker")[0];
+  var healthWorkerText = document.getElementById("alert-health-worker");
+
+  if(healthWorker.checked) {
+    healthWorkerText.hidden = false;
+  } else {
+    healthWorkerText.hidden = true;
+  }
+}
