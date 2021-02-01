@@ -1,0 +1,313 @@
+<% @ubs = [
+  {
+    name: 'UBS ADHEMAR GARCIA',
+    address: 'RUA ALVINO HANSEN – ADEMAR GARCIA',
+    phone: '4734295056'
+  },
+  {
+    name: 'UBS SEDE FLORESTA',
+    address: 'RUA REPUBLICA DO PERU – FLORESTA',
+    phone: '(47) 34264941'
+  },
+  {
+    name: 'UBSF ITINGA CONTINENTAL',
+    address: 'RUA CINEASTA LEON HIRZMANN – ITINGA',
+    phone: '4734655200'
+  },
+  {
+    name: 'UBSF JARDIM EDILENE',
+    address: 'RUA KURT MEINERT – PARANAGUAMIRIM',
+    phone: '4734637266'
+  },
+  {
+    name: 'UBSF MOINHO DOS VENTOS ESPINHEIROS',
+    address: 'RUA SEBASTIAO S BORBA – ESPINHEIROS',
+    phone: '4734346600'
+  },
+  {
+    name: 'UBSF ESTRADA ANABURGO',
+    address: 'ARNOLD FREDERICO MATIAS LIERDMANN – VILA NOVA',
+    phone: '4734352326'
+  },
+  {
+    name: 'UBS BUCAL MORRO DO MEIO',
+    address: 'ESTRADA LAGOINHA – MORRO DO MEIO',
+    phone: '4734195449'
+  },
+  {
+    name: 'UBSF KM 4',
+    address: 'RUA JOAO GOMES DE OLIVEIRA – KM 4',
+    phone: '4734541073'
+  },
+  {
+    name: 'UBS SEDE VILA NOVA',
+    address: 'RUA XV DE NOVEMBRO – VILA NOVA',
+    phone: '4734396357'
+  },
+  {
+    name: 'UBSF CANELA',
+    address: 'RUA SEM NOME – RIO BONITO',
+    phone: '4734371141'
+  },
+  {
+    name: 'UBS SEDE FATIMA',
+    address: 'RUA FATIMA – FATIMA',
+    phone: '4734363073'
+  },
+  {
+    name: 'UBSF BOEHMERWALDT II',
+    address: 'RUA UNIVERSIDADE – BOEHMERWALDT',
+    phone: '4734296269'
+  },
+  {
+    name: 'UBSF ITINGA',
+    address: 'RUA SANTA GERTRUDES – ITINGA',
+    phone: '4734172783'
+  },
+  {
+    name: 'UBSF JARDIM PARAISO III',
+    address: 'ESTRADA TIMBE – JARDIM PARAISO',
+    phone: '4734672348'
+  },
+  {
+    name: 'UBS IRIRIU LEONARDO SCHILICKMANN',
+    address: 'JORGE AUGUSTO EMILIO MULLER – IRIRIU',
+    phone: '4734377793'
+  },
+  {
+    name: 'UBS BOM RETIRO',
+    address: 'RUA OTAVIO ROSA – BOM RETIRO',
+    phone: '(47) 34252580'
+  },
+  {
+    name: 'UBSF RIO DA PRATA',
+    address: 'ESTRADA RIO DA PRATA – PIRABEIRABA',
+    phone: '4734280108'
+  },
+  {
+    name: 'UBSF SANTA BARBARA',
+    address: 'AVENIDA PROJETADA SANTA BARBARA – AVENTUREIRO',
+    phone: '4734188263'
+  },
+  {
+    name: 'UBS BAKITAS',
+    address: 'SAO MIGUEL – BOA VISTA',
+    phone: '4734223220'
+  },
+  {
+    name: 'UBSF JARDIM SOFIA',
+    address: 'RUA JOAO MARCOS DA SILVA – JARDIM SOFIA',
+    phone: '4734070870'
+  },
+  {
+    name: 'UBSF PARANAGUAMIRIM',
+    address: 'RUA ELIZABETH RECK – PARANAGUAMIRIM',
+    phone: '4734636589'
+  },
+  {
+    name: 'UBSF JARDIM PARAISO V',
+    address: 'AVENIDA JUPTER – JARDIM PARAISO',
+    phone: '4734670112'
+  },
+  {
+    name: 'UBSF PROFIPO',
+    address: 'RUA PATO DE MINAS – PROFIPO',
+    phone: '4734297306'
+  },
+  {
+    name: 'UBSF RIO DO FERRO',
+    address: 'RUA DILMA VERGILIA GARCIA – AVENTUREIRO',
+    phone: '4734672061'
+  },
+  {
+    name: 'UBSF RIO BONITO',
+    address: 'RUA XV DE OUTUBRO – PIRABEIRABA',
+    phone: '4734641487'
+  },
+  {
+    name: 'UBS PARQUE JOINVILLE',
+    address: 'RUA WILLY SCHOSSLAND – PARQUE JOINVILLE',
+    phone: '4734721795'
+  },
+  {
+    name: 'UBSF CUBATAO',
+    address: 'ESTRADA VIGORELLI – CUBATAO',
+    phone: '4734673818'
+  },
+  {
+    name: 'UBSF MORRO DO MEIO',
+    address: 'RUA DO CAMPO – MORRO DO MEIO',
+    phone: '4734296229'
+  },
+  {
+    name: 'UBSF DA ILHA',
+    address: 'RUA NICOLAU JOSE DE SOUZA – ESPINHEIROS',
+    phone: '(47) 34392471'
+  },
+  {
+    name: 'UBS ITAUM',
+    address: 'RUA MONSENHOR GERCINO – GUANABARA',
+    phone: '4734296251'
+  },
+  {
+    name: 'UBSF NOVA BRASILIA',
+    address: 'RUA BOM RETIRO – NOVA BRASILIA',
+    phone: '4734549216'
+  },
+  {
+    name: 'UBS JARDIM IRIRIU',
+    address: 'RUA CANOAS – JARDIM IRIRIU',
+    phone: '4734183163'
+  },
+  {
+    name: 'UBS PETROPOLIS EDLA JORDAN',
+    address: 'AVENIDA PAULO SCHOEREDER – PETROPOLIS',
+    phone: '4734366705'
+  },
+  {
+    name: 'UBS SAO MARCOS',
+    address: 'RUA CANELINHA – SAO MARCOS',
+    phone: '4734380652'
+  },
+  {
+    name: 'UBS SEDE COMASA',
+    address: 'RUA MARACUJA – COMASA',
+    phone: '4734340360'
+  },
+  {
+    name: 'UBSF WILLY SCHOSSLAND',
+    address: 'VEREADOR KURT ALVINO MONICK – COSTA E SILVA',
+    phone: '4734180407'
+  },
+  {
+    name: 'UBSF ESTEVAO DE MATOS',
+    address: 'RUA PAULO ROBERTO ANASTACIO – PARANAGUAMIRIM',
+    phone: '4734636589'
+  },
+  {
+    name: 'UBSF BOEHMERWALDT I',
+    address: 'RUA BOEHMERWALDT – ESCOLINHA',
+    phone: '4734548066'
+  },
+  {
+    name: 'UBSF PARQUE GUARANI',
+    address: 'RUA DIOVANA MARIA RODRIGUES – ITINGA',
+    phone: '4734297304'
+  },
+  {
+    name: 'UBSF JARDIM PARAISO IV CANTO DO RIO',
+    address: 'ESTRADA TIMBE – JARDIM PARAISO',
+    phone: '4734671942'
+  },
+  {
+    name: 'UBSF DOM GREGORIO',
+    address: 'RUA JANAUBA – JARDIM IRIRIU',
+    phone: '4734355112'
+  },
+  {
+    name: 'UBSF RORAIMA',
+    address: 'RUA RORAIMA – COMASA',
+    phone: '4734346770'
+  },
+  {
+    name: 'UBSF VILA NOVA RURAL',
+    address: 'ESTRADA DO SUL KM 18 – VILA NOVA',
+    phone: '(47) 99175534'
+  },
+  {
+    name: 'UBS GLORIA',
+    address: 'RUA BRIGADA LOPES – GLORIA',
+    phone: '4734163074'
+  },
+  {
+    name: 'UBS SEDE AVENTUREIRO I',
+    address: 'RUA ALINO JOSE ALIPIO – AVENTUREIRO',
+    phone: '4734676046'
+  },
+  {
+    name: 'UBSF AVENTUREIRO II',
+    address: 'RUA LAURO SCHROEDER – AVENTUREIRO',
+    phone: '4734673044'
+  },
+  {
+    name: 'UBS SEDE JARIVATUBA BELQUISE ANA QUINTERO',
+    address: 'RUA MONSENHOR GERCINO – JARIVATUBA',
+    phone: '4734664505'
+  },
+  {
+    name: 'UBS SEDE PIRABEIRABA',
+    address: 'RUA CONSELHEIRO PEDREIRA – PIRABEIRABA',
+    phone: '4734240680'
+  },
+  {
+    name: 'UBSF JARDIM PARAISO',
+    address: 'RUA JUPITER – JARDIM PARAISO',
+    phone: '(47) 34670017'
+  },
+  {
+    name: 'UBS KM 12 UBSF VILA NOVA RURAL',
+    address: 'ESTRADA DO SUL –',
+    phone: '(47) 34395088'
+  },
+  {
+    name: 'UBSF LAGOINHA',
+    address: 'TANCREDO NEVES – MORRO DO MEIO',
+    phone: '4734651912'
+  },
+  {
+    name: 'UBS SAGUACU',
+    address: 'RUA IRIRIU – SAGUACU',
+    phone: '4734736939'
+  },
+  {
+    name: 'UBS SEDE COSTA E SILVA',
+    address: 'RUA TELES DE MENDONCA – COSTA E SILVA',
+    phone: '4734250017'
+  },
+  {
+    name: 'UBS JATIVOCA UBSF NOVA BRASILIA',
+    address: 'ESTRADA JATIVOCA – NOVA BRASILIA',
+    phone: '4734549216'
+  },
+  {
+    name: 'UBS MORRO DO AMARAL UBSF JARDIM EDILENE',
+    address: 'RUA KURT MEINERT – MORRO DO AMARAL',
+    phone: '4734637266'
+  }
+]
+%>
+
+<% @ubs.each_slice(2).with_index do |ubs, i| %>
+  <% if i > 1 %>
+    <div class="collapse" id="collapseExample">
+  <% end %>
+  <div class="row" style="margin-bottom: 2%">
+    <div class="col-sm-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title"><%= ubs.first[:name]%></h5>
+          <p class="card-text"><%= ubs.first[:address] %></p>
+          <p class="card-text">Tel: <%= ubs.first[:phone] %></p>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title"><%= ubs.last[:name] %></h5>
+          <p class="card-text"><%= ubs.last[:address] %></p>
+          <p class="card-text">Tel: <%= ubs.last[:phone] %></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <% if i > 1 %>
+    </div>
+  <% end %>
+<% end %>
+
+<p class="text-center">
+  <button class="btn btn-primary centered-button" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+    Ver mais
+  </button>
+</p>
