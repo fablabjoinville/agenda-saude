@@ -4,10 +4,10 @@ class Patient < ApplicationRecord
   MAX_LOGIN_ATTEMPTS = 2
 
   CONDITIONS = {
-    'Trabalhador(a) da Saúde' => ->(patient) { patient.in_group?('Trabalhador(a) da Saúde') },
-    'Pessoa acima de 75 anos' => ->(patient) { patient.age >= 75 },
-    'Maiores de 60 anos institucionalizadas' => ->(patient) { patient.age >= 60 && patient.in_group?('Institucionalizado(a)') },
-    'População Indígena' => ->(patient) { patient.in_group?('Indígena') },
+    'Trabalhador(a) da Saúde' => ->(patient) { patient.in_group?('Trabalhador(a) da Saúde') && patient.age > 130 },
+    # 'Pessoa acima de 75 anos' => ->(patient) { patient.age >= 75 },
+    # 'Maiores de 60 anos institucionalizadas' => ->(patient) { patient.age >= 60 && patient.in_group?('Institucionalizado(a)') },
+    # 'População Indígena' => ->(patient) { patient.in_group?('Indígena') },
   }
 
   has_many :appointments, dependent: :destroy

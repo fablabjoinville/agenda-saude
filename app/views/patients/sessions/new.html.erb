@@ -10,25 +10,27 @@
   </div>
 <% end %>
 
-<div class="row text-center">
-  <div class="col ">
-    <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-      <%= f.hidden_field :cpf, value: @patient.cpf %>
+<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+    <div class="row text-center">
+      <div class="col-md-12">
+        <%= f.hidden_field :cpf, value: @patient.cpf %>
 
-      <div class="form-group" >
-        <%= f.label :password, "Selecione o primeiro nome da sua mãe:" %><br />
-        <div style="text-align: left; padding-left: 42%;" >
-          <% @mother_list.each do |mother| %>
-            <%= f.radio_button(:password, mother, data: { cy: "#{mother}Buttom" }) %>
-            <%= f.label(:password, mother) %><br/>
-          <% end %>
+        <div class="form-group" >
+          <%= f.label :password, "Selecione o primeiro nome da sua mãe:" %>
+          <div style="text-align: center;" >
+              <div class="btn-group-vertical mother-list" data-toggle="buttons">
+                <%= collection_radio_buttons(:patient, :password, @mother_list, ->(x) { x }, ->(x) { x }) do |b| %>
+                      <%= b.label(class: "btn btn-light") { b.radio_button( data: { cy: "#{b.label}Buttom" }) + b.text } %>
+                <% end %>
+              </div>
+          </div>
         </div>
       </div>
-
-      <div class="actions">
-        <%= f.submit "Entrar", class: "btn btn-primary btn-block", data: { cy: "loginButtom" } %>
+    </div>
+    <div class="row">
+      <div class="col text-center">
+        <%= f.submit "Entrar", class: "centered-button btn btn-primary", data: { cy: "loginButtom" } %>
       </div>
-    <% end %>
-  </div>
-</div>
+    </div>
+<% end %>
 

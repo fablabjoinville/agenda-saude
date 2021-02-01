@@ -27,7 +27,6 @@ $blue: #005293;
 .comm-img {
   width: 100%;
   height: auto;
-  margin-top: 15px;
 }
 
 .day {
@@ -56,4 +55,24 @@ $blue: #005293;
 
 .table {
   font-size: 1.2rem;
+}
+.mother-list {
+  width: 40%;
+}
+
+.mother-list input[type="radio"] {
+  width: 0px;
+}
+
+.centered-button {
+  width: 40% !important;
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: "Poppins";
+}
+
+.lp-header {
+  padding: 2% 0;
+  font-weight: bold;
 }
