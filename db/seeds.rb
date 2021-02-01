@@ -107,10 +107,10 @@ end
 
 [
   'Trabalhador(a) da Saúde',
+  'Portador(a) de comorbidade',
   'Trabalhador(a) da Educação',
   'Trabalhador(a) das Forças de Seguranças e Salvamento',
   'Forças Armadas',
-  'Portador(a) de comorbidade',
   'Trabalhador(a) de transporte coletivo rodoviário de passageiros urbano e de longoprazo',
   'Trabalhador(a) de transporte metroviário e ferroviário',
   'Trabalhador(a) do transporte aéreo',
