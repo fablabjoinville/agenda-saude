@@ -134,6 +134,7 @@ end
   'Anemia falciforme',
   'Obesidade mórbida (IMC >=40)',
   'Síndrome de down',
+  'Outra(s)',
 ].each do |subgroup|
   Group.create(name: subgroup, parent_group_id: Group.find_by(name: 'Portador(a) de comorbidade').id)
 end

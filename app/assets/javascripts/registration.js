@@ -22,4 +22,4 @@ function consentHealthWorker() {
   } else {
     consntTerm.hidden = true;
   }
-}
+};

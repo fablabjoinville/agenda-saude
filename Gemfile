@@ -57,5 +57,5 @@ gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
 gem "smarter_csv", "~> 1.2"
 
-# TODO: migrate to sentry-ruby. this is deprecated
-gem "sentry-raven", "~> 3.0"
+gem 'sentry-ruby'
+gem 'sentry-rails'
