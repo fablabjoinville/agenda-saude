@@ -1,0 +1,17 @@
+#!/bin/bash
+
+set -euxo pipefail
+
+if [ ! -f .env.db ]; then
+  echo 'Error: please create a .env.db file with exports for db connection variables'
+  exit 1
+fi
+
+source .env.db
+
+if [ -z "$1" ]; then
+  echo 'Usage: scripts/db-restore <gzipped-dump-file>'
+  exit 1
+fi
+
+gzip -c -d "$1" | psql -U "$DBUSER" -h "$DBHOST" -p "$DBPORT" -d "$DBNAME"
