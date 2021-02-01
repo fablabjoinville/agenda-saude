@@ -8,7 +8,7 @@
   <thead>
     <tr>
       <th scope="col">STATUS DO AGENDAMENTO</th>
-      <th scope="col">GRUPOS QUE PODEM AGENDAR</th>
+      <th scope="col">GRUPOS QUE PODEM SE CADASTRAR</th>
     </tr>
   </thead>
   <tbody>
@@ -31,7 +31,7 @@
   </tbody>
 </table>
 
-<p><i>* O sistema de vacinação mostra o "status do agendamento" e os grupos que podem agendar no momento, dada ainda a ordem dos grupos prioritários.
+<p><i>* O sistema de vacinação mostra o "status do agendamento" e os grupos que podem cadastrar no momento, dada ainda a ordem dos grupos prioritários.
   A vacinação é liberada para cada pessoa do status acima e ordem dos grupos prioritários.</i></p>
 
 <div class="card">
@@ -43,7 +43,7 @@
         </div>
 
         <div class="form-group col-md-3">
-          <%= f.submit "Agendar Vacinação", class: "btn btn-primary btn-block", data: { cy: "signUpButton" } %>
+          <%= f.submit "Avançar", class: "btn btn-primary btn-block", data: { cy: "signUpButton" } %>
         </div>
       </div>
     <% end %>
@@ -59,10 +59,10 @@
   <li>Quem tomou qualquer outro tipo de vacina nos últimos 15 dias.</li>
 </ul>
 
-<h2 class="lp-header">Outros Locais de Vacinação</h2>
+<%# <h2 class="lp-header">Outros Locais de Vacinação</h2>
 <p>É possível vacinar-se nas Unidades básicas de saúde, onde não é necessário o agendamento prévio. A disponibilidade das vacinas nas UBS (Unidade Básica de Saúde) se dá: 1º por ordem dos grupos prioritários e 2º pelo estoque disponível na UBS.</p>
 
-<%= render "shared/ubs_list" %>
+<%= render "shared/ubs_list" %> 
 
 <h2 class="lp-header">Dúvidas frequentes sobre a vacinação</h2>
 <h4>Como funcionará a vacinação na Central de Imunização do Centreventos?</h4>
@@ -74,15 +74,15 @@
 
 <h4>Qual o horário de atendimento?</h4>
 <ul>
-  <li>Central de Imunização (Centreventos):  Segunda a segunda - 07:30–22:00.</li>
-  <li>Todas as Unidades Básicas de Saúde:  Segunda a sexta-feira - 07:00–20:00.</li>
+  <li>Central de Imunização (Centreventos): Segunda a Sexta-feira - 07:30–16:30.</li>
+  <%# <li>Todas as Unidades Básicas de Saúde:  Segunda a sexta-feira - 07:00–20:00.</li> %>
 </ul>
 
 <h4>Quanto custa?</h4>
 <p>Este serviço é gratuito.</p>
 
 <h4>Quanto tempo leva?</h4>
-<p>O total do atendimento dura entre 30~40 minutos, contando também 15 minutos de observação pós-vacinação de possíveis reações.</p>
+<p>O total do atendimento dura aproximadamente 40 minutos.</p>
 
 <h4>Quando a vacina estará disponível para meu grupo?</h4>
 <table class="table table-bordered">
@@ -91,18 +91,18 @@
       <td>1° Grupo</td>
       <td>
         <ul>
-          <li>Trabalhadores da Saúde no geral com 60 anos ou mais (agendamento exclusivo pelo site)</li>
+          <li>Trabalhadores da Saúde no geral com 60 anos ou mais (agendamento exclusivo <b>PELO SITE</b>);</li>
         </ul>
       </td>
-      <td>01/fev</td>
+      <td>A partir do dia 03/02, às 18:00</td>
     </tr>
     <tr>
       <td>2° Grupo</td>
       <td>
         <ul>
+          <li>Trabalhadores de Saúde no geral;</li>
           <li>Pessoas com 75 anos ou mais;</li>
           <li>Pessoas com 60 anos ou mais;</li>
-          <li>Trabalhadores de Saúde no geral;</li>
         </ul>
       </td>
       <td>A definir quando houver vacina.</td>
@@ -156,7 +156,7 @@
 </ul>
 <h4>Atos regulamentadores</h4>
 <ul>
-  <li>Não informado.</li>
+  <li><a href="http://www.sc.gov.br/images//Informe_Tcnico_SINOVAC_2.pdf" target="_blank">Informe técnico Secretaria Estadual de Saúde</a></li>
 </ul>
 
 <h2 class="lp-header">Manifestar-se</h2>
