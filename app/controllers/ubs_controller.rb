@@ -148,7 +148,7 @@ class UbsController < UserSessionController
   def suspend_appointment
     appointment = @ubs.appointments.find(params[:id])
 
-    appointment.update(active: false)
+    appointment.update(active: false, suspend_reason: params[:reason])
 
     redirect_to ubs_patient_details_path(ubs_id: @ubs.id, id: appointment.id)
   end
