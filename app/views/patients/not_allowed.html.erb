@@ -1,31 +1,25 @@
 <div class="row text-center">
   <div class="col">
-    <p class="h3 mb-12">Prezado cidadão:</p>
-  </div>
-</div>
-
-<div class="row text-center">
-  <div class="col">
+    <h2>
+      <strong style="color: green;">CADASTRO CONCLUÍDO COM SUCESSO.</strong>
+    </h2>
+    <br/>
     <p>
-      <strong style="color: red;">AGENDAMENTO NÃO PERMITIDO!</strong>
-      <br/><br/>
-      Você não pertence a nenhum grupo prioritário sendo vacinado nesta fase.
+      Seu cadastro já foi concluído com sucesso.
       <br/>
+      Porém, o agendamento para o seu grupo prioritário ainda não está disponível.
+      <br/>
+      Aguarde a divulgação das datas para agendamento.
     </p>
+    <br/>
   </div>
 </div>
 
 <div class="row mt-3">
-  <div class="col">
-    <%= button_to edit_patient_registration_path(@patient), class: "btn btn-primary btn-block", method: :get do %>
+  <div class="col text-center" style="margin-bottom: 3%;">
+    <%= button_to edit_patient_registration_path(@patient), class: "btn btn-primary centered-button", method: :get do %>
       Alterar meus dados
     <% end %>
-  </div>
-</div>
-
-<div class="row text-center">
-  <div class="col">
-    <img src=<%= image_path('protocolo_orientacao_covid.jpeg') %> class="comm-img" />
   </div>
 </div>
 

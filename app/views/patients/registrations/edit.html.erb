@@ -1,8 +1,8 @@
 <% if flash[:alert].present? %>
-  <% flash[:alert].each do |msg| %>
+  <% [flash[:alert]].flatten(0).each do |msg| %>
     <div class="alert alert-danger">
       <%= I18n.t("activerecord.models.attributes.#{msg.first}") %>
-      <%= msg.second %>
+      <%= msg.try(:second) %>
     </div>
   <% end %>
 <% end %>
@@ -20,7 +20,7 @@
   <h3 class="text-center">Dados Pessoais</h3>
   <div class="form-row">
     <div class="form-group col-md-6">
-      <%= f.label :name, "Nome Completo" %>
+      <%= f.label :name, "Nome Completo" %> <b style="color: red;">*</b>
       <%= f.text_field :name, autofocus: true, autocomplete: "name", required: true, class: "form-control" %>
     </div>
 
@@ -32,19 +32,20 @@
 
   <div class="form-row">
     <div class="form-group col-md-6">
-      <%= f.label :birth_date, "Data de nascimento" %>
+      <%= f.label :birth_date, "Data de nascimento" %> <b style="color: red;">*</b>
       <div class="form-row">
         <%
           year = @patient.birth_date[0..3].to_i
           month = @patient.birth_date[5..6].to_i
           day = @patient.birth_date[8..9].to_i
+          start_year = (Date.current.year.to_i) - 18
         %>
-        <%= f.date_select :birth_date, { selected: { year: year, month: month, day: day }, start_year: 1900 , with_css_classes: true } , autofocus: true, autocomplete: "birth_date", required: true, class: "form-control" %>
+        <%= f.date_select :birth_date, { selected: { year: year, month: month, day: day }, start_year: start_year, end_year: 1900, with_css_classes: true } , autofocus: true, autocomplete: "birth_date", required: true, class: "form-control" %>
       </div>
     </div>
 
     <div class="form-group col-md-6">
-      <%= f.label :sus, "Cartão SUS" %>
+      <%= f.label :sus, "Cartão SUS (Não obrigatório)" %>
       <%= f.number_field :sus, autofocus: true, autocomplete: "sus", required: false, class: "form-control" %>
     </div>
   </div>
@@ -53,13 +54,33 @@
     <div class="form-group col-md-6" data-cy="patientGroups">
       <%= f.label :groups, "Grupo(s) que faz parte (opcional):" %>
       <div class="form-check">
-        <%= f.collection_check_boxes :groups, Group.all, :id, :name do |b| %>
+        <%= f.collection_check_boxes :groups, Group.where(parent_group_id: nil), :id, :name do |b| %>
           <div class="row">
-            <%= b.label { b.check_box(checked: @patient.groups.map(&:id).include?(b.value), class: "form-check-input") + b.text } %>
+            <%= b.label { b.check_box(checked: @patient.groups.map(&:id).include?(b.value), class: "form-check-input", onclick: "updateSubGroups(#{b.value});") + b.text } %>
           </div>
+
+          <% if Group.where(parent_group_id: b.value).any? %>
+          <div class="form-row" hidden=true id="<%= "subgroups-list-#{b.value}" %>">
+            <div class="form-group col-md-8" data-cy="patientGroups">
+              <div class="form-check">
+                <%= f.collection_check_boxes :groups, Group.where(parent_group_id: b.value), :id, :name do |s| %>
+                  <div class="row">
+                    <%= s.label { s.check_box(checked: @patient.groups.map(&:id).include?(s.value), class: "form-check-input #{"specificComorbidity" if s.text == "Outra(s)"}") + s.text } %>
+                  </div>
+                  <% if s.text == "Outra(s)" %>
+                    <div class="row" id="specific-comorbidity-input">
+                      <div class="form-group col-md-12">
+                        <%= f.text_field :specific_comorbidity, autofocus: true, required: false, class: "form-control" %>
+                      </div>
+                    </div>
+                  <% end %>
+                <% end %>
+                </div>
+              </div>
+            </div>
+          <% end %>
         <% end %>
       </div>
-      <div class="small">*Diabetes mellitus, hipertensão, doença pulmonar obstrutiva crônica, doença renal, doenças cardiovasculares e cerebrovasculares, indivíduos transplantados de órgão sólido, anemia falciforme, câncer, obesidade grave (IMC &GreaterEqual; 40)</div>
     </div>
   </div>
 
@@ -67,24 +88,24 @@
 
   <div class="form-row">
     <div class="form-group col-md-6">
-      <%= f.label :public_place, "Endereço (Rua, Avenida)" %>
+      <%= f.label :public_place, "Endereço (Rua, Avenida)" %> <b style="color: red;">*</b>
       <%= f.text_field :public_place, autofocus: true, autocomplete: "place", required: true, class: "form-control" %>
     </div>
 
     <div class="form-group col-md-2">
-      <%= f.label :place_number, "Número" %>
+      <%= f.label :place_number, "Número" %> <b style="color: red;">*</b>
       <%= f.text_field :place_number, autofocus: true, required: true, class: "form-control" %>
     </div>
 
     <div class="form-group col-md-4">
-      <%= f.label :neighborhood, "Bairro" %>
+      <%= f.label :neighborhood, "Bairro" %> <b style="color: red;">*</b>
       <%= f.select :neighborhood, Neighborhood.pluck(:name), {},  { class: "form-control", data: { cy: "editPatientNeighborhoodNameInputField" } } %>
     </div>
   </div>
 
   <div class="form-row">
     <div class="form-group col-md-6">
-      <%= f.label :phone, "Telefone" %>
+      <%= f.label :phone, "Telefone" %> <b style="color: red;">*</b>
       <%= f.text_field :phone, autofocus: true, autocomplete: "phone", required: true, class: "form-control sp-celphones" %>
     </div>
 
@@ -94,10 +115,12 @@
     </div>
   </div>
 
+  <b style="color: red;">* Campos obrigatórios</b>
+
   <div class="form-row">
     <div class="form-group col-md-6">
       <div class="text-center">
-        <%= link_to :back, class: "simple-link" do %>
+        <%= link_to index_time_slot_path, class: "simple-link" do %>
           cancelar
         <% end %>
       </div>
@@ -107,3 +130,14 @@
     </div>
   </div>
 <% end %>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    <% Group.where(parent_group_id: nil).each do |group| %>
+    <%= "updateSubGroups(#{group.id});" %>
+    <% end %>
+
+    initializeSpecificComorbidityOnChange();
+    toggleSpecificComorbidity();
+  });
+</script>

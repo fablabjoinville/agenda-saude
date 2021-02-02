@@ -111,11 +111,20 @@ Rails.application.configure do
   # config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
 
   # Sentry DSN
-  Raven.configure do |config|
-    config.dsn = 'https://fccc168d07354b9c89b6f7ef8faa7e98:b61db538150d495da760cc558f3c525c@o71631.ingest.sentry.io/5191494'
+  Sentry.init do |config|
+    config.dsn = ENV['SENTRY_DSN']
+    config.breadcrumbs_logger = [:active_support_logger]
   end
 
   ENV['SECOND_DOSE_INTERVAL'] ||= '4'
+  #
+  # Hour of the day the time slot generation worker will run
+  #
+  ENV['TIMESLOTGEN_EXECUTION_HOUR'] ||= '22'
+  #
+  # Max number of days the user can see ahead when listing time slots
+  #
+  ENV['MAX_APPOINTMENT_DAYS_AHEAD'] ||= '3'
   ENV['LATE_PATIENT_TOLERANCE_MINUTES'] ||= '10'
   ENV['EARLY_PATIENT_WARNING_MINUTES'] ||= '30'
 end

@@ -14,29 +14,11 @@ class TimeSlotGenerationService
       #
       :end_date,
       #
-      # An array with duration ranges
-      #
-      # type: [Range<ActiveSupport::Duration>]
-      # example: [(7.hours + 30.minutes)..12.hours, 13.hours..18.hours]
-      #
-      :time_windows,
-      #
       # Self-explanatory
       #
-      :ubs_id,
+      # Type: Ubs (model)
       #
-      # Appointment duration
-      #
-      # type: ActiveSupport::Duration
-      # example: 20.minutes
-      #
-      :appointment_duration,
-      #
-      # Number of vaccination spots (i.e. parallel appointments)
-      #
-      # type: Integer
-      #
-      :num_spots,
+      :ubs,
       #
       # Operating weekdays. Sunday = 0
       #
@@ -53,11 +35,11 @@ class TimeSlotGenerationService
     ]
 
     def initialize(options)
-      raise "Time slot generation options must be a hash" if \
-        !options.is_a?(Hash)
+      raise "Time slot generation options must be a hash" \
+        unless options.is_a?(Hash)
 
-      raise "Missing or extra time slot generation options" if \
-        options.symbolize_keys.keys.sort != Names.sort
+      raise "Missing or extra time slot generation options" \
+        unless options.symbolize_keys.keys.sort == Names.sort
 
       super(options)
     end
@@ -75,7 +57,7 @@ class TimeSlotGenerationService
 
     date_range.lazy.each do |date|
       next if date_should_be_excluded?(date, options)
-      options.time_windows.each do |window|
+      build_ubs_time_windows(options.ubs).each do |window|
         generate_time_slots_for_time_window(date, window, options)
       end
     end
@@ -90,23 +72,39 @@ class TimeSlotGenerationService
   end
 
   def generate_time_slots_for_time_window(date, window, options)
-    date = date.to_datetime.change(offset: Time.zone.now.strftime('%z')).in_time_zone
-
-    window.step(options.appointment_duration).lazy.each do |time|
+    appointment_duration = options.ubs.slot_interval_minutes.minutes
+    window.step(appointment_duration).lazy.each do |time|
       window_end = date + window.end
       appointment_start = date + time
-      appointment_end = appointment_start + options.appointment_duration
+      appointment_end = appointment_start + appointment_duration
 
       next if appointment_end > window_end
 
-      options.num_spots.times do
+      options.ubs.appointments_per_time_slot.times do
         @create_slot.({
-          ubs_id: options.ubs_id,
+          ubs_id: options.ubs.id,
           start: appointment_start,
           end: appointment_end,
+          active: true,
           patient_id: nil
         }.with_indifferent_access)
       end
     end
+  end
+
+  def build_ubs_time_windows(ubs)
+    shift_start = string_to_duration(ubs.shift_start)
+    break_start = string_to_duration(ubs.break_start)
+
+    break_end = string_to_duration(ubs.break_end)
+    shift_end = string_to_duration(ubs.shift_end)
+
+    [shift_start..break_start, break_end..shift_end]
+  end
+
+  def string_to_duration(hour_min_string)
+    parts = hour_min_string.split(':')
+
+    parts[0].to_i.hours + parts[1].to_i.minutes
   end
 end

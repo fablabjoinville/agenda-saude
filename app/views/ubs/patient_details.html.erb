@@ -106,7 +106,7 @@
     </div>
       <% end %>
       <!-- check out button rule -->
-      <% if @appointment.check_in.present? && @appointment.check_out.nil? %>
+      <% if @appointment.check_in.present? && @appointment.check_out.nil? && @check_out%>
         <div class="col-md-6">
           <a class="btn btn-success btn-block btn-lg" href=<%= confirm_check_out_path(id: @appointment.id) %>
                     onclick="return confirm('Confirme para sinalizar que esta pessoa fez o check-out e está pronta para agendar a segunda dose.')"

@@ -17,7 +17,8 @@ class Patients::RegistrationsController < Devise::RegistrationsController
     :target_audience,
     :bedridden,
     :public_place,
-    :place_number
+    :place_number,
+    :specific_comorbidity
   ].freeze
 
   # POST /patients

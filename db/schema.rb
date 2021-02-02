@@ -32,6 +32,8 @@ ActiveRecord::Schema.define(version: 2021_02_02_181324) do
 
   create_table "groups", force: :cascade do |t|
     t.string "name"
+    t.bigint "parent_group_id"
+    t.index ["parent_group_id"], name: "index_groups_on_parent_group_id"
   end
 
   create_table "groups_patients", id: false, force: :cascade do |t|
@@ -75,9 +77,15 @@ ActiveRecord::Schema.define(version: 2021_02_02_181324) do
     t.string "public_place"
     t.string "place_number"
     t.bigint "last_appointment_id"
+    t.string "specific_comorbidity", default: ""
     t.index ["cpf"], name: "index_patients_on_cpf", unique: true
     t.index ["last_appointment_id"], name: "index_patients_on_last_appointment_id"
     t.index ["main_ubs_id"], name: "index_patients_on_main_ubs_id"
+  end
+
+  create_table "time_slot_generator_executions", primary_key: "date", id: :date, force: :cascade do |t|
+    t.text "status"
+    t.text "details"
   end
 
   create_table "ubs", force: :cascade do |t|
