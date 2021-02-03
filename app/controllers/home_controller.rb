@@ -9,7 +9,7 @@ class HomeController < ApplicationController
     cpf = base_login_params[:cpf]
 
     unless CPF.valid?(cpf)
-      flash[:notice] = 'CPF Inválido'
+      flash[:alert] = 'CPF Inválido'
       redirect_to '/'
       return
     end
