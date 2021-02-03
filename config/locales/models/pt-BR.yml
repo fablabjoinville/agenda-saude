@@ -26,6 +26,7 @@
                   blank: em branco
                 birth_date:
                   blank: em branco
+                  invalid: inválida
                 phone:
                   blank: em branco
                   invalid: inválido

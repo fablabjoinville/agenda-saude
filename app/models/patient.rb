@@ -22,6 +22,8 @@ class Patient < ApplicationRecord
   validates :phone, presence: true, phone_format: true
   validates :neighborhood, presence: true
 
+  validate :valid_birth_date
+
   after_initialize :set_main_ubs
 
   scope :bedridden, -> { where(bedridden: true) }
@@ -91,5 +93,13 @@ class Patient < ApplicationRecord
 
   def age
     ((Time.zone.now - birth_date.to_time) / 1.year.seconds).floor
+  end
+
+  private
+
+  def valid_birth_date
+    Date.parse(birth_date)
+  rescue ArgumentError
+    errors.add(:birth_date, :invalid)
   end
 end
