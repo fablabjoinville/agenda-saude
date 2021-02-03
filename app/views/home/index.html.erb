@@ -14,13 +14,7 @@
   <tbody>
     <tr>
       <td>
-        <% if Ubs.where(active: true).blank? %>
-          <i class="fa fa-circle" aria-hidden="true" style="color: red;"></i> Sem estoque
-        <% elsif Appointment.where('patient_id IS NULL AND start > ?', Time.zone.now).count > 0 %>
-          <i class="fa fa-circle" aria-hidden="true" style="color: green;"></i> Em aberto
-        <% else %>
-          <i class="fa fa-circle" aria-hidden="true" style="color: red;"></i> SEM HORÁRIO DISPONÍVEL
-        <% end %>
+        <i class="fa fa-circle" aria-hidden="true" style="color: red;"></i> Aguardando novas doses
       </td>
       <td>
         <% Patient::CONDITIONS.each do |name, _| %>
