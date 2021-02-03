@@ -24,6 +24,7 @@
       </td>
       <td>
         <% Patient::CONDITIONS.each do |name, _| %>
+          <% next if name == 'Paciente de teste' %>
           <i class="fa fa-check-circle" aria-hidden="true" style="color: green;"></i> <%= name %><br>
         <% end %>
       </td>
@@ -62,7 +63,7 @@ As vagas serão disponibilizadas conforme as prioridades determinadas pelo Minis
 <%# <h2 class="lp-header">Outros Locais de Vacinação</h2>
 <p>É possível vacinar-se nas Unidades básicas de saúde, onde não é necessário o agendamento prévio. A disponibilidade das vacinas nas UBS (Unidade Básica de Saúde) se dá: 1º por ordem dos grupos prioritários e 2º pelo estoque disponível na UBS.</p>
 
-<%= render "shared/ubs_list" %> 
+<%= render "shared/ubs_list" %>
 
 <h2 class="lp-header">Dúvidas frequentes sobre a vacinação</h2>
 <h4>Como funcionará a vacinação na Central de Imunização do Centreventos?</h4>
