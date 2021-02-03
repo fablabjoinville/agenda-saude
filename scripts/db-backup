@@ -9,7 +9,7 @@ fi
 
 source .env.db
 
-output="dump-$(date +%Y%d%m%H%M).sql"
+output="dump-$(date +%Y%m%d%H%M).sql"
 
 echo 'Dumping...'
 
