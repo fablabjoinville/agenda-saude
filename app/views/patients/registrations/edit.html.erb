@@ -1,5 +1,6 @@
 <% if flash[:alert].present? %>
-  <% flash[:alert].each do |msg| %>
+  <% # Do not remove this flatten stuff %>
+  <% [flash[:alert]].flatten(0).each do |msg| %>
     <div class="alert alert-danger">
       <%= msg %>
     </div>
