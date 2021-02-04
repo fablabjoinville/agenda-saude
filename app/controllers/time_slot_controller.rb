@@ -5,7 +5,7 @@ class TimeSlotController < PatientSessionController
 
   before_action :render_patient_not_allowed
 
-  SLOTS_WINDOW_IN_DAYS = 4
+  SLOTS_WINDOW_IN_DAYS = 5
 
   def schedule
     @ubs = Ubs.find(schedule_params[:ubs_id])
