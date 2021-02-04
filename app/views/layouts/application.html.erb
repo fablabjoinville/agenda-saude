@@ -12,7 +12,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>Portal de Agendamento sobre a COVID-19 em Joinville</title>
+    <title>Vacinação Covid-19</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
@@ -27,7 +27,7 @@
 
   <body>
     <nav class="navbar navbar-expand-lg navbar-default bg-primary mb-5">
-      <a class="navbar-brand mr-auto" href="/"><img src=<%= image_path('logo.png') %> class="navbar__logo"></a>
+      <a class="navbar-brand mr-auto" href="http://joinville.sc.gov.br/"><img src=<%= image_path('logo.png') %> class="navbar__logo"></a>
       <% if !user_signed_in? && !patient_signed_in? %>
         <button class="navbar-toggler p-1" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon">
