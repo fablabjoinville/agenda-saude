@@ -26,7 +26,7 @@
       </td>
       <td>
         <% if Ubs.where(active: true).blank? %>
-          <i class="fa fa-circle" aria-hidden="true" style="color: oranje;"></i> Aguardando novas doses
+          <i class="fa fa-circle" aria-hidden="true" style="color: #FA6800;"></i> Aguardando novas doses
         <% elsif Appointment.where('patient_id IS NULL AND start > ?', Time.zone.now).count > 0 %>
           <i class="fa fa-circle" aria-hidden="true" style="color: green;"></i> Disponível
         <% else %>
