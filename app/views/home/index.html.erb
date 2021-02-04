@@ -1,3 +1,9 @@
+<% if flash[:alert].present? %>
+  <div class="alert alert-danger">
+    <%= flash[:alert] %>
+  </div>
+<% end %>
+
 <div class="row text-center">
   <div class="col">
     <p class="h4">Agendar Vacinação Covid-19</p>
