@@ -54,6 +54,7 @@ class TimeSlotGenerationWorker
         # Sleep longer to avoid hitting the db every sleep interval, 
         # as current_time.hour == execution_hour will be true consecutively
         sleep(30.minutes.to_i)
+        next
       end
 
       send_slack_message("ℹ️ Iniciando geração de time slots")
