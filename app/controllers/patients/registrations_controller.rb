@@ -39,7 +39,7 @@ class Patients::RegistrationsController < Devise::RegistrationsController
     patient.save
 
     return redirect_to home_teste_rapido_path if patient.cpf.blank?
-    return redirect_to new_patient_registration_path(cpf: patient.cpf), alert: patient.errors unless patient.persisted?
+    return redirect_to new_patient_registration_path(cpf: patient.cpf), alert: patient.errors.full_messages unless patient.persisted?
 
     sign_in(patient, scope: :patient)
 
@@ -77,7 +77,7 @@ class Patients::RegistrationsController < Devise::RegistrationsController
 
       redirect_to index_time_slot_path
     else
-      return redirect_to edit_patient_registration_path(@patient), alert: @patient.errors
+      return redirect_to edit_patient_registration_path(@patient), alert: @patient.errors.full_messages
     end
   end
 
