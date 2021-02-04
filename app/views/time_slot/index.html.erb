@@ -42,14 +42,11 @@
                   <strong>Endereço: </strong><%= @ubs.address %>
                 </div>
               </div>
-              <div class="row">
-                <div class="col">
-                  <strong>Telefone: </strong><%= @ubs.phone %>
-                </div>
-              </div>
 
               <p class="h8 mb-12">
-                <br/>Dirija-se até a unidade escolhida com <strong>15 minutos de antecedência</strong>, leve um <strong>documento com foto e seu Cartão SUS (CNS)</strong> e reserve pelo menos <strong>1 hora para o procedimento<strong>.
+                <br/>Para receber a vacina, chegue ao local acima com 15 minutos de antecedência e leve: <br/>
+                <strong>- Documento com foto</strong>; <br/>
+                <strong>- Pelo menos UM destes documentos comprobatórios</strong>: holerite/folha de pagamento; crachá funcional; carteira do órgão de classe; contrato social (para sócios de empresa); declaração de autônomo; declaração de terceirizado (para comprovar vínculo em estabelecimento de saúde); ou declaração de estágio indicando o local do estágio;<br/>
               </p>
 
             </div>
@@ -62,7 +59,7 @@
             </div>
               <div class="col">
               <%= button_to cancel_time_slot_path(appointment_id: @appointment.id), class: "btn btn-danger btn-block", method: :delete, data: { cy: "cancelAppointmentButton", confirm: "Seu horário será cancelado. Confirmar?" } do %>
-                Cancelar
+                Cancelar meu agendamento
               <% end %>
             </div>
           </div>
@@ -118,10 +115,18 @@
       <div class="row">
         <div class="col">
           <h4>Agendamentos disponíveis:</h4>
+          <% if @appointment.present? %>
+            <div class="alert alert-warning alert-dismissable" role="alert">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <h6 class="mb-0">
+              Caso queira trocar a data de seu agendamento, selecione o dia e unidade, escolha um horário disponível e clique em <strong>Substituir</strong>.
+            </h6>
+          </div>
+          <% end %>
           <div class="alert alert-info alert-dismissable" role="alert">
             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
             <h6 class="mb-0">
-              <strong>Após escolher</strong> o local, box, dia e hora de seu teste e confirmar, <strong>entre novamente no site para verificar seu agendamento</strong>.
+              <strong>Após escolher</strong> o local, dia e hora de seu agendamento e confirmar, <strong>entre novamente no site para verificar seu agendamento</strong>.
             </h6>
           </div>
         </div>

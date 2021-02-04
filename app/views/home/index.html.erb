@@ -6,47 +6,46 @@
 
 <div class="row text-center">
   <div class="col">
-    <p class="h4">Agendar Vacinação Covid-19</p>
+    <p class="h4">Vacinação Covid-19</p>
   </div>
 </div>
 
 <table class="table table-bordered center", style="width: 70%; margin-top: 10px; margin-left: auto; margin-right: auto;">
   <thead>
     <tr>
+      <th scope="col">GRUPOS QUE PODEM SE CADASTRAR / AGENDAR</th>
       <th scope="col">STATUS DO AGENDAMENTO</th>
-      <th scope="col">GRUPOS QUE PODEM SE CADASTRAR</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
-        <% if Ubs.where(active: true).blank? %>
-          <i class="fa fa-circle" aria-hidden="true" style="color: red;"></i> Sem estoque
-        <% elsif Appointment.where('patient_id IS NULL AND start > ?', Time.zone.now).count > 0 %>
-          <i class="fa fa-circle" aria-hidden="true" style="color: green;"></i> Em aberto
-        <% else %>
-          <i class="fa fa-circle" aria-hidden="true" style="color: red;"></i> SEM HORÁRIO DISPONÍVEL
+        <% Patient::CONDITIONS.each do |name, _| %>
+          <i class="fa fa-check-circle" aria-hidden="true" style="color: green;"></i> <%= name %><br>
         <% end %>
       </td>
       <td>
-        <% Patient::CONDITIONS.each do |name, _| %>
-          <% next if name == 'Paciente de teste' %>
-          <i class="fa fa-check-circle" aria-hidden="true" style="color: green;"></i> <%= name %><br>
+        <% if Ubs.where(active: true).blank? %>
+          <i class="fa fa-circle" aria-hidden="true" style="color: oranje;"></i> Aguardando novas doses
+        <% elsif Appointment.where('patient_id IS NULL AND start > ?', Time.zone.now).count > 0 %>
+          <i class="fa fa-circle" aria-hidden="true" style="color: green;"></i> Disponível
+        <% else %>
+          <i class="fa fa-circle" aria-hidden="true" style="color: red;"></i> Sem Horário Disponível
         <% end %>
       </td>
     </tr>
   </tbody>
 </table>
 
-<p style="color: red;"><i>* Neste momento, o sistema está aberto apenas para <strong>Pré-Cadastro</strong> dos públicos-alvo acima descritos, toda população acima descrita deve fazer seu cadastro para receber a vacina assim que houver estoque de doses disponível.
-As vagas serão disponibilizadas conforme as prioridades determinadas pelo Ministério da Saúde e Secretaria de Estado da Saúde.</i></p>
+<p style="color: red;"><i><strong>AGENDAMENTO</strong>: Somente trabalhadores da saúde com 60 anos ou mais que estão atuando na área no momento podem  agendar a vacinação. A quantidade de vagas para agendamento depende da quantidade de doses <br/><br/>
+<strong>CADASTRO</strong>: Neste momento, apenas trabalhadores de Saúde de todas as idades ativos no município de Joinville e população em geral com 60 anos ou mais devem fazer o cadastro.</i></p>
 
 <div class="card">
   <div class="card-body">
     <%= form_for(:patient, url: patient_base_login_path) do |f| %>
       <div class="form-row"">
         <div class="form-group col-md-9">
-          <%= f.text_field :cpf, autofocus: true, autocomplete: "cpf", minlength: 11, maxlength: 11, required: true, class: "form-control", 'aria-describedby' => 'cpfHelpInLine', placeholder: 'CPF', data: { cy: "cpfInputField" } %>
+          <%= f.text_field :cpf, autofocus: true, minlength: 11, maxlength: 11, required: true, class: "form-control", 'aria-describedby' => 'cpfHelpInLine', placeholder: 'CPF', data: { cy: "cpfInputField" } %>
         </div>
 
         <div class="form-group col-md-3">
@@ -57,7 +56,14 @@ As vagas serão disponibilizadas conforme as prioridades determinadas pelo Minis
   </div>
 </div>
 
-<h2 class="lp-header">Quem não pode tomar a vacina</h2>
+<%# <h2 class="lp-header">Outros Locais de Vacinação</h2>
+<p>É possível vacinar-se nas Unidades básicas de saúde, onde não é necessário o agendamento prévio. A disponibilidade das vacinas nas UBS (Unidade Básica de Saúde) se dá: 1º por ordem dos grupos prioritários e 2º pelo estoque disponível na UBS.</p>
+
+<%= render "shared/ubs_list" %>
+
+<h2 class="lp-header">Dúvidas frequentes sobre a vacinação</h2>
+
+<h4 class="lp-header">Quem não pode tomar a vacina</h4>
 <ul>
   <li>Menores de 18 anos;</li>
   <li>Gestantes e Lactantes (mulheres que estão amamentando);</li>
@@ -66,32 +72,26 @@ As vagas serão disponibilizadas conforme as prioridades determinadas pelo Minis
   <li>Quem tomou qualquer outro tipo de vacina nos últimos 15 dias.</li>
 </ul>
 
-<%# <h2 class="lp-header">Outros Locais de Vacinação</h2>
-<p>É possível vacinar-se nas Unidades básicas de saúde, onde não é necessário o agendamento prévio. A disponibilidade das vacinas nas UBS (Unidade Básica de Saúde) se dá: 1º por ordem dos grupos prioritários e 2º pelo estoque disponível na UBS.</p>
-
-<%= render "shared/ubs_list" %>
-
-<h2 class="lp-header">Dúvidas frequentes sobre a vacinação</h2>
-<h4>Como funcionará a vacinação na Central de Imunização do Centreventos?</h4>
+<h4 class="lp-header">Como funcionará a vacinação na Central de Imunização do Centreventos?</h4>
 <div class="row text-center mt-5 mb-5">
   <div class="col">
     <img src=<%= image_path('fluxo_vacinacao.png') %> class="comm-img" />
   </div>
 </div>
 
-<h4>Qual o horário de atendimento?</h4>
+<h4 class="lp-header">Qual o horário de atendimento?</h4>
 <ul>
   <li>Central de Imunização (Centreventos): Segunda a Sexta-feira - 07:30–16:30.</li>
   <%# <li>Todas as Unidades Básicas de Saúde:  Segunda a sexta-feira - 07:00–20:00.</li> %>
 </ul>
 
-<h4>Quanto custa?</h4>
+<h4 class="lp-header">Quanto custa?</h4>
 <p>Este serviço é gratuito.</p>
 
-<h4>Quanto tempo leva?</h4>
-<p>O total do atendimento dura aproximadamente 40 minutos.</p>
+<h4 class="lp-header">Quanto tempo leva?</h4>
+<p>O antedimento completo, a partir da recepção no local até a imunização, pode levar aproximadamente 40 minutos</p>
 
-<h4>Quando a vacina estará disponível para meu grupo?</h4>
+<h4 class="lp-header">Quando a vacina estará disponível para meu grupo?</h4>
 <table class="table table-bordered">
   <tbody>
     <tr>
@@ -101,7 +101,7 @@ As vagas serão disponibilizadas conforme as prioridades determinadas pelo Minis
           <li>Trabalhadores da Saúde no geral com 60 anos ou mais (agendamento exclusivo <b>PELO SITE</b>);</li>
         </ul>
       </td>
-      <td>A definir</td>
+      <td>A partir do dia 05/02/2021</td>
     </tr>
     <tr>
       <td>2° Grupo</td>
@@ -112,7 +112,7 @@ As vagas serão disponibilizadas conforme as prioridades determinadas pelo Minis
           <li>Pessoas com 60 anos ou mais;</li>
         </ul>
       </td>
-      <td>A definir quando houver vacina.</td>
+      <td>A definir - aguardando recebimento de doses</td>
     </tr>
     <tr>
       <td>3° Grupo</td>
@@ -157,11 +157,11 @@ As vagas serão disponibilizadas conforme as prioridades determinadas pelo Minis
 </table>
 
 <h2 class="lp-header">Sobre estas informações</h2>
-<h4>Unidade(s) responsável(is)</h4>
+<h4 class="lp-header">Unidade(s) responsável(is)</h4>
 <ul>
   <li><a href="https://www.joinville.sc.gov.br/institucional/ses/">Secretaria da Saúde – SES</a></li>
 </ul>
-<h4>Atos regulamentadores</h4>
+<h4 class="lp-header">Atos regulamentadores</h4>
 <ul>
   <li><a href="http://www.sc.gov.br/images//Informe_Tcnico_SINOVAC_2.pdf" target="_blank">Informe técnico Secretaria Estadual de Saúde</a></li>
 </ul>
@@ -174,8 +174,9 @@ As vagas serão disponibilizadas conforme as prioridades determinadas pelo Minis
 
 <div class="row text-center mt-5 mb-5">
   <div class="col">
-    <small class="text-muted">Para mais informações sobre a COVID-19 no município, acesse:<br>
-      <a href="https://www.joinville.sc.gov.br/coronavirus/">https://www.joinville.sc.gov.br/coronavirus/</a></small>
+    <small class="text-muted">
+      <a href="https://www.joinville.sc.gov.br/coronavirus/"><u>Acompanhe as principais informações sobre o combate ao coronavírus em Joinville</u></a>
+    </small>
   </div>
 </div>
 

@@ -118,7 +118,8 @@ end
   'Caminhoneiro(a)',
   'Trabalhador(a) portuário',
   'Trabalhador(a) da construção civil',
-  'Pessoa com deficiência permanente grave'
+  'Pessoa com deficiência permanente grave',
+  'Não me encaixo em nenhum dos grupos listados',
 ].each do |name|
   Group.create(name: name)
 end
@@ -142,6 +143,7 @@ end
 [
   'Área da assistência/tratamento',
   'Administrativo e outros setores',
+  'Estagiário da área da Saúde',
 ].each do |subgroup|
   Group.create(name: subgroup, parent_group_id: Group.find_by(name: 'Trabalhador(a) da Saúde').id)
 end
