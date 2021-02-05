@@ -6,7 +6,12 @@ class UbsController < UserSessionController
   end
 
   def index
-    @appointments = future_appointments.where.not(patient_id: nil).order(start: :asc)
+    @appointments = @ubs.appointments
+                        .today
+                        .without_checkout
+                        .joins(:patient)
+                        .order(:start)
+
     @bedridden_patients = @ubs.bedridden_patients
   end
 
