@@ -46,6 +46,17 @@ class UbsController < UserSessionController
     render 'ubs/checkin'
   end
 
+  def checkin
+    now = Time.zone.now
+
+    patients_ids = Appointment.where(check_in: nil, start: now-30.minutes..now+40.minutes).pluck(:patient_id)
+    @patients = Patient.find(patients_ids)
+
+    @appointments_patients = build_appointments_patients(@patients)
+
+    render 'ubs/checkin'
+  end
+
   def checkout
     now = Time.zone.now
 
@@ -190,10 +201,11 @@ class UbsController < UserSessionController
         patient_id: patients.map(&:id),
       ).where.not(check_in: nil)
     else
+      time_shift = 2.days
       appointments = Appointment.where(
         patient_id: patients.map(&:id),
         check_in: nil
-      )
+      ).where(start: (Time.zone.now-time_shift).beginning_of_day..(Time.zone.now+time_shift).end_of_day)
     end
 
     return [] unless appointments.any?
@@ -211,7 +223,7 @@ class UbsController < UserSessionController
       }
     end
 
-    appointments_patients = appointments_patients.sort_by { |appointment| appointment[:time_delta] }
+    appointments_patients = appointments_patients.sort_by { |appointment| appointment[:start] }
 
     appointments_patients
   end
