@@ -68,6 +68,8 @@ class TimeSlotController < PatientSessionController
           appointments = Appointment.where(start: @current_day.at_beginning_of_day..@current_day.end_of_day, ubs: ubs, patient_id: nil)
         end
 
+        next unless appointments.present?
+
         appointments.each do |appointment|
           slots << { slot_start: appointment.start, slot_end: appointment.end }
         end
