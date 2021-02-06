@@ -185,3 +185,36 @@ service = TimeSlotGenerationService.new(
 options_params.each do |option|
   ActiveRecord::Base.transaction { service.execute(option) }
 end
+
+cpfs = %w[
+  82920382640
+  41869202309
+  82194769668
+  24834517136
+  71097596877
+  29344755574
+  95975258790
+  45963347149
+  89452953136
+  45445585654
+]
+
+range = begin_date..finish_date
+
+10.times do |i|
+  patient = Patient.new
+  patient.name = "marvin#{i}"
+  patient.cpf = cpfs[i]
+  patient.mother_name = 'Natureza'
+  patient.birth_date = '1979-06-24'
+  patient.phone = '(47) 91234-5678'
+  patient.neighborhood = 'América'
+  patient.save!
+
+  appointment = Appointment.where(patient_id: nil, start: range).order('RANDOM()').first
+  appointment.update(patient_id: patient.id)
+
+  patient.appointments << appointment
+  patient.last_appointment = appointment
+  patient.save!
+end
