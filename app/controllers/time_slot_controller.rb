@@ -15,7 +15,7 @@ class TimeSlotController < PatientSessionController
     return render 'patients/not_allowed' unless @patient.can_schedule?
 
     Appointment.transaction do
-      if Appointment.where(start: start_time, ubs: @ubs).where.not(patient_id: nil).count == @ubs.appointments_per_time_slot
+      if Appointment.where(start: start_time, ubs: @ubs, patient_id: nil).count.zero?
         flash[:alert] = 'Opa! O horário foi reservado enquanto você escolhia, tente outro!'
         redirect_to time_slot_path
 
@@ -26,7 +26,6 @@ class TimeSlotController < PatientSessionController
         appointment.update(patient_id: nil)
       end
 
-      # TODO this will break if no appointment is found
       @appointment = Appointment.where(start: start_time, ubs: @ubs, patient_id: nil).first
 
       return render json: @appointment.errors unless @appointment.update!(patient_id: current_patient.id)
