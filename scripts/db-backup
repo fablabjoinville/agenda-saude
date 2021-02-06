@@ -1,0 +1,20 @@
+#!/bin/bash
+
+set -euxo pipefail
+
+if [ ! -f .env.db ]; then
+  echo 'Error: please create a .env.db file with exports for db connection variables'
+  exit 1
+fi
+
+source .env.db
+
+output="dump-$(date +%Y%m%d%H%M).sql"
+
+echo 'Dumping...'
+
+pg_dump -O -x -d "$DBNAME" -h "$DBHOST" -p "$DBPORT" -U "$DBUSER" -f $output
+
+echo 'Compressing...'
+
+gzip $output

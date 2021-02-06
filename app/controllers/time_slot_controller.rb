@@ -5,7 +5,7 @@ class TimeSlotController < PatientSessionController
 
   before_action :render_patient_not_allowed
 
-  SLOTS_WINDOW_IN_DAYS = 10
+  SLOTS_WINDOW_IN_DAYS = 5
 
   def schedule
     @ubs = Ubs.find(schedule_params[:ubs_id])
@@ -67,6 +67,8 @@ class TimeSlotController < PatientSessionController
         else
           appointments = Appointment.where(start: @current_day.at_beginning_of_day..@current_day.end_of_day, ubs: ubs, patient_id: nil)
         end
+
+        next unless appointments.exists?
 
         appointments.each do |appointment|
           slots << { slot_start: appointment.start, slot_end: appointment.end }

@@ -1,8 +1,8 @@
 <% if flash[:alert].present? %>
-  <% flash[:alert].each do |msg| %>
+   <% # Do not remove this flatten stuff %>
+   <% [flash[:alert]].flatten(0).each do |msg| %> 
     <div class="alert alert-danger">
-      <%= I18n.t("activerecord.models.attributes.#{msg.first}") %>
-      <%= msg.second %>
+      <%= msg %>
     </div>
   <% end %>
 <% end %>
@@ -14,28 +14,22 @@
 
   <div class="row text-center">
     <div class="col">
-      <p data-cy="signUpText" class="h3">Cadastro</p>
+      <h2 data-cy="signUpText">Cadastro</h2>
     </div>
   </div>
 
   <div class="alert alert-info alert-dismissable mb-5 mt-5" role="alert">
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
     <h6 class="mb-0" style="text-align: center;">
-      O agendamento somente ocorrerá conforme orientações abaixo:<br/><br/>
-
-      <strong>&middot Somente moradores assintomáticos de Joinville</strong> podem realizar o teste;<br/>
-      <strong>&middot Menores de 2 anos não podem fazer o Teste Rápido</strong>;<br/>
-      <strong>&middot</strong> É obrigatório o <strong>CPF e Cartão SUS (CNS)</strong> para agendar e fazer o teste;<br/>
-      <strong>&middot</strong> Verifique <strong>o número de seu Cartão SUS (CNS)</strong> em <a href="https://conectesus-paciente.saude.gov.br">https://conectesus-paciente.saude.gov.br</a>;<br/>
-      <strong>&middot</strong> Geralmente, os planos de saúde mostram o número do Cartão SUS (CNS) no verso da carteirinha;<br/>
-      <strong>&middot</strong> Caso <strong>não tenha Cartão SUS (CNS)</strong>, dirija-se a uma <strong>Unidade de Saúde</strong> para fazer seu.<br/>
+      <strong>AGENDAMENTO</strong>: Por hora, só trabalhadores da saúde com 60 anos ou mais que estão atuando na área no momento podem agendar a vacinação. A quantidade de vagas para o agendamento depende das doses entregues ao município. Quem não cumprir a regra e agendar horário não receberá o imunizante. <br/><br/>
+      <strong>CADASTRO</strong>: Neste momento, apenas trabalhadores de Saúde de todas as idades ativos em Joinville e quem tem 60 anos ou mais devem fazer o cadastro. Se você não se encaixa nestes grupos, aguarde.
     </h6>
   </div>
 
   <h3 class="text-center">Dados Pessoais</h3>
   <div class="form-row">
     <div class="form-group col-md-6">
-      <%= f.label :name, "Nome Completo" %>
+      <%= f.label :name, "Nome Completo" %> <b style="color: red;">*</b>
       <%= f.text_field :name, autofocus: true, autocomplete: "name", required: true, class: "form-control", data: { cy: "newPatientNameInputField" } %>
     </div>
 
@@ -47,7 +41,7 @@
 
   <div class="form-row">
     <div class="form-group col-md-6">
-      <%= f.label :birth_date, "Data de nascimento" %>
+      <%= f.label :birth_date, "Data de nascimento" %> <b style="color: red;">*</b>
       <div class="form-row">
         <%
           start_year = (Date.current.year.to_i) - 18
@@ -57,7 +51,7 @@
     </div>
 
     <div class="form-group col-md-6">
-      <%= f.label :mother_name, "Nome da mãe" %>
+      <%= f.label :mother_name, "Nome da mãe" %> <b style="color: red;">*</b>
       <%= f.text_field :mother_name, autofocus: true, autocomplete: "mother_name", required: true, class: "form-control", data: { cy: "newPatientMotherNameInputField" } %>
     </div>
   </div>
@@ -68,7 +62,7 @@
       <div class="form-check">
         <%= f.collection_check_boxes :groups, Group.where(parent_group_id: nil), :id, :name do |b| %>
           <div class="row">
-            <%= b.label { b.check_box(checked: @patient.groups.map(&:id).include?(b.value), class: "form-check-input", onclick: "updateSubGroups(#{b.value});") + b.text }%>
+            <%= b.label { b.check_box(checked: @patient.groups.map(&:id).include?(b.value), class: "form-check-input #{"healthWorker" if b.text == "Trabalhador(a) da Saúde"}", onclick: "updateSubGroups(#{b.value});") + b.text }%>
           </div>
 
           <% if Group.where(parent_group_id: b.value).any? %>
@@ -93,10 +87,15 @@
           <% end %>
         <% end %>
       </div>
+
+      <div class="row" hidden=true id="alert-health-worker" style="color: red;">
+        <strong>Atenção:</strong> Para receber a vacina, será necessário apresentar a comprovação de vínculo ativo em algum estabelecimento de saúde na cidade de Joinville e/ou a carteira do conselho regional de classe.
+
+      </div>
     </div>
 
     <div class="form-group col-md-6">
-      <%= f.label :sus, "Cartão SUS" %>
+      <%= f.label :sus, "Cartão SUS (Não obrigatório)" %>
       <%= f.number_field :sus, autofocus: true, autocomplete: "sus", required: false, class: "form-control", data: { cy: "newPatientSusNumberInputField" } %>
     </div>
   </div>
@@ -105,24 +104,24 @@
 
   <div class="form-row">
     <div class="form-group col-md-6">
-      <%= f.label :public_place, "Endereço (Rua, Avenida)" %>
+      <%= f.label :public_place, "Endereço (Rua, Avenida)" %> <b style="color: red;">*</b>
       <%= f.text_field :public_place, autofocus: true, autocomplete: "place", required: true, class: "form-control", data: { cy: "newPatientStreetNameInputField" } %>
     </div>
 
     <div class="form-group col-md-2">
-      <%= f.label :place_number, "Número" %>
+      <%= f.label :place_number, "Número" %> <b style="color: red;">*</b>
       <%= f.text_field :place_number, autofocus: true, required: true, class: "form-control", data: { cy: "newPatientStreetNumberInputField" } %>
     </div>
 
     <div class="form-group col-md-4">
-      <%= f.label :neighborhood, "Bairro" %>
+      <%= f.label :neighborhood, "Bairro" %> <b style="color: red;">*</b>
       <%= f.select :neighborhood, Neighborhood.pluck(:name), {}, { class: "form-control", data: { cy: "newPatientNeighborhoodNameInputField" } } %>
     </div>
   </div>
 
   <div class="form-row">
     <div class="form-group col-md-6">
-      <%= f.label :phone, "Telefone" %>
+      <%= f.label :phone, "Telefone" %> <b style="color: red;">*</b>
       <%= f.text_field :phone, autofocus: true, autocomplete: "phone", required: true, class: "form-control sp-celphones", data: { cy: "newPatientPhoneNumberInputField" } %>
     </div>
 
@@ -131,6 +130,8 @@
       <%= f.text_field :other_phone, autofocus: true, autocomplete: "other_phone", required: false, class: "form-control sp-celphones", data: { cy: "newPatientOtherPhoneNumberInputField" } %>
     </div>
   </div>
+
+  <b style="color: red;">* Campos obrigatórios</b>
 
   <div class="form-row">
     <div class="form-group col-md-6">
@@ -154,5 +155,8 @@
 
     initializeSpecificComorbidityOnChange();
     toggleSpecificComorbidity();
+
+    initializeHealthWorkerOnChange();
+    toggleHealthWorker();
   });
 </script>

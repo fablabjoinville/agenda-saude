@@ -4,10 +4,10 @@ class Patient < ApplicationRecord
   MAX_LOGIN_ATTEMPTS = 2
 
   CONDITIONS = {
-    'Trabalhador(a) da Saúde' => ->(patient) { patient.in_group?('Trabalhador(a) da Saúde') },
-    'Pessoa acima de 75 anos' => ->(patient) { patient.age >= 75 },
-    'Maiores de 60 anos institucionalizadas' => ->(patient) { patient.age >= 60 && patient.in_group?('Institucionalizado(a)') },
-    'População Indígena' => ->(patient) { patient.in_group?('Indígena') },
+    'Trabalhador(a) da Saúde com 60 anos ou mais' => ->(patient) { patient.in_group?('Trabalhador(a) da Saúde') && patient.age >= 60 },
+    # 'Paciente de teste' => ->(patient) { patient.cpf == ENV['ROOT_PATIENT_CPF'] },
+    # 'Maiores de 60 anos institucionalizadas' => ->(patient) { patient.age >= 60 && patient.in_group?('Institucionalizado(a)') },
+    # 'População Indígena' => ->(patient) { patient.in_group?('Indígena') },
   }
 
   has_many :appointments, dependent: :destroy
@@ -21,6 +21,8 @@ class Patient < ApplicationRecord
   validates :birth_date, presence: true
   validates :phone, presence: true, phone_format: true
   validates :neighborhood, presence: true
+
+  validate :valid_birth_date
 
   after_initialize :set_main_ubs
 
@@ -91,5 +93,13 @@ class Patient < ApplicationRecord
 
   def age
     ((Time.zone.now - birth_date.to_time) / 1.year.seconds).floor
+  end
+
+  private
+
+  def valid_birth_date
+    Date.parse(birth_date)
+  rescue ArgumentError
+    errors.add(:birth_date, :invalid)
   end
 end

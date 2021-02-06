@@ -44,6 +44,6 @@ on_worker_boot do
 end
 
 lowlevel_error_handler do |ex, env|
-  Raven.capture_exception(ex, message: ex.message, extra: { puma: env }, culprit: 'Puma')
+#  Raven.capture_exception(ex, message: ex.message, extra: { puma: env }, culprit: 'Puma')
   [500, { 'Content-Type' => 'text/html' }, File.open(Rails.root.join('public', '500.html'))]
 end

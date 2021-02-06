@@ -6,7 +6,12 @@ class UbsController < UserSessionController
   end
 
   def index
-    @appointments = future_appointments.where.not(patient_id: nil).order(start: :asc)
+    @appointments = @ubs.appointments
+                        .today
+                        .without_checkout
+                        .joins(:patient)
+                        .order(:start)
+
     @bedridden_patients = @ubs.bedridden_patients
   end
 
@@ -148,7 +153,7 @@ class UbsController < UserSessionController
   def suspend_appointment
     appointment = @ubs.appointments.find(params[:id])
 
-    appointment.update(active: false)
+    appointment.update(active: false, suspend_reason: params[:reason])
 
     redirect_to ubs_patient_details_path(ubs_id: @ubs.id, id: appointment.id)
   end

@@ -44,3 +44,7 @@ yarn-debug.log*
 .idea/
 
 /cypress/videos/*
+
+# Database
+/.env.db
+dump-*.sql*
