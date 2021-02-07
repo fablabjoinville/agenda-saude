@@ -86,7 +86,7 @@ class UbsController < UserSessionController
   end
 
   def today_appointments
-    @appointments = @ubs.appointments.today.order(:start)
+    @appointments = @ubs.appointments.today.where.not(patient_id: nil).order(:start)
 
     respond_to do |format|
       format.xlsx {
