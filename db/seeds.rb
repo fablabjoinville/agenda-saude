@@ -122,8 +122,8 @@ windows = [
 ]
 
 # dates for first and second dose appointments
-begin_date = 0.days.from_now.to_date
-finish_date = 3.days.from_now.to_date
+begin_date = 0.days.from_now.to_date.in_time_zone
+finish_date = 3.days.from_now.to_date.in_time_zone
 
 begin_second_date = begin_date + 4.weeks
 finish_second_date = finish_date + 4.weeks
