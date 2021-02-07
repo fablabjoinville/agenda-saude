@@ -56,55 +56,6 @@ other_ubs.shift_end = '17:00'
 other_ubs.slot_interval_minutes = 15
 other_ubs.save!
 
-cpfs = %w[
-  82920382640
-  41869202309
-  82194769668
-  24834517136
-  71097596877
-  29344755574
-  95975258790
-  45963347149
-  89452953136
-  45445585654
-]
-
-ubss = [ubs, other_ubs]
-
-starting_time = Tod::TimeOfDay.parse('9:00')
-today = Date.today
-
-10.times do |i|
-  patient = Patient.new
-  patient.name = "marvin#{i}"
-  patient.cpf = cpfs[i]
-  patient.mother_name = 'Natureza'
-  patient.birth_date = '1979-06-24'
-  patient.phone = '(47) 91234-5678'
-  patient.neighborhood = 'América'
-  patient.save!
-
-  appointment = Appointment.new
-  appointment.patient_id = patient.id
-  appointment.ubs = ubss.sample
-  appointment.start = starting_time.on(today)
-  appointment.end = (starting_time += 15.minutes).on(today)
-  appointment.active = true
-  appointment.save!
-end
-
-starting_time = Tod::TimeOfDay.parse('9:00')
-today = Date.today
-10.times do
-  appointment = Appointment.new
-  appointment.patient_id = nil
-  appointment.ubs = Ubs.first
-  appointment.start = starting_time.on(today)
-  appointment.end = (starting_time += 15.minutes).on(today)
-  appointment.active = true
-  appointment.save!
-end
-
 [
   'Trabalhador(a) da Saúde',
   'Trabalhador(a) da Educação',
@@ -160,4 +111,110 @@ end
   'Oficial em atividade administrativa',
 ].each do |subgroup|
   Group.create(name: subgroup, parent_group_id: Group.find_by(name: 'Trabalhador(a) das Forças de Seguranças e Salvamento').id)
+end
+
+# dates for first and second dose appointments
+begin_date = 0.days.from_now.to_date
+finish_date = 3.days.from_now.to_date
+
+begin_second_date = begin_date + 4.weeks
+finish_second_date = finish_date + 4.weeks
+
+# Ubs params for the differents time slots
+ubs_params = []
+# 7:40 - 8:00
+ubs_params << OpenStruct.new(
+  shift_start: '07:40',
+  shift_end: '08:00',
+  break_start: '07:40',
+  break_end: '07:40',
+  slot_interval_minutes: 20,
+  appointments_per_time_slot: 6,
+  id: Ubs.first.id
+)
+# 8:00 - 16:20
+ubs_params << OpenStruct.new(
+  shift_start: '08:00',
+  shift_end: '16:20',
+  break_start: '08:00',
+  break_end: '08:00',
+  slot_interval_minutes: 20,
+  appointments_per_time_slot: 8,
+  id: Ubs.first.id
+)
+# 16:20 - 16:40
+ubs_params << OpenStruct.new(
+  shift_start: '16:20',
+  shift_end: '22:40',
+  break_start: '16:20',
+  break_end: '16:20',
+  slot_interval_minutes: 20,
+  appointments_per_time_slot: 4,
+  id: Ubs.first.id
+)
+# Options for doses days
+options_params = []
+
+ubs_params.each do |ubs|
+  # Options for first dose day
+  options_params << TimeSlotGenerationService::Options.new(
+    start_date: begin_date.to_datetime,
+    end_date: finish_date.to_datetime,
+    weekdays: [*0..6],
+    excluded_dates: [],
+    ubs: ubs
+  )
+  # Options for second dose day
+  options_params << TimeSlotGenerationService::Options.new(
+    start_date: begin_second_date.to_datetime,
+    end_date: finish_second_date.to_datetime,
+    weekdays: [*0..6],
+    excluded_dates: [],
+    ubs: ubs
+  )
+end
+
+create_slot = lambda do |attributes|
+  Appointment.create(attributes)
+end
+
+service = TimeSlotGenerationService.new(
+  create_slot: create_slot
+)
+
+options_params.each do |option|
+  ActiveRecord::Base.transaction { service.execute(option) }
+end
+
+cpfs = %w[
+  82920382640
+  41869202309
+  82194769668
+  24834517136
+  71097596877
+  29344755574
+  95975258790
+  45963347149
+  89452953136
+  45445585654
+]
+
+range = begin_date..finish_date
+
+10.times do |i|
+  patient = Patient.new
+  patient.name = "marvin#{i}"
+  patient.cpf = cpfs[i]
+  patient.mother_name = 'Natureza'
+  patient.birth_date = '1979-06-24'
+  patient.phone = '(47) 91234-5678'
+  patient.neighborhood = 'América'
+  patient.save!
+
+  appointment = Appointment.where(patient_id: nil, start: range).order('RANDOM()').first
+  appointment.update(patient_id: patient.id)
+
+  patient.appointments << appointment
+  patient.last_appointment = appointment
+  patient.save!
 end

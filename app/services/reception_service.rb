@@ -20,7 +20,10 @@ class ReceptionService
   end
 
   def create_second_dose_appointment
-    next_appointment = Appointment.find_by(start: current_appointment.start + ENV['SECOND_DOSE_INTERVAL'].to_i.weeks)
+    next_appointment = Appointment.where(
+      start: current_appointment.start + ENV['SECOND_DOSE_INTERVAL'].to_i.weeks,
+      patient_id: nil
+    ).first
 
     next_appointment.update!(patient_id: @patient.id, second_dose: true)
     @patient.update(last_appointment: next_appointment)
