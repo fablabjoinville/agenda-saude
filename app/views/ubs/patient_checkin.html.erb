@@ -2,8 +2,6 @@
   <div class="col-12">
     <% if !@appointment.active %>
       <h3>Agendamento Cancelado</h3>
-    <% elsif @appointment.check_out.present? %>
-      <h3>Check-out Realizado</h3>
     <% elsif @appointment.check_in.present? %>
       <h3>Check-in Realizado</h3>
     <% else %>
@@ -76,21 +74,19 @@
 </div>
 
 <div class="buttons-details">
-  <% if @appointment.active %>
+  <% if @appointment.active && @appointment.check_in.nil? %>
     <div class="row text-center">
-      <!-- check in button rule -->
-      <% if @appointment.check_in.nil? %>
-        <div class="col-md-12">
-          <% if @appointment.in_allowed_check_in_window?  %>
-            <a class="btn btn-success btn-block btn-lg" href=<%= confirm_check_in_path(id: @appointment.id) %>
-                      onclick="return confirm('Confirme para sinalizar que esta pessoa fez o check-in e está pronta para entrar e receber a vacina.')"
-            >Realizar Check-in</a>
-          <% else %>
-            <a class="btn btn-secondary btn-block btn-lg" href="#"
-               onclick="return alert('Não é possível fazer check in de pacientes de outro dia')"
-            >Realizar Check-in</a>
-          <% end %>
-        </div>
+      <div class="col-md-12">
+        <% if @appointment.in_allowed_check_in_window?  %>
+          <a class="btn btn-success btn-block btn-lg" href=<%= confirm_check_in_path(id: @appointment.id) %>
+                    onclick="return confirm('Confirme para sinalizar que esta pessoa fez o check-in e está pronta para entrar e receber a vacina.')"
+          >Realizar Check-in</a>
+        <% else %>
+          <a class="btn btn-secondary btn-block btn-lg" href="#"
+             onclick="return alert('Não é possível fazer check in de pacientes de outro dia')"
+          >Realizar Check-in</a>
+        <% end %>
+      </div>
     </div>
     <div class="row text-center" style="padding-top:3%">
       <div class="col-md-12">
@@ -104,35 +100,13 @@
         <% end %>
       </div>
     </div>
-      <% end %>
-      <!-- check out button rule -->
-      <% if @appointment.check_in.present? && @appointment.check_out.nil? && @check_out%>
-        <div class="col-md-6">
-          <a class="btn btn-success btn-block btn-lg" href=<%= confirm_check_out_path(id: @appointment.id) %>
-                    onclick="return confirm('Confirme para sinalizar que esta pessoa fez o check-out e está pronta para agendar a segunda dose.')"
-          >Realizar Check-out</a>
-        </div>
-      <% end %>
-    </div>
-    <div class="row text-center" style="padding-top: 20px;">
-      <% if @check_in %>
-        <div class="col-md-12">
-          <%= link_to "Voltar para check-in", list_checkin_path, class: "btn-lg" %>
-        </div>
-      <% end %>
-      <% if @check_out %>
-        <div class="col-md-12">
-          <%= link_to "Voltar para check-out", list_checkout_path, class: "btn-lg" %>
-        </div>
-      <% end %>
-    </div>
-  <% else %>
-    <div class="row text-center">
-      <div class="col-md-12">
-        <%= link_to "Voltar para check-in", list_checkin_path, class: "btn-lg" %>
-      </div>
-    </div>
   <% end %>
+
+  <div class="row text-center">
+    <div class="col-md-12">
+      <%= link_to "Voltar para check-in", list_checkin_path, class: "btn-lg" %>
+    </div>
+  </div>
 </div>
 
 <%= stylesheet_link_tag 'ubs.css' %>

@@ -15,7 +15,7 @@
             <th scope="row"><%= appointment[:start].strftime("%d/%m/%Y") %><br><%= appointment[:start].strftime("%Hh%M") %></th>
             <td><%= appointment[:name] %></td>
             <td><%= ApplicationHelper.humanize_cpf(appointment[:cpf]) %></td>
-            <td><a class="btn btn-success" href=<%= patient_details_ubs_path(id: appointment[:id], check_out: true) %> >Check-Out</a></td>
+            <td><a class="btn btn-success" href=<%= ubs_patient_checkout_path(id: appointment[:id]) %> >Check-Out</a></td>
           </tr>
         </tr>
         <% end %>

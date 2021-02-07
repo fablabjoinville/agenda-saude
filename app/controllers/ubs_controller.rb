@@ -20,7 +20,7 @@ class UbsController < UserSessionController
 
     ReceptionService.new(appointment.patient).check_in
 
-    redirect_to ubs_patient_details_path(id: appointment.id, check_in: true)
+    redirect_to ubs_patient_checkin_path(id: appointment.id, check_in: true)
   end
 
   def confirm_check_out
@@ -31,7 +31,7 @@ class UbsController < UserSessionController
 
     @second_dose_appointment = patient.reload.last_appointment
 
-    redirect_to ubs_patient_details_path(id: appointment.id, second_dose_appointment: @second_dose_appointment, check_out: true)
+    redirect_to ubs_patient_checkout_path(id: appointment.id, second_dose_appointment: @second_dose_appointment, check_out: true)
   end
 
   def find_patients
@@ -62,11 +62,9 @@ class UbsController < UserSessionController
     render 'ubs/checkout'
   end
 
-  def patient_details
+  def patient_checkin
     @appointment = Appointment.find(params[:id])
     @second_dose_appointment = Appointment.find(params[:second_dose_appointment]) if params[:second_dose_appointment]
-    @check_out = params[:check_out]
-    @check_in = params[:check_in]
 
     patient = @appointment.patient
 
@@ -82,7 +80,28 @@ class UbsController < UserSessionController
       groups: groups
     }
 
-    render ubs_patient_details_path
+    render ubs_patient_checkin_path
+  end
+
+  def patient_checkout
+    @appointment = Appointment.find(params[:id])
+    @second_dose_appointment = Appointment.find(params[:second_dose_appointment]) if params[:second_dose_appointment]
+
+    patient = @appointment.patient
+
+    groups = []
+    Patient::CONDITIONS.each do |cond, func|
+      groups << cond if func.call(patient)
+    end
+
+    @patient = {
+      id: patient.id,
+      name: patient.name,
+      cpf: patient.cpf,
+      groups: groups
+    }
+
+    render ubs_patient_checkout_path
   end
 
   def today_appointments
@@ -155,7 +174,7 @@ class UbsController < UserSessionController
 
     appointment.update(active: false, suspend_reason: params[:reason])
 
-    redirect_to ubs_patient_details_path(ubs_id: @ubs.id, id: appointment.id)
+    redirect_to ubs_patient_checkin_path(ubs_id: @ubs.id, id: appointment.id)
   end
 
   def activate_appointment
