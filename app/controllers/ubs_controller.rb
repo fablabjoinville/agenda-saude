@@ -28,7 +28,9 @@ class UbsController < UserSessionController
     patient = appointment.patient
     vaccine_name = params['patient']['vaccine']
 
-    ReceptionService.new(patient).check_out(vaccine_name)
+    if appointment.start.today?
+      ReceptionService.new(patient).check_out(vaccine_name)
+    end
 
     @second_dose_appointment = patient.reload.last_appointment
 
@@ -213,6 +215,7 @@ class UbsController < UserSessionController
     if check_out
       appointments = Appointment.where(
         patient_id: patients.map(&:id),
+        start: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day
       ).where.not(check_in: nil)
     else
       appointments = Appointment.where(
