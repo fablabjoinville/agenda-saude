@@ -10,21 +10,6 @@
   </div>
 </div>
 
-<% if @second_dose_appointment.present? %>
-  <div class="alert alert-info alert-dismissable", data-cy="alertMessage" role="alert">
-    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-    <div class="row" style="font-size: 2rem;">
-      <div class="col-8">
-        <b>Agendamento Marcado</b> - 2ª dose da vacina:
-      </div>
-      <div class="col-4" style="text-align: right">
-        <b><%= @second_dose_appointment.start.strftime("%d/%m - %H:%M") %></b>
-      </div>
-    </div>
-  </div>
-  <p class="small patient-muted">* Lembre-se de instruir a pessoa para a data e hora da 2º dose da vacina.</p>
-<% end %>
-
 <div class="card">
   <div class="card-header" style="font-size: 1.5rem;">
     <b>
@@ -61,10 +46,6 @@
           <% if @appointment.start < ENV['LATE_PATIENT_TOLERANCE_MINUTES'].to_i.minutes.ago %>
             <span class="badge badge-pill badge-warning pills-info">Paciente atrasado</span>
           <% end %>
-        <% end %>
-
-        <% if @second_dose_appointment.present? %>
-          <span class="badge badge-pill badge-success pills-info">2ª Dose AGENDADA</span>
         <% end %>
       <% else %>
         <span class="badge badge-pill badge-danger pills-info">Agendamento Cancelado</span>

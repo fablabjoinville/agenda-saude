@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-12">
+  <div class="col-md-12">
     <% if !@appointment.active %>
       <h3>Agendamento Cancelado</h3>
     <% elsif @appointment.check_out.present? %>
@@ -25,68 +25,95 @@
   <p class="small patient-muted">* Lembre-se de instruir a pessoa para a data e hora da 2º dose da vacina.</p>
 <% end %>
 
-<div class="card">
-  <div class="card-header" style="font-size: 1.5rem;">
-    <b>
-      <% if @appointment.active %>
-        <%= ApplicationHelper.humanize_datetime(@appointment.start) %>
-      <% else %>
-        <del> <%= ApplicationHelper.humanize_datetime(@appointment.start) %> </del>
-      <% end %>
-    </b>
-  </div>
-  <div class="card-body">
-    <div class="patient-name"> <%= @patient[:name] %> </div>
-    <% if @appointment.check_in.present? %>
-      <i class="fa fa-check-circle icons" aria-hidden="true" style="color: green;"></i>
-    <% elsif !@appointment.active %>
-      <i class="fa fa-times-circle icons" aria-hidden="true" style="color: red;"></i>
-    <% end %>
 
-    <div class="patient-muted"> <%= ApplicationHelper.humanize_cpf(@patient[:cpf]) %> </div>
-    <p style="padding-top: 2%">
-      <% @patient[:groups].each do |group| %>
-        <span class="badge badge-pill badge-primary pills-groups"> <%= group %> </span>
-      <% end %>
-    </p>
-
-    <p>
-      <% if @appointment.active %>
-        <% if @appointment.check_in.present? %>
-          <span class="badge badge-pill badge-success pills-info">Check-in OK</span>
+<%= form_with url: confirm_check_out_path(id: @appointment.id), method: :post, local: true do |f| %>
+  <div class="card">
+    <div class="card-header" style="font-size: 1.5rem;">
+      <b>
+        <% if @appointment.active %>
+          <%= ApplicationHelper.humanize_datetime(@appointment.start) %>
         <% else %>
-          <% if Time.zone.now + ENV['EARLY_PATIENT_WARNING_MINUTES'].to_i.minutes < @appointment.start %>
-            <span class="badge badge-pill badge-warning pills-info">Agendamento distante</span>
-          <% end %>
-          <% if @appointment.start < ENV['LATE_PATIENT_TOLERANCE_MINUTES'].to_i.minutes.ago %>
-            <span class="badge badge-pill badge-warning pills-info">Paciente atrasado</span>
-          <% end %>
+          <del> <%= ApplicationHelper.humanize_datetime(@appointment.start) %> </del>
         <% end %>
-
-        <% if @second_dose_appointment.present? %>
-          <span class="badge badge-pill badge-success pills-info">2ª Dose AGENDADA</span>
-        <% end %>
-      <% else %>
-        <span class="badge badge-pill badge-danger pills-info">Agendamento Cancelado</span>
-      <% end %>
-    </p>
-  </div>
-</div>
-
-<div class="buttons-details">
-  <% if @appointment.active && @appointment.check_in.present? && @appointment.check_out.nil? %>
-    <div class="row text-center">
-      <div class="col-md-6">
-        <a class="btn btn-success btn-block btn-lg" href=<%= confirm_check_out_path(id: @appointment.id) %>
-                  onclick="return confirm('Confirme para sinalizar que esta pessoa fez o check-out e está pronta para agendar a segunda dose.')"
-        >Realizar Check-out</a>
+      </b>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="patient-name"> <%= @patient[:name] %></div>
+          <div class="patient-muted"> <%= ApplicationHelper.humanize_cpf(@patient[:cpf]) %> </div>
+        </div>
+        <div class="col-md-6">
+          <% if @appointment.check_in.present? %>
+            <i class="fa fa-check-circle icons" aria-hidden="true" style="color: green; float: right; position: initial;"></i>
+          <% elsif !@appointment.active %>
+            <i class="fa fa-times-circle icons" aria-hidden="true" style="color: red; float: right; position: initial;"></i>
+          <% end %>
+        </div>
       </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <p style="padding-top: 2%">
+            <% @patient[:groups].each do |group| %>
+              <span class="badge badge-pill badge-primary pills-groups"> <%= group %> </span>
+            <% end %>
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <p>
+            <% if @appointment.active %>
+              <% if @appointment.check_in.present? %>
+                <span class="badge badge-pill badge-success pills-info">Check-in OK</span>
+              <% end %>
+              <% if @second_dose_appointment.present? %>
+                <span class="badge badge-pill badge-success pills-info">2ª Dose AGENDADA</span>
+              <% end %>
+            <% else %>
+              <span class="badge badge-pill badge-danger pills-info">Agendamento Cancelado</span>
+            <% end %>
+          </p>
+        </div>
+      </div>
+      <% if @second_dose_appointment.blank? %>
+        <div class="row">
+          <div class="col-md-1"></div>
+          <div class="col-md-10 text-center">
+            <div class="form-group">
+              <label class="patient-name" for="patient_vaccine">Vacina aplicada</label>
+              <b style="color: red;">*</b>
+
+              <select class="form-control" name="patient[vaccine]" id="patient_vaccine">
+                <option disabled selected value> -- selecione -- </option>
+                <option value="coronavac">Coronavac</option>
+                <option value="astra_zeneca">Astra Zeneca</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-1"></div>
+        </div>
+      <% else %>
+        informar aqui vacina coisada
+      <% end %>
     </div>
-  <% end %>
-  <div class="row text-center">
-    <div class="col-md-12">
-      <%= link_to "Voltar para check-out", list_checkout_path, class: "btn-lg" %>
-    </div>
+  </div>
+
+  <div class="buttons-details">
+    <% if @appointment.active && @appointment.check_in.present? && @appointment.check_out.nil? %>
+      <div class="row text-center">
+        <div class="col-md-12">
+          <%= f.submit "Realizar Check-out", class: "btn btn-success btn-block btn-lg", data: { confirm: 'Confirme para sinalizar que esta pessoa fez o check-out e está pronta para agendar a segunda dose.' } %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+
+<div class="row text-center">
+  <div class="col-md-12">
+    <%= link_to "Voltar para check-out", list_checkout_path, class: "btn-lg" %>
   </div>
 </div>
 

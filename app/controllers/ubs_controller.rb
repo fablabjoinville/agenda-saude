@@ -20,18 +20,19 @@ class UbsController < UserSessionController
 
     ReceptionService.new(appointment.patient).check_in
 
-    redirect_to ubs_patient_checkin_path(id: appointment.id, check_in: true)
+    redirect_to ubs_patient_checkin_path(id: appointment.id)
   end
 
   def confirm_check_out
     appointment = Appointment.find(params[:id])
     patient = appointment.patient
+    vaccine_name = params['patient']['vaccine']
 
-    ReceptionService.new(patient).check_out
+    ReceptionService.new(patient).check_out(vaccine_name)
 
     @second_dose_appointment = patient.reload.last_appointment
 
-    redirect_to ubs_patient_checkout_path(id: appointment.id, second_dose_appointment: @second_dose_appointment, check_out: true)
+    redirect_to ubs_patient_checkout_path(id: appointment.id, second_dose_appointment: @second_dose_appointment)
   end
 
   def find_patients
