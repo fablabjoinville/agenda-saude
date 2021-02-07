@@ -3,10 +3,6 @@ class TimeSlotGenerationWorker
     Defaults = {
       sleep_interval: 60.seconds,
       execution_hour: 22,
-      # TODO: move everything below to TimeSlotGenerationConfig
-      second_dose_interval: 28.days,
-      # Max time ahead users will be able to see free time slots
-      max_appointment_time_ahead: 3.days
     }
 
     def initialize(options = {})
@@ -68,10 +64,11 @@ class TimeSlotGenerationWorker
         TimeSlotGeneratorExecution
           .where(date: current_time.to_date)
           .update_all(status: 'done')
-           
+
         send_slack_message("✅ Geração de time slots finalizada com sucesso")
       rescue => exception
         error = "#{exception.class.name}: #{exception.message}"
+        Rails.logger.warn(error)
 
         TimeSlotGeneratorExecution
           .where(date: current_time.to_date)
@@ -91,35 +88,26 @@ class TimeSlotGenerationWorker
     config = ubs.time_slot_generation_config
 
     return if config.blank?
-    
-    first_date = current_time + options.max_appointment_time_ahead + 1.day
-    second_dose_date = first_date + options.second_dose_interval
+    max_appointment_time_ahead = config[:max_appointment_time_ahead].seconds
+    second_dose_interval = config[:second_dose_interval].seconds
+
+    first_date = current_time + max_appointment_time_ahead + 1.day
+    second_dose_date = first_date + second_dose_interval
 
     [first_date, second_dose_date].each do |date|
-      config[:windows].each do |window|
-        generation_options = TimeSlotGenerationService::Options.new(
-          start_date: date.to_datetime,
-          end_date: date.to_datetime,
-          # This is a hack... :X
-          ubs: OpenStruct.new(
-            id: ubs.id,
-            shift_start: window[:start_time],
-            break_start: window[:end_time],
-            # Generated time slot end time will 
-            # be out of window, so it'll be ignored
-            break_end: '01:00',
-            shift_end: '01:00',
-            appointments_per_time_slot: window[:slots],
-            slot_interval_minutes: ubs.slot_interval_minutes
-          ),
-          # These don't exist or are incomplete on 
-          # UBS record, so they must be changed here
-          weekdays: [*0..6],
-          excluded_dates: []
-        )
+      generation_options = TimeSlotGenerationService::Options.new(
+        start_date: date.to_datetime,
+        end_date: date.to_datetime,
+        ubs_id: ubs.id,
+        windows: config[:windows],
+        slot_interval_minutes: ubs.slot_interval_minutes,
+        # These don't exist or are incomplete on
+        # UBS record, so they must be changed here
+        weekdays: [*0..6],
+        excluded_dates: []
+      )
 
-        @time_slot_generation_service.execute(generation_options)
-      end
+      @time_slot_generation_service.execute(generation_options)
     end
   end
 
