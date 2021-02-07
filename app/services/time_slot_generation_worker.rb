@@ -65,7 +65,7 @@ class TimeSlotGenerationWorker
           .update_all(status: 'done')
 
         SlackNotifier.success('Geração de time slots finalizada com sucesso')
-      rescue StandarError => e
+      rescue StandardError => e
         error = "#{e.class.name}: #{e.message}"
         Rails.logger.warn(error)
 
