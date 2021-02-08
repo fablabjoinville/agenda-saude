@@ -1,26 +1,22 @@
 class TimeSlotGenerationWorker
   class Options < OpenStruct
-    Defaults = {
+    DEFAULTS = {
       sleep_interval: 60.seconds,
-      execution_hour: 22,
-      # TODO: move everything below to TimeSlotGenerationConfig
-      second_dose_interval: 28.days,
-      # Max time ahead users will be able to see free time slots
-      max_appointment_time_ahead: 3.days
-    }
+      execution_hour: 22
+    }.freeze
 
     def initialize(options = {})
       symbolized_options = options.symbolize_keys
 
-      raise "Time slot generation worker options must be a hash" \
+      raise 'Time slot generation worker options must be a hash' \
         unless options.is_a?(Hash)
 
-      unrecognized_options = symbolized_options.keys - Defaults.keys
+      unrecognized_options = symbolized_options.keys - DEFAULTS.keys
 
       raise "Unrecognized options: #{unrecognized_options.inspect}" \
         if unrecognized_options.any?
 
-      normalized_options = Defaults.map do |key, value|
+      normalized_options = DEFAULTS.map do |key, value|
         [key, symbolized_options[key] || value]
       end.to_h
 
@@ -47,17 +43,17 @@ class TimeSlotGenerationWorker
           "ON CONFLICT DO NOTHING RETURNING true AS inserted"
       )
 
-      # Record already exists 
+      # Record already exists
       # (SQL 'RETURNING' does not return anything on conflict)
       if result.none?
         Rails.logger.debug('Already executed today. Skipping')
-        # Sleep longer to avoid hitting the db every sleep interval, 
+        # Sleep longer to avoid hitting the db every sleep interval,
         # as current_time.hour == execution_hour will be true consecutively
         sleep(30.minutes.to_i)
         next
       end
 
-      SlackNotifier.info("Iniciando geração de time slots")
+      SlackNotifier.info('Iniciando geração de time slots')
 
       begin
         Ubs.active.each do |ubs|
@@ -67,10 +63,11 @@ class TimeSlotGenerationWorker
         TimeSlotGeneratorExecution
           .where(date: current_time.to_date)
           .update_all(status: 'done')
-           
-        SlackNotifier.success("Geração de time slots finalizada com sucesso")
-      rescue => exception
-        error = "#{exception.class.name}: #{exception.message}"
+
+        SlackNotifier.success('Geração de time slots finalizada com sucesso')
+      rescue StandardError => e
+        error = "#{e.class.name}: #{e.message}"
+        Rails.logger.warn(error)
 
         TimeSlotGeneratorExecution
           .where(date: current_time.to_date)
@@ -80,7 +77,7 @@ class TimeSlotGenerationWorker
           "Geração de time slots falhou (#{error}). Mais detalhes no Sentry."
         )
 
-        Sentry.capture_exception(exception)
+        Sentry.capture_exception(e)
       end
     end
   end
@@ -89,35 +86,26 @@ class TimeSlotGenerationWorker
     config = ubs.time_slot_generation_config
 
     return if config.blank?
-    
-    first_date = current_time + options.max_appointment_time_ahead + 1.day
-    second_dose_date = first_date + options.second_dose_interval
+    max_appointment_time_ahead = config[:max_appointment_time_ahead].seconds
+    second_dose_interval = config[:second_dose_interval].seconds
+
+    first_date = current_time + max_appointment_time_ahead + 1.day
+    second_dose_date = first_date + second_dose_interval
 
     [first_date, second_dose_date].each do |date|
-      config[:windows].each do |window|
-        generation_options = TimeSlotGenerationService::Options.new(
-          start_date: date.to_datetime,
-          end_date: date.to_datetime,
-          # This is a hack... :X
-          ubs: OpenStruct.new(
-            id: ubs.id,
-            shift_start: window[:start_time],
-            break_start: window[:end_time],
-            # Generated time slot end time will 
-            # be out of window, so it'll be ignored
-            break_end: '01:00',
-            shift_end: '01:00',
-            appointments_per_time_slot: window[:slots],
-            slot_interval_minutes: ubs.slot_interval_minutes
-          ),
-          # These don't exist or are incomplete on 
-          # UBS record, so they must be changed here
-          weekdays: [*0..6],
-          excluded_dates: []
-        )
+      generation_options = TimeSlotGenerationService::Options.new(
+        start_date: date.to_datetime,
+        end_date: date.to_datetime,
+        ubs_id: ubs.id,
+        windows: config[:windows],
+        slot_interval_minutes: ubs.slot_interval_minutes,
+        # These don't exist or are incomplete on
+        # UBS record, so they must be changed here
+        weekdays: [*0..6],
+        excluded_dates: []
+      )
 
-        @time_slot_generation_service.execute(generation_options)
-      end
+      @time_slot_generation_service.execute(generation_options)
     end
   end
 end
