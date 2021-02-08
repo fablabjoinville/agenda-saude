@@ -113,6 +113,64 @@ end
   Group.create(name: subgroup, parent_group_id: Group.find_by(name: 'Trabalhador(a) das Forças de Seguranças e Salvamento').id)
 end
 
+## SECOND DOSE PATIENTS ##
+
+second_dose_cpfs = %w[
+  65622137543
+  41759484733
+  88949973677
+  53847313118
+  00455327106
+  57984523606
+  94831933201
+  59711354063
+  56105631430
+  25532025126
+]
+
+current_time = Time.now.in_time_zone
+begin_date = 0.days.from_now.to_date.in_time_zone
+finish_date = 3.days.from_now.to_date.in_time_zone
+
+range = begin_date..finish_date
+
+date = current_time.at_beginning_of_day
+second_appointment_start = date + 7.hours + 40.minutes
+second_appointment_end = date + 8.hours
+
+10.times do |i|
+  patient = Patient.new
+  patient.name = "marvin#{i}"
+  patient.cpf = second_dose_cpfs[i]
+  patient.mother_name = 'Natureza'
+  patient.birth_date = '1979-06-24'
+  patient.phone = '(47) 91234-5678'
+  patient.neighborhood = 'América'
+  patient.save!
+
+  Appointment.create(
+    start: second_appointment_start - 4.weeks,
+    end: second_appointment_end - 4.weeks,
+    patient_id: patient.id,
+    second_dose: false,
+    active: true,
+    check_in: second_appointment_start - 4.weeks,
+    check_out: second_appointment_start - 4.weeks + 10.minutes,
+    ubs: ubs
+  )
+
+  second_appointment = Appointment.create(
+    start: second_appointment_start,
+    end: second_appointment_end,
+    patient_id: patient.id,
+    second_dose: true,
+    active: true,
+    ubs: ubs
+  )
+
+  patient.update(last_appointment: second_appointment)
+end
+
 ## TIME SLOTS / APPOINTMENTS ##
 
 config = ubs.create_time_slot_generation_config!(ubs_id: ubs.id)
@@ -134,7 +192,6 @@ worker = TimeSlotGenerationWorker.new(
   time_slot_generation_service: generation_service
 )
 
-current_time = Time.now.in_time_zone
 worker_opts = TimeSlotGenerationWorker::Options.new(
   sleep_interval: 5.seconds,
   execution_hour: current_time.hour
@@ -144,7 +201,7 @@ worker_opts = TimeSlotGenerationWorker::Options.new(
 worker.generate_ubs_time_slots(ubs, worker_opts, current_time)
 TimeSlotGeneratorExecution.where(date: current_time.to_date).update_all(status: 'done')
 
-## PATIENTS ##
+## FIRST DOSE PATIENTS ##
 
 cpfs = %w[
   82920382640
@@ -159,14 +216,9 @@ cpfs = %w[
   45445585654
 ]
 
-begin_date = 0.days.from_now.to_date.in_time_zone
-finish_date = 3.days.from_now.to_date.in_time_zone
-
-range = begin_date..finish_date
-
 10.times do |i|
   patient = Patient.new
-  patient.name = "marvin#{i}"
+  patient.name = "marvin#{i+10}"
   patient.cpf = cpfs[i]
   patient.mother_name = 'Natureza'
   patient.birth_date = '1979-06-24'
