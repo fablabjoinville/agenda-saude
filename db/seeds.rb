@@ -113,66 +113,20 @@ end
   Group.create(name: subgroup, parent_group_id: Group.find_by(name: 'Trabalhador(a) das Forças de Seguranças e Salvamento').id)
 end
 
+## TIME SLOTS / APPOINTMENTS ##
+
+windows = [
+  { start_time: '7:40', end_time: '08:00', slots: 6 },
+  { start_time: '08:00', end_time: '16:20', slots: 8 },
+  { start_time: '16:20', end_time: '23:40', slots: 4 }
+]
+
 # dates for first and second dose appointments
-begin_date = 0.days.from_now.to_date
-finish_date = 3.days.from_now.to_date
+begin_date = 0.days.from_now.to_date.in_time_zone
+finish_date = 3.days.from_now.to_date.in_time_zone
 
 begin_second_date = begin_date + 4.weeks
 finish_second_date = finish_date + 4.weeks
-
-# Ubs params for the differents time slots
-ubs_params = []
-# 7:40 - 8:00
-ubs_params << OpenStruct.new(
-  shift_start: '07:40',
-  shift_end: '08:00',
-  break_start: '07:40',
-  break_end: '07:40',
-  slot_interval_minutes: 20,
-  appointments_per_time_slot: 6,
-  id: Ubs.first.id
-)
-# 8:00 - 16:20
-ubs_params << OpenStruct.new(
-  shift_start: '08:00',
-  shift_end: '16:20',
-  break_start: '08:00',
-  break_end: '08:00',
-  slot_interval_minutes: 20,
-  appointments_per_time_slot: 8,
-  id: Ubs.first.id
-)
-# 16:20 - 16:40
-ubs_params << OpenStruct.new(
-  shift_start: '16:20',
-  shift_end: '22:40',
-  break_start: '16:20',
-  break_end: '16:20',
-  slot_interval_minutes: 20,
-  appointments_per_time_slot: 4,
-  id: Ubs.first.id
-)
-# Options for doses days
-options_params = []
-
-ubs_params.each do |ubs|
-  # Options for first dose day
-  options_params << TimeSlotGenerationService::Options.new(
-    start_date: begin_date.to_datetime,
-    end_date: finish_date.to_datetime,
-    weekdays: [*0..6],
-    excluded_dates: [],
-    ubs: ubs
-  )
-  # Options for second dose day
-  options_params << TimeSlotGenerationService::Options.new(
-    start_date: begin_second_date.to_datetime,
-    end_date: finish_second_date.to_datetime,
-    weekdays: [*0..6],
-    excluded_dates: [],
-    ubs: ubs
-  )
-end
 
 create_slot = lambda do |attributes|
   Appointment.create(attributes)
@@ -182,9 +136,32 @@ service = TimeSlotGenerationService.new(
   create_slot: create_slot
 )
 
-options_params.each do |option|
+[
+  # Options for first dose day
+  TimeSlotGenerationService::Options.new(
+    ubs_id: ubs.id,
+    start_date: begin_date.to_datetime,
+    end_date: finish_date.to_datetime,
+    windows: windows,
+    slot_interval_minutes: ubs.slot_interval_minutes,
+    weekdays: [*0..6],
+    excluded_dates: [],
+  ),
+  # Options for second dose day
+  TimeSlotGenerationService::Options.new(
+    ubs_id: ubs.id,
+    start_date: begin_second_date.to_datetime,
+    end_date: finish_second_date.to_datetime,
+    windows: windows,
+    slot_interval_minutes: ubs.slot_interval_minutes,
+    weekdays: [*0..6],
+    excluded_dates: [],
+  )
+].each do |option|
   ActiveRecord::Base.transaction { service.execute(option) }
 end
+
+## PATIENTS ##
 
 cpfs = %w[
   82920382640
