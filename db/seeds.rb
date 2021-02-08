@@ -115,82 +115,11 @@ end
 
 ## TIME SLOTS / APPOINTMENTS ##
 
-# windows = [
-#   { start_time: '7:40', end_time: '08:00', slots: 6 },
-#   { start_time: '08:00', end_time: '16:20', slots: 8 },
-#   { start_time: '16:20', end_time: '23:40', slots: 4 }
-# ]
-
-# # dates for first dose appointments
-# begin_date = 0.days.from_now.to_date.in_time_zone
-# finish_date = 3.days.from_now.to_date.in_time_zone
-
-# create_slot = lambda do |attributes|
-#   Appointment.create(attributes)
-# end
-
-# service = TimeSlotGenerationService.new(
-#   create_slot: create_slot
-# )
-
-# [
-#   # Options for first dose day
-#   TimeSlotGenerationService::Options.new(
-#     ubs_id: ubs.id,
-#     start_date: begin_date.to_datetime,
-#     end_date: finish_date.to_datetime,
-#     windows: windows,
-#     slot_interval_minutes: ubs.slot_interval_minutes,
-#     weekdays: [*0..6],
-#     excluded_dates: []
-#   )
-# ].each do |option|
-#   ActiveRecord::Base.transaction { service.execute(option) }
-# end
-
-# ## PATIENTS ##
-
-# cpfs = %w[
-#   82920382640
-#   41869202309
-#   82194769668
-#   24834517136
-#   71097596877
-#   29344755574
-#   95975258790
-#   45963347149
-#   89452953136
-#   45445585654
-# ]
-
-# range = begin_date..finish_date
-
-# 10.times do |i|
-#   patient = Patient.new
-#   patient.name = "marvin#{i}"
-#   patient.cpf = cpfs[i]
-#   patient.mother_name = 'Natureza'
-#   patient.birth_date = '1979-06-24'
-#   patient.phone = '(47) 91234-5678'
-#   patient.neighborhood = 'América'
-#   patient.save!
-
-#   appointment = Appointment.where(patient_id: nil, start: range).order('RANDOM()').first
-#   appointment.update(patient_id: patient.id)
-
-#   patient.appointments << appointment
-#   patient.last_appointment = appointment
-#   patient.save!
-# end
-
-
-# sdfddddd
-
 config = ubs.create_time_slot_generation_config!(ubs_id: ubs.id)
 config[:windows] = [
-  { start_time: '7:40', end_time: '08:00', slots: 6 },
+  { start_time: '07:40', end_time: '08:00', slots: 6 },
   { start_time: '08:00', end_time: '16:20', slots: 8 },
-  { start_time: '16:20', end_time: '23:40', slots: 4 }
+  { start_time: '16:20', end_time: '16:40', slots: 4 }
 ]
 config[:max_appointment_time_ahead] = 0
 config.save!
@@ -205,9 +134,50 @@ worker = TimeSlotGenerationWorker.new(
   time_slot_generation_service: generation_service
 )
 
+current_time = Time.now.in_time_zone
 worker_opts = TimeSlotGenerationWorker::Options.new(
   sleep_interval: 5.seconds,
-  execution_hour: Time.now.in_time_zone.hour
+  execution_hour: current_time.hour
 )
 
-worker.generate_ubs_time_slots(ubs, worker_opts, Time.now.in_time_zone)
+# mimic successfull worker.execute
+worker.generate_ubs_time_slots(ubs, worker_opts, current_time)
+TimeSlotGeneratorExecution.where(date: current_time.to_date).update_all(status: 'done')
+
+## PATIENTS ##
+
+cpfs = %w[
+  82920382640
+  41869202309
+  82194769668
+  24834517136
+  71097596877
+  29344755574
+  95975258790
+  45963347149
+  89452953136
+  45445585654
+]
+
+begin_date = 0.days.from_now.to_date.in_time_zone
+finish_date = 3.days.from_now.to_date.in_time_zone
+
+range = begin_date..finish_date
+
+10.times do |i|
+  patient = Patient.new
+  patient.name = "marvin#{i}"
+  patient.cpf = cpfs[i]
+  patient.mother_name = 'Natureza'
+  patient.birth_date = '1979-06-24'
+  patient.phone = '(47) 91234-5678'
+  patient.neighborhood = 'América'
+  patient.save!
+
+  appointment = Appointment.where(patient_id: nil, start: range).order('RANDOM()').first
+  appointment.update(patient_id: patient.id)
+
+  patient.appointments << appointment
+  patient.last_appointment = appointment
+  patient.save!
+end
