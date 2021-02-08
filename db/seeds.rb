@@ -95,6 +95,7 @@ end
   'Área da assistência/tratamento',
   'Administrativo e outros setores',
   'Estagiário da área da Saúde',
+  'Atua em Hospital',
 ].each do |subgroup|
   Group.create(name: subgroup, parent_group_id: Group.find_by(name: 'Trabalhador(a) da Saúde').id)
 end
