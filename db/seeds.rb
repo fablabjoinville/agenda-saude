@@ -130,7 +130,7 @@ begin_second_date = begin_date + 4.weeks
 finish_second_date = finish_date + 4.weeks
 
 create_slot = lambda do |attributes|
-  Appointment.create(attributes)
+  Appointment.create!(attributes)
 end
 
 service = TimeSlotGenerationService.new(
