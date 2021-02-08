@@ -273,5 +273,4 @@ class UbsController < UserSessionController
   def slot_duration_params
     params.require(:ubs).permit(:slot_interval_minutes, :appointments_per_time_slot)
   end
-
 end
