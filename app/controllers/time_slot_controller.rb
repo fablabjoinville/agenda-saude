@@ -60,7 +60,7 @@ class TimeSlotController < PatientSessionController
     Ubs.where(active: true).each do |ubs|
       slots = []
 
-      if @gap_in_days < TimeSlotController::SLOTS_WINDOW_IN_DAYS && @gap_in_days >= 0
+      if @gap_in_days <= TimeSlotController::SLOTS_WINDOW_IN_DAYS && @gap_in_days >= 0
         if @current_day.today?
           appointments = Appointment.where(start: @current_day..@current_day.end_of_day, ubs: ubs, patient_id: nil)
         else
