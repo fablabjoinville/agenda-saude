@@ -1,0 +1,29 @@
+<h2> Listando as unidades</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Unidade</th>
+      <th>Bairro</th>
+      <th>Ativa</th>
+      <th>Editar Unidades</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @ubs_all.each do |ubs| %>
+      <tr>
+        <td><%= ubs.identifier %></td>
+        <td><%= ubs.neighborhood %></td>
+        <td><%= ubs.active %></td>
+        <td>
+          <%= button_to edit_ubs_path(ubs.id), class: "btn btn-primary btn-block", method: :get do %>
+            Editar
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to "Criar nova unidade", new_ubs_path, class: 'btn btn-info' %>

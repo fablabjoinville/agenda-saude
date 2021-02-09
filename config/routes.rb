@@ -1,6 +1,12 @@
 Rails.application.routes.draw do
+  get 'admin/index'
+  devise_for :admins, path: 'admin', controllers: { sessions: 'admin/sessions' }
   devise_for :patients, path: 'patients', controllers: { sessions: 'patients/sessions', registrations: 'patients/registrations' }
   devise_for :users, path: 'users', controllers: { sessions: 'users/sessions' }
+
+  devise_scope :admin do
+    resources :ubs, controller: 'admin/ubs'
+  end
 
   devise_scope :patient do
     root 'home#index'

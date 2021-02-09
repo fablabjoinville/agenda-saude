@@ -3,6 +3,7 @@ class HomeController < ApplicationController
     return redirect_to index_bedridden_path if current_patient.try(:bedridden?)
     return redirect_to index_time_slot_path if current_patient
     return redirect_to ubs_index_path if current_user
+    return redirect_to admin_index_path if current_admin
   end
 
   def patient_base_login

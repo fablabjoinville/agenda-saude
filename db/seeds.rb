@@ -196,3 +196,10 @@ range = begin_date..finish_date
   patient.last_appointment = appointment
   patient.save!
 end
+
+admin = Admin.new
+admin.username = 'marvin'
+admin.email = 'dont_panic@gmail.com'
+admin.password = 'adams42'
+admin.password_confirmation = 'adams42'
+admin.save!

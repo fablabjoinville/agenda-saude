@@ -1,0 +1,97 @@
+<% if flash[:alert].present? %>
+  <% flash[:alert].each do |msg| %>
+    <div class="alert alert-danger">
+      <%= I18n.t("activerecord.models.attributes.#{msg.first}") %>
+      <%= msg.second %>
+    </div>
+  <% end %>
+<% end %>
+
+<%= form_for(@ubs, url: ubs_path(@ubs), html: { method: :put }) do |f| %>
+
+  <div class="row text-center">
+    <div class="col">
+      <p class="h1">Edição</p>
+    </div>
+  </div>
+  
+  <h3 class="text-center">Dados da unidade</h3>
+
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <%= f.label :name, "Nome da Unidade" %>
+      <%= f.text_field :name, autofocus: true, autocomplete: "name", required: true, class: "form-control" %>
+    </div>
+
+    <div class="form-group col-md-2">
+      <%= f.label :cnes, "CNES" %>
+      <%= f.text_field :cnes, autofocus: true, autocomplete: "cnes", required: false, class: "form-control" %>
+    </div>
+
+    <div class="form-group col-md-4">
+      <%= f.label :phone, "Telefone" %>
+      <%= f.text_field :phone, autofocus: true, autocomplete: "phone", required: true, class: "form-control sp-celphones" %>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-8">
+      <%= f.label :address, "Endereço completo (com número)" %>
+      <%= f.text_field :address, autofocus: true, autocomplete: "address", required: true, class: "form-control" %>
+    </div>
+
+    <div class="form-group col-md-4">
+      <%= f.label :neighborhood, "Bairro" %>
+      <%= f.select :neighborhood, Neighborhood.pluck(:name), {},  { class: "form-control", data: { cy: "editPatientNeighborhoodNameInputField" } } %>
+    </div>
+  </div>
+
+  <h3 class="text-center">Parâmetros da unidade</h3>
+
+  <div class="form-row">
+    <div class="form-group col-md-3">
+      <%= f.label :shift_start, 'Inicio do expediente' %><br />
+      <%= f.time_select :shift_start_date, minute_step: 15, ignore_date: true %>
+    </div>
+
+    <div class="form-group col-md-3">
+      <%= f.label :break_start, 'Inicio do intervalo' %><br />
+      <%= f.time_select :break_start_date, minute_step: 15, ignore_date: true %>
+    </div>
+
+    <div class="form-group col-md-3">
+      <%= f.label :break_end, 'Final do intervalo' %><br />
+      <%= f.time_select :break_end_date, minute_step: 15, ignore_date: true %>
+    </div>
+
+    <div class="form-group col-md-3">
+      <%= f.label :shift_end, 'Final do expediente' %><br />
+      <%= f.time_select :shift_end_date, minute_step: 15, ignore_date: true %>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-4">
+      <%= f.label :slot_interval_minutes, 'Duração de cada atendimento (em minutos):' %><br />
+      <%= f.select :slot_interval_minutes, [5, 10, 15, 20, 30, 45, 60], {}, { class: "form-control" } %>
+    </div>
+
+    <div class="form-group col-md-4">
+      <%= f.label :appointments_per_time_slot, 'Número de atendimentos por horário:' %><br />
+      <%= f.number_field :appointments_per_time_slot, { min: 1, class: "form-control" }  %>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <div class="text-center">
+        <%= link_to :back, class: "simple-link" do %>
+          cancelar
+        <% end %>
+      </div>
+    </div>
+    <div class="form-group col-md-6">
+      <%= f.submit "Atualizar", class: "btn btn-primary btn-block pull-right" %>
+    </div>
+  </div>
+<% end %>
