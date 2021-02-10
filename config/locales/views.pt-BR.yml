@@ -13,6 +13,9 @@ pt-BR:
         phone: Telefone
         neighborhood: Bairro
         chronic: Crônico
+      admin:
+        username: Nome de Usuário
+        password: Senha
     models:
       user: Usuário
       patient: Paciente

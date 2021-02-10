@@ -1,3 +1,4 @@
+
 <h2> Listando as unidades</h2>
 
 <table>
@@ -17,7 +18,7 @@
         <td><%= ubs.neighborhood %></td>
         <td><%= ubs.active %></td>
         <td>
-          <%= button_to edit_ubs_path(ubs.id), class: "btn btn-primary btn-block", method: :get do %>
+          <%= button_to edit_admin_ubs_path(ubs.id), class: "btn btn-primary btn-block", method: :get do %>
             Editar
           <% end %>
         </td>
@@ -26,4 +27,4 @@
   </tbody>
 </table>
 
-<%= link_to "Criar nova unidade", new_ubs_path, class: 'btn btn-info' %>
+<%= link_to "Criar nova unidade", new_admin_ubs_path, class: 'btn btn-info' %>

@@ -5,7 +5,11 @@ Rails.application.routes.draw do
   devise_for :users, path: 'users', controllers: { sessions: 'users/sessions' }
 
   devise_scope :admin do
-    resources :ubs, controller: 'admin/ubs'
+    get 'admin/', to: 'admin#index'
+
+    namespace :admin do
+      resources :ubs
+    end
   end
 
   devise_scope :patient do

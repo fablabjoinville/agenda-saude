@@ -1,2 +1,21 @@
-<h1>Admin#index</h1>
-<p>Find me in app/views/admin/index.html.erb</p>
+<div class="wrapper">
+  <!-- Sidebar -->
+  <nav id="sidebar">
+    <div class="sidebar-header">
+      <h3>Bootstrap Sidebar</h3>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <div id="content">
+    <!-- We'll fill this with dummy content -->
+    <h1>Hello <%= current_admin.username %></h1>
+    
+    <%= link_to 'Listar unidades', admin_ubs_index_path %>
+
+    <h2>Dashboard</h2>
+  </div>
+
+</div>
+
+<%= stylesheet_link_tag 'admin.css' %>

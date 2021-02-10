@@ -64,8 +64,14 @@
         <% end %>
       <% end %>
     </nav>
-    <div class="container">
-      <%= yield %>
-    </div>
+    <% if current_admin %>
+      <div class="container-fluid">
+        <%= yield %>
+      </div>
+    <% else %>
+      <div class="container">
+        <%= yield %>
+      </div>
+    <% end %>
   </body>
 </html>
