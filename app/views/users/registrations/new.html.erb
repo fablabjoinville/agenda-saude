@@ -7,31 +7,48 @@
   <% end %>
 <% end %>
 
+<div class='container'>
+  <h3 class='text-center'>Cadastre um novo operador para acessar a unidade</h3>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :post }) do |f| %>
-  <%= render "users/shared/error_messages", resource: resource %>
+  <br/><br/>
 
-  <div class="field">
-    <%= f.label :name, "CNES" %><br />
-    <%= f.text_field :name, autofocus: true, autocomplete: "name", required: true %>
-  </div>
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :post }) do |f| %>
+    <%= render "users/shared/error_messages", resource: resource %>
 
-  <div class="field">
-    <%= f.label :email, "E-mail" %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email", required: false %>
-  </div>
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <%= f.label :name, "CNES" %><br />
+        <%= f.text_field :name, autofocus: true, autocomplete: "name", required: true %>
+      </div>
 
-  <div class="field">
-    <%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "current-password", required: true %>
-  </div>
+      <div class="form-group col-md-6">
+        <%= f.label :email, "E-mail" %><br />
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", required: false %>
+      </div>
+    </div>
 
-  <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "current-password", required: true %>
-  </div>
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <%= f.label :password %><br />
+        <%= f.password_field :password, autocomplete: "current-password", required: true %>
+      </div>
 
-  <div class="actions">
-    <%= f.submit "Cadastrar Operador", class: 'btn btn-primary' %>
-  </div>
-<% end %>
+      <div class="form-group col-md-6">
+        <%= f.label :password_confirmation %><br />
+        <%= f.password_field :password_confirmation, autocomplete: "current-password", required: true %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <%= link_to 'cancelar', admin_ubs_index_path %>
+      </div>
+
+      <div class="col">
+        <div class="actions">
+          <%= f.submit "Continuar para cadastro da unidade", class: 'btn btn-primary' %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

@@ -19,45 +19,49 @@
       </div>
 
       <h3 class="text-center"> Período: <%= @period_text %> </h3>
+      <hr/>
+
+      <h4 class="text-center"> Dados sobre agendametos </h4>
 
       <div class="card-columns text-center">
         <div class="card bg-light">
           <div class="card-header">Vagas abertas</div>
-          <div class="card-body text-center">
+          <div class="card-body card-appointment">
             <p class="card-text"><%= @appointments_all %> </p>
           </div>
         </div>
         <div class="card bg-light">
           <div class="card-header">Vagas ocupadas</div>
-          <div class="card-body text-center">
+          <div class="card-body card-appointment">
             <p class="card-text"><%= @appointments_occupied %> </p>
           </div>
         </div>
         <div class="card bg-light">
           <div class="card-header">Check-ins realizados</div>
-          <div class="card-body text-center">
+          <div class="card-body card-appointment">
             <p class="card-text"><%= @appointments_with_checkin %> </p>
           </div>
         </div>
         <div class="card bg-light">
           <div class="card-header">Check-outs realizados</div>
-          <div class="card-body text-center">
+          <div class="card-body card-appointment">
             <p class="card-text"><%= @appointments_with_checkout %> </p>
           </div>
         </div>
         <div class="card bg-light">
-          <div class="card-header">Agendamentos sem Check-in</div>
-          <div class="card-body text-center">
+          <div class="card-header">Check-ins não realizados</div>
+          <div class="card-body card-appointment">
             <p class="card-text"><%= @appointments_without_checkin %> </p>
           </div>
         </div>
         <div class="card bg-light">
-          <div class="card-header">Pacientes Cadastrados</div>
-          <div class="card-body text-center">
-            <p class="card-text"><%= @patients_registred %> </p>
+          <div class="card-header">Check-outs não realizados</div>
+          <div class="card-body card-appointment">
+            <p class="card-text"><%= @appointments_without_checkout %> </p>
           </div>
         </div>
       </div>
+      <hr/>
     </div>
   </div>
 

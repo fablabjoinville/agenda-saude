@@ -7,11 +7,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
     fields = params.require(:user).permit(:name, :email, :password, :password_confirmation)
 
     user_new = User.new(fields)
-    user_new.save!
+    created = user_new.save!
 
-    @user = user_new
-
-    redirect_to new_admin_ubs_path
+    return redirect_to new_admin_ubs_path if created
+    return redirect_to admin_ubs_index_path
   end
 
   # GET /users/sign_up

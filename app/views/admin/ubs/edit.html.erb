@@ -1,11 +1,3 @@
-<% if flash[:alert].present? %>
-  <% flash[:alert].each do |msg| %>
-    <div class="alert alert-danger">
-      <%= I18n.t("activerecord.models.attributes.#{msg.first}") %>
-      <%= msg.second %>
-    </div>
-  <% end %>
-<% end %>
 
 <div class="container">
   <%= form_for(@ubs, url: admin_ubs_path(@ubs), html: { method: :put }) do |f| %>

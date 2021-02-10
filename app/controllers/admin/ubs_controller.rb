@@ -45,9 +45,9 @@ class Admin::UbsController < AdminController
     ubs.active = false
     ubs.user = user_ubs
 
-    ubs.save
+    created = ubs.save!
 
-    redirect_to admin_ubs_index_path
+    return redirect_to admin_ubs_index_path if created
   end
 
   # GET admin/ubs/edit
@@ -58,20 +58,21 @@ class Admin::UbsController < AdminController
   # PUT admin/ubs
   def update
     fields = params.require(:ubs).permit(*FIELDS)
-    time_fields = params.require(:ubs).permit(:shift_start_date, :shift_end_date, :break_start_date, :break_end_date)
+    time_fields = params.require(:ubs).permit(:shift_start_date, :shift_end_date)
 
     shift_start_tod = Tod::TimeOfDay.parse("#{time_fields['shift_start_date(4i)']}:#{time_fields['shift_start_date(5i)']}")
-    break_start_tod = Tod::TimeOfDay.parse("#{time_fields['break_start_date(4i)']}:#{time_fields['break_start_date(5i)']}")
-    break_end_tod = Tod::TimeOfDay.parse("#{time_fields['break_end_date(4i)']}:#{time_fields['break_end_date(5i)']}")
     shift_end_tod = Tod::TimeOfDay.parse("#{time_fields['shift_end_date(4i)']}:#{time_fields['shift_end_date(5i)']}")
+    
+    shift_start = shift_start_tod.to_s
+    shift_end = shift_end_tod.to_s
 
     @ubs = Ubs.find(params[:id])
 
     updated_time = @ubs.update(
-      shift_start: shift_start_tod.to_s,
-      break_start: break_start_tod.to_s,
-      break_end: break_end_tod.to_s,
-      shift_end: shift_end_tod.to_s,
+      shift_start: shift_start,
+      break_start: shift_start,
+      break_end: shift_start,
+      shift_end: shift_end,
     )
 
     if @ubs.update(fields) && updated_time

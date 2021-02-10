@@ -1,14 +1,6 @@
-<% if flash[:alert].present? %>
-  <% flash[:alert].each do |msg| %>
-    <div class="alert alert-danger">
-      <%= I18n.t("activerecord.models.attributes.#{msg.first}") %>
-      <%= msg.second %>
-    </div>
-  <% end %>
-<% end %>
 
 <div class="container">
-  <%= form_with model: [:admin, @ubs] do |f| %>
+  <%= form_with(model: [:admin, @ubs], url: admin_ubs_index_path) do |f| %>
 
     <div class="row text-center">
       <div class="col">
@@ -76,7 +68,7 @@
       <div class="form-group col-md-6">
         <div class="text-center">
           <%= link_to :back, class: "simple-link" do %>
-            cancelar
+            voltar
           <% end %>
         </div>
       </div>

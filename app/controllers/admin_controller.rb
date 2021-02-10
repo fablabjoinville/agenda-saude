@@ -15,15 +15,17 @@ class AdminController < ApplicationController
     
     start_period = (Time.zone.now-number_days.days).beginning_of_day
     end_period = Time.zone.now.end_of_day
+
     appointments_by_period = Appointment.where(start: start_period..end_period, active: true)
 
     @appointments_all = appointments_by_period.count
     @appointments_occupied = appointments_by_period.where.not(patient_id: nil).count
+
     @appointments_with_checkin = appointments_by_period.where.not(check_in: nil).count
     @appointments_without_checkin = appointments_by_period.where(check_in: nil).count
-    @appointments_with_checkout = appointments_by_period.where.not(check_out: nil).count
 
-    @patients_registred = Patient.where(created_at: start_period..end_period).count
+    @appointments_with_checkout = appointments_by_period.where.not(check_out: nil).count
+    @appointments_without_checkout = appointments_by_period.where.not(check_in: nil).where(check_out: nil).count
   end
 
   private
