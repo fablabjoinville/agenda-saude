@@ -25,29 +25,27 @@ class Admin::UbsController < AdminController
   def create
     fields = params.require(:ubs).permit(*FIELDS)
     time_fields = params.require(:ubs).permit(:shift_start, :shift_end)
-
-    binding.pry
-
+    user_ubs = User.last
+    
     shift_start_tod = Tod::TimeOfDay.parse("#{time_fields['shift_start(4i)']}:#{time_fields['shift_start(5i)']}")
     shift_end_tod = Tod::TimeOfDay.parse("#{time_fields['shift_end(4i)']}:#{time_fields['shift_end(5i)']}")
-
-    shift_start = Tod::TimeOfDay.parse(shift_start_tod).on(Date.today).in_time_zone
-    shift_end = Tod::TimeOfDay.parse(shift_end_tod).on(Date.today).in_time_zone
+    
+    shift_start = shift_start_tod.to_s
+    shift_end = shift_end_tod.to_s
 
     ubs = Ubs.new(fields)
-    ubs.shift_start = shift_start.to_s
-    ubs.break_start = shift_start.to_s
-    ubs.break_end = shift_start.to_s
-    ubs.shift_end = shift_end.to_s
-    ubs.saturday_shift_start = shift_start.to_s
-    ubs.saturday_break_start = shift_start.to_s
-    ubs.saturday_break_end = shift_start.to_s
-    ubs.saturday_shift_end = shift_end.to_s
+    ubs.shift_start = shift_start
+    ubs.break_start = shift_start
+    ubs.break_end = shift_start
+    ubs.shift_end = shift_end
+    ubs.saturday_shift_start = shift_start
+    ubs.saturday_break_start = shift_start
+    ubs.saturday_break_end = shift_start
+    ubs.saturday_shift_end = shift_end
     ubs.active = false
+    ubs.user = user_ubs
 
-    ubs.save!
-
-    if @ubs.update(fields)
+    if ubs.save!
       flash[:notice] = 'Unidade criada com sucesso!'
       redirect_to admin_ubs_index_path
     else

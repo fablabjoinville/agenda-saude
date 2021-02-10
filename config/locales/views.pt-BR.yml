@@ -3,7 +3,9 @@ pt-BR:
     attributes:
       user:
         name: Nome
+        email: E-mail
         password: Senha
+        password_confirmation: Confirme a senha
         remember_me: Lembre-se de mim
       patient:
         name: Nome completo
