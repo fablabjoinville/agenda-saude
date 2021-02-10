@@ -13,7 +13,7 @@ class Admin::UbsController < AdminController
 
   # GET admin/ubs
   def index
-    @ubs_all = Ubs.all
+    @ubs_all = Ubs.all.order(active: :desc)
   end
 
   # GET admin/ubs/new
@@ -86,6 +86,18 @@ class Admin::UbsController < AdminController
     end
   end
 
+  def activate
+    ubs = Ubs.find(params[:id])
+    updated = ubs.update(active: true)
 
+    return redirect_to admin_ubs_index_path if updated
+  end
+
+  def deactivate
+    ubs = Ubs.find(params[:id])
+    updated = ubs.update(active: false)
+
+    return redirect_to admin_ubs_index_path if updated
+  end
 end
     

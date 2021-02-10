@@ -8,33 +8,48 @@
 
       <h2 class="text-center"> Listando as unidades</h2>
 
-      <table>
-        <thead>
+      <table class="table table-hover text-large">
+        <thead class="text-center">
           <tr>
-            <th>Unidade</th>
-            <th>Bairro</th>
-            <th>Ativa</th>
-            <th>Editar Unidades</th>
+            <th scope="col">Status</th>
+            <th scope="col">Unidade</th>
+            <th scope="col">Bairro</th>
+            <th scope="col">CNES</th>
+            <th scope="col">Editar</th>
+            <th scope="col">Alterar Status</th>
           </tr>
         </thead>
-
         <tbody>
           <% @ubs_all.each do |ubs| %>
             <tr>
+              <td class="text-center"> 
+                <% if ubs.active %>
+                  <i class="fa fa-circle" aria-hidden="true" style="color: green;"></i>
+                <% else %>
+                  <i class="fa fa-circle" aria-hidden="true" style="color: red;"></i>
+                <% end %>
+              </td>
               <td><%= ubs.identifier %></td>
               <td><%= ubs.neighborhood %></td>
-              <td><%= ubs.active %></td>
+              <td><%= ubs.cnes %></td>
               <td>
                 <%= button_to edit_admin_ubs_path(ubs.id), class: "btn btn-primary btn-block", method: :get do %>
                   Editar
+                <% end %>
+              </td>
+              <td>
+                <% if ubs.active %>
+                  <a class="btn btn-danger" href=<%= deactivate_admin_ubs_path(ubs.id) %>
+                    onclick="return confirm('Você tem certeza?')">Desativar Unidade</a>
+                <% else %>
+                  <a class="btn btn-success" href=<%= activate_admin_ubs_path(ubs.id) %>
+                    onclick="return confirm('Você tem certeza?')">Ativar Unidade</a>
                 <% end %>
               </td>
             </tr>
           <% end %>
         </tbody>
       </table>
-
-      <%= link_to "Criar nova unidade", new_user_registration_path, class: 'btn btn-info' %>
     </div>
   </div>
 </div>

@@ -8,7 +8,12 @@ Rails.application.routes.draw do
     get 'admin/', to: 'admin#index'
 
     namespace :admin do
-      resources :ubs
+      resources :ubs do
+        member do
+          get 'activate'
+          get 'deactivate'
+        end
+      end
     end
   end
 
