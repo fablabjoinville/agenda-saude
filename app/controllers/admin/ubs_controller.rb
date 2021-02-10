@@ -45,12 +45,9 @@ class Admin::UbsController < AdminController
     ubs.active = false
     ubs.user = user_ubs
 
-    if ubs.save!
-      flash[:notice] = 'Unidade criada com sucesso!'
-      redirect_to admin_ubs_index_path
-    else
-      return redirect_to edit_admin_ubs_path(@ubs), alert: @ubs.errors
-    end
+    ubs.save
+
+    redirect_to admin_ubs_index_path
   end
 
   # GET admin/ubs/edit
