@@ -8,27 +8,16 @@
     align-items: stretch;
 }
 
-.container {
-    width: 100%;
-}
-
 #sidebar {
     min-width: 250px;
     max-width: 250px;
-    min-height: 100vh;
+    min-height: 90vh;
+    background: #2448d4;
+    color: #fff;
+    transition: all 0.3s;
 }
 
-#sidebar.active {
-    margin-left: -250px;
-}
 
-p {
-    font-family: 'Poppins', sans-serif;
-    font-size: 1.1em;
-    font-weight: 300;
-    line-height: 1.7em;
-    color: #999;
-}
 
 a, a:hover, a:focus {
     color: inherit;
@@ -36,16 +25,13 @@ a, a:hover, a:focus {
     transition: all 0.3s;
 }
 
-#sidebar {
-    /* don't forget to add all the previously mentioned styles here too */
-    background: #7386D5;
-    color: #fff;
-    transition: all 0.3s;
-}
-
 #sidebar .sidebar-header {
     padding: 20px;
-    background: #6d7fcc;
+    background: #173ed8;
+}
+
+#sidebar .username {
+    padding-left: 10px;
 }
 
 #sidebar ul.components {
@@ -70,11 +56,23 @@ a, a:hover, a:focus {
 
 #sidebar ul li.active > a, a[aria-expanded="true"] {
     color: #fff;
-    background: #6d7fcc;
+    background: #4d68dd;
 }
 ul ul a {
     font-size: 0.9em !important;
     padding-left: 30px !important;
     background: #6d7fcc;
+}
+
+.card-header {
+    font-size: large;
+}
+
+.card-body {
+    background-color: #9ad8f0;
+}
+
+.card-text {
+    font-size: x-large;
 }
 

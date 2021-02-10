@@ -1,19 +1,64 @@
 <div class="wrapper">
   <!-- Sidebar -->
-  <nav id="sidebar">
-    <div class="sidebar-header">
-      <h3>Bootstrap Sidebar</h3>
-    </div>
-  </nav>
+  <%= render "admin/sidebar" %>
 
   <!-- Page Content -->
   <div id="content">
-    <!-- We'll fill this with dummy content -->
-    <h1>Hello <%= current_admin.username %></h1>
-    
-    <%= link_to 'Listar unidades', admin_ubs_index_path %>
+    <div class="container-fluid">
+      <h2 class="text-center">Dashboard</h2>
 
-    <h2>Dashboard</h2>
+      <div class="dropdown">
+        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+          Selecione o período
+        </button>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="?date_period=0" >Hoje</a>
+          <a class="dropdown-item" href="?date_period=7">Últimos 7 dias</a>
+          <a class="dropdown-item" href="?date_period=30">Últimos 30 dias</a>
+        </div>
+      </div>
+
+      <h3 class="text-center"> Período: <%= @period_text %> </h3>
+
+      <div class="card-columns text-center">
+        <div class="card bg-light">
+          <div class="card-header">Vagas abertas</div>
+          <div class="card-body text-center">
+            <p class="card-text"><%= @appointments_all %> </p>
+          </div>
+        </div>
+        <div class="card bg-light">
+          <div class="card-header">Vagas ocupadas</div>
+          <div class="card-body text-center">
+            <p class="card-text"><%= @appointments_occupied %> </p>
+          </div>
+        </div>
+        <div class="card bg-light">
+          <div class="card-header">Check-ins realizados</div>
+          <div class="card-body text-center">
+            <p class="card-text"><%= @appointments_with_checkin %> </p>
+          </div>
+        </div>
+        <div class="card bg-light">
+          <div class="card-header">Check-outs realizados</div>
+          <div class="card-body text-center">
+            <p class="card-text"><%= @appointments_with_checkout %> </p>
+          </div>
+        </div>
+        <div class="card bg-light">
+          <div class="card-header">Agendamentos sem Check-in</div>
+          <div class="card-body text-center">
+            <p class="card-text"><%= @appointments_without_checkin %> </p>
+          </div>
+        </div>
+        <div class="card bg-light">
+          <div class="card-header">Pacientes Cadastrados</div>
+          <div class="card-body text-center">
+            <p class="card-text"><%= @patients_registred %> </p>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
 </div>

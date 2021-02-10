@@ -1,0 +1,22 @@
+<nav id="sidebar">
+  <div class="sidebar-header">
+    <h3>Painel Administrativo</h3>
+  </div>
+
+  <ul class="list-unstyled components">
+    <h4 class="username">Olá <%= current_admin.username %></h4>
+
+    <li class="active">
+    <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"> Unidades</a>
+    <ul class="collapse list-unstyled" id="homeSubmenu">
+      <li>
+          <a href= <%= admin_ubs_index_path %> >Listar unidades</a>
+      </li>
+      <li>
+          <a href= <%= new_user_registration_path %>>Criar nova unidade</a>
+      </li>
+    </ul>
+    </li>
+
+  <ul>
+</nav>
