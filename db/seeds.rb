@@ -37,7 +37,7 @@ ubs.shift_start = '9:00'
 ubs.break_start = '12:30'
 ubs.break_end = '13:30'
 ubs.shift_end = '17:00'
-ubs.slot_interval_minutes = 15
+ubs.slot_interval_minutes = 20
 ubs.active = true
 ubs.valid?
 ubs.save!
@@ -134,9 +134,9 @@ finish_date = 3.days.from_now.to_date.in_time_zone
 
 range = begin_date..finish_date
 
-date = current_time.at_beginning_of_day
-second_appointment_start = date + 7.hours + 40.minutes
-second_appointment_end = date + 8.hours
+tomorrow = 1.day.from_now.at_beginning_of_day
+second_appointment_start = tomorrow + 7.hours + 40.minutes
+second_appointment_end = tomorrow + 8.hours
 
 10.times do |i|
   patient = Patient.new

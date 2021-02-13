@@ -92,13 +92,20 @@ class TimeSlotGenerationService
 
     appointment_duration = options.slot_interval_minutes.minutes
 
+    report = {}
+
     window_range.step(appointment_duration).lazy.each do |time|
       appointment_start = date + time
       appointment_end = appointment_start + appointment_duration
 
       next if appointment_end > date + window_range.end
 
-      window[:slots].times do
+      taken_slots_count = Appointment.where(start: appointment_start).count
+      new_slots_count = window[:slots] - taken_slots_count
+
+      report[appointment_start.to_s] = { taken_slots_count: taken_slots_count, new_slots: new_slots_count }
+
+      new_slots_count.times do
         @create_slot.({
           ubs_id: options.ubs_id,
           start: appointment_start,
@@ -108,6 +115,8 @@ class TimeSlotGenerationService
         }.with_indifferent_access)
       end
     end
+
+    SlackNotifier.info(report)
   end
 
   def build_time_window(window)
