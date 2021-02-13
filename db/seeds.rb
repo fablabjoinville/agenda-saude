@@ -143,9 +143,10 @@ second_appointment_end = tomorrow + 8.hours
   patient.name = "marvin#{i}"
   patient.cpf = second_dose_cpfs[i]
   patient.mother_name = 'Natureza'
-  patient.birth_date = '1979-06-24'
+  patient.birth_date = '1943-01-31'
   patient.phone = '(47) 91234-5678'
   patient.neighborhood = 'América'
+  patient.groups << Group.find_by(name: 'Trabalhador(a) da Saúde')
   patient.save!
 
   time_multiplier = (i * 20).minutes
