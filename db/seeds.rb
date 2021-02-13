@@ -148,20 +148,22 @@ second_appointment_end = date + 8.hours
   patient.neighborhood = 'América'
   patient.save!
 
+  time_multiplier = (i * 20).minutes
+
   Appointment.create(
-    start: second_appointment_start - 4.weeks,
-    end: second_appointment_end - 4.weeks,
+    start: second_appointment_start - 4.weeks + time_multiplier,
+    end: second_appointment_end - 4.weeks + time_multiplier,
     patient_id: patient.id,
     second_dose: false,
     active: true,
-    check_in: second_appointment_start - 4.weeks,
-    check_out: second_appointment_start - 4.weeks + 10.minutes,
+    check_in: second_appointment_start - 4.weeks + time_multiplier,
+    check_out: second_appointment_start - 4.weeks + 10.minutes + time_multiplier,
     ubs: ubs
   )
 
   second_appointment = Appointment.create(
-    start: second_appointment_start,
-    end: second_appointment_end,
+    start: second_appointment_start + time_multiplier,
+    end: second_appointment_end + time_multiplier,
     patient_id: patient.id,
     second_dose: true,
     active: true,
