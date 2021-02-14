@@ -37,7 +37,7 @@ ubs.shift_start = '9:00'
 ubs.break_start = '12:30'
 ubs.break_end = '13:30'
 ubs.shift_end = '17:00'
-ubs.slot_interval_minutes = 15
+ubs.slot_interval_minutes = 20
 ubs.active = true
 ubs.valid?
 ubs.save!
@@ -114,55 +114,102 @@ end
   Group.create(name: subgroup, parent_group_id: Group.find_by(name: 'Trabalhador(a) das Forças de Seguranças e Salvamento').id)
 end
 
-## TIME SLOTS / APPOINTMENTS ##
+## SECOND DOSE PATIENTS ##
 
-windows = [
-  { start_time: '7:40', end_time: '08:00', slots: 6 },
-  { start_time: '08:00', end_time: '16:20', slots: 8 },
-  { start_time: '16:20', end_time: '23:40', slots: 4 }
+second_dose_cpfs = %w[
+  65622137543
+  41759484733
+  88949973677
+  53847313118
+  00455327106
+  57984523606
+  94831933201
+  59711354063
+  56105631430
+  25532025126
 ]
 
-# dates for first and second dose appointments
+current_time = Time.now.in_time_zone
 begin_date = 0.days.from_now.to_date.in_time_zone
 finish_date = 3.days.from_now.to_date.in_time_zone
 
-begin_second_date = begin_date + 4.weeks
-finish_second_date = finish_date + 4.weeks
+range = begin_date..finish_date
+
+today = Time.zone.now.at_beginning_of_day
+second_appointment_start = today + 7.hours + 40.minutes
+second_appointment_end = today + 8.hours
+
+end_of_day_minutes = [600, 620, 640, 660, 680, 700]
+
+10.times do |i|
+  patient = Patient.new
+  patient.name = "marvin#{i}"
+  patient.cpf = second_dose_cpfs[i]
+  patient.mother_name = 'Natureza'
+  patient.birth_date = '1943-01-31'
+  patient.phone = '(47) 91234-5678'
+  patient.neighborhood = 'América'
+  patient.groups << Group.find_by(name: 'Trabalhador(a) da Saúde')
+  patient.save!
+
+  time_multiplier = end_of_day_minutes.sample.minutes
+
+  Appointment.create(
+    start: second_appointment_start - 4.weeks + time_multiplier,
+    end: second_appointment_end - 4.weeks + time_multiplier,
+    patient_id: patient.id,
+    second_dose: false,
+    active: true,
+    vaccine_name: 'coronavac',
+    check_in: second_appointment_start - 4.weeks + time_multiplier,
+    check_out: second_appointment_start - 4.weeks + 10.minutes + time_multiplier,
+    ubs: ubs
+  )
+
+  second_appointment = Appointment.create(
+    start: second_appointment_start + time_multiplier,
+    end: second_appointment_end + time_multiplier,
+    patient_id: patient.id,
+    second_dose: true,
+    vaccine_name: 'coronavac',
+    active: true,
+    ubs: ubs
+  )
+
+  patient.update(last_appointment: second_appointment)
+end
+
+## TIME SLOTS / APPOINTMENTS ##
+
+config = ubs.create_time_slot_generation_config!(ubs_id: ubs.id)
+config[:windows] = [
+  { start_time: '07:40', end_time: '08:00', slots: 6 },
+  { start_time: '08:00', end_time: '16:20', slots: 8 },
+  { start_time: '16:20', end_time: '22:00', slots: 4 }
+]
+config[:max_appointment_time_ahead] = 0
+config.save!
 
 create_slot = lambda do |attributes|
   Appointment.create!(attributes)
 end
 
-service = TimeSlotGenerationService.new(
-  create_slot: create_slot
+generation_service = TimeSlotGenerationService.new(create_slot: create_slot)
+
+worker = TimeSlotGenerationWorker.new(
+  time_slot_generation_service: generation_service
 )
 
-[
-  # Options for first dose day
-  TimeSlotGenerationService::Options.new(
-    ubs_id: ubs.id,
-    start_date: begin_date.to_datetime,
-    end_date: finish_date.to_datetime,
-    windows: windows,
-    slot_interval_minutes: ubs.slot_interval_minutes,
-    weekdays: [*0..6],
-    excluded_dates: [],
-  ),
-  # Options for second dose day
-  TimeSlotGenerationService::Options.new(
-    ubs_id: ubs.id,
-    start_date: begin_second_date.to_datetime,
-    end_date: finish_second_date.to_datetime,
-    windows: windows,
-    slot_interval_minutes: ubs.slot_interval_minutes,
-    weekdays: [*0..6],
-    excluded_dates: [],
-  )
-].each do |option|
-  ActiveRecord::Base.transaction { service.execute(option) }
-end
+worker_opts = TimeSlotGenerationWorker::Options.new(
+  sleep_interval: 5.seconds,
+  execution_hour: current_time.hour
+)
 
-## PATIENTS ##
+# mimic successfull worker.execute
+worker.generate_ubs_time_slots(ubs, worker_opts, current_time)
+TimeSlotGeneratorExecution.where(date: current_time.to_date).update_all(status: 'done')
+
+## FIRST DOSE PATIENTS ##
 
 cpfs = %w[
   82920382640
@@ -177,11 +224,9 @@ cpfs = %w[
   45445585654
 ]
 
-range = begin_date..finish_date
-
 10.times do |i|
   patient = Patient.new
-  patient.name = "marvin#{i}"
+  patient.name = "marvin#{i+10}"
   patient.cpf = cpfs[i]
   patient.mother_name = 'Natureza'
   patient.birth_date = '1979-06-24'

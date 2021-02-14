@@ -86,26 +86,23 @@ class TimeSlotGenerationWorker
     config = ubs.time_slot_generation_config
 
     return if config.blank?
+
     max_appointment_time_ahead = config[:max_appointment_time_ahead].seconds
-    second_dose_interval = config[:second_dose_interval].seconds
 
-    first_date = current_time + max_appointment_time_ahead + 1.day
-    second_dose_date = first_date + second_dose_interval
+    first_dose_date = ENV['RAILS_ENV'] == 'production' ? current_time + max_appointment_time_ahead + 1.day : current_time + max_appointment_time_ahead
 
-    [first_date, second_dose_date].each do |date|
-      generation_options = TimeSlotGenerationService::Options.new(
-        start_date: date.to_datetime,
-        end_date: date.to_datetime,
-        ubs_id: ubs.id,
-        windows: config[:windows],
-        slot_interval_minutes: ubs.slot_interval_minutes,
-        # These don't exist or are incomplete on
-        # UBS record, so they must be changed here
-        weekdays: [*0..6],
-        excluded_dates: []
-      )
+    generation_options = TimeSlotGenerationService::Options.new(
+      start_date: first_dose_date.to_datetime,
+      end_date: first_dose_date.to_datetime,
+      ubs_id: ubs.id,
+      windows: config[:windows],
+      slot_interval_minutes: ubs.slot_interval_minutes,
+      # These don't exist or are incomplete on
+      # UBS record, so they must be changed here
+      weekdays: [*0..6],
+      excluded_dates: []
+    )
 
-      @time_slot_generation_service.execute(generation_options)
-    end
+    @time_slot_generation_service.execute(generation_options)
   end
 end
