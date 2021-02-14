@@ -18,7 +18,7 @@ class UbsController < UserSessionController
   def confirm_check_in
     appointment = Appointment.find(params[:id])
 
-    ReceptionService.new(appointment.patient).check_in
+    ReceptionService.new(appointment).check_in
 
     redirect_to ubs_patient_details_path(id: appointment.id, check_in: true)
   end
@@ -27,7 +27,7 @@ class UbsController < UserSessionController
     appointment = Appointment.find(params[:id])
     patient = appointment.patient
 
-    ReceptionService.new(patient).check_out
+    ReceptionService.new(appointment).check_out
 
     @second_dose_appointment = patient.reload.last_appointment
 

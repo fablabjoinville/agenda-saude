@@ -1,27 +1,24 @@
 class ReceptionService
-  def initialize(patient)
-    @patient = patient
+  def initialize(appointment)
+    @appointment = appointment
+    @patient = appointment.patient
   end
 
   def check_in
-    current_appointment.update!(check_in: Time.zone.now)
+    @appointment.update!(check_in: Time.zone.now)
   end
 
   def check_out
-    current_appointment.update!(check_out: Time.zone.now)
+    @appointment.update!(check_out: Time.zone.now)
 
-    create_second_dose_appointment unless current_appointment.second_dose?
+    create_second_dose_appointment unless @appointment.second_dose?
   end
 
   private
 
-  def current_appointment
-    @patient.last_appointment
-  end
-
   def create_second_dose_appointment
     next_appointment = Appointment.where(
-      start: current_appointment.start + ENV['SECOND_DOSE_INTERVAL'].to_i.weeks,
+      start: @appointment.start + ENV['SECOND_DOSE_INTERVAL'].to_i.weeks,
       patient_id: nil
     ).first
 

@@ -4,7 +4,7 @@ RSpec.describe ReceptionService, type: :service do
   let(:appointment) { create(:appointment) }
   let!(:next_appointment) { create(:appointment, start: appointment.start + ENV['SECOND_DOSE_INTERVAL'].to_i.weeks) }
   let(:patient) { create(:patient) }
-  let(:service) { ReceptionService.new(patient) }
+  let(:service) { ReceptionService.new(appointment) }
   let(:time) { Time.new('2020-01-01') }
 
   before do
@@ -38,7 +38,7 @@ RSpec.describe ReceptionService, type: :service do
     end
 
     context "when the pacient check's out from second dose appointment" do
-      before { service.check_out }
+      before { appointment.update!(second_dose: true) }
 
       it 'does not schedules a new appointment' do
         patient_appointments = Appointment.where(patient_id: patient.id)
