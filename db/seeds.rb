@@ -139,6 +139,8 @@ today = Time.zone.now.at_beginning_of_day
 second_appointment_start = today + 7.hours + 40.minutes
 second_appointment_end = today + 8.hours
 
+end_of_day_minutes = [600, 620, 640, 660, 680, 700]
+
 10.times do |i|
   patient = Patient.new
   patient.name = "marvin#{i}"
@@ -150,7 +152,7 @@ second_appointment_end = today + 8.hours
   patient.groups << Group.find_by(name: 'Trabalhador(a) da Saúde')
   patient.save!
 
-  time_multiplier = (i * 40).minutes
+  time_multiplier = end_of_day_minutes.sample.minutes
 
   Appointment.create(
     start: second_appointment_start - 4.weeks + time_multiplier,
@@ -183,7 +185,7 @@ config = ubs.create_time_slot_generation_config!(ubs_id: ubs.id)
 config[:windows] = [
   { start_time: '07:40', end_time: '08:00', slots: 6 },
   { start_time: '08:00', end_time: '16:20', slots: 8 },
-  { start_time: '16:20', end_time: '16:40', slots: 4 }
+  { start_time: '16:20', end_time: '22:00', slots: 4 }
 ]
 config[:max_appointment_time_ahead] = 0
 config.save!

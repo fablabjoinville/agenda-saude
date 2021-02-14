@@ -71,7 +71,7 @@
               <% if @second_dose_appointment.present? %>
                 <% if @appointment.second_dose? %>
                   <span class="badge badge-pill badge-success pills-info">2ª Dose</span>
-                <% elsif %>
+                <% else %>
                   <span class="badge badge-pill badge-success pills-info">2ª Dose AGENDADA</span>
                 <% end %>
                 <span class="badge badge-pill badge-success pills-info"><%= @second_dose_appointment.vaccine_name.capitalize %></span>
@@ -82,7 +82,7 @@
           </p>
         </div>
       </div>
-      <% if @second_dose_appointment.blank? %>
+      <% if @second_dose_appointment.blank? && !@appointment.second_dose? %>
         <div class="row">
           <div class="col-md-1"></div>
           <div class="col-md-10 text-center">
