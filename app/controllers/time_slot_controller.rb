@@ -5,7 +5,7 @@ class TimeSlotController < PatientSessionController
 
   before_action :render_patient_not_allowed
 
-  SLOTS_WINDOW_IN_DAYS = 5
+  SLOTS_WINDOW_IN_DAYS = 3
 
   def schedule
     @ubs = Ubs.find(schedule_params[:ubs_id])
@@ -37,10 +37,13 @@ class TimeSlotController < PatientSessionController
   end
 
   def cancel
-    @appointment = Appointment.find(cancel_params[:appointment_id])
-    @appointment.update(patient_id: nil)
+    Appointment.transaction do
+      @current_patient.appointments
+        .where(id: cancel_params[:appointment_id])
+        .update_all(patient_id: nil)
 
-    @current_patient.update(last_appointment: nil)
+      @current_patient.update(last_appointment: nil)
+    end
 
     redirect_to time_slot_path
   end
@@ -60,7 +63,7 @@ class TimeSlotController < PatientSessionController
     Ubs.where(active: true).each do |ubs|
       slots = []
 
-      if @gap_in_days < TimeSlotController::SLOTS_WINDOW_IN_DAYS && @gap_in_days >= 0
+      if @gap_in_days <= TimeSlotController::SLOTS_WINDOW_IN_DAYS && @gap_in_days >= 0
         if @current_day.today?
           appointments = Appointment.where(start: @current_day..@current_day.end_of_day, ubs: ubs, patient_id: nil)
         else

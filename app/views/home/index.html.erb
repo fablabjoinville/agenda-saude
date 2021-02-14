@@ -22,6 +22,7 @@
       <td>
         <% Patient::CONDITIONS.each do |name, _| %>
           <i class="fa fa-check-circle" aria-hidden="true" style="color: green;"></i> <%= name %><br>
+          <hr />
         <% end %>
       </td>
       <td>
@@ -36,9 +37,6 @@
     </tr>
   </tbody>
 </table>
-
-<p style="color: red;"><i><strong>AGENDAMENTO</strong>: Somente trabalhadores da saúde com 60 anos ou mais que estão atuando na área no momento podem  agendar a vacinação. A quantidade de vagas para agendamento depende da quantidade de doses <br/><br/>
-<strong>CADASTRO</strong>: Neste momento, apenas trabalhadores de Saúde de todas as idades ativos no município de Joinville e população em geral com 60 anos ou mais devem fazer o cadastro.</i></p>
 
 <div class="card">
   <div class="card-body">

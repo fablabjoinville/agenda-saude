@@ -95,6 +95,7 @@ end
   'Área da assistência/tratamento',
   'Administrativo e outros setores',
   'Estagiário da área da Saúde',
+  'Atua em Hospital',
 ].each do |subgroup|
   Group.create(name: subgroup, parent_group_id: Group.find_by(name: 'Trabalhador(a) da Saúde').id)
 end
@@ -186,7 +187,7 @@ config[:max_appointment_time_ahead] = 0
 config.save!
 
 create_slot = lambda do |attributes|
-  Appointment.create(attributes)
+  Appointment.create!(attributes)
 end
 
 generation_service = TimeSlotGenerationService.new(create_slot: create_slot)
