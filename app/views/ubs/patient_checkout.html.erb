@@ -10,7 +10,7 @@
   </div>
 </div>
 
-<% if @second_dose_appointment.present? %>
+<% if @second_dose_appointment.present? && !@appointment.second_dose? %>
   <div class="alert alert-info alert-dismissable", data-cy="alertMessage" role="alert">
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
     <div class="row" style="font-size: 2rem;">
@@ -69,7 +69,11 @@
                 <span class="badge badge-pill badge-success pills-info">Check-in OK</span>
               <% end %>
               <% if @second_dose_appointment.present? %>
-                <span class="badge badge-pill badge-success pills-info">2ª Dose AGENDADA</span>
+                <% if @appointment.second_dose? %>
+                  <span class="badge badge-pill badge-success pills-info">2ª Dose</span>
+                <% elsif %>
+                  <span class="badge badge-pill badge-success pills-info">2ª Dose AGENDADA</span>
+                <% end %>
                 <span class="badge badge-pill badge-success pills-info"><%= @second_dose_appointment.vaccine_name.capitalize %></span>
               <% end %>
             <% else %>

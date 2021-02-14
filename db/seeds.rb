@@ -169,6 +169,7 @@ second_appointment_end = today + 8.hours
     end: second_appointment_end + time_multiplier,
     patient_id: patient.id,
     second_dose: true,
+    vaccine_name: 'coronavac',
     active: true,
     ubs: ubs
   )

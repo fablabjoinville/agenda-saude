@@ -32,7 +32,7 @@ class UbsController < UserSessionController
       ReceptionService.new(patient).check_out(vaccine_name)
     end
 
-    @second_dose_appointment = patient.reload.last_appointment
+    @second_dose_appointment = patient.appointments.where(second_dose: true).first
 
     redirect_to ubs_patient_checkout_path(id: appointment.id, second_dose_appointment: @second_dose_appointment)
   end
@@ -88,9 +88,9 @@ class UbsController < UserSessionController
 
   def patient_checkout
     @appointment = Appointment.find(params[:id])
-    @second_dose_appointment = Appointment.find(params[:second_dose_appointment]) if params[:second_dose_appointment]
-
     patient = @appointment.patient
+    @second_dose_appointment = patient.appointments.where(second_dose: true).first
+
 
     groups = []
     Patient::CONDITIONS.each do |cond, func|
