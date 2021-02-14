@@ -13,7 +13,7 @@ class ReceptionService
   end
 
   def check_out(vaccine_name)
-    current_appointment.update!(check_out: Time.zone.now)
+    current_appointment.update!(check_out: Time.zone.now, vaccine_name: vaccine_name)
 
     create_second_dose_appointment(vaccine_name) unless current_appointment.second_dose?
   end
@@ -34,6 +34,7 @@ class ReceptionService
       patient_id: @patient.id,
       second_dose: true,
       active: true,
+      vaccine_name: vaccine_name,
       ubs: current_appointment.ubs
     )
 

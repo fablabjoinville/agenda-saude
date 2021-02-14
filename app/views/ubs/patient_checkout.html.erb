@@ -70,6 +70,7 @@
               <% end %>
               <% if @second_dose_appointment.present? %>
                 <span class="badge badge-pill badge-success pills-info">2ª Dose AGENDADA</span>
+                <span class="badge badge-pill badge-success pills-info"><%= @second_dose_appointment.vaccine_name.capitalize %></span>
               <% end %>
             <% else %>
               <span class="badge badge-pill badge-danger pills-info">Agendamento Cancelado</span>
@@ -94,8 +95,6 @@
           </div>
           <div class="col-md-1"></div>
         </div>
-      <% else %>
-        informar aqui vacina coisada
       <% end %>
     </div>
   </div>

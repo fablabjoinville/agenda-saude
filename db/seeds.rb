@@ -158,6 +158,7 @@ second_appointment_end = today + 8.hours
     patient_id: patient.id,
     second_dose: false,
     active: true,
+    vaccine_name: 'coronavac',
     check_in: second_appointment_start - 4.weeks + time_multiplier,
     check_out: second_appointment_start - 4.weeks + 10.minutes + time_multiplier,
     ubs: ubs
