@@ -135,9 +135,9 @@ finish_date = 3.days.from_now.to_date.in_time_zone
 
 range = begin_date..finish_date
 
-tomorrow = 1.day.from_now.at_beginning_of_day
-second_appointment_start = tomorrow + 7.hours + 40.minutes
-second_appointment_end = tomorrow + 8.hours
+today = Time.zone.now.at_beginning_of_day
+second_appointment_start = today + 7.hours + 40.minutes
+second_appointment_end = today + 8.hours
 
 10.times do |i|
   patient = Patient.new
@@ -150,7 +150,7 @@ second_appointment_end = tomorrow + 8.hours
   patient.groups << Group.find_by(name: 'Trabalhador(a) da Saúde')
   patient.save!
 
-  time_multiplier = (i * 20).minutes
+  time_multiplier = (i * 40).minutes
 
   Appointment.create(
     start: second_appointment_start - 4.weeks + time_multiplier,

@@ -28,7 +28,7 @@ class TimeSlotController < PatientSessionController
 
       @appointment = Appointment.where(start: start_time, ubs: @ubs, patient_id: nil).first
 
-      return render json: @appointment.errors unless @appointment.update!(patient_id: current_patient.id, second_dose: current_patient.last_appointment.second_dose)
+      return render json: @appointment.errors unless @appointment.update!(patient_id: current_patient.id, second_dose: current_patient.last_appointment&.second_dose)
     end
 
     @current_patient.update(last_appointment: @appointment)

@@ -89,7 +89,7 @@ class TimeSlotGenerationWorker
 
     max_appointment_time_ahead = config[:max_appointment_time_ahead].seconds
 
-    first_dose_date = current_time + max_appointment_time_ahead + 1.day
+    first_dose_date = ENV['RAILS_ENV'] == 'production' ? current_time + max_appointment_time_ahead + 1.day : current_time + max_appointment_time_ahead
 
     generation_options = TimeSlotGenerationService::Options.new(
       start_date: first_dose_date.to_datetime,

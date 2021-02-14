@@ -20,7 +20,7 @@
           <div style="text-align: center;" >
               <div class="btn-group-vertical mother-list" data-toggle="buttons">
                 <%= collection_radio_buttons(:patient, :password, @mother_list, ->(x) { x }, ->(x) { x }) do |b| %>
-                      <%= b.label(class: "btn btn-light") { b.radio_button( data: { cy: "#{b.label}Buttom" }) + b.text } %>
+                      <%= b.label(class: "btn btn-light", data: { cy: "#{b.text}Buttom" }) { b.radio_button + b.text } %>
                 <% end %>
               </div>
           </div>
