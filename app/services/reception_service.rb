@@ -9,9 +9,11 @@ class ReceptionService
   end
 
   def check_out
-    @appointment.update!(check_out: Time.zone.now)
+    Appointment.transaction do
+      @appointment.update!(check_out: Time.zone.now)
 
-    create_second_dose_appointment unless @appointment.second_dose?
+      create_second_dose_appointment unless @appointment.second_dose?
+    end
   end
 
   private
