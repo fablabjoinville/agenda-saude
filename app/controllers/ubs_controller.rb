@@ -247,7 +247,7 @@ class UbsController < UserSessionController
 
     appointments_patients = appointments_patients.sort_by { |appointment| appointment[:time_delta] }
 
-    appointments_patients
+    appointments_patients.sort_by { |hsh| hsh[:start] }
   end
 
   def active_future_appointments
