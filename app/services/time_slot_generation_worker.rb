@@ -99,10 +99,8 @@ class TimeSlotGenerationWorker
       ubs_id: ubs.id,
       windows: config[:windows],
       slot_interval_minutes: ubs.slot_interval_minutes,
-      # These don't exist or are incomplete on
-      # UBS record, so they must be changed here
-      weekdays: [*0..6],
-      excluded_dates: []
+      weekdays: config[:weekdays] || [*0..6],
+      excluded_dates: config[:excluded_dates] || []
     )
 
     @time_slot_generation_service.execute(generation_options)
