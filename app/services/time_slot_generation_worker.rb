@@ -53,7 +53,11 @@ class TimeSlotGenerationWorker
         next
       end
 
-      SlackNotifier.info('Iniciando geração de time slots')
+      # This particular notification should be synchronous because
+      # we must always know when an execution happens. If success
+      # or failure notifications do not arrive it's fine because
+      # we know some issue happened inbetween.
+      SlackNotifier.info('Iniciando geração de time slots', async: false)
 
       begin
         Ubs.active.each do |ubs|
