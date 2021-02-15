@@ -11,8 +11,7 @@ Thread.new do
 
   worker_options = TimeSlotGenerationWorker::Options.new(
     sleep_interval: ENV['TIMESLOTGEN_SLEEP_INTERVAL_SECONDS']&.to_i&.seconds,
-    execution_hour: ENV['TIMESLOTGEN_EXECUTION_HOUR']&.to_i,
-    max_appointment_time_ahead: ENV['MAX_APPOINTMENT_DAYS_AHEAD']&.to_i&.days
+    execution_hour: ENV['TIMESLOTGEN_EXECUTION_HOUR']&.to_i
   )
 
   Rails.logger.info('Time slot generation worker started')

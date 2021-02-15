@@ -82,6 +82,8 @@ class TimeSlotGenerationWorker
     end
   end
 
+  private
+
   def generate_ubs_time_slots(ubs, options, current_time)
     config = ubs.time_slot_generation_config
 
@@ -89,7 +91,7 @@ class TimeSlotGenerationWorker
 
     max_appointment_time_ahead = config[:max_appointment_time_ahead].seconds
 
-    first_dose_date = ENV['RAILS_ENV'] == 'production' ? current_time + max_appointment_time_ahead + 1.day : current_time + max_appointment_time_ahead
+    first_dose_date = current_time + max_appointment_time_ahead + 1.day
 
     generation_options = TimeSlotGenerationService::Options.new(
       start_date: first_dose_date.to_datetime,
