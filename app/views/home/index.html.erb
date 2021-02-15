@@ -13,18 +13,24 @@
 <table class="table table-bordered center", style="width: 70%; margin-top: 10px; margin-left: auto; margin-right: auto;">
   <thead>
     <tr>
-      <th scope="col">GRUPOS QUE PODEM SE CADASTRAR / AGENDAR</th>
-      <th scope="col">STATUS DO AGENDAMENTO</th>
+      <th scope="col">GRUPOS QUE PODEM SE CADASTRAR</th>
+      <th scope="col">GRUPOS QUE PODEM SE AGENDAR</th>
     </tr>
   </thead>
   <tbody>
     <tr>
+      <td>
+        <i class="fa fa-circle" aria-hidden="true" style="color: green;"></i> População com 60 anos ou mais <hr />
+        <i class="fa fa-circle" aria-hidden="true" style="color: green;"></i> Trabalhadores da Saúde de todas as idades <hr />
+      </td>
       <td>
         <% Patient::CONDITIONS.each do |name, _| %>
           <i class="fa fa-check-circle" aria-hidden="true" style="color: green;"></i> <%= name %><br>
           <hr />
         <% end %>
       </td>
+    </tr>
+      <th scope="col">STATUS DO AGENDAMENTO</th>
       <td>
         <% if Ubs.where(active: true).blank? %>
           <i class="fa fa-circle" aria-hidden="true" style="color: #FA6800;"></i> Aguardando novas doses
@@ -34,17 +40,15 @@
           <i class="fa fa-circle" aria-hidden="true" style="color: red;"></i> Sem Horário Disponível
         <% end %>
       </td>
+    <tr>
     </tr>
   </tbody>
 </table>
 
-<p style="color: red;"><i><strong>AGENDAMENTO</strong>: Somente trabalhadores da saúde com 60 anos ou mais que estão atuando na área no momento podem  agendar a vacinação. A quantidade de vagas para agendamento depende da quantidade de doses <br/><br/>
-<strong>CADASTRO</strong>: Neste momento, apenas trabalhadores de Saúde de todas as idades ativos no município de Joinville e população em geral com 60 anos ou mais devem fazer o cadastro.</i></p>
-
 <div class="card">
   <div class="card-body">
     <%= form_for(:patient, url: patient_base_login_path) do |f| %>
-      <div class="form-row"">
+      <div class="form-row">
         <div class="form-group col-md-9">
           <%= f.text_field :cpf, autofocus: true, minlength: 11, maxlength: 11, required: true, class: "form-control", 'aria-describedby' => 'cpfHelpInLine', placeholder: 'CPF', data: { cy: "cpfInputField" } %>
         </div>
@@ -72,6 +76,23 @@
   <li>Pessoas que tiveram suspeita ou COVID-19 positivo nos últimos 30 dias;</li>
   <li>Quem tomou qualquer outro tipo de vacina nos últimos 15 dias.</li>
 </ul>
+
+<h4 class="lp-header">Recebendo a vacina</h4>
+
+<p>Para receber a vacina contra a Covid-19, seguir as instruções abaixo:</p>
+<ol>
+  <li>Reunir os seguintes documentos:</li>
+  <ol>
+    <li>Documento oficial de identificação com foto.</li>
+    <li>Crachá funcional ou holerite/folha de pagamento ou declaração que comprove o vínculo com o serviço de saúde no Município de Joinville
+     (em caso de terceirizados e estagiários, a declaração deve ser emitida pelo serviço de saúde contratante, para comprovar o vínculo).</li>
+    <li>Se trabalhador atuante em serviços de saúde no Município de Joinville com comorbidades estabelecidas pelo Programa Nacional de Imunização (PNI), 
+      apresentar  atestado, declaração, laudo ou receita médica que comprove a condição clínica.</li>
+  </ol>
+  <li>Com os documentos, comparecer à Central de Imunização de Joinville, no Centreventos Cau Hansen, na data e horário agendados (estar no local com 15 minutos de antecedência).</li>
+</ol>
+<p>Mais informações sobre a vacinação contra a Covid-19 no Município de Joinville estão disponíveis na página <a href='https://www.joinville.sc.gov.br/coronavirus/'>Coronavírus em Joinville</a>.</p>
+
 
 <h4 class="lp-header">Como funcionará a vacinação na Central de Imunização do Centreventos?</h4>
 <div class="row text-center mt-5 mb-5">

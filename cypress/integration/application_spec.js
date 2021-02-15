@@ -19,6 +19,8 @@ describe('happy patient flow', () => {
     cy.get('[data-cy=newPatientNeighborhoodNameInputField]').select('Glória')
     cy.get('[data-cy=newPatientPhoneNumberInputField]').type('4899999999')
     cy.get('[data-cy=newPatientOtherPhoneNumberInputField]').type('47988888888')
+    cy.get('#patient_groups_1')
+    cy.get('#patient_groups_26').click()
     cy.get('[data-cy=newPatientSubmitButton]').click()
     cy.get('[data-cy=noAppointmentYetText]').should('exist')
 
@@ -57,7 +59,7 @@ describe('happy patient flow', () => {
     cy.get('[data-cy=logoutButton]').click()
     cy.get('[data-cy=cpfInputField]').type('83274229792')
     cy.get('[data-cy=signUpButton]').click()
-    cy.get('[data-cy=TristezaButtom]').check()
+    cy.get('[data-cy=TristezaButtom]').click()
     cy.get('[data-cy=loginButtom]').click()
     cy.get('[data-cy=currentAppointmentText]').should('exist')
   })

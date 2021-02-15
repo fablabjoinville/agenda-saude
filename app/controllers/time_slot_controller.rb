@@ -28,7 +28,11 @@ class TimeSlotController < PatientSessionController
 
       @appointment = Appointment.where(start: start_time, ubs: @ubs, patient_id: nil).first
 
-      return render json: @appointment.errors unless @appointment.update!(patient_id: current_patient.id)
+      return render json: @appointment.errors unless @appointment.update!(
+        patient_id: current_patient.id,
+        second_dose: current_patient.last_appointment&.second_dose,
+        vaccine_name: current_patient.last_appointment&.vaccine_name
+      )
     end
 
     @current_patient.update(last_appointment: @appointment)
@@ -37,10 +41,13 @@ class TimeSlotController < PatientSessionController
   end
 
   def cancel
-    @appointment = Appointment.find(cancel_params[:appointment_id])
-    @appointment.update(patient_id: nil)
+    Appointment.transaction do
+      @current_patient.appointments
+        .where(id: cancel_params[:appointment_id])
+        .update_all(patient_id: nil)
 
-    @current_patient.update(last_appointment: nil)
+      @current_patient.update(last_appointment: nil)
+    end
 
     redirect_to time_slot_path
   end
