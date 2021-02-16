@@ -116,7 +116,7 @@ class TimeSlotGenerationService
       end
     end
 
-    pp report
+    pp report unless Rails.env.test?
   end
 
   def build_time_window(window)
