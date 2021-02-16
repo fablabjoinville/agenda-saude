@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe ReceptionService, type: :service do
+  # Eager UBS creation required because of patient.set_main_ubs
+  let!(:ubs) { create(:ubs) }
   let(:appointment) { create(:appointment, patient_id: patient.id) }
   let(:patient) { create(:patient) }
   let(:service) { ReceptionService.new(appointment) }
