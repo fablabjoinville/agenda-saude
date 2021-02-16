@@ -1,18 +1,17 @@
 require 'rails_helper'
 
 RSpec.describe ReceptionService, type: :service do
-  let(:appointment) { create(:appointment) }
-  let!(:next_appointment) { create(:appointment, start: appointment.start + ENV['SECOND_DOSE_INTERVAL'].to_i.weeks) }
+  let(:appointment) { create(:appointment, patient_id: patient.id) }
   let(:patient) { create(:patient) }
   let(:service) { ReceptionService.new(appointment) }
   let(:time) { Time.new('2020-01-01') }
+  let(:vaccine_name) { 'coronavac' }
+  let(:last_appointment) { patient.appointments.order(:start).last }
 
   before do
     travel_to time
-    schedule_appointment
+    patient.update(last_appointment: appointment)
   end
-
-  after { travel_back }
 
   describe '#check in' do
     it 'updates check in attribute' do
@@ -21,35 +20,46 @@ RSpec.describe ReceptionService, type: :service do
   end
 
   describe '#check out' do
+    it 'updates vaccine_name on first dose' do
+      expect { service.check_out(vaccine_name) }
+        .to change { appointment.reload.vaccine_name }.from(nil).to(vaccine_name)
+    end
+
+    it 'updates vaccine_name on second_dose' do
+      expect { service.check_out(vaccine_name) }
+        .to change { last_appointment.reload.vaccine_name }.from(nil).to(vaccine_name)
+    end
+
     it 'updates check out attribute' do
-      expect { service.check_out }.to change { appointment.reload.check_out }.from(nil).to(time)
+      expect { service.check_out(vaccine_name) }
+        .to change { appointment.reload.check_out }.from(nil).to(time)
     end
 
-    it 'updates the patient last_appointment attribute' do
-      expect { service.check_out }.to change { patient.reload.last_appointment }.from(appointment).to(next_appointment)
-    end
+    it 'marks last_appointment as a second dose appointment' do
+      service.check_out(vaccine_name)
 
-    it 'marks next_appointment as a second dose appointment' do
-      expect { service.check_out }.to change { next_appointment.reload.second_dose }.from(false).to(true)
+      expect(last_appointment.second_dose).to eq(true)
     end
 
     it 'schedules second dose appointment' do
-      expect { service.check_out }.to change { next_appointment.reload.patient_id }.from(nil).to(patient.id)
+      expect { service.check_out(vaccine_name) }
+        .to change { patient.appointments.count }.from(1).to(2)
     end
 
     context "when the pacient check's out from second dose appointment" do
-      before { appointment.update!(second_dose: true) }
+      let(:second_appointment) { create(:appointment, patient_id: patient.id, second_dose: true, vaccine_name: vaccine_name) }
+      let(:service) { ReceptionService.new(second_appointment) }
+
+      it 'updates the patient last_appointment attribute' do
+        expect { service.check_out(vaccine_name) }
+          .not_to change { patient.reload.last_appointment.id }
+      end
 
       it 'does not schedules a new appointment' do
-        patient_appointments = Appointment.where(patient_id: patient.id)
+        service.check_out(vaccine_name)
 
-        expect { service.check_out }.not_to change { patient_appointments.reload.count }
+        expect(Appointment.where(patient_id: patient.id).count).to eq(2)
       end
     end
-  end
-
-  def schedule_appointment
-    appointment.update!(patient_id: patient.id)
-    patient.update!(last_appointment: appointment)
   end
 end
