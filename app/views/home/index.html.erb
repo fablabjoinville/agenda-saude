@@ -20,15 +20,14 @@
   <tbody>
     <tr>
       <td>
-        <i class="fa fa-circle" aria-hidden="true" style="color: green;"></i> População com 60 anos ou mais <hr />
+        <i class="fa fa-circle" aria-hidden="true" style="color: skyblue;"></i> População com 60 anos ou mais <hr />
+        <i class="fa fa-circle" aria-hidden="true" style="color: skyblue;"></i> Trabalhadores da Saúde de qualquer idade <hr />
       </td>
       <td>
         <% Patient::CONDITIONS.each do |name, _| %>
           <i class="fa fa-check-circle" aria-hidden="true" style="color: green;"></i> <%= name %><br>
           <hr />
         <% end %>
-        <i class="fa fa-check-circle" aria-hidden="true" style="color: green;"></i> Trabalhador(a) da Saúde com mais de 60 anos<br> <hr />
-        <i class="fa fa-check-circle" aria-hidden="true" style="color: green;"></i> Trabalhador(a) da Saúde com Comorbidades<br>
       </td>
     </tr>
       <th scope="col">STATUS DO AGENDAMENTO</th>
