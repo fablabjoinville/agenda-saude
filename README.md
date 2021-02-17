@@ -106,7 +106,7 @@ origin  git@github.com:MakersNetwork/agenda-saude.git (fetch)
 origin  git@github.com:MakersNetwork/agenda-saude.git (push)
 ```
 
-Para fazer deploy da aplicaço:
+Para fazer deploy da aplicação:
 
 ```sh
 git push heroku main

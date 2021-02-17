@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_02_181324) do
+ActiveRecord::Schema.define(version: 2021_02_14_133154) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 2021_02_02_181324) do
     t.datetime "check_out"
     t.boolean "second_dose", default: false
     t.string "suspend_reason"
+    t.string "vaccine_name"
     t.index ["ubs_id"], name: "index_appointments_on_ubs_id"
   end
 

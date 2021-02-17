@@ -18,20 +18,29 @@ class UbsController < UserSessionController
   def confirm_check_in
     appointment = Appointment.find(params[:id])
 
-    ReceptionService.new(appointment.patient).check_in
+    ReceptionService.new(appointment).check_in
 
-    redirect_to ubs_patient_details_path(id: appointment.id, check_in: true)
+    redirect_to ubs_patient_checkin_path(id: appointment.id)
   end
 
   def confirm_check_out
     appointment = Appointment.find(params[:id])
     patient = appointment.patient
 
-    ReceptionService.new(patient).check_out
+    if appointment.second_dose?
+      vaccine_name = appointment.vaccine_name
+    else
+      vaccine_name = params['patient']['vaccine']
+    end
 
-    @second_dose_appointment = patient.reload.last_appointment
+    if appointment.start.today?
+      ReceptionService.new(patient.appointments.order(:start).last).check_out(vaccine_name)
 
-    redirect_to ubs_patient_details_path(id: appointment.id, second_dose_appointment: @second_dose_appointment, check_out: true)
+      @second_dose_appointment = patient.appointments.where(second_dose: true).first
+      return redirect_to ubs_patient_checkout_path(id: appointment.id, second_dose_appointment: @second_dose_appointment)
+    end
+
+    redirect_to ubs_patient_checkout_path(id: appointment.id)
   end
 
   def find_patients
@@ -62,11 +71,9 @@ class UbsController < UserSessionController
     render 'ubs/checkout'
   end
 
-  def patient_details
+  def patient_checkin
     @appointment = Appointment.find(params[:id])
     @second_dose_appointment = Appointment.find(params[:second_dose_appointment]) if params[:second_dose_appointment]
-    @check_out = params[:check_out]
-    @check_in = params[:check_in]
 
     patient = @appointment.patient
 
@@ -82,7 +89,28 @@ class UbsController < UserSessionController
       groups: groups
     }
 
-    render ubs_patient_details_path
+    render ubs_patient_checkin_path
+  end
+
+  def patient_checkout
+    @appointment = Appointment.find(params[:id])
+    patient = @appointment.patient
+    @second_dose_appointment = patient.appointments.where(second_dose: true).first
+
+
+    groups = []
+    Patient::CONDITIONS.each do |cond, func|
+      groups << cond if func.call(patient)
+    end
+
+    @patient = {
+      id: patient.id,
+      name: patient.name,
+      cpf: patient.cpf,
+      groups: groups
+    }
+
+    render ubs_patient_checkout_path
   end
 
   def today_appointments
@@ -155,7 +183,7 @@ class UbsController < UserSessionController
 
     appointment.update(active: false, suspend_reason: params[:reason])
 
-    redirect_to ubs_patient_details_path(ubs_id: @ubs.id, id: appointment.id)
+    redirect_to ubs_patient_checkin_path(ubs_id: @ubs.id, id: appointment.id)
   end
 
   def activate_appointment
@@ -193,6 +221,7 @@ class UbsController < UserSessionController
     if check_out
       appointments = Appointment.where(
         patient_id: patients.map(&:id),
+        start: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day
       ).where.not(check_in: nil)
     else
       appointments = Appointment.where(
@@ -218,7 +247,7 @@ class UbsController < UserSessionController
 
     appointments_patients = appointments_patients.sort_by { |appointment| appointment[:time_delta] }
 
-    appointments_patients
+    appointments_patients.sort_by { |hsh| hsh[:start] }
   end
 
   def active_future_appointments
@@ -250,5 +279,4 @@ class UbsController < UserSessionController
   def slot_duration_params
     params.require(:ubs).permit(:slot_interval_minutes, :appointments_per_time_slot)
   end
-
 end
