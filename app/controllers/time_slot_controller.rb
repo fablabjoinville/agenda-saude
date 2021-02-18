@@ -115,7 +115,7 @@ class TimeSlotController < PatientSessionController
   end
 
   def render_patient_not_allowed
-    return render 'patients/not_allowed', locals: {patient: current_patient, appointment: current_patient.appointments.order(:start).last, ubs: current_patient.appointments.order(:start).last.ubs } unless current_patient.can_schedule?
+    return render 'patients/not_allowed' unless current_patient.can_schedule?
   end
 
   def slot_params

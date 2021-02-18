@@ -1,71 +1,15 @@
-<% if @patient&.appointments.present? && @patient.appointments.order(:start).last.start > Time.zone.now %>
-  <div class="container">
-    <div class="card">
-      <div class="card-body">
-        <% unless @patient.appointments.order(:start).last.active %>
-          <div class="row">
-            <div class="col">
-              <div class="alert alert-danger" role="alert">
-                Seu agendamento foi suspenso. Favor entrar em contato com a Ubs.
-              </div>
-            </div>
-          </div>
-        <% end %>
-        <div class="row">
-          <div class="col" data-cy="currentAppointmentText">
-            <h4>Seu agendamento atual é em:</h4>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            <div class="row">
-              <div class="col">
-                <strong>Data: </strong><%= ApplicationHelper.humanize_datetime(@patient.appointments.order(:start).last.start) %>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <strong>Unidade: </strong><%= @patient.appointments.order(:start).last.ubs.name %>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <strong>Endereço: </strong><%= @patient.appointments.order(:start).last.ubs.address %>
-              </div>
-            </div>
-            <br/>
-
-            <p>Para receber a vacina contra a Covid-19, seguir as instruções abaixo:</p>
-            <ol>
-              <li>Reunir os seguintes documentos:</li>
-              <ol>
-                <li>Documento oficial de identificação com foto.</li>
-                <li>Crachá funcional ou holerite/folha de pagamento ou declaração que comprove o vínculo com o serviço de saúde no Município de Joinville
-                (em caso de terceirizados e estagiários, a declaração deve ser emitida pelo serviço de saúde contratante, para comprovar o vínculo).</li>
-                <li>Se trabalhador atuante em serviços de saúde no Município de Joinville com comorbidades estabelecidas pelo Programa Nacional de Imunização (PNI),
-                  apresentar  atestado, declaração, laudo ou receita médica que comprove a condição clínica.</li>
-              </ol>
-              <li>Com os documentos, comparecer à Central de Imunização de Joinville, no Centreventos Cau Hansen, na data e horário agendados (estar no local com 15 minutos de antecedência).</li>
-            </ol>
-          </div>
-        </div>
-      </div>
-    </div>
+<div class="row text-center">
+  <div class="col">
+    <h2>
+      <strong style="color: green;">CADASTRO CONCLUÍDO COM SUCESSO.</strong>
+    </h2>
+    <br/>
+    <p>
+      Seu cadastro já foi concluído com sucesso, mas o agendamento para o seu grupo ainda não está disponível. Aguarde a divulgação das datas para agendamento.
+    </p>
+    <br/>
   </div>
-<% else %>
-  <div class="row text-center">
-    <div class="col">
-      <h2>
-        <strong style="color: green;">CADASTRO CONCLUÍDO COM SUCESSO.</strong>
-      </h2>
-      <br/>
-      <p>
-        Seu cadastro já foi concluído com sucesso, mas o agendamento para o seu grupo ainda não está disponível. Aguarde a divulgação das datas para agendamento.
-      </p>
-      <br/>
-    </div>
-  </div>
-<% end %>
+</div>
 
 <div class="row mt-3">
   <div class="col text-center" style="margin-bottom: 3%;">
