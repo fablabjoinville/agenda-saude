@@ -1,8 +1,8 @@
-<% if @patient.last_appointment.present? && @patient.last_appointment.start > Time.zone.now %>
+<% if @patient&.appointments.present? && @patient.appointments.order(:start).last.start > Time.zone.now %>
   <div class="container">
     <div class="card">
       <div class="card-body">
-        <% unless @patient.last_appointment.active %>
+        <% unless @patient.appointments.order(:start).last.active %>
           <div class="row">
             <div class="col">
               <div class="alert alert-danger" role="alert">
@@ -20,17 +20,17 @@
           <div class="col">
             <div class="row">
               <div class="col">
-                <strong>Data: </strong><%= ApplicationHelper.humanize_datetime(@patient.last_appointment.start) %>
+                <strong>Data: </strong><%= ApplicationHelper.humanize_datetime(@patient.appointments.order(:start).last.start) %>
               </div>
             </div>
             <div class="row">
               <div class="col">
-                <strong>Unidade: </strong><%= @patient.last_appointment.ubs.name %>
+                <strong>Unidade: </strong><%= @patient.appointments.order(:start).last.ubs.name %>
               </div>
             </div>
             <div class="row">
               <div class="col">
-                <strong>Endereço: </strong><%= @patient.last_appointment.ubs.address %>
+                <strong>Endereço: </strong><%= @patient.appointments.order(:start).last.ubs.address %>
               </div>
             </div>
             <br/>
@@ -42,7 +42,7 @@
                 <li>Documento oficial de identificação com foto.</li>
                 <li>Crachá funcional ou holerite/folha de pagamento ou declaração que comprove o vínculo com o serviço de saúde no Município de Joinville
                 (em caso de terceirizados e estagiários, a declaração deve ser emitida pelo serviço de saúde contratante, para comprovar o vínculo).</li>
-                <li>Se trabalhador atuante em serviços de saúde no Município de Joinville com comorbidades estabelecidas pelo Programa Nacional de Imunização (PNI), 
+                <li>Se trabalhador atuante em serviços de saúde no Município de Joinville com comorbidades estabelecidas pelo Programa Nacional de Imunização (PNI),
                   apresentar  atestado, declaração, laudo ou receita médica que comprove a condição clínica.</li>
               </ol>
               <li>Com os documentos, comparecer à Central de Imunização de Joinville, no Centreventos Cau Hansen, na data e horário agendados (estar no local com 15 minutos de antecedência).</li>
