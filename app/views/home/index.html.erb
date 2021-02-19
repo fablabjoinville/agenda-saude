@@ -10,23 +10,24 @@
   </div>
 </div>
 
-<table class="table table-bordered center", style="width: 70%; margin-top: 10px; margin-left: auto; margin-right: auto;">
+<table class="table table-bordered center", style="width: 100%; margin-top: 10px; margin-left: auto; margin-right: auto;">
   <thead>
     <tr>
-      <th scope="col">GRUPOS QUE PODEM SE CADASTRAR</th>
-      <th scope="col">GRUPOS QUE PODEM AGENDAR</th>
+      <th scope="col" style="width: 50%">GRUPOS QUE PODEM SE CADASTRAR</th>
+      <th scope="col" style="width: 50%">GRUPOS QUE PODEM AGENDAR</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
-        <i class="fa fa-circle" aria-hidden="true" style="color: skyblue;"></i> População com 60 anos ou mais <hr />
-        <i class="fa fa-circle" aria-hidden="true" style="color: skyblue;"></i> Trabalhadores da Saúde de qualquer idade <hr />
+        <i class="fa fa-circle" aria-hidden="true" style="color: skyblue;"></i> População com 60 anos ou mais <br /> <br />
+        <i class="fa fa-circle" aria-hidden="true" style="color: skyblue;"></i> Trabalhadores da Saúde de qualquer idade <br />
       </td>
       <td>
         <% Patient::CONDITIONS.each do |name, _| %>
-          <i class="fa fa-check-circle" aria-hidden="true" style="color: green;"></i> <%= name %><br>
-          <hr />
+          <br />
+          <i class="fa fa-check-circle" aria-hidden="true" style="color: green;"></i> <%= name %>
+          <br />
         <% end %>
       </td>
     </tr>
@@ -40,7 +41,6 @@
           <i class="fa fa-circle" aria-hidden="true" style="color: red;"></i> Sem Horário Disponível
         <% end %>
       </td>
-    <tr>
     </tr>
   </tbody>
 </table>
@@ -88,7 +88,7 @@
     <li>Documento oficial de identificação com foto.</li>
     <li>Crachá funcional ou holerite/folha de pagamento ou declaração que comprove o vínculo com o serviço de saúde no Município de Joinville
      (em caso de terceirizados e estagiários, a declaração deve ser emitida pelo serviço de saúde contratante, para comprovar o vínculo).</li>
-    <li>Se trabalhador atuante em serviços de saúde no Município de Joinville com comorbidades estabelecidas pelo Programa Nacional de Imunização (PNI), 
+    <li>Se trabalhador atuante em serviços de saúde no Município de Joinville com comorbidades estabelecidas pelo Programa Nacional de Imunização (PNI),
       apresentar  atestado, declaração, laudo ou receita médica que comprove a condição clínica.</li>
   </ol>
   <li>Com os documentos, comparecer à Central de Imunização de Joinville, no Centreventos Cau Hansen, na data e horário agendados (estar no local com 15 minutos de antecedência).</li>
