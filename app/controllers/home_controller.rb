@@ -1,6 +1,6 @@
 class HomeController < ApplicationController
 
-  SLOTS_WINDOW_IN_DAYS = 3
+  SLOTS_WINDOW_IN_DAYS = ENV['SLOTS_WINDOW_IN_DAYS']&.to_i || 3
   
   def index
     return redirect_to index_bedridden_path if current_patient.try(:bedridden?)
