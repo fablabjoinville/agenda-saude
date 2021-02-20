@@ -33,7 +33,7 @@
     </tr>
       <th scope="col">STATUS DO AGENDAMENTO</th>
       <td>
-        <% if Ubs.where(active: true).blank? || !@appointments_available_in_slot_window.present? %>
+        <% unless @is_scheduling_available %>
           <i class="fa fa-circle" aria-hidden="true" style="color: red;"></i> Aguardando novas doses
         <% else %>
           <i class="fa fa-circle" aria-hidden="true" style="color: green;"></i> Disponível

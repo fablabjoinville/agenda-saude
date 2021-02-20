@@ -1,13 +1,11 @@
 class HomeController < ApplicationController
-
-  SLOTS_WINDOW_IN_DAYS = ENV['SLOTS_WINDOW_IN_DAYS']&.to_i || 3
   
   def index
     return redirect_to index_bedridden_path if current_patient.try(:bedridden?)
     return redirect_to index_time_slot_path if current_patient
     return redirect_to ubs_index_path if current_user
 
-    @appointments_available_in_slot_window = Appointment.where(start: Time.zone.now..(Time.zone.now + SLOTS_WINDOW_IN_DAYS.days).end_of_day, patient_id: nil)
+    @is_scheduling_available = Appointment.free.within_allowed_window.exists?
   end
 
   def patient_base_login
