@@ -1,0 +1,1 @@
+system 'rails db:seed'
