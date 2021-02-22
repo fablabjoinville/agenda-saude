@@ -1,4 +1,4 @@
-name: Specs
+name: Cypress
 
 on:
   push:
@@ -9,8 +9,8 @@ on:
       - '**'
 
 jobs:
-  verify:
-    name: Specs
+  cypress-run:
+    name: Cypress
     runs-on: ubuntu-latest
 
     services:
@@ -45,10 +45,14 @@ jobs:
         run: |
           bundle exec rake db:create db:migrate
 
-      - name: Run specs
+      - name: Run Cypress
+        uses: cypress-io/github-action@v2
         env:
           PGPORT: ${{ job.services.postgres.ports[5432] }}
           POSTGRESQL_PASSWORD: postgres
           POSTGRESQL_HOST: localhost
           RAILS_ENV: test
-        run: bundle exec rspec
+        with:
+          browser: chrome
+          project: ./spec
+          start: bundle exec rails server -e test
