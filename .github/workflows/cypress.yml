@@ -56,3 +56,12 @@ jobs:
           browser: chrome
           project: ./spec
           start: bundle exec rails server -e test
+
+      - name: Upload Cypress' artifacts
+        uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: cypress-artifacts
+          path: |
+            spec/cypress/screenshots/
+            spec/cypress/videos/
