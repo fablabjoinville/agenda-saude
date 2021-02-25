@@ -87,7 +87,7 @@
 
     <div class="row mt-3">
       <div class="col text-center">
-        <%= button_to "patients/edit", class: "btn btn-primary centered-button", method: :get do %>
+        <%= button_to "patients/edit", class: "btn btn-primary centered-button", data: { cy: "editPatientButton" }, method: :get do %>
           Alterar meus dados
         <% end %>
       </div>

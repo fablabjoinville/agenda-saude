@@ -1,12 +1,12 @@
 <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
   <div class="field">
     <%= f.label :name, "CNES" %><br />
-    <%= f.text_field :name, autofocus: true, autocomplete: "name" %>
+    <%= f.text_field :name, autofocus: true, autocomplete: "name", data: { cy: "nameInputField"} %>
   </div>
 
   <div class="field">
     <%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "current-password" %>
+    <%= f.password_field :password, autocomplete: "current-password", data: { cy: "passwordInputField"} %>
   </div>
 
   <% if devise_mapping.rememberable? %>
@@ -17,6 +17,6 @@
   <% end %>
 
   <div class="actions">
-    <%= f.submit "Entrar", class: 'btn btn-primary' %>
+    <%= f.submit "Entrar", class: 'btn btn-primary', data: { cy: "loginButton"} %>
   </div>
 <% end %>

@@ -35,7 +35,7 @@
           </span>
         </button>
         <div class="collapse navbar-collapse ml-auto flex-shrink-1 flex-grow-0" id="navbarTogglerDemo01">
-          <%= button_to new_user_session_path, class: "btn btn-primary w-100 mt-2", type: "button" do %>
+          <%= button_to new_user_session_path, class: "btn btn-primary w-100 mt-2", data: { cy: "userLoginButton"}, type: "button" do %>
             Entrar como Operador
           <% end %>
         </div>

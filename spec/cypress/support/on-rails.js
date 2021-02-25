@@ -47,10 +47,3 @@ Cypress.on('fail', (err, runnable) => {
 
   throw err;
 });
-
-// Clean end seed database before each integration test
-beforeEach(() => {
- cy.app('clean')
- cy.app('seed')
-});
-
