@@ -30,13 +30,46 @@ describe('patient appointment flow', () => {
       cy.get('[data-cy=cancelAppointmentButton]').click()
       cy.get('[data-cy=noAppointmentYetText]').should('exist')
     })
+
+    context('when patient became not allowed', () => {
+      beforeEach(() => {
+        cy.get('[data-cy=editPatientButton]').click()
+        cy.get('#patient_birth_date_1i').select('2000')
+        cy.get('[data-cy=updatePatientButton]').click()
+      })
+
+      it('replace appointment', () => {
+        cy.createOrReplaceAppointment()
+
+        cy.get('[data-cy=currentAppointmentText]').should('exist')
+      })
+
+      it('cancel appointment and renders not allowed', () => {
+        cy.get('[data-cy=cancelAppointmentButton]').click()
+        cy.get('[data-cy=patientNotAllowedText]').should('exist')
+      })
+    })
   })
 
   context('when has no future appointment scheduled', () => {
-    it('create appointment', () => {
-      cy.createOrReplaceAppointment()
+    context('when patient is allowed', () => {
+      it('create appointment', () => {
+        cy.createOrReplaceAppointment()
 
-      cy.get('[data-cy=currentAppointmentText]').should('exist')
+        cy.get('[data-cy=currentAppointmentText]').should('exist')
+      })
+    })
+
+    context('when patient is not allowed', () => {
+      beforeEach(() => {
+        cy.get('[data-cy=editPatientButton]').click()
+        cy.get('#patient_birth_date_1i').select('2000')
+        cy.get('[data-cy=updatePatientButton]').click()
+      })
+
+      it('renders not allowed', () => {
+        cy.get('[data-cy=patientNotAllowedText]').should('exist')
+      })
     })
   })
 
@@ -47,6 +80,24 @@ describe('patient appointment flow', () => {
 
     it('has no appointment scheduled', () => {
       cy.get('[data-cy=noAppointmentYetText]').should('exist')
+    })
+
+    it('create appointment', () => {
+      cy.createOrReplaceAppointment()
+
+      cy.get('[data-cy=currentAppointmentText]').should('exist')
+    })
+
+    context('when patient became not allowed', () => {
+      beforeEach(() => {
+        cy.get('[data-cy=editPatientButton]').click()
+        cy.get('#patient_birth_date_1i').select('2000')
+        cy.get('[data-cy=updatePatientButton]').click()
+      })
+
+      it('renders not allowed', () => {
+        cy.get('[data-cy=patientNotAllowedText]').should('exist')
+      })
     })
   })
 })
