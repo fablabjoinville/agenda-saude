@@ -20,7 +20,8 @@ describe('happy patient flow', () => {
     cy.get('[data-cy=newPatientPhoneNumberInputField]').type('4899999999')
     cy.get('[data-cy=newPatientOtherPhoneNumberInputField]').type('47988888888')
     cy.get('#patient_groups_1')
-    cy.get('#patient_groups_26').click()
+    cy.get('#patient_groups_23').click()
+    cy.get('#patient_groups_57').click()
     cy.get('[data-cy=newPatientSubmitButton]').click()
     cy.get('[data-cy=noAppointmentYetText]').should('exist')
 
