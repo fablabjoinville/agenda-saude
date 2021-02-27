@@ -1,8 +1,11 @@
 class HomeController < ApplicationController
+  
   def index
     return redirect_to index_bedridden_path if current_patient.try(:bedridden?)
     return redirect_to index_time_slot_path if current_patient
     return redirect_to ubs_index_path if current_user
+
+    @is_scheduling_available = Appointment.free.within_allowed_window.exists?
   end
 
   def patient_base_login

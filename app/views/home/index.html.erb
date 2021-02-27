@@ -33,12 +33,10 @@
     </tr>
       <th scope="col">STATUS DO AGENDAMENTO</th>
       <td>
-        <% if Ubs.where(active: true).blank? %>
-          <i class="fa fa-circle" aria-hidden="true" style="color: #FA6800;"></i> Aguardando novas doses
-        <% elsif Appointment.where('patient_id IS NULL AND start > ?', Time.zone.now).count > 0 %>
-          <i class="fa fa-circle" aria-hidden="true" style="color: green;"></i> Disponível
+        <% unless @is_scheduling_available %>
+          <i class="fa fa-circle" aria-hidden="true" style="color: red;"></i> Aguardando novas doses
         <% else %>
-          <i class="fa fa-circle" aria-hidden="true" style="color: red;"></i> Sem Horário Disponível
+          <i class="fa fa-circle" aria-hidden="true" style="color: green;"></i> Disponível
         <% end %>
       </td>
     </tr>
@@ -69,6 +67,9 @@
 <h2 class="lp-header">Dúvidas frequentes sobre a vacinação</h2>
 
 <p><strong><a href='https://www.joinville.sc.gov.br/vacina-do-coronavirus-em-joinville-perguntas-e-respostas/', target='blank'>Consulte aqui</a></strong> perguntas e respostas referente à aplicação da vacina contra o coronavírus.</p>
+
+<p>Confira o que pode e o que não pode em Joinville com base nas medidas para combater a pandemia de Covid-19 <strong><a href='https://www.joinville.sc.gov.br/medidas-vigentes-de-enfrentamento-do-coronavirus-em-joinville/', target='blank'>clicando aqui</a></strong>.</p>
+
 
 <h4 class="lp-header">Quem não pode tomar a vacina</h4>
 <ul>
