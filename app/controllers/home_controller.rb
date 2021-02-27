@@ -1,5 +1,5 @@
 class HomeController < ApplicationController
-  
+
   def index
     return redirect_to index_bedridden_path if current_patient.try(:bedridden?)
     return redirect_to index_time_slot_path if current_patient

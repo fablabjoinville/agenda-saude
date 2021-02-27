@@ -1,0 +1,42 @@
+version: "2"
+services:
+  web:
+    build: .
+    restart: always
+    volumes:
+      - .:/var/app
+      - ~/.bash_history:/root/.bash_history
+      - ./config/database.yml:/var/config/database.yml
+    ports:
+      - "3000:3000"
+    environment:
+      - "RAILS_ENV=test"
+    depends_on:
+      - postgres
+    tty: true
+    stdin_open: true
+    entrypoint: ["./bin/entrypoint"]
+
+  postgres:
+    image: postgres:12.1-alpine
+    environment:
+      - "POSTGRES_USER=postgres"
+      - "POSTGRES_PASSWORD="
+      - "POSTGRES_DB=agendamento_covid_test"
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres:/var/lib/postgresql/data
+
+  cypress:
+    image: "cypress/included:3.2.0"
+    depends_on:
+      - web
+    environment:
+      - CYPRESS_baseUrl=http://web:3000
+    working_dir: /spec
+    volumes:
+      - ./:/spec
+
+volumes:
+  postgres:
