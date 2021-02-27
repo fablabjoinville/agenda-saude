@@ -73,6 +73,14 @@ describe('patient appointment flow', () => {
     })
   })
 
+  context('when has no future appointment scheduled', () => {
+    it('create appointment', () => {
+      cy.createOrReplaceAppointment()
+
+      cy.get('[data-cy=currentAppointmentText]').should('exist')
+    })
+  })
+
   context('when patient not attended yesterday', () => {
     beforeEach(() => {
       cy.appScenario('appointment_no_attended_yesterday', { cpf: cpf });
