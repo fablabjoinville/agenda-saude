@@ -4,8 +4,8 @@ class Patient < ApplicationRecord
   MAX_LOGIN_ATTEMPTS = 2
 
   CONDITIONS = {
-    'Trabalhador(a) da Saúde que atua em Hospital' => ->(patient) { patient.in_group?('Trabalhador(a) da Saúde') && patient.in_group?('Atua em Hospital') },
-    # 'População com 90 anos ou mais' => ->(patient) { patient.age >= 90 },
+    'População com 85 anos ou mais' => ->(patient) { patient.age >= 85 },
+    # 'Trabalhador(a) da Saúde que atua em Hospital' => ->(patient) { patient.in_group?('Trabalhador(a) da Saúde') && patient.in_group?('Atua em Hospital') },
     # 'Paciente de teste' => ->(patient) { patient.cpf == ENV['ROOT_PATIENT_CPF'] },
     # 'Maiores de 60 anos institucionalizadas' => ->(patient) { patient.age >= 60 && patient.in_group?('Institucionalizado(a)') },
     # 'População Indígena' => ->(patient) { patient.in_group?('Indígena') },
