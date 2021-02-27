@@ -6,5 +6,7 @@ Appointment.create(
   patient: Patient.find_by!(cpf: command_options['cpf']),
   second_dose: false,
   active: true,
+  check_in: nil,
+  check_out: nil,
   ubs: ubs
 )
