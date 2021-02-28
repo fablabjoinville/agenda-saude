@@ -16,7 +16,7 @@
         <tbody>
           <% @appointments.each do |appointment| %>
             <% if appointment.active %>
-              <tr>
+              <tr data-cy="appointment">
                 <th scope="row"><%= appointment.start.strftime("%d/%m/%Y -- %H:%M") %></th>
                 <td><a href=<%= "/patients/#{appointment.patient_id}" %>><%= find_appointment_patient(appointment.patient_id).name %></a></td>
                 <td><%= find_appointment_patient(appointment.patient_id).phone %></td>
@@ -55,7 +55,7 @@
          data: { confirm: 'Você tem certeza?' } %>
       </p>
     <% else %>
-      <p>Nenhum paciente agendou horário até o momento.</p>
+      <p data-cy="noAppointmentsYetText">Nenhum paciente agendou horário até o momento.</p>
     <% end %>
   </div>
 
