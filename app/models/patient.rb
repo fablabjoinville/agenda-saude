@@ -41,9 +41,17 @@ class Patient < ApplicationRecord
   end
 
   def can_schedule?
+    return true if future_appointments_present?
+
     CONDITIONS.values.any? do |condition|
       condition.call(self)
     end
+  end
+
+  def future_appointments_present?
+    appointments.where(
+      'start >= ? AND active = ?', Time.zone.now, true
+    ).present?
   end
 
   def in_group?(name)
