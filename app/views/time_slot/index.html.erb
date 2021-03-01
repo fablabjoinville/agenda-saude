@@ -47,6 +47,14 @@
                   <strong>Endereço: </strong><%= @ubs.address %>
                 </div>
               </div>
+
+              <% if @appointment.second_dose? %>
+                <div class="row">
+                  <div class="col" data-cy="appliedVaccineName">
+                    <strong>Vacina: </strong><%= @appointment.vaccine_name.capitalize %>
+                  </div>
+                </div>
+              <% end %>
               <br/>
 
               <p>Para receber a vacina contra a Covid-19, seguir as instruções abaixo:</p>

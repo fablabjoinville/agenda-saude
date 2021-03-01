@@ -40,11 +40,11 @@
           <% end %>
         </div>
       <% elsif current_user %>
-        <%= button_to destroy_user_session_path, method: :delete, class: "btn btn-primary", type: "button" do %>
+        <%= button_to destroy_user_session_path, method: :delete, class: "btn btn-primary", data: { cy: "ubsLogoutButton" }, type: "button" do %>
           Sair
         <% end %>
       <% else %>
-        <%= button_to destroy_patient_session_path, method: :delete, class: "btn btn-primary", data: { cy: "logoutButton"}, type: "button" do %>
+        <%= button_to destroy_patient_session_path, method: :delete, class: "btn btn-primary", data: { cy: "logoutButton" }, type: "button" do %>
           Sair
         <% end %>
       <% end %>

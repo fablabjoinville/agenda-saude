@@ -1,11 +1,11 @@
 <h1><%= @ubs.name %></h1>
 
 <nav class="nav nav-pills nav-justified" style="margin-bottom: 10px;">
-  <a class="nav-item nav-link <%= 'active' if current_page?(ubs_index_path) %>" href="<%= ubs_index_path %>">Agendamentos</a>
-  <a class="nav-item nav-link <%= 'active' if current_page?(list_checkin_path) || @cpf.present? || @name.present? %>" href="<%= list_checkin_path %>">Check-In</a>
+  <a class="nav-item nav-link <%= 'active' if current_page?(ubs_index_path) %>" href="<%= ubs_index_path %>" data-cy="appointmentsListTab">Agendamentos</a>
+  <a class="nav-item nav-link <%= 'active' if current_page?(list_checkin_path) || @cpf.present? || @name.present? %>" href="<%= list_checkin_path %>" data-cy="checkInSearchTab">Check-In</a>
 
-  <a class="nav-item nav-link <%= 'active' if current_page?(list_checkout_path) %>" href="<%= list_checkout_path %>">Check-Out</a>
-  <a class="nav-item nav-link <%= 'active' if current_page?(status_path) %>" href="<%= status_path %>">Status</a>
+  <a class="nav-item nav-link <%= 'active' if current_page?(list_checkout_path) %>" href="<%= list_checkout_path %>" data-cy="checkOutListTab">Check-Out</a>
+  <a class="nav-item nav-link <%= 'active' if current_page?(status_path) %>" href="<%= status_path %>" data-cy="ubsStatusTab">Status</a>
 </nav>
 
 <%= yield %>
