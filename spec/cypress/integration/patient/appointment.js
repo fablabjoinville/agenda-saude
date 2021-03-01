@@ -33,9 +33,9 @@ describe('patient appointment flow', () => {
 
     context('when patient became not allowed', () => {
       beforeEach(() => {
-        cy.get('[data-cy=editPatientButton]').click()
-        cy.get('#patient_birth_date_1i').select('2000')
-        cy.get('[data-cy=updatePatientButton]').click()
+        cy.appScenario('young_marvin_son_of_tristeza', { cpf: cpf });
+
+        cy.visit('/')
       })
 
       it('replace appointment', () => {
@@ -62,9 +62,9 @@ describe('patient appointment flow', () => {
 
     context('when patient is not allowed', () => {
       beforeEach(() => {
-        cy.get('[data-cy=editPatientButton]').click()
-        cy.get('#patient_birth_date_1i').select('2000')
-        cy.get('[data-cy=updatePatientButton]').click()
+        cy.appScenario('young_marvin_son_of_tristeza', { cpf: cpf });
+
+        cy.visit('/')
       })
 
       it('renders not allowed', () => {
@@ -90,9 +90,9 @@ describe('patient appointment flow', () => {
 
     context('when patient became not allowed', () => {
       beforeEach(() => {
-        cy.get('[data-cy=editPatientButton]').click()
-        cy.get('#patient_birth_date_1i').select('2000')
-        cy.get('[data-cy=updatePatientButton]').click()
+        cy.appScenario('young_marvin_son_of_tristeza', { cpf: cpf });
+
+        cy.visit('/')
       })
 
       it('renders not allowed', () => {
