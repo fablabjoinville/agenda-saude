@@ -48,10 +48,10 @@ class Patient < ApplicationRecord
     end
   end
 
-  def future_appointments_present?
-    appointments.where(
-      'start >= ? AND active = ?', Time.zone.now, true
-    ).present?
+  def has_future_appointments?
+    appointments
+      .where('start >= ? AND active = TRUE', Time.zone.now)
+      .exists?
   end
 
   def in_group?(name)
