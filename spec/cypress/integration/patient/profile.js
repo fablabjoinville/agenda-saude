@@ -1,9 +1,5 @@
 describe('patient profile', () => {
-  let cpf
-
-  before(() => {
-    cpf = '83274229792'
-  })
+  const cpf = '83274229792'
 
   beforeEach(() => {
     cy.visit('/')
