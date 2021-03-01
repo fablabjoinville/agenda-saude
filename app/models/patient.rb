@@ -41,7 +41,7 @@ class Patient < ApplicationRecord
   end
 
   def can_schedule?
-    return true if future_appointments_present?
+    return true if has_future_appointments?
 
     CONDITIONS.values.any? do |condition|
       condition.call(self)
