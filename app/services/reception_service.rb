@@ -32,7 +32,6 @@ class ReceptionService
       end: next_appointment_end,
       patient_id: @patient.id,
       second_dose: true,
-      active: true,
       vaccine_name: vaccine_name,
       ubs: @appointment.ubs
     )

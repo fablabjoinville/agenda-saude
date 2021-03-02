@@ -7,6 +7,5 @@ Appointment.create!(
   end: time,
   patient: patient,
   second_dose: false,
-  active: true,
   ubs: ubs
 )

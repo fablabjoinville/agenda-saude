@@ -4,7 +4,6 @@ FactoryBot.define do
     add_attribute(:end) { end_time }
     patient_id { nil }
     ubs { find_or_create_ubs }
-    active { true }
   end
 end
 

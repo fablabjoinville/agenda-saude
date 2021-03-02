@@ -110,7 +110,6 @@ class TimeSlotGenerationService
           ubs_id: options.ubs_id,
           start: appointment_start,
           end: appointment_end,
-          active: true,
           patient_id: nil
         }.with_indifferent_access)
       end

@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-12">
-    <% if !@appointment.active %>
+    <% if !@appointment.active? %>
       <h3>Agendamento Cancelado</h3>
     <% elsif @appointment.check_in.present? %>
       <h3>Check-in Realizado</h3>
@@ -13,7 +13,7 @@
 <div class="card">
   <div class="card-header" style="font-size: 1.5rem;">
     <b>
-      <% if @appointment.active %>
+      <% if @appointment.active? %>
         <%= ApplicationHelper.humanize_datetime(@appointment.start) %>
       <% else %>
         <del> <%= ApplicationHelper.humanize_datetime(@appointment.start) %> </del>
@@ -24,7 +24,7 @@
     <div class="patient-name"> <%= @patient[:name] %> </div>
     <% if @appointment.check_in.present? %>
       <i class="fa fa-check-circle icons" aria-hidden="true" style="color: green;"></i>
-    <% elsif !@appointment.active %>
+    <% elsif !@appointment.active? %>
       <i class="fa fa-times-circle icons" aria-hidden="true" style="color: red;"></i>
     <% end %>
 
@@ -36,7 +36,7 @@
     </p>
 
     <p>
-      <% if @appointment.active %>
+      <% if @appointment.active? %>
         <% if @appointment.check_in.present? %>
           <span class="badge badge-pill badge-success pills-info" data-cy="checkInOkTag">Check-in OK</span>
         <% else %>
@@ -55,7 +55,7 @@
 </div>
 
 <div class="buttons-details">
-  <% if @appointment.active && @appointment.check_in.nil? %>
+  <% if @appointment.active? && @appointment.check_in.nil? %>
     <div class="row text-center">
       <div class="col-md-12">
         <% if @appointment.in_allowed_check_in_window?  %>

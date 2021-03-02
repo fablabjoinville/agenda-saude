@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_14_133154) do
+ActiveRecord::Schema.define(version: 2021_03_02_145723) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -18,7 +18,6 @@ ActiveRecord::Schema.define(version: 2021_02_14_133154) do
   create_table "appointments", force: :cascade do |t|
     t.datetime "start"
     t.datetime "end"
-    t.boolean "active"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "ubs_id"
@@ -28,6 +27,7 @@ ActiveRecord::Schema.define(version: 2021_02_14_133154) do
     t.boolean "second_dose", default: false
     t.string "suspend_reason"
     t.string "vaccine_name"
+    t.integer "status", default: 0
     t.index ["ubs_id"], name: "index_appointments_on_ubs_id"
   end
 

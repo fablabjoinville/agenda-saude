@@ -34,7 +34,7 @@
             <td><b><%= appointment[:start].strftime("%Hh%M") %></b></td>
             <td><%= appointment[:name] %></td>
             <td data-cy="checkInPatientCpf"><%= ApplicationHelper.humanize_cpf(appointment[:cpf]) %></td>
-            <% if !appointment[:active] %>
+            <% if appointment[:status] == :suspended %>
               <td><a class="btn btn-danger" href=<%= ubs_patient_checkin_path(id: appointment[:id]) %> >Cancelado</a></td>
             <% elsif appointment[:start] < Time.zone.now.end_of_day %>
               <td><a class="btn btn-success" href=<%= ubs_patient_checkin_path(id: appointment[:id]) %> data-cy="patientCheckIn">Check-In</a></td>

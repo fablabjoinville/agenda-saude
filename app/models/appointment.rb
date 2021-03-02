@@ -12,8 +12,10 @@ class Appointment < ApplicationRecord
 
   scope :futures, -> { where('start > ?', Time.current) }
 
-  def active?
-    active == true
+  enum status: { active: 0, suspended: 1, no_show: 2 }
+
+  def past?
+    start.to_date < Time.zone.today
   end
 
   def in_allowed_check_in_window?

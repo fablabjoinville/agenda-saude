@@ -15,7 +15,7 @@
         </thead>
         <tbody>
           <% @appointments.each do |appointment| %>
-            <% if appointment.active %>
+            <% if appointment.active? %>
               <tr data-cy="appointment">
                 <th scope="row"><%= appointment.start.strftime("%d/%m/%Y -- %H:%M") %></th>
                 <td><a href=<%= "/patients/#{appointment.patient_id}" %>><%= find_appointment_patient(appointment.patient_id).name %></a></td>

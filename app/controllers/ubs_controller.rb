@@ -181,33 +181,30 @@ class UbsController < UserSessionController
   def suspend_appointment
     appointment = @ubs.appointments.find(params[:id])
 
-    appointment.update(active: false, suspend_reason: params[:reason])
+    appointment.update(status: :suspended, suspend_reason: params[:reason])
 
     redirect_to ubs_patient_checkin_path(ubs_id: @ubs.id, id: appointment.id)
   end
 
   def activate_appointment
     appointment = @ubs.appointments.find(params[:id])
-
-    appointment.update(active: true)
+    appointment.active!
 
     redirect_to ubs_index_path
   end
 
   def cancel_all_future_appointments
     appointments = future_appointments
-
-    appointments.update_all(active: false)
+    appointments.update_all(status: :suspended)
 
     redirect_to ubs_index_path
   end
 
   def activate_all_future_appointments
     appointments = @ubs.appointments.where(
-      'start >= ? AND active = ?', Time.zone.now - @ubs.slot_interval_minutes * 60, false
+      'start >= ? AND status = 1', Time.zone.now - @ubs.slot_interval_minutes * 60
     )
-
-    appointments.update_all(active: true)
+    appointments.update_all(status: :active)
 
     redirect_to ubs_index_path
   end
@@ -241,7 +238,7 @@ class UbsController < UserSessionController
         cpf: patient.cpf,
         start: appointment.start,
         time_delta: (appointment[:start] - Time.zone.now).abs,
-        active: appointment.active
+        status: appointment.status
       }
     end
 
@@ -252,7 +249,7 @@ class UbsController < UserSessionController
 
   def active_future_appointments
     @future_appointments = @ubs.appointments.where(
-      'start >= ? AND active = ?', Time.zone.now, true
+      'start >= ? AND status = 0', Time.zone.now
     )
   end
 
