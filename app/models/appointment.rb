@@ -1,6 +1,7 @@
 class Appointment < ApplicationRecord
   belongs_to :ubs
   belongs_to :patient, optional: true
+  belongs_to :group, optional: true
 
   SLOTS_WINDOW_IN_DAYS = ENV['SLOTS_WINDOW_IN_DAYS']&.to_i || 3
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_14_133154) do
+ActiveRecord::Schema.define(version: 2021_03_05_141802) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,10 @@ ActiveRecord::Schema.define(version: 2021_02_14_133154) do
     t.boolean "second_dose", default: false
     t.string "suspend_reason"
     t.string "vaccine_name"
+    t.bigint "group_id"
+    t.integer "min_age", default: 0
+    t.boolean "commorbidity", default: false
+    t.index ["group_id"], name: "index_appointments_on_group_id"
     t.index ["ubs_id"], name: "index_appointments_on_ubs_id"
   end
 
@@ -131,6 +135,7 @@ ActiveRecord::Schema.define(version: 2021_02_14_133154) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "appointments", "groups"
   add_foreign_key "appointments", "ubs"
   add_foreign_key "patients", "appointments", column: "last_appointment_id"
   add_foreign_key "patients", "ubs", column: "main_ubs_id"

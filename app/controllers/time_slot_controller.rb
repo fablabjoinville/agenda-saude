@@ -76,7 +76,7 @@ class TimeSlotController < PatientSessionController
         next unless appointments.exists?
 
         appointments.each do |appointment|
-          slots << { slot_start: appointment.start, slot_end: appointment.end }
+          slots << { slot_start: appointment.start, slot_end: appointment.end, group_name: appointment.group&.name, min_age: appointment.min_age, commorbidity: appointment.commorbidity }
         end
 
         @time_slots[ubs] = slots.uniq
