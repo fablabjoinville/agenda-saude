@@ -40,9 +40,11 @@ class Patient < ApplicationRecord
     active_appointments.last
   end
 
-  def can_schedule?
+  def can_see_appointment?
     return true if has_future_appointments?
+  end
 
+  def can_schedule?
     CONDITIONS.values.any? do |condition|
       condition.call(self)
     end

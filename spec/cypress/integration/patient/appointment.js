@@ -38,12 +38,6 @@ describe('patient appointment flow', () => {
         cy.visit('/')
       })
 
-      it('replace appointment', () => {
-        cy.createOrReplaceAppointment()
-
-        cy.get('[data-cy=currentAppointmentText]').should('exist')
-      })
-
       it('cancel appointment and renders not allowed', () => {
         cy.get('[data-cy=cancelAppointmentButton]').click()
         cy.get('[data-cy=patientNotAllowedText]').should('exist')
