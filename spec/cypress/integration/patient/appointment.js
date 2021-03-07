@@ -49,4 +49,16 @@ describe('patient appointment flow', () => {
       cy.get('[data-cy=noAppointmentYetText]').should('exist')
     })
   })
+
+  context('when patient is already vaccineted', () => {
+
+    beforeEach(()=>{
+      cy.get('[data-cy=logoutButton]').click()
+      cy.loginAsPatient('86849031023')
+    })
+
+    it('send to page with vaccination information ', () => {
+      cy.get('[data-cy=vaccinetedPatientText]').should('exist')
+    })
+  })
 })
