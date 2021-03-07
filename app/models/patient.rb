@@ -40,6 +40,10 @@ class Patient < ApplicationRecord
     active_appointments.last
   end
 
+  def first_appointment
+    active_appointments.first
+  end
+
   def can_schedule?
     CONDITIONS.values.any? do |condition|
       condition.call(self)
