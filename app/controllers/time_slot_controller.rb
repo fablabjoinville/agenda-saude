@@ -2,42 +2,41 @@ require_relative './../helpers/time_slot_helper'
 # include TimeSlotHelper
 
 class TimeSlotController < PatientSessionController
-
   before_action :render_patient_not_allowed
 
-  SLOTS_WINDOW_IN_DAYS = 3
+  SLOTS_WINDOW_IN_DAYS = ENV['SLOTS_WINDOW_IN_DAYS']&.to_i || 3
 
   def schedule
     @ubs = Ubs.find(schedule_params[:ubs_id])
     start_time = Time.parse(schedule_params[:start_time])
 
-    @patient = Patient.find(current_patient.id)
-    return render 'patients/not_allowed' unless @patient.can_schedule?
+    result, data = appointment_scheduler.schedule(
+      raw_start_time: schedule_params[:start_time],
+      ubs: @ubs,
+      patient: current_patient
+    )
 
-    Appointment.transaction do
-      unless Appointment.where(start: start_time, ubs: @ubs, patient_id: nil).exists?
-        flash[:alert] = 'Opa! O horário foi reservado enquanto você escolhia, tente outro!'
-        redirect_to time_slot_path
-
-        return
-      end
-
-      Appointment.where(patient_id: current_patient.id).futures.each do |appointment|
-        appointment.update(patient_id: nil)
-      end
-
-      @appointment = Appointment.where(start: start_time, ubs: @ubs, patient_id: nil).first
-
-      return render json: @appointment.errors unless @appointment.update!(
-        patient_id: current_patient.id,
-        second_dose: current_patient.last_appointment&.second_dose,
-        vaccine_name: current_patient.last_appointment&.vaccine_name
+    case result
+    when :inactive_ubs
+      render_error_in_time_slots_page(
+        'Unidade de atendimento desativada. Tente novamente mais tarde.'
       )
+    when :schedule_conditions_unmet
+      render 'patients/not_allowed'
+    when :invalid_schedule_time
+      notify_invalid_schedule_attempt
+      render_error_in_time_slots_page('Data de agendamento inválida.')
+    when :all_slots_taken
+      render_error_in_time_slots_page(
+        'Opa! O horário foi reservado enquanto você escolhia, tente outro!'
+      )
+    when :success
+      @appointment = data
+      render 'patients/successfull_schedule'
+    else
+      notify_unexpected_result(result: result, data: data, context: context)
+      render_error_in_time_slots_page('Ocorreu um erro. Por favor, tente novamente.')
     end
-
-    @current_patient.update(last_appointment: @appointment)
-
-    render 'patients/successfull_schedule'
   end
 
   def cancel
@@ -86,6 +85,34 @@ class TimeSlotController < PatientSessionController
   end
 
   private
+
+  def render_error_in_time_slots_page(message)
+    flash[:alert] = message
+    redirect_to time_slot_path
+  end
+
+  def context
+    params.merge(patient_id: current_patient.id)
+  end
+
+  def notify_invalid_schedule_attempt
+    SlackNotifier.warn(
+      "Tentativa de agendamento fora da janela permitida.\n" \
+      "Contexto: `#{context.to_json}`"
+    )
+  end
+
+  def notify_unexpected_result(data)
+    SlackNotifier.warn(
+      "Agendamento com resultado inesperado! Dados: `#{data.to_json}`"
+    )
+  end
+
+  def appointment_scheduler
+    @appointment_scheduler ||= AppointmentScheduler.new(
+      max_schedule_time_ahead: SLOTS_WINDOW_IN_DAYS
+    )
+  end
 
   def render_patient_not_allowed
     return render 'patients/not_allowed' unless current_patient.can_schedule?

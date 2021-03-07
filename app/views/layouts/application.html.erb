@@ -27,7 +27,7 @@
 
   <body>
     <nav class="navbar navbar-expand-lg navbar-default bg-primary mb-5">
-      <a class="navbar-brand mr-auto" href="http://joinville.sc.gov.br/"><img src=<%= image_path('logo.png') %> class="navbar__logo"></a>
+      <a class="navbar-brand mr-auto" href="http://joinville.sc.gov.br/", target='blank'><img src=<%= image_path('logo.png') %> class="navbar__logo"></a>
       <% if !user_signed_in? && !patient_signed_in? %>
         <button class="navbar-toggler p-1" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon">
@@ -35,16 +35,16 @@
           </span>
         </button>
         <div class="collapse navbar-collapse ml-auto flex-shrink-1 flex-grow-0" id="navbarTogglerDemo01">
-          <%= button_to new_user_session_path, class: "btn btn-primary w-100 mt-2", type: "button" do %>
+          <%= button_to new_user_session_path, class: "btn btn-primary w-100 mt-2", data: { cy: "userLoginButton"}, type: "button" do %>
             Entrar como Operador
           <% end %>
         </div>
       <% elsif current_user %>
-        <%= button_to destroy_user_session_path, method: :delete, class: "btn btn-primary", type: "button" do %>
+        <%= button_to destroy_user_session_path, method: :delete, class: "btn btn-primary", data: { cy: "ubsLogoutButton" }, type: "button" do %>
           Sair
         <% end %>
       <% else %>
-        <%= button_to destroy_patient_session_path, method: :delete, class: "btn btn-primary", data: { cy: "logoutButton"}, type: "button" do %>
+        <%= button_to destroy_patient_session_path, method: :delete, class: "btn btn-primary", data: { cy: "logoutButton" }, type: "button" do %>
           Sair
         <% end %>
       <% end %>

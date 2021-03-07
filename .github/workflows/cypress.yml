@@ -1,0 +1,67 @@
+name: Cypress
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - '**'
+
+jobs:
+  cypress-run:
+    name: Cypress
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:12
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: agendamento_covid_test
+          POSTGRES_PASSWORD: postgres
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.6.5
+          bundler-cache: true
+
+      - name: Setup test database
+        env:
+          RAILS_ENV: test
+          POSTGRESQL_HOST: localhost
+          POSTGRESQL_PASSWORD: postgres
+        run: |
+          bundle exec rake db:create db:migrate
+
+      - name: Run Cypress
+        uses: cypress-io/github-action@v2
+        env:
+          PGPORT: ${{ job.services.postgres.ports[5432] }}
+          POSTGRESQL_PASSWORD: postgres
+          POSTGRESQL_HOST: localhost
+          RAILS_ENV: test
+        with:
+          browser: chrome
+          project: ./spec
+          start: bundle exec rails server -e test
+
+      - name: Upload Cypress' artifacts
+        uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: cypress-artifacts
+          path: |
+            spec/cypress/screenshots/
+            spec/cypress/videos/

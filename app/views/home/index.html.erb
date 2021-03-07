@@ -10,37 +10,35 @@
   </div>
 </div>
 
-<table class="table table-bordered center", style="width: 70%; margin-top: 10px; margin-left: auto; margin-right: auto;">
+<table class="table table-bordered center", style="width: 100%; margin-top: 10px; margin-left: auto; margin-right: auto;">
   <thead>
     <tr>
-      <th scope="col">GRUPOS QUE PODEM SE CADASTRAR</th>
-      <th scope="col">GRUPOS QUE PODEM SE AGENDAR</th>
+      <th scope="col" style="width: 50%">GRUPOS QUE PODEM SE CADASTRAR</th>
+      <th scope="col" style="width: 50%">GRUPOS QUE PODEM AGENDAR</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
-        <i class="fa fa-circle" aria-hidden="true" style="color: green;"></i> População com 60 anos ou mais <hr />
-        <i class="fa fa-circle" aria-hidden="true" style="color: green;"></i> Trabalhadores da Saúde de todas as idades <hr />
+        <i class="fa fa-circle" aria-hidden="true" style="color: skyblue;"></i> População com 60 anos ou mais <br /> <br />
+        <i class="fa fa-circle" aria-hidden="true" style="color: skyblue;"></i> Trabalhadores da Saúde de qualquer idade <br />
       </td>
       <td>
         <% Patient::CONDITIONS.each do |name, _| %>
-          <i class="fa fa-check-circle" aria-hidden="true" style="color: green;"></i> <%= name %><br>
-          <hr />
+          <br />
+          <i class="fa fa-check-circle" aria-hidden="true" style="color: green;"></i> <%= name %>
+          <br />
         <% end %>
       </td>
     </tr>
       <th scope="col">STATUS DO AGENDAMENTO</th>
       <td>
-        <% if Ubs.where(active: true).blank? %>
-          <i class="fa fa-circle" aria-hidden="true" style="color: #FA6800;"></i> Aguardando novas doses
-        <% elsif Appointment.where('patient_id IS NULL AND start > ?', Time.zone.now).count > 0 %>
-          <i class="fa fa-circle" aria-hidden="true" style="color: green;"></i> Disponível
+        <% unless @is_scheduling_available %>
+          <i class="fa fa-circle" aria-hidden="true" style="color: red;"></i> Aguardando novas doses
         <% else %>
-          <i class="fa fa-circle" aria-hidden="true" style="color: red;"></i> Sem Horário Disponível
+          <i class="fa fa-circle" aria-hidden="true" style="color: green;"></i> Disponível
         <% end %>
       </td>
-    <tr>
     </tr>
   </tbody>
 </table>
@@ -68,6 +66,11 @@
 
 <h2 class="lp-header">Dúvidas frequentes sobre a vacinação</h2>
 
+<p><strong><a href='https://www.joinville.sc.gov.br/vacina-do-coronavirus-em-joinville-perguntas-e-respostas/', target='blank'>Consulte aqui</a></strong> perguntas e respostas referente à aplicação da vacina contra o coronavírus.</p>
+
+<p>Confira o que pode e o que não pode em Joinville com base nas medidas para combater a pandemia de Covid-19 <strong><a href='https://www.joinville.sc.gov.br/medidas-vigentes-de-enfrentamento-do-coronavirus-em-joinville/', target='blank'>clicando aqui</a></strong>.</p>
+
+
 <h4 class="lp-header">Quem não pode tomar a vacina</h4>
 <ul>
   <li>Menores de 18 anos;</li>
@@ -86,12 +89,14 @@
     <li>Documento oficial de identificação com foto.</li>
     <li>Crachá funcional ou holerite/folha de pagamento ou declaração que comprove o vínculo com o serviço de saúde no Município de Joinville
      (em caso de terceirizados e estagiários, a declaração deve ser emitida pelo serviço de saúde contratante, para comprovar o vínculo).</li>
-    <li>Se trabalhador atuante em serviços de saúde no Município de Joinville com comorbidades estabelecidas pelo Programa Nacional de Imunização (PNI), 
+    <li>Se trabalhador atuante em serviços de saúde no Município de Joinville com comorbidades estabelecidas pelo Programa Nacional de Imunização (PNI),
       apresentar  atestado, declaração, laudo ou receita médica que comprove a condição clínica.</li>
   </ol>
   <li>Com os documentos, comparecer à Central de Imunização de Joinville, no Centreventos Cau Hansen, na data e horário agendados (estar no local com 15 minutos de antecedência).</li>
 </ol>
-<p>Mais informações sobre a vacinação contra a Covid-19 no Município de Joinville estão disponíveis na página <a href='https://www.joinville.sc.gov.br/coronavirus/'>Coronavírus em Joinville</a>.</p>
+<p>Mais informações sobre a vacinação contra a Covid-19 no Município de Joinville estão disponíveis na página <a href='https://www.joinville.sc.gov.br/coronavirus/', target='blank'>Coronavírus em Joinville</a>.</p>
+
+<p><b>Ligue/Web Saúde</b>: <a href='https://api.whatsapp.com/send?phone=554734815165', target='blank'>(47) 3481-5165</a> - Segunda a sexta-feira - 07:00–20:00, exceto feriados e pontos facultativos.</p>
 
 
 <h4 class="lp-header">Como funcionará a vacinação na Central de Imunização do Centreventos?</h4>
@@ -113,70 +118,6 @@
 <h4 class="lp-header">Quanto tempo leva?</h4>
 <p>O antedimento completo, a partir da recepção no local até a imunização, pode levar aproximadamente 40 minutos</p>
 
-<h4 class="lp-header">Quando a vacina estará disponível para meu grupo?</h4>
-<table class="table table-bordered">
-  <tbody>
-    <tr>
-      <td>1° Grupo</td>
-      <td>
-        <ul>
-          <li>Trabalhadores da Saúde no geral com 60 anos ou mais (agendamento exclusivo <b>PELO SITE</b>);</li>
-        </ul>
-      </td>
-      <td>A partir do dia 05/02/2021</td>
-    </tr>
-    <tr>
-      <td>2° Grupo</td>
-      <td>
-        <ul>
-          <li>Trabalhadores de Saúde no geral;</li>
-          <li>Pessoas com 75 anos ou mais;</li>
-          <li>Pessoas com 60 anos ou mais;</li>
-        </ul>
-      </td>
-      <td>A definir - aguardando recebimento de doses</td>
-    </tr>
-    <tr>
-      <td>3° Grupo</td>
-      <td>
-        <ul>
-          <li>Pessoas que apresentam alguma comorbidade:</li>
-          <ul>
-          <li>Diabetes mellitus;</li>
-          <li>Hipertensão;</li>
-          <li>Doença pulmonar obstrutiva crônica;</li>
-          <li>Doença renal;</li>
-          <li>Doenças cardiovasculares e cerebrovasculares;</li>
-          <li>Indivíduos transplantados de órgão sólido;</li>
-          <li>Anemia falciforme;</li>
-          <li>Câncer;</li>
-          <li>Obesidade grave (IMC≥40).</li>
-        </ul>
-        </ul>
-      </td>
-      <td>A definir quando houver vacina.</td>
-    </tr>
-    <tr>
-      <td>4° Grupo</td>
-      <td>
-        <ul>
-          <li>Professores;</li>
-          <li>Profissionais das forças de segurança e salvamento e funcionários do sistema prisional.</li>
-        </ul>
-      </td>
-      <td>A definir quando houver vacina.</td>
-    </tr>
-    <tr>
-      <td>5° Grupo</td>
-      <td>
-        <ul>
-          <li>Demais grupos da população</li>
-        </ul>
-      </td>
-      <td>A definir quando houver vacina.</td>
-    </tr>
-  </tbody>
-</table>
 
 <h2 class="lp-header">Sobre estas informações</h2>
 <h4 class="lp-header">Unidade(s) responsável(is)</h4>
@@ -190,7 +131,6 @@
 
 <h2 class="lp-header">Manifestar-se</h2>
 <p><a href="https://www.joinville.sc.gov.br/servicos/registrar-manifestacao-a-ouvidoria/">Registrar manifestação</a> para reclamação, sugestão ou elogio sobre estas informações. Para informações adicionais, <a href="https://www.joinville.sc.gov.br/servicos/registrar-pedido-de-informacao/">registrar pedido de informação</a>.</p>
-<p>Ligue-Saúde: (47) 3481-5165 - Segunda a sexta-feira - 07:00–20:00, exceto feriados e pontos facultativos.</p>
 
 
 

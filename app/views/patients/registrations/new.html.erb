@@ -1,6 +1,6 @@
 <% if flash[:alert].present? %>
    <% # Do not remove this flatten stuff %>
-   <% [flash[:alert]].flatten(0).each do |msg| %> 
+   <% [flash[:alert]].flatten(0).each do |msg| %>
     <div class="alert alert-danger">
       <%= msg %>
     </div>
@@ -16,14 +16,6 @@
     <div class="col">
       <h2 data-cy="signUpText">Cadastro</h2>
     </div>
-  </div>
-
-  <div class="alert alert-info alert-dismissable mb-5 mt-5" role="alert">
-    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-    <h6 class="mb-0" style="text-align: center;">
-      <strong>AGENDAMENTO</strong>: Por hora, só trabalhadores da saúde com 60 anos ou mais que estão atuando na área no momento podem agendar a vacinação. A quantidade de vagas para o agendamento depende das doses entregues ao município. Quem não cumprir a regra e agendar horário não receberá o imunizante. <br/><br/>
-      <strong>CADASTRO</strong>: Neste momento, apenas trabalhadores de Saúde de todas as idades ativos em Joinville e quem tem 60 anos ou mais devem fazer o cadastro. Se você não se encaixa nestes grupos, aguarde.
-    </h6>
   </div>
 
   <h3 class="text-center">Dados Pessoais</h3>
@@ -90,7 +82,6 @@
 
       <div class="row" hidden=true id="alert-health-worker" style="color: red;">
         <strong>Atenção:</strong> Para receber a vacina, será necessário apresentar a comprovação de vínculo ativo em algum estabelecimento de saúde na cidade de Joinville e/ou a carteira do conselho regional de classe.
-
       </div>
     </div>
 

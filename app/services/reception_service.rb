@@ -4,29 +4,28 @@ class ReceptionService
     'astra_zeneca' => 13.weeks
   }.freeze
 
-  def initialize(patient)
-    @patient = patient
+  def initialize(appointment)
+    @appointment = appointment
+    @patient = appointment.patient
   end
 
   def check_in
-    current_appointment.update!(check_in: Time.zone.now)
+    @appointment.update!(check_in: Time.zone.now)
   end
 
   def check_out(vaccine_name)
-    current_appointment.update!(check_out: Time.zone.now, vaccine_name: vaccine_name)
+    Appointment.transaction do
+      @appointment.update!(check_out: Time.zone.now, vaccine_name: vaccine_name)
 
-    create_second_dose_appointment(vaccine_name) unless current_appointment.second_dose?
+      create_second_dose_appointment(vaccine_name) unless @appointment.second_dose?
+    end
   end
 
   private
 
-  def current_appointment
-    @patient.last_appointment
-  end
-
   def create_second_dose_appointment(vaccine_name)
-    next_appointment_start = current_appointment.start + VACCINES_SECOND_DOSE_INTERVAL[vaccine_name]
-    next_appointment_end = next_appointment_start + current_appointment.ubs.slot_interval_minutes.minutes
+    next_appointment_start = @appointment.start + VACCINES_SECOND_DOSE_INTERVAL[vaccine_name]
+    next_appointment_end = next_appointment_start + @appointment.ubs.slot_interval_minutes.minutes
 
     next_appointment = Appointment.create!(
       start: next_appointment_start,
@@ -35,9 +34,9 @@ class ReceptionService
       second_dose: true,
       active: true,
       vaccine_name: vaccine_name,
-      ubs: current_appointment.ubs
+      ubs: @appointment.ubs
     )
 
-    @patient.update(last_appointment: next_appointment)
+    @patient.update!(last_appointment: next_appointment)
   end
 end

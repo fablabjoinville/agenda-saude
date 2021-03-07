@@ -48,3 +48,7 @@ yarn-debug.log*
 # Database
 /.env.db
 dump-*.sql*
+
+# Cypress logs
+spec/cypress/screenshots/
+spec/cypress/videos/
