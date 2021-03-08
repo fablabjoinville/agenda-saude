@@ -54,8 +54,8 @@ class TimeSlotController < PatientSessionController
   def index
     @appointment = current_patient.current_appointment
     @ubs = @appointment.try(:ubs)
-    
-    vaccinated? if @appointment.present?
+
+    return render_vaccinated if vaccinated?
 
     @gap_in_days = slot_params[:gap_in_days].to_i || 0
     @current_day = Time.zone.now + @gap_in_days.days
@@ -89,10 +89,7 @@ class TimeSlotController < PatientSessionController
   private
 
   def vaccinated?
-    if @appointment.second_dose && @appointment.check_out.present?
-      @first_appointment = current_patient.first_appointment
-      render 'patients/vaccineted'
-    end
+    @appointment&.second_dose && @appointment&.check_out.present?
   end
 
   def render_error_in_time_slots_page(message)
@@ -125,6 +122,12 @@ class TimeSlotController < PatientSessionController
 
   def render_patient_not_allowed
     return render 'patients/not_allowed' unless current_patient.can_schedule?
+  end
+
+  def render_vaccinated
+    @first_appointment = current_patient.first_appointment
+
+    render 'patients/vaccineted'
   end
 
   def slot_params
