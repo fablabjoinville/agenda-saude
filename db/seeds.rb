@@ -232,6 +232,7 @@ cpfs = %w[
   patient.birth_date = '1920-06-24'
   patient.phone = '(47) 91234-5678'
   patient.neighborhood = 'América'
+  patient.groups << Group.find_by(name: 'Trabalhador(a) da Saúde')
   patient.save!
 
   appointment = Appointment.where(patient_id: nil, start: range).order('RANDOM()').first
