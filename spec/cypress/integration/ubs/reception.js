@@ -12,7 +12,7 @@ describe('reception flow', () => {
     cy.loginAsUbs(name, password)
   })
 
-  context('patient has appointment today', () => {
+  context('patient has first dose appointment today', () => {
     beforeEach(() => {
       cy.get('[data-cy=checkInSearchTab]').click()
       cy.get('[data-cy=searchPatientByNameInputField]').type('Marvin10')
@@ -43,6 +43,47 @@ describe('reception flow', () => {
       cy.get('[data-cy=ubsLogoutButton]').click()
       cy.loginAsPatient(cpf)
       cy.get('[data-cy=appliedVaccineName]').should('contain', 'Coronavac')
+    })
+  })
+
+  context('patient has second dose appointment today', () => {
+    const cpf = '71143168011'
+
+    beforeEach(() => {
+      cy.appScenario('second_dose_patient', { cpf: cpf });
+      cy.get('[data-cy=checkInSearchTab]').click()
+      cy.get('[data-cy=searchPatientByNameInputField]').type('second dose marvin')
+      cy.get('[data-cy=submitSearchButton]').click()
+    })
+
+    it('finds and vaccinates the patient', () => {
+      cy.get('[data-cy=checkInPatientCpf]').should('contain', '711.431.680-11')
+
+      cy.get('[data-cy=patientCheckIn]').click()
+      cy.get('[data-cy=executePatientCheckIn]').click()
+
+      cy.get('[data-cy=checkInOkTag]').should('exist')
+      cy.get('[data-cy=goBackToCheckInSearchButton]').click()
+
+      cy.get('[data-cy=checkOutListTab]').click()
+      cy.get('[data-cy=patientCheckOut]').click()
+
+      cy.get('[data-cy=secondDoseTag]').should('exist')
+      cy.get('[data-cy=vaccineNameTag]').should('contain', 'Coronavac')
+      
+      cy.get('[data-cy=executePatientCheckOut]').click()
+
+      cy.get('[data-cy=secondDoseDone]').should('exist')
+      cy.get('[data-cy=checkoutTag]').should('exist')
+      cy.get('[data-cy=secondDoseTag]').should('exist') 
+      cy.get('[data-cy=vaccineNameTag]').should('contain', 'Coronavac')
+
+      cy.get('[data-cy=goBackToCheckOutListButton]').click()
+      cy.get('[data-cy=checkOutPatientNotFoundText]').should('exist')
+
+      cy.get('[data-cy=ubsLogoutButton]').click()
+      cy.loginAsPatient(cpf)
+      cy.get('[data-cy=vaccinetedPatientText]').should('exist')
     })
   })
 
