@@ -23,7 +23,7 @@
     </div>
   </div>
   <p class="small patient-muted">* Lembre-se de instruir a pessoa para a data e hora da 2º dose da vacina.</p>
-<% elsif @appointment.second_dose? && @appointment.check_out.present? %>
+<% elsif @patient[:vaccinated] %>
   <div class="alert alert-info alert-dismissable", data-cy="alertMessage" role="alert">
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
     <div class="row" style="font-size: x-large;">

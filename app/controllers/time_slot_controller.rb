@@ -55,7 +55,7 @@ class TimeSlotController < PatientSessionController
     @appointment = current_patient.current_appointment
     @ubs = @appointment.try(:ubs)
 
-    return render_vaccinated if vaccinated?
+    return render_vaccinated if current_patient.vaccinated?
 
     @gap_in_days = slot_params[:gap_in_days].to_i || 0
     @current_day = Time.zone.now + @gap_in_days.days
@@ -87,10 +87,6 @@ class TimeSlotController < PatientSessionController
   end
 
   private
-
-  def vaccinated?
-    @appointment&.second_dose && @appointment&.check_out.present?
-  end
 
   def render_error_in_time_slots_page(message)
     flash[:alert] = message

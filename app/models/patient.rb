@@ -100,6 +100,10 @@ class Patient < ApplicationRecord
     ((Time.zone.now - birth_date.to_time) / 1.year.seconds).floor
   end
 
+  def vaccinated?
+    last_appointment&.second_dose && last_appointment&.check_out.present?
+  end
+
   private
 
   def valid_birth_date
