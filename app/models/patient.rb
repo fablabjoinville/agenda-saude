@@ -37,7 +37,7 @@ class Patient < ApplicationRecord
   end
 
   def first_appointment
-    active_appointments.first
+    appointments.where.not(check_out: nil).order(:start).first
   end
 
   def can_schedule?
