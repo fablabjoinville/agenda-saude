@@ -30,8 +30,8 @@ class AppointmentScheduler
 
       appointment.update!(
         patient_id: patient.id,
-        second_dose: patient.appointments.order(:start).select(&:active?).last&.check_out.present?,
-        vaccine_name: patient.appointments.order(:start).select(&:active?).last&.vaccine_name
+        second_dose: patient.current_appointment&.check_out.present?,
+        vaccine_name: patient.current_appointment&.vaccine_name
       )
 
       patient.update!(last_appointment: appointment)
