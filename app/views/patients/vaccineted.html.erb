@@ -1,0 +1,68 @@
+<%= render :layout => '/shared/panel' do %>
+  <div class="container">
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col" data-cy="vaccinetedPatientText">
+            <h4>Paciente Vacinado: <strong> <%= @appointment.patient.name %></strong> </h4>
+            <h5><strong>Vacina: </strong><%= @appointment.vaccine_name.capitalize %> </h5>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="row">
+              <div class="col">
+                <strong>Primeira Dose </strong>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <strong>Data: </strong><%= ApplicationHelper.humanize_datetime(@first_appointment.check_out) %>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <strong>Unidade: </strong><%= @ubs.name %>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <strong>Endereço: </strong><%= @ubs.address %>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="row">
+              <div class="col">
+                <strong>Segunda Dose </strong>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <strong>Data: </strong><%= ApplicationHelper.humanize_datetime(@appointment.check_out) %>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <strong>Unidade: </strong><%= @ubs.name %>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <strong>Endereço: </strong><%= @ubs.address %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col">
+              <%= button_to "patients/edit", class: "btn btn-primary btn-block", data: { cy: "editPatientButton" }, method: :get do %>
+                Alterar meus dados
+              <% end %>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+<% end %>
+
