@@ -5,6 +5,25 @@ describe('patient appointment flow', () => {
     cy.visit('/')
   })
 
+  context('when patient is a second dose patient', () => {
+    beforeEach(() => {
+      cy.appScenario('second_dose_patient', { cpf: cpf });
+      
+      cy.visit('/')
+      
+      cy.loginAsPatient(cpf)
+    })
+    
+    it('can cancel and reeschedule same vaccine', () => {
+      cy.get('[data-cy=appliedVaccineName]').should('contain', 'Coronavac')
+
+      cy.get('[data-cy=cancelAppointmentButton]').click()
+      cy.createOrReplaceAppointment()
+
+      cy.get('[data-cy=appliedVaccineName]').should('contain', 'Coronavac')
+    })
+  })
+
   context('when patient is not already vaccineted', () => {
     beforeEach(() => {
       cy.visit('/')

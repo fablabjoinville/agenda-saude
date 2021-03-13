@@ -52,7 +52,7 @@ class TimeSlotController < PatientSessionController
   end
 
   def index
-    @appointment = current_patient.current_appointment
+    @appointment = current_patient.appointments.order(:start).select(&:active?).last
     @ubs = @appointment.try(:ubs)
 
     @patient_can_schedule = current_patient.can_schedule?
