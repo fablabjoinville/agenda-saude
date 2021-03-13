@@ -4,8 +4,8 @@ class Patient < ApplicationRecord
   MAX_LOGIN_ATTEMPTS = 2
 
   CONDITIONS = {
-    'População com 80 anos ou mais' => ->(patient) { patient.age >= 80 },
-    # 'Trabalhador(a) da Saúde que possua vínculo ativo em alguma unidade registrada no CNES' => ->(patient) { patient.in_group?('Trabalhador(a) da Saúde') },
+    'Trabalhador(a) da Saúde que possua vínculo ativo em alguma unidade registrada no CNES' => ->(patient) { patient.in_group?('Trabalhador(a) da Saúde') },
+    # 'População com 80 anos ou mais' => ->(patient) { patient.age >= 80 },
     # 'Paciente de teste' => ->(patient) { patient.cpf == ENV['ROOT_PATIENT_CPF'] },
     # 'Maiores de 60 anos institucionalizadas' => ->(patient) { patient.age >= 60 && patient.in_group?('Institucionalizado(a)') },
     # 'População Indígena' => ->(patient) { patient.in_group?('Indígena') },
@@ -32,22 +32,28 @@ class Patient < ApplicationRecord
   # TODO: remove `chronic` field from schema
   enum target_audience: [:kid, :elderly, :chronic, :disabled, :pregnant, :postpartum, :teacher, :over_55, :without_target]
 
-  def active_appointments
-    appointments.select(&:active?)
-  end
-
   def current_appointment
-    active_appointments.last
+    appointments.order(:start).select(&:active?).last
   end
 
   def first_appointment
-    active_appointments.first
+    appointments.where.not(check_out: nil).order(:start).first
+  end
+
+  def can_see_appointment?
+    return true if has_future_appointments?
   end
 
   def can_schedule?
     CONDITIONS.values.any? do |condition|
       condition.call(self)
     end
+  end
+
+  def has_future_appointments?
+    appointments
+      .where('start >= ? AND active = TRUE', Time.zone.now)
+      .exists?
   end
 
   def in_group?(name)

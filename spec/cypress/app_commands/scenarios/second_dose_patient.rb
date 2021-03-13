@@ -23,8 +23,8 @@ Appointment.create(
 )
 
 second_appointment = Appointment.create(
-  start: Time.zone.today + 9.hours,
-  end: Time.zone.today + 9.hours + 15.minutes,
+  start: Time.zone.today.end_of_day - 15.minutes,
+  end: Time.zone.today.end_of_day,
   patient_id: patient.id,
   second_dose: true,
   vaccine_name: 'coronavac',

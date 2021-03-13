@@ -5,8 +5,29 @@ describe('patient appointment flow', () => {
     cy.visit('/')
   })
 
+  context('when patient is a second dose patient', () => {
+    beforeEach(() => {
+      cy.appScenario('second_dose_patient', { cpf: cpf });
+      
+      cy.visit('/')
+      
+      cy.loginAsPatient(cpf)
+    })
+    
+    it('can cancel and reeschedule same vaccine', () => {
+      cy.get('[data-cy=appliedVaccineName]').should('contain', 'Coronavac')
+
+      cy.get('[data-cy=cancelAppointmentButton]').click()
+      cy.createOrReplaceAppointment()
+
+      cy.get('[data-cy=appliedVaccineName]').should('contain', 'Coronavac')
+    })
+  })
+
   context('when patient is not already vaccineted', () => {
     beforeEach(() => {
+      cy.visit('/')
+
       cy.appScenario('marvin_son_of_tristeza', { cpf: cpf })
 
       cy.loginAsPatient(cpf)
@@ -32,10 +53,12 @@ describe('patient appointment flow', () => {
     })
 
     context('when has no future appointment scheduled', () => {
-      it('create appointment', () => {
-        cy.createOrReplaceAppointment()
+      context('when patient is allowed', () => {
+        it('create appointment', () => {
+          cy.createOrReplaceAppointment()
 
-        cy.get('[data-cy=currentAppointmentText]').should('exist')
+          cy.get('[data-cy=currentAppointmentText]').should('exist')
+        })
       })
     })
 
@@ -46,6 +69,12 @@ describe('patient appointment flow', () => {
 
       it('has no appointment scheduled', () => {
         cy.get('[data-cy=noAppointmentYetText]').should('exist')
+      })
+
+      it('create appointment', () => {
+        cy.createOrReplaceAppointment()
+
+        cy.get('[data-cy=currentAppointmentText]').should('exist')
       })
     })
   })

@@ -176,7 +176,7 @@ end_of_day_minutes = [600, 620, 640, 660, 680, 700]
     ubs: ubs
   )
 
-  patient.update(last_appointment: second_appointment)
+  patient.update!(last_appointment: second_appointment)
 end
 
 ## TIME SLOTS / APPOINTMENTS ##

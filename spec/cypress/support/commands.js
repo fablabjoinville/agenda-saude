@@ -22,7 +22,7 @@ Cypress.Commands.add('signupPatient', (cpf) => {
 
 Cypress.Commands.add('createOrReplaceAppointment', () => {
   cy.get('[data-cy=ubsTimeSlots]').click()
-  cy.get('.btn-success').last().click()
+  cy.get('.btn-success').first().click()
   cy.get('[data-cy=backButton]').click()
 })
 
