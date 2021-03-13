@@ -32,12 +32,8 @@ class Patient < ApplicationRecord
   # TODO: remove `chronic` field from schema
   enum target_audience: [:kid, :elderly, :chronic, :disabled, :pregnant, :postpartum, :teacher, :over_55, :without_target]
 
-  def active_appointments
-    appointments.select(&:active?)
-  end
-
   def current_appointment
-    active_appointments.last
+    appointments.order(:start).select(&:active?).last
   end
 
   def can_schedule?
