@@ -50,19 +50,6 @@ describe('patient appointment flow', () => {
         cy.get('[data-cy=cancelAppointmentButton]').click()
         cy.get('[data-cy=noAppointmentYetText]').should('exist')
       })
-
-      context('when patient became not allowed', () => {
-        beforeEach(() => {
-          cy.appScenario('young_marvin_son_of_tristeza', { cpf: cpf });
-
-          cy.visit('/')
-        })
-
-        it('cancel appointment and renders not allowed', () => {
-          cy.get('[data-cy=cancelAppointmentButton]').click()
-          cy.get('[data-cy=patientNotAllowedText]').should('exist')
-        })
-      })
     })
 
     context('when has no future appointment scheduled', () => {
@@ -71,18 +58,6 @@ describe('patient appointment flow', () => {
           cy.createOrReplaceAppointment()
 
           cy.get('[data-cy=currentAppointmentText]').should('exist')
-        })
-      })
-
-      context('when patient is not allowed', () => {
-        beforeEach(() => {
-          cy.appScenario('young_marvin_son_of_tristeza', { cpf: cpf });
-
-          cy.visit('/')
-        })
-
-        it('renders not allowed', () => {
-          cy.get('[data-cy=patientNotAllowedText]').should('exist')
         })
       })
     })
@@ -100,18 +75,6 @@ describe('patient appointment flow', () => {
         cy.createOrReplaceAppointment()
 
         cy.get('[data-cy=currentAppointmentText]').should('exist')
-      })
-
-      context('when patient became not allowed', () => {
-        beforeEach(() => {
-          cy.appScenario('young_marvin_son_of_tristeza', { cpf: cpf });
-
-          cy.visit('/')
-        })
-
-        it('renders not allowed', () => {
-          cy.get('[data-cy=patientNotAllowedText]').should('exist')
-        })
       })
     })
   })
