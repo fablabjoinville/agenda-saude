@@ -44,6 +44,10 @@ class Patient < ApplicationRecord
     return true if has_future_appointments?
   end
 
+  def first_appointment
+    active_appointments.first
+  end
+
   def can_schedule?
     CONDITIONS.values.any? do |condition|
       condition.call(self)
@@ -104,6 +108,10 @@ class Patient < ApplicationRecord
 
   def age
     ((Time.zone.now - birth_date.to_time) / 1.year.seconds).floor
+  end
+
+  def vaccinated?
+    last_appointment&.second_dose && last_appointment&.check_out.present?
   end
 
   private

@@ -23,6 +23,15 @@
     </div>
   </div>
   <p class="small patient-muted">* Lembre-se de instruir a pessoa para a data e hora da 2º dose da vacina.</p>
+<% elsif @patient[:vaccinated] %>
+  <div class="alert alert-info alert-dismissable", data-cy="alertMessage" role="alert">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <div class="row" style="font-size: x-large;">
+      <div class="col-12">
+        <b data-cy="secondDoseDone"><%= @patient[:name] %></b> está devidamente imunizada(o) com as duas doses!!
+      </div>
+    </div>
+  </div>
 <% end %>
 
 
@@ -65,12 +74,14 @@
         <div class="col-md-12">
           <p>
             <% if @appointment.active %>
-              <% if @appointment.check_in.present? %>
+              <% if @appointment.check_in.present? && @appointment.check_out.present? %>
+                <span class="badge badge-pill badge-success pills-info" data-cy="checkoutTag">Check-out OK</span>
+              <% elsif @appointment.check_in.present? %>
                 <span class="badge badge-pill badge-success pills-info">Check-in OK</span>
               <% end %>
               <% if @second_dose_appointment.present? %>
                 <% if @appointment.second_dose? %>
-                  <span class="badge badge-pill badge-success pills-info">2ª Dose</span>
+                  <span class="badge badge-pill badge-success pills-info" data-cy="secondDoseTag">2ª Dose</span>
                 <% else %>
                   <span class="badge badge-pill badge-success pills-info" data-cy="secondDoseScheduledTag">2ª Dose AGENDADA</span>
                 <% end %>
@@ -104,10 +115,16 @@
   </div>
 
   <div class="buttons-details">
-    <% if @appointment.active && @appointment.check_in.present? && @appointment.check_out.nil? %>
+    <% if @appointment.active && @appointment.check_in.present? && @appointment.check_out.nil? && !@appointment.second_dose? %>
       <div class="row text-center">
         <div class="col-md-12">
           <%= f.submit "Realizar Check-out", class: "btn btn-success btn-block btn-lg", data: { confirm: 'Confirme para sinalizar que esta pessoa fez o check-out e está pronta para agendar a segunda dose.', cy: 'executePatientCheckOut' } %>
+        </div>
+      </div>
+    <% elsif @appointment.active && @appointment.check_in.present? && @appointment.check_out.nil? && @appointment.second_dose? %>
+      <div class="row text-center">
+        <div class="col-md-12">
+          <%= f.submit "Realizar Check-out", class: "btn btn-success btn-block btn-lg", data: { confirm: 'Confirmar a aplicação da segunda dose.', cy: 'executePatientCheckOut' } %>
         </div>
       </div>
     <% end %>
