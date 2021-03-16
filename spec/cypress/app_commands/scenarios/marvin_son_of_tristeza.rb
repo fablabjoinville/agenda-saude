@@ -8,5 +8,5 @@ patient = Patient.new(
   neighborhood: 'Glória',
   phone: '(47) 91234-5678'
 )
-# patient.groups << Group.find_by(name: 'Trabalhador(a) da Saúde')
+patient.groups << Group.find_by(name: 'Trabalhador(a) da Saúde')
 patient.save!

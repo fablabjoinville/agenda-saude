@@ -55,6 +55,10 @@ class TimeSlotController < PatientSessionController
     @appointment = current_patient.current_appointment
     @ubs = @appointment.try(:ubs)
 
+    @patient_can_schedule = current_patient.can_schedule?
+
+    return render_vaccinated if current_patient.vaccinated?
+
     @gap_in_days = slot_params[:gap_in_days].to_i || 0
     @current_day = Time.zone.now + @gap_in_days.days
 
@@ -115,7 +119,13 @@ class TimeSlotController < PatientSessionController
   end
 
   def render_patient_not_allowed
-    return render 'patients/not_allowed' unless current_patient.can_schedule?
+    return render 'patients/not_allowed' unless current_patient.can_see_appointment? || current_patient.can_schedule?
+  end
+
+  def render_vaccinated
+    @first_appointment = current_patient.first_appointment
+
+    render 'patients/vaccineted'
   end
 
   def slot_params
