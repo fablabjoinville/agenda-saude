@@ -165,7 +165,6 @@ end_of_day_minutes = [600, 620, 640, 660, 680, 700]
     check_out: second_appointment_start - 4.weeks + 10.minutes + time_multiplier,
     ubs: ubs,
     group: Group.find_by(name: 'Trabalhador(a) da Saúde'),
-    min_age: 18,
     commorbidity: false
   )
 
@@ -177,7 +176,7 @@ end_of_day_minutes = [600, 620, 640, 660, 680, 700]
     vaccine_name: 'coronavac',
     active: true,
     ubs: ubs,
-    min_age: 85,
+    group: Group.find_by(name: 'Trabalhador(a) da Saúde'),
     commorbidity: false
   )
 
@@ -193,6 +192,9 @@ config[:windows] = [
   { start_time: '16:20', end_time: '22:00', slots: 4 }
 ]
 config[:max_appointment_time_ahead] = 0
+config[:group] = Group.find_by(name: 'Trabalhador(a) da Saúde')
+config[:min_age] = 60
+config[:commorbidity] = false
 config.save!
 
 create_slot = lambda do |attributes|

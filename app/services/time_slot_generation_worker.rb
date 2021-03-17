@@ -101,6 +101,9 @@ class TimeSlotGenerationWorker
       ubs_id: ubs.id,
       windows: config[:windows],
       slot_interval_minutes: ubs.slot_interval_minutes,
+      group: config[:group],
+      min_age: config[:min_age],
+      commorbidity: config[:commorbidity],
       # These don't exist or are incomplete on
       # UBS record, so they must be changed here
       weekdays: [*0..6],

@@ -45,6 +45,23 @@ class TimeSlotGenerationService
       # type: Int
       #
       :slot_interval_minutes,
+      #
+      # Specific group for this time slots
+      #
+      # Type: Int # group_id (optional)
+      :group,
+      #
+      # Minimum patient age for schedule appointment
+      #
+      # Type: Int
+      #
+      :min_age,
+      #
+      # Only allow patients with at least one comorbidity
+      #
+      # Type: Boolean
+      #
+      :commorbidity,
     ]
 
     def initialize(options)
@@ -92,6 +109,12 @@ class TimeSlotGenerationService
 
     appointment_duration = options.slot_interval_minutes.minutes
 
+    options.group = nil unless !options.group.blank?
+    
+    options.min_age = 18 unless !options.min_age.blank?
+
+    options.commorbidity = false unless !options.commorbidity.nil?
+
     report = {}
 
     window_range.step(appointment_duration).lazy.each do |time|
@@ -111,7 +134,10 @@ class TimeSlotGenerationService
           start: appointment_start,
           end: appointment_end,
           active: true,
-          patient_id: nil
+          patient_id: nil,
+          group: options.group,
+          min_age: options.min_age,
+          commorbidity: options.commorbidity
         }.with_indifferent_access)
       end
     end
