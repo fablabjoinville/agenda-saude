@@ -24,9 +24,12 @@
         <i class="fa fa-circle" aria-hidden="true" style="color: skyblue;"></i> Trabalhadores da Saúde de qualquer idade <br />
       </td>
       <td>
-        <% Patient::CONDITIONS.each do |name, _| %>
+        <% @ubs_conditions.each do |ubs, conditions| %>
           <br />
-          <i class="fa fa-check-circle" aria-hidden="true" style="color: green;"></i> <%= name %>
+          <i class="fa fa-check-circle" aria-hidden="true" style="color: green;"></i> <%= ubs %>:
+          <% conditions.each do |condition| %>
+            <%= condition %>;
+          <% end %>
           <br />
         <% end %>
       </td>

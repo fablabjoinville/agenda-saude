@@ -168,9 +168,15 @@
                     <div class="container">
                       <% slots.each do |slot| %>
                         <div class="row">
-                          <div class="col align-middle">
-                            Horário <br /> <%= ApplicationHelper.humanize_time(slot[:slot_start]) %> - Grupo <%= slot[:group_name] %> com <%= slot[:min_age] %>
-                          </div>
+                          <% if slot[:commorbidity] %>
+                            <div class="col align-middle">
+                              Horário <br /> <%= ApplicationHelper.humanize_time(slot[:slot_start]) %> - Grupo: <%= slot[:group_name] %> com <%= slot[:min_age] %> anos ou mais que tenha alguma comorbidade
+                            </div>
+                          <% else %>
+                            <div class="col align-middle">
+                              Horário <br /> <%= ApplicationHelper.humanize_time(slot[:slot_start]) %> - Grupo: <%= slot[:group_name] %> com <%= slot[:min_age] %> anos ou mais
+                            </div>
+                          <% end %>
                           <div class="col text-right">
                             <%= button_to @appointment.present? ? 'Substituir' : 'Agendar', schedule_time_slot_path(start_time: slot[:slot_start], ubs_id: ubs.id), class: "btn btn-success", data: { cy: "ubsSlot#{slot[:slot_start]}" } %>
                           </div>

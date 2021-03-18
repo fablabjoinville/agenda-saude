@@ -3,13 +3,7 @@ class Patient < ApplicationRecord
 
   MAX_LOGIN_ATTEMPTS = 2
 
-  CONDITIONS = {
-    'Trabalhador(a) da Saúde que possua vínculo ativo em alguma unidade registrada no CNES' => ->(patient) { patient.in_group?('Trabalhador(a) da Saúde') },
-    # 'População com 80 anos ou mais' => ->(patient) { patient.age >= 80 },
-    # 'Paciente de teste' => ->(patient) { patient.cpf == ENV['ROOT_PATIENT_CPF'] },
-    # 'Maiores de 60 anos institucionalizadas' => ->(patient) { patient.age >= 60 && patient.in_group?('Institucionalizado(a)') },
-    # 'População Indígena' => ->(patient) { patient.in_group?('Indígena') },
-  }
+  SLOTS_WINDOW_IN_DAYS = ENV['SLOTS_WINDOW_IN_DAYS']&.to_i || 3
 
   has_many :appointments, dependent: :destroy
   has_and_belongs_to_many :groups
@@ -45,9 +39,20 @@ class Patient < ApplicationRecord
   end
 
   def can_schedule?
-    CONDITIONS.values.any? do |condition|
-      condition.call(self)
+    schedule_start_time = Time.zone.now
+    schedule_end_time = (schedule_start_time + SLOTS_WINDOW_IN_DAYS.days).end_of_day
+
+    groups_available = schedule_groups_available(schedule_start_time, schedule_end_time)
+
+    groups_available.each do |group_available|
+      if group_available[0][0] != nil && group_available[0][2] == false
+        return true if groups.include?(Group.find(group_available[0][0])) && age >= group_available[0][1]
+      elsif group_available[0][0] != nil && group_available[0][2] == true
+        return true if if groups.include?(Group.find(group_available[0][0])) && age >= group_available[0][1] && groups.include?(Group.find_by(name: 'Portador(a) de comorbidade'))
+      end
+      # TODO: continuar
     end
+    false
   end
 
   def has_future_appointments?
@@ -111,6 +116,16 @@ class Patient < ApplicationRecord
   end
 
   private
+
+  def schedule_groups_available(start_time, end_time)
+    groups_available = []
+    Ubs.where(active: true).each do |ubs|
+      appointments_available = Appointment.where(start: start_time..end_time, patient_id: nil, active: true, ubs: ubs).select([:id, :ubs_id, :group_id, :min_age, :commorbidity])
+      groups_available << appointments_available.pluck(:group_id, :min_age, :commorbidity).uniq
+      # groups_available << appointments_available.pluck(:group_id, :min_age, :commorbidity).uniq
+    end
+    groups_available
+  end
 
   def valid_birth_date
     Date.parse(birth_date)

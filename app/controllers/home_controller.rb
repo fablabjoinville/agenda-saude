@@ -1,9 +1,12 @@
 class HomeController < ApplicationController
+  SLOTS_WINDOW_IN_DAYS = ENV['SLOTS_WINDOW_IN_DAYS']&.to_i || 3
   
   def index
     return redirect_to index_bedridden_path if current_patient.try(:bedridden?)
     return redirect_to index_time_slot_path if current_patient
     return redirect_to ubs_index_path if current_user
+
+    @ubs_conditions = ubs_conditions_available()
 
     @is_scheduling_available = Appointment.free.within_allowed_window.exists?
   end
@@ -60,5 +63,43 @@ class HomeController < ApplicationController
 
   def register_patient_params
     params.permit(:cpf)
+  end
+
+  def ubs_conditions_available
+    conditions = {}
+
+    schedule_start_time = Time.zone.now
+    schedule_end_time = (schedule_start_time + SLOTS_WINDOW_IN_DAYS.days).end_of_day
+
+    ubs_groups = ubs_schedule_groups_available(schedule_start_time, schedule_end_time)
+
+    ubs_groups.each do |ubs, groups|
+      ubs_name = ubs.name
+      groups_description = []
+      groups.each do |group|
+        # 0: group; 1: min_age; 2: commorbidity
+        if group[0] == nil && group[1] > 0 && group[2] == false
+          groups_description << "População em geral com #{group[1]} anos ou mais"
+        elsif group[0] == nil && group[1] > 0 && group[2] == true
+          groups_description << "População em geral com #{group[1]} anos ou mais que tenha alguma comorbidade"
+        elsif group[0] != nil && group[1] > 0 && group[2] == false
+          groups_description << "#{Group.find(group[0]).name} com #{group[1]} anos ou mais"
+        elsif group[0] != nil && group[1] > 0 && group[2] == true
+          groups_description << "#{Group.find(group[0]).name} com #{group[1]} anos ou mais que tenha alguma comorbidade"
+        end
+      end
+      conditions[ubs_name] = groups_description
+    end
+    conditions
+  end
+
+  def ubs_schedule_groups_available(start_time, end_time)
+    groups_available = {}
+    Ubs.where(active: true).each do |ubs|
+      appointments_available = Appointment.where(start: start_time..end_time, patient_id: nil, active: true, ubs: ubs).select([:id, :ubs_id, :group_id, :min_age, :commorbidity])
+      groups_available[ubs] = appointments_available.pluck(:group_id, :min_age, :commorbidity).uniq
+      # groups_available << appointments_available.pluck(:group_id, :min_age, :commorbidity).uniq
+    end
+    groups_available
   end
 end

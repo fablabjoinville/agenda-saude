@@ -48,7 +48,7 @@ class TimeSlotGenerationService
       #
       # Specific group for this time slots
       #
-      # Type: Int # group_id (optional)
+      # Type: Int # group_id (or nil)
       :group,
       #
       # Minimum patient age for schedule appointment
@@ -109,12 +109,6 @@ class TimeSlotGenerationService
 
     appointment_duration = options.slot_interval_minutes.minutes
 
-    options.group = nil unless !options.group.blank?
-    
-    options.min_age = 18 unless !options.min_age.blank?
-
-    options.commorbidity = false unless !options.commorbidity.nil?
-
     report = {}
 
     window_range.step(appointment_duration).lazy.each do |time|
@@ -123,9 +117,10 @@ class TimeSlotGenerationService
 
       next if appointment_end > date + window_range.end
 
-      taken_slots_count = Appointment.where(start: appointment_start).count
+      taken_slots_count = Appointment.where(start: appointment_start, ubs: options.ubs_id).count
       new_slots_count = window[:slots] - taken_slots_count
 
+      next if new_slots_count <= 0
       report[appointment_start.to_s] = { taken_slots_count: taken_slots_count, new_slots_count: new_slots_count }
 
       new_slots_count.times do
