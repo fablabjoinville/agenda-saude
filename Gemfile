@@ -27,6 +27,8 @@ gem 'newrelic_rpm'
 gem 'caxlsx'
 gem 'caxlsx_rails'
 
+gem 'kaminari'
+
 group :development, :test do
   gem 'byebug'
   gem 'pry-rails'
