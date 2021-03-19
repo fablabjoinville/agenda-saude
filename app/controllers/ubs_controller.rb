@@ -108,7 +108,8 @@ class UbsController < UserSessionController
       id: patient.id,
       name: patient.name,
       cpf: patient.cpf,
-      groups: groups
+      groups: groups,
+      vaccinated: patient.vaccinated?
     }
 
     render ubs_patient_checkout_path
