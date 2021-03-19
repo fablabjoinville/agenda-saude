@@ -2,7 +2,7 @@ class Appointment < ApplicationRecord
   belongs_to :ubs
   belongs_to :patient, optional: true
 
-  SLOTS_WINDOW_IN_DAYS = ENV['SLOTS_WINDOW_IN_DAYS']&.to_i || 3
+  SLOTS_WINDOW_IN_DAYS = ENV['SLOTS_WINDOW_IN_DAYS']&.to_i || 7
 
   scope :today, -> { where('date(start) = ?', Date.current) }
   scope :without_checkout, -> { where(check_out: nil) }
