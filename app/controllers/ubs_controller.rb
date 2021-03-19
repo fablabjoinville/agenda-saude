@@ -11,6 +11,7 @@ class UbsController < UserSessionController
                         .without_checkout
                         .joins(:patient)
                         .order(:start)
+                        .page(params[:page])
 
     @bedridden_patients = @ubs.bedridden_patients
   end
