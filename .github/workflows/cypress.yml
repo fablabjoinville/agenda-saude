@@ -53,7 +53,7 @@ jobs:
           POSTGRESQL_HOST: localhost
           RAILS_ENV: test
         with:
-          browser: chrome
+          browser: firefox
           project: ./spec
           start: bundle exec rails server -e test
 
