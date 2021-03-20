@@ -73,19 +73,26 @@ class HomeController < ApplicationController
 
     ubs_groups = ubs_schedule_groups_available(schedule_start_time, schedule_end_time)
 
+    if ubs_groups.blank?
+      conditions["Sem vagas"] = ["Nenhum agendamento disponivel no momento"]
+      return conditions
+    end
+
     ubs_groups.each do |ubs, groups|
       ubs_name = ubs.name
       groups_description = []
       groups.each do |group|
-        # 0: group; 1: min_age; 2: commorbidity
-        if group[0] == nil && group[1] > 0 && group[2] == false
-          groups_description << "População em geral com #{group[1]} anos ou mais"
-        elsif group[0] == nil && group[1] > 0 && group[2] == true
-          groups_description << "População em geral com #{group[1]} anos ou mais que tenha alguma comorbidade"
-        elsif group[0] != nil && group[1] > 0 && group[2] == false
-          groups_description << "#{Group.find(group[0]).name} com #{group[1]} anos ou mais"
-        elsif group[0] != nil && group[1] > 0 && group[2] == true
-          groups_description << "#{Group.find(group[0]).name} com #{group[1]} anos ou mais que tenha alguma comorbidade"
+        group_id = group[0]
+        min_age = group[1]
+        comorbidity = group[2]
+        if group_id == nil && min_age > 0 && comorbidity == false
+          groups_description << "População em geral com #{min_age} anos ou mais"
+        elsif group_id == nil && min_age > 0 && comorbidity == true
+          groups_description << "População em geral com #{min_age} anos ou mais que tenha alguma comorbidade"
+        elsif group_id != nil && min_age > 0 && comorbidity == false
+          groups_description << "#{Group.find(group_id).name} com #{min_age} anos ou mais"
+        elsif group_id != nil && min_age > 0 && comorbidity == true
+          groups_description << "#{Group.find(group_id).name} com #{min_age} anos ou mais que tenha alguma comorbidade"
         end
       end
       conditions[ubs_name] = groups_description
@@ -97,8 +104,8 @@ class HomeController < ApplicationController
     groups_available = {}
     Ubs.where(active: true).each do |ubs|
       appointments_available = Appointment.where(start: start_time..end_time, patient_id: nil, active: true, ubs: ubs).select([:id, :ubs_id, :group_id, :min_age, :commorbidity])
-      groups_available[ubs] = appointments_available.pluck(:group_id, :min_age, :commorbidity).uniq
-      # groups_available << appointments_available.pluck(:group_id, :min_age, :commorbidity).uniq
+      next unless appointments_available.exists?
+        groups_available[ubs] = appointments_available.pluck(:group_id, :min_age, :commorbidity).uniq
     end
     groups_available
   end

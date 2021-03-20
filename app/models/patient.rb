@@ -45,12 +45,18 @@ class Patient < ApplicationRecord
     groups_available = schedule_groups_available(schedule_start_time, schedule_end_time)
 
     groups_available.each do |group_available|
-      if group_available[0][0] != nil && group_available[0][2] == false
-        return true if groups.include?(Group.find(group_available[0][0])) && age >= group_available[0][1]
-      elsif group_available[0][0] != nil && group_available[0][2] == true
-        return true if if groups.include?(Group.find(group_available[0][0])) && age >= group_available[0][1] && groups.include?(Group.find_by(name: 'Portador(a) de comorbidade'))
+      group_id = group_available[0][0]
+      min_age = group_available[0][1]
+      comorbidity = group_available[0][2]
+      if group_id == nil && min_age > 0 && comorbidity == false
+        return true if age >= min_age
+      elsif group_id == nil && min_age > 0 && comorbidity == true
+        return true if age >= min_age && groups.include?(Group.find_by(name: 'Portador(a) de comorbidade'))
+      elsif group_id != nil && min_age > 0 && comorbidity == false
+        return true if groups.include?(Group.find(group_id)) && age >= min_age
+      elsif group_id != nil && min_age > 0 && comorbidity == true
+        return true if groups.include?(Group.find(group_id)) && age >= min_age && groups.include?(Group.find_by(name: 'Portador(a) de comorbidade'))
       end
-      # TODO: continuar
     end
     false
   end

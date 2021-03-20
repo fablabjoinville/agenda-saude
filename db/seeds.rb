@@ -54,6 +54,7 @@ other_ubs.break_start = '12:30'
 other_ubs.break_end = '13:30'
 other_ubs.shift_end = '17:00'
 other_ubs.slot_interval_minutes = 15
+other_ubs.active = true
 other_ubs.save!
 
 [
@@ -173,8 +174,8 @@ end_of_day_minutes = [600, 620, 640, 660, 680, 700]
     end: second_appointment_end + time_multiplier,
     patient_id: patient.id,
     second_dose: true,
-    vaccine_name: 'coronavac',
     active: true,
+    vaccine_name: 'coronavac',
     ubs: ubs,
     group: Group.find_by(name: 'Trabalhador(a) da Saúde'),
     commorbidity: false
@@ -185,6 +186,7 @@ end
 
 ## TIME SLOTS / APPOINTMENTS ##
 
+# Config first Ubs
 config = ubs.create_time_slot_generation_config!(ubs_id: ubs.id)
 config[:windows] = [
   { start_time: '07:40', end_time: '08:00', slots: 6 },
@@ -196,6 +198,18 @@ config[:group] = Group.find_by(name: 'Trabalhador(a) da Saúde')
 config[:min_age] = 60
 config[:commorbidity] = false
 config.save!
+
+# Config second Ubs
+other_config = other_ubs.create_time_slot_generation_config!(ubs_id: other_ubs.id)
+other_config[:windows] = [
+  { start_time: '08:00', end_time: '12:00', slots: 4 },
+  { start_time: '12:00', end_time: '16:00', slots: 2 }
+]
+other_config[:max_appointment_time_ahead] = 0
+other_config[:group] = nil
+other_config[:min_age] = 75
+other_config[:commorbidity] = true
+other_config.save!
 
 create_slot = lambda do |attributes|
   Appointment.create!(attributes)
@@ -214,6 +228,9 @@ worker_opts = TimeSlotGenerationWorker::Options.new(
 
 # mimic successfull worker.execute
 worker.generate_ubs_time_slots(ubs, worker_opts, current_time)
+
+worker.generate_ubs_time_slots(other_ubs, worker_opts, current_time)
+
 TimeSlotGeneratorExecution.where(date: current_time.to_date).update_all(status: 'done')
 
 ## FIRST DOSE PATIENTS ##
