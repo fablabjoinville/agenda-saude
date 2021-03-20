@@ -4,7 +4,7 @@ require_relative './../helpers/time_slot_helper'
 class TimeSlotController < PatientSessionController
   before_action :render_patient_not_allowed
 
-  SLOTS_WINDOW_IN_DAYS = ENV['SLOTS_WINDOW_IN_DAYS']&.to_i || 3
+  SLOTS_WINDOW_IN_DAYS = ENV['SLOTS_WINDOW_IN_DAYS']&.to_i || 7
 
   def schedule
     @ubs = Ubs.find(schedule_params[:ubs_id])

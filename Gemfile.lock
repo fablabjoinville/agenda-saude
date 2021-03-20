@@ -391,6 +391,7 @@ DEPENDENCIES
   font-awesome-sass
   guard
   jquery-rails
+  kaminari
   listen (>= 3.0.5, < 3.2)
   newrelic_rpm
   pg (>= 0.18, < 2.0)

@@ -3,7 +3,17 @@ class Patient < ApplicationRecord
 
   MAX_LOGIN_ATTEMPTS = 2
 
+<<<<<<< HEAD
   SLOTS_WINDOW_IN_DAYS = ENV['SLOTS_WINDOW_IN_DAYS']&.to_i || 3
+=======
+  CONDITIONS = {
+    'População em geral com 75 anos ou mais' => ->(patient) { patient.age >= 75 },
+    # 'Trabalhador(a) da Saúde que possua vínculo ativo em alguma unidade registrada no CNES' => ->(patient) { patient.in_group?('Trabalhador(a) da Saúde') },
+    # 'Paciente de teste' => ->(patient) { patient.cpf == ENV['ROOT_PATIENT_CPF'] },
+    # 'Maiores de 60 anos institucionalizadas' => ->(patient) { patient.age >= 60 && patient.in_group?('Institucionalizado(a)') },
+    # 'População Indígena' => ->(patient) { patient.in_group?('Indígena') },
+  }
+>>>>>>> main
 
   has_many :appointments, dependent: :destroy
   has_and_belongs_to_many :groups

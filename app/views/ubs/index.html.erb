@@ -1,7 +1,7 @@
 <%= render :layout => '/ubs/nav' do %>
 
   <div class="mt-5">
-    <h3> Lista de Agendamentos </h3>
+    <h3> Lista de Agendamentos (<%= @appointments.total_count %>) </h3>
     <% if @appointments.present? %>
       <table class="table table-hover">
         <thead>
@@ -41,7 +41,12 @@
         </tbody>
       </table>
 
-      <p>
+      <div class="text-center">
+        <%= link_to_entries_previous_page(@appointments) %>
+        <%= link_to_entries_next_page(@appointments) %>
+      </div>
+
+      <p class="mt-4">
         <%= link_to 'Exportar agendamentos do dia',
               today_appointments_ubs_path(@ubs, format: 'xlsx'),
          class: 'btn btn-primary' %>
