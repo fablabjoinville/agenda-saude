@@ -78,16 +78,13 @@ class UbsController < UserSessionController
 
     patient = @appointment.patient
 
-    groups = []
-    Patient::CONDITIONS.each do |cond, func|
-      groups << cond if func.call(patient)
-    end
+    group = @appointment.patient_group
 
     @patient = {
       id: patient.id,
       name: patient.name,
       cpf: patient.cpf,
-      groups: groups
+      group: group
     }
 
     render ubs_patient_checkin_path
@@ -99,16 +96,13 @@ class UbsController < UserSessionController
     @second_dose_appointment = patient.appointments.where(second_dose: true).first
 
 
-    groups = []
-    Patient::CONDITIONS.each do |cond, func|
-      groups << cond if func.call(patient)
-    end
+    group = @appointment.patient_group
 
     @patient = {
       id: patient.id,
       name: patient.name,
       cpf: patient.cpf,
-      groups: groups,
+      groups: group,
       vaccinated: patient.vaccinated?
     }
 

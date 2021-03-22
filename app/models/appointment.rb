@@ -28,4 +28,17 @@ class Appointment < ApplicationRecord
   def self.within_allowed_window
     where(start: Time.zone.now..(Time.zone.now + SLOTS_WINDOW_IN_DAYS.days).end_of_day)
   end
+
+  def patient_group
+    if group == nil && min_age > 0 && commorbidity == false
+      groups_description = "População em geral com #{min_age} anos ou mais"
+    elsif group == nil && min_age > 0 && commorbidity == true
+      groups_description = "População em geral com #{min_age} anos ou mais que tenha alguma comorbidade"
+    elsif group != nil && min_age > 0 && commorbidity == false
+      groups_description = "#{group.name} com #{min_age} anos ou mais"
+    elsif group != nil && min_age > 0 && commorbidity == true
+      groups_description = "#{group.name} com #{min_age} anos ou mais que tenha alguma comorbidade"
+    end
+    groups_description
+  end
 end

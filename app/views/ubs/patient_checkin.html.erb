@@ -30,9 +30,7 @@
 
     <div class="patient-muted"> <%= ApplicationHelper.humanize_cpf(@patient[:cpf]) %> </div>
     <p style="padding-top: 2%">
-      <% @patient[:groups].each do |group| %>
-        <span class="badge badge-pill badge-primary pills-groups"> <%= group %> </span>
-      <% end %>
+      <span class="badge badge-pill badge-primary pills-groups"> <%= @patient[:group] %> </span>
     </p>
 
     <p>
