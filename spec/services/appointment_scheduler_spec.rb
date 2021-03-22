@@ -1,6 +1,9 @@
 require 'rails_helper'
 
-RSpec.describe AppointmentScheduler, type: :service do
+# Need to disable transactional tests because AppointmentScheduler opens a
+# transaction, which will be nested within RSpec transaction, causing the
+# :isolation option to fail as it's only allowed for top-level transactions
+RSpec.describe AppointmentScheduler, type: :service, use_transactional_tests: false do
   let(:max_schedule_time_ahead) { 3.days }
   let(:scheduler) do
     AppointmentScheduler.new(
@@ -122,8 +125,18 @@ RSpec.describe AppointmentScheduler, type: :service do
     end
   end
 
-  # TODO: implement when reschedule behavior is extracted
-  describe 'when patient already has a first dose appointment' do
-    it 'returns a :first_dose_already_scheduled'
+  describe 'when a serialization error occurs' do
+    before do
+      create(:appointment, start: start_time, ubs: ubs, patient: nil)
+
+      allow_any_instance_of(Appointment)
+        .to receive(:update!).and_raise(ActiveRecord::SerializationFailure)
+    end
+
+    it 'returns an :all_slots_taken result' do
+      result = scheduler.schedule(**args)
+
+      expect(result).to eq([:all_slots_taken])
+    end
   end
 end

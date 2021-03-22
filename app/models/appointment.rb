@@ -10,7 +10,13 @@ class Appointment < ApplicationRecord
     where('start >= ? AND appointments.end <= ?', day.beginning_of_day, day.end_of_day)
   end
 
-  scope :futures, -> { where('start > ?', Time.current) }
+  scope :futures, -> { where('start > ?', Time.zone.now) }
+
+  scope :free, -> { joins(:ubs).where(ubs: { active: true }).where(patient_id: nil) }
+
+  scope :within_allowed_window, -> {
+    where(start: Time.zone.now..(Time.zone.now + SLOTS_WINDOW_IN_DAYS.days).end_of_day)
+  }
 
   def active?
     active == true
@@ -18,13 +24,5 @@ class Appointment < ApplicationRecord
 
   def in_allowed_check_in_window?
     start > Time.zone.now.beginning_of_day && start < Time.zone.now.end_of_day
-  end
-
-  def self.free
-    joins(:ubs).where(ubs: { active: true }).where(patient_id: nil)
-  end
-
-  def self.within_allowed_window
-    where(start: Time.zone.now..(Time.zone.now + SLOTS_WINDOW_IN_DAYS.days).end_of_day)
   end
 end

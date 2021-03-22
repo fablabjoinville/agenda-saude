@@ -11,22 +11,20 @@ class AppointmentScheduler
     start_time = Time.parse(raw_start_time)
 
     return [:inactive_ubs] unless ubs.active?
+    return [:invalid_schedule_time] if start_time > (Time.zone.now + @max_schedule_time_ahead).at_end_of_day
 
-    Appointment.transaction do
+    Appointment.transaction(isolation: :repeatable_read) do
       patient.reload
 
       return [:schedule_conditions_unmet] unless patient.can_schedule?
-      return [:invalid_schedule_time] if start_time > (Time.now.in_time_zone + @max_schedule_time_ahead).at_end_of_day
 
-      unless Appointment.where(start: start_time, ubs: ubs, patient_id: nil).exists?
-        return [:all_slots_taken]
-      end
+      appointment = Appointment.where(start: start_time, ubs_id: ubs.id, patient_id: nil)
+        .order('random()') # reduces row lock contention
+        .first
 
-      Appointment.where(patient_id: patient.id).futures.each do |appointment|
-        appointment.update(patient_id: nil)
-      end
+      return [:all_slots_taken] unless appointment.present?
 
-      appointment = Appointment.where(start: start_time, ubs: ubs, patient_id: nil).first
+      patient.appointments.futures.update_all(patient_id: nil)
 
       appointment.update!(
         patient_id: patient.id,
@@ -34,10 +32,13 @@ class AppointmentScheduler
         vaccine_name: patient.current_appointment&.vaccine_name
       )
 
+      # TODO: remove this after we get rid of last_appointment
       patient.update!(last_appointment: appointment)
 
       [:success, appointment]
     end
+  rescue ActiveRecord::SerializationFailure
+    [:all_slots_taken]
   rescue => e
     Sentry.capture_exception(e)
 
