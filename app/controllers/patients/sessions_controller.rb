@@ -64,7 +64,7 @@ class Patients::SessionsController < Devise::SessionsController
 
     patient.update!(fake_mothers: [], login_attempts: 0)
 
-    return render 'patients/not_allowed' unless patient.can_see_appointment? || patient.can_schedule?
+    return render 'patients/not_allowed' unless patient.has_future_appointments? || patient.can_schedule?
 
     return redirect_to index_bedridden_path if patient.bedridden?
 
