@@ -43,7 +43,6 @@ jobs:
           POSTGRESQL_HOST: localhost
           POSTGRESQL_PASSWORD: postgres
         run: |
-          cp config/database.yml.example config/database.yml
           bundle exec rails db:setup
 
       - name: Run specs

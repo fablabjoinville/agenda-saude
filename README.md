@@ -64,7 +64,6 @@ Para instalar as bibliotecas e configurar o banco de dados execute:
 
 ```sh
 bundle install
-cp config/database.yml.example config/database.yml
 bin/rails db:setup
 ```
 
