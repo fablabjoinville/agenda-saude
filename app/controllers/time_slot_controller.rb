@@ -32,7 +32,7 @@ class TimeSlotController < PatientSessionController
       )
     when :success
       @appointment = data
-      render 'patients/successfull_schedule'
+      render 'patients/successful_schedule'
     else
       notify_unexpected_result(result: result, data: data, context: context)
       render_error_in_time_slots_page('Ocorreu um erro. Por favor, tente novamente.')
@@ -110,7 +110,7 @@ class TimeSlotController < PatientSessionController
   def render_vaccinated
     @first_appointment = current_patient.first_appointment
 
-    render 'patients/vaccineted'
+    render 'patients/vaccinated'
   end
 
   def slot_params
