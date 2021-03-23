@@ -152,7 +152,7 @@ end_of_day_minutes = [600, 620, 640, 660, 680, 700]
     patient.birth_date = '1920-01-31'
     patient.phone = '(47) 91234-5678'
     patient.neighborhood = 'América'
-    patient.groups << Group.find_by(name: 'Trabalhador(a) da Saúde')
+    patient.groups << Group.find_by!(name: 'Trabalhador(a) da Saúde')
     patient.save!
   end
 
