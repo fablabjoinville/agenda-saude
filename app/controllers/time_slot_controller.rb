@@ -107,6 +107,8 @@ class TimeSlotController < PatientSessionController
   end
 
   def render_vaccinated
+    # TODO: improve how we load current and first appointments
+    @appointment = current_patient.appointments.current
     @first_appointment = current_patient.first_appointment
 
     render 'patients/vaccinated'
