@@ -60,9 +60,10 @@ class TimeSlotController < PatientSessionController
     @ubs = @appointment.try(:ubs)
     @patient_can_schedule = current_patient.can_schedule?
     @gap_in_days = gap_in_days
-    @current_date = Time.zone.now.at_beginning_of_day + @gap_in_days.days
+    @current_day = Time.zone.now.at_beginning_of_day + @gap_in_days.days
+    start_date = [@current_day, Time.zone.now].max # prevent users from scheduling in the past
     @time_slots = Appointment.
-      where(start: @current_date..@current_day.end_of_day, patient: nil). # all free appointments for the day
+      where(start: start_date..@current_day.end_of_day, patient: nil). # all free appointments for the day
       order(:start). # in chronological order
       select(:ubs_id, :start, :end). # only return what we care with
       distinct. # remove duplicates (same as .uniq in pure Ruby)
