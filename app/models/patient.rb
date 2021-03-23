@@ -41,10 +41,6 @@ class Patient < ApplicationRecord
     appointments.where.not(check_out: nil).order(:start).first
   end
 
-  def can_see_appointment?
-    has_future_appointments?
-  end
-
   def can_schedule?
     CONDITIONS.values.any? do |condition|
       condition.call(self)
@@ -110,6 +106,10 @@ class Patient < ApplicationRecord
 
   def vaccinated?
     last_appointment&.second_dose && last_appointment&.check_out.present?
+  end
+
+  def allowed?
+    has_future_appointments? || can_schedule?
   end
 
   private

@@ -118,7 +118,7 @@ class TimeSlotController < PatientSessionController
   end
 
   def render_patient_not_allowed
-    return render 'patients/not_allowed' unless current_patient.can_see_appointment? || current_patient.can_schedule?
+    return render 'patients/not_allowed' unless current_patient.allowed?
   end
 
   def render_vaccinated
