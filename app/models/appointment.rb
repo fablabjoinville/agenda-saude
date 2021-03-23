@@ -9,6 +9,7 @@ class Appointment < ApplicationRecord
   scope :without_checkout, -> { where(check_out: nil) }
   scope :futures, -> { where(arel_table[:start].gt(Time.zone.now)) }
   scope :free, -> { joins(:ubs).where(ubs: { active: true }).where(patient_id: nil) }
+  scope :active, -> { where(active: true) }
 
   def active?
     active
