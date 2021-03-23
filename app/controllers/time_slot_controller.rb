@@ -8,11 +8,11 @@ class TimeSlotController < PatientSessionController
   SLOTS_WINDOW_IN_DAYS = ENV['SLOTS_WINDOW_IN_DAYS']&.to_i || 7
 
   def schedule
-    @ubs = Ubs.find(schedule_params[:ubs_id])
+    ubs = Ubs.find(schedule_params[:ubs_id])
 
     result, data = appointment_scheduler.schedule(
       raw_start_time: schedule_params[:start_time],
-      ubs: @ubs,
+      ubs: ubs,
       patient: current_patient
     )
 
@@ -53,7 +53,6 @@ class TimeSlotController < PatientSessionController
 
   def index
     @appointment = current_patient.current_appointment
-    @ubs = @appointment&.ubs
     @patient_can_schedule = current_patient.can_schedule?
     return render_vaccinated if current_patient.vaccinated?
 
