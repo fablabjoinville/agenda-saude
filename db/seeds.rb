@@ -205,7 +205,7 @@ worker_opts = TimeSlotGenerationWorker::Options.new(
   execution_hour: current_time.hour
 )
 
-# mimic successfull worker.execute
+# mimic successful worker.execute
 worker.generate_ubs_time_slots(ubs, worker_opts, current_time)
 TimeSlotGeneratorExecution.where(date: current_time.to_date).update_all(status: 'done')
 
