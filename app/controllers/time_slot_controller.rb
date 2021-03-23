@@ -1,3 +1,4 @@
+# coding: utf-8
 require_relative './../helpers/time_slot_helper'
 # include TimeSlotHelper
 
