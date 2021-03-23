@@ -1,0 +1,35 @@
+<div class="row">
+  <div class="col">
+    <div class="row">
+      <div class="col">
+        <strong>Paciente: </strong><%= appointment.patient.name %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <strong>Data: </strong><%= ApplicationHelper.humanize_datetime(appointment.start) %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <strong>Unidade: </strong><%= appointment.ubs.name %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <strong>Endereço: </strong><%= appointment.ubs.address %>
+      </div>
+    </div>
+
+    <% if appointment.second_dose? %>
+      <div class="row">
+        <div class="col" data-cy="appliedVaccineName">
+          <strong>Vacina: </strong><%= appointment.vaccine_name.capitalize %>
+        </div>
+      </div>
+    <% end %>
+    <br/>
+
+    <%= render "shared/required_documents" %>
+  </div>
+</div>
