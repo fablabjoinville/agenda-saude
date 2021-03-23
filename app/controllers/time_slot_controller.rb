@@ -1,3 +1,4 @@
+# coding: utf-8
 require_relative './../helpers/time_slot_helper'
 # include TimeSlotHelper
 
@@ -79,7 +80,7 @@ class TimeSlotController < PatientSessionController
 
         next unless appointments.exists?
 
-        appointments.each do |appointment|
+        appointments.order(:start).each do |appointment|
           slots << { slot_start: appointment.start, slot_end: appointment.end }
         end
 
