@@ -29,7 +29,7 @@ class Appointment < ApplicationRecord
   }
 
   def active?
-    active == true
+    active
   end
 
   def in_allowed_check_in_window?
