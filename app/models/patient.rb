@@ -34,11 +34,11 @@ class Patient < ApplicationRecord
   enum target_audience: [:kid, :elderly, :chronic, :disabled, :pregnant, :postpartum, :teacher, :over_55, :without_target]
 
   def current_appointment
-    appointments.order(:start).active.last
+    appointments.order(:start).active.includes(:ubs).last
   end
 
   def first_appointment
-    appointments.where.not(check_out: nil).order(:start).first
+    appointments.where.not(check_out: nil).order(:start).includes(:ubs).first
   end
 
   def can_schedule?
