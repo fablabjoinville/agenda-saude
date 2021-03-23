@@ -62,6 +62,7 @@ class TimeSlotController < PatientSessionController
     @gap_in_days = gap_in_days
     @current_day = [Time.zone.now.at_beginning_of_day + @gap_in_days.days, Time.zone.now].max # prevent users from scheduling in the past
     @time_slots = Appointment.
+      includes(:ubs).
       free. # can be scheduled
       start_between(@current_day, @current_day.end_of_day). # in the date the user is looking for
       order(:start). # in chronological order
