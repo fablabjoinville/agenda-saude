@@ -60,7 +60,7 @@ bundle install
 bin/rails db:setup
 ```
 
-E acesse no ambiente local [http://localhost:4000](http://localhost:4000):
+E acesse no ambiente local [http://localhost:3000](http://localhost:3000):
 
 ```sh
 bundle exec rails server
