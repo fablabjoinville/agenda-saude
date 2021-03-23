@@ -4,6 +4,10 @@ class Appointment < ApplicationRecord
 
   SLOTS_WINDOW_IN_DAYS = ENV['SLOTS_WINDOW_IN_DAYS']&.to_i || 7
 
+  scope :available_for, lambda { |date|
+    where(start: date..date.end_of_day, patient: nil) # all free appointments for the day
+      .order(:start) # in chronological order
+  }
   scope :today, -> { where('date(start) = ?', Date.current) }
   scope :without_checkout, -> { where(check_out: nil) }
   scope :active_from_day, ->(day) do
