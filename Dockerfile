@@ -8,9 +8,11 @@ WORKDIR /var/app
 
 COPY Gemfile .
 COPY Gemfile.lock .
+COPY config/database.yml.example ./config/database.yml
 
 RUN gem update --system && gem install bundler
 RUN bundle install --jobs 4
+RUN bundle exec rails db:migrate RAILS_ENV=development
 
 COPY . .
 

@@ -11,6 +11,7 @@ services:
       - "3000:3000"
     environment:
       - "RAILS_ENV=development"
+      - "POSTGRESQL_HOST=postgres"
     depends_on:
       - postgres
     tty: true
