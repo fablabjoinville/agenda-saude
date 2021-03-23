@@ -24,7 +24,7 @@ class AppointmentScheduler
 
       return [:all_slots_taken] unless appointment.present?
 
-      patient.appointments.futures.update_all(patient_id: nil)
+      patient.appointments.future.update_all(patient_id: nil)
 
       appointment.update!(
         patient_id: patient.id,

@@ -49,7 +49,7 @@ class Patient < ApplicationRecord
 
   def has_future_appointments?
     appointments.
-      futures.
+      future.
       active.
       any?
   end
