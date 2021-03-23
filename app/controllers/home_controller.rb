@@ -7,7 +7,7 @@ class HomeController < ApplicationController
 
     from = Time.zone.now
     to = (from + Appointment::SLOTS_WINDOW_IN_DAYS.days).end_of_day
-    @available_time_slots_count = Appointment.free.start_between(from, to).count
+    @is_scheduling_available = Appointment.free.start_between(from, to).any?
   end
 
   def patient_base_login

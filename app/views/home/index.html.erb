@@ -33,10 +33,10 @@
     </tr>
       <th scope="col">STATUS DO AGENDAMENTO</th>
       <td>
-        <% if @available_time_slots_count.zero? %>
-          <i class="fa fa-circle" aria-hidden="true" style="color: red;"></i> Aguardando novas doses
-        <% else %>
+        <% if @is_scheduling_available %>
           <i class="fa fa-circle" aria-hidden="true" style="color: green;"></i> Disponível
+        <% else %>
+          <i class="fa fa-circle" aria-hidden="true" style="color: red;"></i> Aguardando novas doses
         <% end %>
       </td>
     </tr>
