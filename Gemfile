@@ -7,7 +7,6 @@ gem 'pg' # Use postgresql as the database for Active Record
 
 gem 'bootsnap', '>= 1.4.2', require: false
 gem "smarter_csv", "~> 1.2"
-gem 'activeadmin'
 gem 'bootstrap'
 gem 'caxlsx'
 gem 'caxlsx_rails'
