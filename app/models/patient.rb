@@ -109,7 +109,7 @@ class Patient < ApplicationRecord
   end
 
   def allowed?
-    has_future_appointments? || can_schedule?
+    can_schedule? || has_future_appointments?
   end
 
   private
