@@ -24,7 +24,7 @@ describe('patient appointment flow', () => {
     })
   })
 
-  context('when patient is not already vaccineted', () => {
+  context('when patient is not already vaccinated', () => {
     beforeEach(() => {
       cy.visit('/')
 
@@ -79,7 +79,7 @@ describe('patient appointment flow', () => {
     })
   })
 
-  context('when patient is already vaccineted', () => {
+  context('when patient is already vaccinated', () => {
     beforeEach(()=>{
       cy.appScenario('vaccinated_patient', { cpf: cpf });
 
@@ -87,7 +87,7 @@ describe('patient appointment flow', () => {
     })
 
     it('render vaccinated patient page ', () => {
-      cy.get('[data-cy=vaccinetedPatientText]').should('exist')
+      cy.get('[data-cy=vaccinatedPatientText]').should('exist')
     })
   })
 })

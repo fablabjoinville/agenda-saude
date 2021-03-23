@@ -83,7 +83,7 @@ describe('reception flow', () => {
 
       cy.get('[data-cy=ubsLogoutButton]').click()
       cy.loginAsPatient(cpf)
-      cy.get('[data-cy=vaccinetedPatientText]').should('exist')
+      cy.get('[data-cy=vaccinatedPatientText]').should('exist')
     })
   })
 
