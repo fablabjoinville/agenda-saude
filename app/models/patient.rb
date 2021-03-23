@@ -25,7 +25,8 @@ class Patient < ApplicationRecord
 
   validate :valid_birth_date
 
-  after_initialize :set_main_ubs
+  # Only set new main_ubs if it is empty or there was a change to the neighborhood
+  before_validation :set_main_ubs!, if: proc { |r| r.neighborhood_changed? || r.main_ubs_id.blank? }
 
   scope :bedridden, -> { where(bedridden: true) }
 
@@ -60,7 +61,7 @@ class Patient < ApplicationRecord
     groups.map(&:name).include?(name)
   end
 
-  def set_main_ubs
+  def set_main_ubs!
     self.main_ubs =
       # samples an active ubs near the patient neighborhood
       Neighborhood.find_by(name: neighborhood)&.active_ubs&.sample ||
@@ -91,7 +92,7 @@ class Patient < ApplicationRecord
   end
 
   def bedridden?
-    bedridden == true
+    bedridden
   end
 
   def unblock!
