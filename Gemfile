@@ -49,3 +49,7 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'web-console', '>= 3.3.0'
 end
+
+group :test do
+  gem 'simplecov', '< 0.18', require: false # https://github.com/codeclimate/test-reporter/issues/413
+end

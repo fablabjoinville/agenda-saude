@@ -115,6 +115,7 @@ GEM
       responders
       warden (~> 1.2.3)
     diff-lcs (1.4.4)
+    docile (1.3.5)
     erubi (1.10.0)
     erubis (2.7.0)
     execjs (2.7.0)
@@ -354,6 +355,11 @@ GEM
       faraday
     sexp_processor (4.15.1)
     shellany (0.0.1)
+    simplecov (0.17.1)
+      docile (~> 1.1)
+      json (>= 1.8, < 3)
+      simplecov-html (~> 0.10.0)
+    simplecov-html (0.10.2)
     smarter_csv (1.2.6)
     spring (2.1.1)
     spring-watcher-listen (2.0.1)
@@ -425,6 +431,7 @@ DEPENDENCIES
   sass-rails (>= 6)
   sentry-rails
   sentry-ruby
+  simplecov (< 0.18)
   smarter_csv (~> 1.2)
   spring
   spring-watcher-listen (~> 2.0.0)
