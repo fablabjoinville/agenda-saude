@@ -4,7 +4,7 @@ class Appointment < ApplicationRecord
 
   SLOTS_WINDOW_IN_DAYS = ENV['SLOTS_WINDOW_IN_DAYS']&.to_i || 7
 
-  scope :today, -> { where('date(start) = ?', Date.current) }
+  scope :today, -> { where(start: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day) }
   scope :without_checkout, -> { where(check_out: nil) }
   scope :active_from_day, ->(day) do
     where('start >= ? AND appointments.end <= ?', day.beginning_of_day, day.end_of_day)

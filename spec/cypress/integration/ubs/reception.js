@@ -70,12 +70,12 @@ describe('reception flow', () => {
 
       cy.get('[data-cy=secondDoseTag]').should('exist')
       cy.get('[data-cy=vaccineNameTag]').should('contain', 'Coronavac')
-      
+
       cy.get('[data-cy=executePatientCheckOut]').click()
 
       cy.get('[data-cy=secondDoseDone]').should('exist')
       cy.get('[data-cy=checkoutTag]').should('exist')
-      cy.get('[data-cy=secondDoseTag]').should('exist') 
+      cy.get('[data-cy=secondDoseTag]').should('exist')
       cy.get('[data-cy=vaccineNameTag]').should('contain', 'Coronavac')
 
       cy.get('[data-cy=goBackToCheckOutListButton]').click()
@@ -83,7 +83,7 @@ describe('reception flow', () => {
 
       cy.get('[data-cy=ubsLogoutButton]').click()
       cy.loginAsPatient(cpf)
-      cy.get('[data-cy=vaccinetedPatientText]').should('exist')
+      cy.get('[data-cy=vaccinatedPatientText]').should('exist')
     })
   })
 
