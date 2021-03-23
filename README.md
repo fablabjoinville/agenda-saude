@@ -1,5 +1,12 @@
 # Agenda Saúde
 
+[![Maintainability](https://api.codeclimate.com/v1/badges/e426b0c2af754e57dd10/maintainability)](https://codeclimate.com/github/MakersNetwork/agenda-saude/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/e426b0c2af754e57dd10/test_coverage)](https://codeclimate.com/github/MakersNetwork/agenda-saude/test_coverage)
+![GitHub issues](https://img.shields.io/github/issues/makersnetwork/agenda-saude)
+![GitHub last commit (branch)](https://img.shields.io/github/last-commit/makersnetwork/agenda-saude/main)
+![Discord](https://img.shields.io/discord/713401243271168023)
+![Open Collective backers and sponsors](https://img.shields.io/opencollective/all/makersnetwork)
+
 **Agenda Saúde** é um projeto de código aberto desenvolvido de forma colaborativa para fornecer
 um sistema de agendamento de vacinação e exames de COVID-19 para a prefeitura de Joinville.
 
