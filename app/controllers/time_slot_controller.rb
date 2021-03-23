@@ -125,7 +125,7 @@ class TimeSlotController < PatientSessionController
   def render_vaccinated
     @first_appointment = current_patient.first_appointment
 
-    render 'patients/vaccineted'
+    render 'patients/vaccinated'
   end
 
   def slot_params
