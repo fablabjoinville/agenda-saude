@@ -17,7 +17,8 @@ dependências:
 - Ruby >= 2.6.5
 - Node >= 13.2.0
 - PostgreSQL == 12.1
-- Docker
+- Install Docker - [See Instalation](https://docs.docker.com/install/overview/)
+- Install Docker Compose - [See instalation](https://docs.docker.com/compose/install/)
 
 ## Desenvolvimento
 
@@ -56,14 +57,13 @@ Para instalar as bibliotecas e configurar o banco de dados execute:
 
 ```sh
 bundle install
-cp config/database.yml.example config/database.yml
 bin/rails db:setup
 ```
 
-E acesse no ambiente local [http://localhost:4000](http://localhost:4000):
+E acesse no ambiente local [http://localhost:3000](http://localhost:3000):
 
 ```sh
-bundle exec rails serve
+bundle exec rails server
 ```
 
 ## Testes
@@ -72,13 +72,7 @@ Para executar os testes da aplicação e verificar se tudo está funcionando com
 esperado execute:
 
 ```sh
-bundle exec rails test
-```
-
-E para verificar o estilo do código:
-
-```sh
-bundle exec rubocop
+bundle exec rspec
 ```
 
 ## Style Guides
