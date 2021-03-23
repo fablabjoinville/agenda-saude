@@ -7,7 +7,7 @@
       </h6>
     </div>
   <% end %>
-  <% if @appointment.present? && @appointment.start > Time.zone.now %>
+  <% if @appointment.present? %>
     <div class="container">
       <div class="card">
         <div class="card-body">
@@ -90,7 +90,7 @@
       <div class="row">
         <div class="col">
           <h4>Agendamentos disponíveis:</h4>
-          <% if @appointment.present? && @appointment.start > Time.zone.now %>
+          <% if @appointment.present? %>
             <div class="alert alert-warning alert-dismissable" role="alert">
             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
             <h6 class="mb-0">
@@ -124,10 +124,10 @@
                       <% slots.each do |slot| %>
                         <div class="row">
                           <div class="col align-middle">
-                            Horário <br /> <%= ApplicationHelper.humanize_time(slot[:slot_start]) %>
+                            Horário <br /> <%= ApplicationHelper.humanize_time(slot.start) %>
                           </div>
                           <div class="col text-right">
-                            <%= button_to @appointment.present? ? 'Substituir' : 'Agendar', schedule_time_slot_path(start_time: slot[:slot_start], ubs_id: ubs.id), class: "btn btn-success", data: { cy: "ubsSlot#{slot[:slot_start]}" } %>
+                            <%= button_to @appointment.present? ? 'Substituir' : 'Agendar', schedule_time_slot_path(start_time: slot.start, ubs_id: ubs.id), class: "btn btn-success", data: { cy: "ubsSlot#{slot.start}" } %>
                           </div>
                         </div>
                         <hr/>

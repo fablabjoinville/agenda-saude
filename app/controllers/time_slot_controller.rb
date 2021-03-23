@@ -8,12 +8,11 @@ class TimeSlotController < PatientSessionController
   SLOTS_WINDOW_IN_DAYS = ENV['SLOTS_WINDOW_IN_DAYS']&.to_i || 7
 
   def schedule
-    @ubs = Ubs.find(schedule_params[:ubs_id])
-    start_time = Time.parse(schedule_params[:start_time])
+    ubs = Ubs.find(schedule_params[:ubs_id])
 
     result, data = appointment_scheduler.schedule(
       raw_start_time: schedule_params[:start_time],
-      ubs: @ubs,
+      ubs: ubs,
       patient: current_patient
     )
 
@@ -53,40 +52,24 @@ class TimeSlotController < PatientSessionController
   end
 
   def index
-    @appointment = current_patient.current_appointment
-    @ubs = @appointment.try(:ubs)
-
+    @appointment = current_patient.appointments.future.current
     @patient_can_schedule = current_patient.can_schedule?
-
     return render_vaccinated if current_patient.vaccinated?
 
-    @gap_in_days = slot_params[:gap_in_days].to_i || 0
-    @current_day = Time.zone.now + @gap_in_days.days
-
-    @time_slots = {}
+    @gap_in_days = gap_in_days
+    @current_day = [Time.zone.now.at_beginning_of_day + @gap_in_days.days, Time.zone.now].max # prevent users from scheduling in the past
 
     last_appointment = current_patient.last_appointment
     return if last_appointment&.second_dose? && @current_day.to_date < last_appointment.start.to_date
 
-    Ubs.where(active: true).each do |ubs|
-      slots = []
-
-      if @gap_in_days <= TimeSlotController::SLOTS_WINDOW_IN_DAYS && @gap_in_days >= 0
-        if @current_day.today?
-          appointments = Appointment.where(start: @current_day..@current_day.end_of_day, ubs: ubs, patient_id: nil)
-        else
-          appointments = Appointment.where(start: @current_day.at_beginning_of_day..@current_day.end_of_day, ubs: ubs, patient_id: nil)
-        end
-
-        next unless appointments.exists?
-
-        appointments.order(:start).each do |appointment|
-          slots << { slot_start: appointment.start, slot_end: appointment.end }
-        end
-
-        @time_slots[ubs] = slots.uniq
-      end
-    end
+    @time_slots = Appointment.
+      includes(:ubs).
+      free. # can be scheduled
+      start_between(@current_day, @current_day.end_of_day). # in the date the user is looking for
+      order(:start). # in chronological order
+      select(:ubs_id, :start, :end). # only return what we care with
+      distinct. # remove duplicates (same as .uniq in pure Ruby)
+      group_by { |a| a.ubs } # transforms it into a Hash grouped by Ubs
   end
 
   private
@@ -120,10 +103,12 @@ class TimeSlotController < PatientSessionController
   end
 
   def render_patient_not_allowed
-    return render 'patients/not_allowed' unless current_patient.can_see_appointment? || current_patient.can_schedule?
+    return render 'patients/not_allowed' unless current_patient.allowed?
   end
 
   def render_vaccinated
+    # TODO: improve how we load current and first appointments
+    @appointment = current_patient.appointments.current
     @first_appointment = current_patient.first_appointment
 
     render 'patients/vaccinated'
@@ -139,5 +124,16 @@ class TimeSlotController < PatientSessionController
 
   def cancel_params
     params.permit(:appointment_id)
+  end
+
+  # Ensure that only valid integers are returned from param (from 0 to the one set on the constant)
+  def gap_in_days
+    [
+      [
+        slot_params[:gap_in_days]&.to_i || 0,
+        0
+      ].max,
+      TimeSlotController::SLOTS_WINDOW_IN_DAYS
+    ].min
   end
 end

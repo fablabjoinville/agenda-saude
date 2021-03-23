@@ -24,12 +24,12 @@ class AppointmentScheduler
 
       return [:all_slots_taken] unless appointment.present?
 
-      patient.appointments.futures.update_all(patient_id: nil)
+      patient.appointments.future.update_all(patient_id: nil)
 
       appointment.update!(
         patient_id: patient.id,
-        second_dose: patient.current_appointment&.check_out.present?,
-        vaccine_name: patient.current_appointment&.vaccine_name
+        second_dose: patient.appointments.current&.check_out.present?,
+        vaccine_name: patient.appointments.current&.vaccine_name
       )
 
       # TODO: remove this after we get rid of last_appointment

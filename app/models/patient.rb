@@ -11,7 +11,12 @@ class Patient < ApplicationRecord
     # 'População Indígena' => ->(patient) { patient.in_group?('Indígena') },
   }
 
-  has_many :appointments, dependent: :destroy
+  has_many :appointments, dependent: :destroy do
+    # Returns the last available active appointment
+    def current
+      order(:start).active.includes(:ubs).last
+    end
+  end
   has_and_belongs_to_many :groups
   belongs_to :main_ubs, class_name: 'Ubs'
   belongs_to :last_appointment, class_name: 'Appointment', optional: true
@@ -25,23 +30,16 @@ class Patient < ApplicationRecord
 
   validate :valid_birth_date
 
-  after_initialize :set_main_ubs
+  # Only set new main_ubs if it is empty or there was a change to the neighborhood
+  before_validation :set_main_ubs!, if: proc { |r| r.neighborhood_changed? || r.main_ubs_id.blank? }
 
   scope :bedridden, -> { where(bedridden: true) }
 
   # TODO: remove `chronic` field from schema
   enum target_audience: [:kid, :elderly, :chronic, :disabled, :pregnant, :postpartum, :teacher, :over_55, :without_target]
 
-  def current_appointment
-    appointments.order(:start).select(&:active?).last
-  end
-
   def first_appointment
     appointments.where.not(check_out: nil).order(:start).first
-  end
-
-  def can_see_appointment?
-    return true if has_future_appointments?
   end
 
   def can_schedule?
@@ -51,16 +49,17 @@ class Patient < ApplicationRecord
   end
 
   def has_future_appointments?
-    appointments
-      .where('start >= ? AND active = TRUE', Time.zone.now)
-      .exists?
+    appointments.
+      future.
+      active.
+      any?
   end
 
   def in_group?(name)
     groups.map(&:name).include?(name)
   end
 
-  def set_main_ubs
+  def set_main_ubs!
     self.main_ubs =
       # samples an active ubs near the patient neighborhood
       Neighborhood.find_by(name: neighborhood)&.active_ubs&.sample ||
@@ -91,7 +90,7 @@ class Patient < ApplicationRecord
   end
 
   def bedridden?
-    bedridden == true
+    bedridden
   end
 
   def unblock!
@@ -108,6 +107,10 @@ class Patient < ApplicationRecord
 
   def vaccinated?
     last_appointment&.second_dose && last_appointment&.check_out.present?
+  end
+
+  def allowed?
+    can_schedule? || has_future_appointments?
   end
 
   private
