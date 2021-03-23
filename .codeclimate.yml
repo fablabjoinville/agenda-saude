@@ -1,0 +1,16 @@
+version: "2"         # required to adjust maintainability checks
+
+plugins:
+  duplication:
+    enabled: true
+    config:
+      languages:
+        ruby:
+          mass_threshold: 20
+        javascript:
+          mass_threshold: 20
+  brakeman:
+    enabled: true
+  rubocop:
+    enabled: true
+    channel: "rubocop-1-9-1"
