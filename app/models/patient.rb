@@ -108,6 +108,10 @@ class Patient < ApplicationRecord
     last_appointment&.second_dose && last_appointment&.check_out.present?
   end
 
+  def allowed?
+    has_future_appointments? || can_schedule?
+  end
+
   private
 
   def valid_birth_date

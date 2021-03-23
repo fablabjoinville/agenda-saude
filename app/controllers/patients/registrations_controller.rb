@@ -34,8 +34,7 @@ class Patients::RegistrationsController < Devise::RegistrationsController
     patient.last_appointment = nil
     patient.groups = Group.where(id: groups_ids)
 
-    # return render 'patients/not_allowed' unless patient.allowed_age?
-
+    # TODO: add `if` statement
     patient.save
 
     return redirect_to home_teste_rapido_path if patient.cpf.blank?
@@ -43,7 +42,7 @@ class Patients::RegistrationsController < Devise::RegistrationsController
 
     sign_in(patient, scope: :patient)
 
-    return render 'patients/not_allowed' unless patient.has_future_appointments? || patient.can_schedule?
+    return render 'patients/not_allowed' unless patient.allowed?
 
     return redirect_to index_bedridden_path if patient.bedridden?
 
@@ -73,7 +72,7 @@ class Patients::RegistrationsController < Devise::RegistrationsController
 
     if @patient.update_without_password(fields)
       flash[:notice] = 'Dados editados com sucesso!'
-      return render 'patients/not_allowed' unless @patient.has_future_appointments? || @patient.can_schedule?
+      return render 'patients/not_allowed' unless @patient.allowed?
 
       redirect_to index_time_slot_path
     else
