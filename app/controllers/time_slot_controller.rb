@@ -52,6 +52,7 @@ class TimeSlotController < PatientSessionController
 
   def index
     @appointment = current_patient.current_appointment
+    @ubs = @appointment&.ubs
     @patient_can_schedule = current_patient.can_schedule?
     return render_vaccinated if current_patient.vaccinated?
 
