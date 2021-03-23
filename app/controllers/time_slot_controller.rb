@@ -8,7 +8,6 @@ class TimeSlotController < PatientSessionController
 
   def schedule
     @ubs = Ubs.find(schedule_params[:ubs_id])
-    start_time = Time.parse(schedule_params[:start_time])
 
     result, data = appointment_scheduler.schedule(
       raw_start_time: schedule_params[:start_time],
