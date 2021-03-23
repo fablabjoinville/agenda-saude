@@ -27,7 +27,7 @@ class TimeSlotController < PatientSessionController
       render_error_in_time_slots_page('Data de agendamento inválida.')
     when :all_slots_taken
       render_error_in_time_slots_page(
-        'Opa! O horário foi reservado enquanto você escolhia, tente outro!'
+        'Desculpe, o horário foi reservado enquanto você escolhia, tente agendar novamente.'
       )
     when :success
       @appointment = data
