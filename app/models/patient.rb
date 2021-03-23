@@ -34,7 +34,7 @@ class Patient < ApplicationRecord
   enum target_audience: [:kid, :elderly, :chronic, :disabled, :pregnant, :postpartum, :teacher, :over_55, :without_target]
 
   def current_appointment
-    appointments.order(:start).select(&:active?).last
+    appointments.order(:start).active.last
   end
 
   def first_appointment
