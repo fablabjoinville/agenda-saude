@@ -7,7 +7,7 @@
       </h6>
     </div>
   <% end %>
-  <% if @appointment.present? && @appointment.start > Time.zone.now %>
+  <% if @appointment.present? %>
     <div class="container">
       <div class="card">
         <div class="card-body">
@@ -131,13 +131,13 @@
       </li>
     </ul>
   </nav>
-  
+
   <% if @time_slots.present? && @patient_can_schedule %>
     <div class="container mt-5">
       <div class="row">
         <div class="col">
           <h4>Agendamentos disponíveis:</h4>
-          <% if @appointment.present? && @appointment.start > Time.zone.now %>
+          <% if @appointment.present? %>
             <div class="alert alert-warning alert-dismissable" role="alert">
             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
             <h6 class="mb-0">
