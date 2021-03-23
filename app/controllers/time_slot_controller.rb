@@ -7,18 +7,18 @@ class TimeSlotController < PatientSessionController
   SLOTS_WINDOW_IN_DAYS = ENV['SLOTS_WINDOW_IN_DAYS']&.to_i || 7
 
   def schedule
-    @ubs = Ubs.find(schedule_params[:ubs_id])
+    ubs = Ubs.find(schedule_params[:ubs_id])
 
     result, data = appointment_scheduler.schedule(
       raw_start_time: schedule_params[:start_time],
-      ubs: @ubs,
+      ubs: ubs,
       patient: current_patient
     )
 
     case result
     when :inactive_ubs
       render_error_in_time_slots_page(
-        'Unidade de atendimento desativada. Tente novamente mais tarde.'
+        'A unidade de atendimento escolhida foi desativada. Tente novamente mais tarde.'
       )
     when :schedule_conditions_unmet
       render 'patients/not_allowed'
@@ -53,14 +53,14 @@ class TimeSlotController < PatientSessionController
   def index
     return render_vaccinated if current_patient.vaccinated?
 
+    @appointment = current_patient.current_appointment
+    @gap_in_days = gap_in_days
+    @current_day = [Time.zone.now.at_beginning_of_day + @gap_in_days.days, Time.zone.now].max # prevent users from scheduling in the past
+    @patient_can_schedule = current_patient.can_schedule?
+
     last_appointment = current_patient.last_appointment
     return if last_appointment&.second_dose? && @current_day.to_date < last_appointment.start.to_date
 
-    @appointment = current_patient.current_appointment
-    @ubs = @appointment.try(:ubs)
-    @patient_can_schedule = current_patient.can_schedule?
-    @gap_in_days = gap_in_days
-    @current_day = [Time.zone.now.at_beginning_of_day + @gap_in_days.days, Time.zone.now].max # prevent users from scheduling in the past
     @time_slots = Appointment.
       includes(:ubs).
       free. # can be scheduled
