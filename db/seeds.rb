@@ -1,3 +1,4 @@
+# coding: utf-8
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
 #
@@ -205,7 +206,7 @@ worker_opts = TimeSlotGenerationWorker::Options.new(
   execution_hour: current_time.hour
 )
 
-# mimic successfull worker.execute
+# mimic successful worker.execute
 worker.generate_ubs_time_slots(ubs, worker_opts, current_time)
 TimeSlotGeneratorExecution.where(date: current_time.to_date).update_all(status: 'done')
 
@@ -235,7 +236,9 @@ cpfs = %w[
   patient.groups << Group.find_by(name: 'Trabalhador(a) da Saúde')
   patient.save!
 
-  appointment = Appointment.where(patient_id: nil, start: range).order('RANDOM()').first
+  today_range = begin_date.beginning_of_day..begin_date.end_of_day
+  
+  appointment = Appointment.where(patient_id: nil, start: today_range).order(:start).last
   appointment.update(patient_id: patient.id)
 
   patient.appointments << appointment
