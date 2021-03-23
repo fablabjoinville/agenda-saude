@@ -1,31 +1,10 @@
 <div class="row text-center">
   <div class="col">
-    <p class="h3 mb-12" data-cy="successfullAppointmentCreatedText" >Agendamento realizado com sucesso!</p>
+    <p class="h3 mb-5" data-cy="successfullAppointmentCreatedText" >Você realizou o agendamento da sua vacina!</p>
   </div>
 </div>
 
-<div class="row">
-  <div class="col">
-    <div class="d-flex">
-      <ul class="list-inline mx-auto justify-content-center">
-        <li><strong>Nome: </strong><%= @appointment.patient.name %></li>
-        <li><strong>Data: </strong><%= ApplicationHelper.humanize_datetime(@appointment.start) %></li>
-        <li><strong>Unidade: </strong><%= @ubs.name %></li>
-        <li><strong>Endereço: </strong><%= @ubs.address %></li>
-      </ul>
-    </div>
-  </div>
-</div>
-
-<br/>
-
-<div class="row">
-  <div class="col">
-    <p class="d-flex">
-      <%= render "shared/required_documents" %>
-    </p>
-  </div>
-</div>
+<%= render @appointment %>
 
 <div class="row text-center">
   <div class="col">
