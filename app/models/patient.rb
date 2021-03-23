@@ -11,7 +11,12 @@ class Patient < ApplicationRecord
     # 'População Indígena' => ->(patient) { patient.in_group?('Indígena') },
   }
 
-  has_many :appointments, dependent: :destroy
+  has_many :appointments, dependent: :destroy do
+    # Returns the last available active appointment
+    def current
+      order(:start).active.includes(:ubs).last
+    end
+  end
   has_and_belongs_to_many :groups
   belongs_to :main_ubs, class_name: 'Ubs'
   belongs_to :last_appointment, class_name: 'Appointment', optional: true
@@ -32,10 +37,6 @@ class Patient < ApplicationRecord
 
   # TODO: remove `chronic` field from schema
   enum target_audience: [:kid, :elderly, :chronic, :disabled, :pregnant, :postpartum, :teacher, :over_55, :without_target]
-
-  def current_appointment
-    appointments.order(:start).active.includes(:ubs).last
-  end
 
   def first_appointment
     appointments.where.not(check_out: nil).order(:start).first
