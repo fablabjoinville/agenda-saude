@@ -12,11 +12,10 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>Vacinação Covid-19</title>
+    <title>Vacinação Covid-19 Joinville</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <style type="text/css"></style>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
@@ -52,5 +51,21 @@
     <div class="container">
       <%= yield %>
     </div>
+    <footer class="footer">
+      <div class="container p-5"></div>
+      <hr>
+
+      <div class="row text-center">
+        <div class="col">
+          <small class="text-muted">
+            <a href="https://www.joinville.sc.gov.br/coronavirus/"><u>Acompanhe as principais informações sobre o combate ao coronavírus em Joinville</u></a>
+          </small>
+        </div>
+      </div>
+
+      <div class="text-center p-3">
+        <p><b>Ligue/Web Saúde</b>: <a href='https://api.whatsapp.com/send?phone=554734815165', target='blank'>(47) 3481-5165</a> — Segunda a sexta-feira — 07:00 às 20:00, exceto feriados e pontos facultativos</p>
+      </div>
+    </footer>
   </body>
 </html>
