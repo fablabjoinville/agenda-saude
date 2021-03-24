@@ -12,7 +12,7 @@ class Appointment < ApplicationRecord
 
   scope :future, -> { where(arel_table[:start].gt(Time.zone.now)) }
 
-  scope :free, -> { joins(:ubs).where(ubs: { active: true }).where(patient_id: nil) }
+  scope :free, -> { left_joins(:ubs).where(ubs: { active: true }).where(patient_id: nil) }
 
   scope :active, -> { where(active: true) }
 
