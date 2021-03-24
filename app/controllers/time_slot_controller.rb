@@ -54,8 +54,9 @@ class TimeSlotController < PatientSessionController
     @gap_in_days = gap_in_days
     @current_day = [Time.zone.now.at_beginning_of_day + @gap_in_days.days, Time.zone.now].max # prevent users from scheduling in the past
 
-    last_appointment = current_patient.last_appointment
-    return if last_appointment&.second_dose? && @current_day.to_date < last_appointment.start.to_date
+    # TODO: commented out this line while we don't have patient with second dose (at least not many), to save SQL resources. Consider how to optimize it.
+    # The intention here is that, after a patient had the 2nd dose, they shouldn't be able to schedule new appointments
+    # return if current_patient.appointments.current&.second_dose? && @current_day.to_date < current_patient.appointments.current&.start.to_date
 
     @time_slots = Appointment.
       includes(:ubs).
