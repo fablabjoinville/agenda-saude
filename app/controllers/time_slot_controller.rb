@@ -69,10 +69,14 @@ class TimeSlotController < PatientSessionController
 
     if @gap_in_days <= TimeSlotController::SLOTS_WINDOW_IN_DAYS && @gap_in_days >= 0
       if @current_day.today?
-        group_ubs_appointments = ubs_appointments_available(current_patient, @current_day, @current_day.end_of_day)
+        conditions_service = ConditionService.new(@current_day, @current_day.end_of_day)
       else
-        group_ubs_appointments = ubs_appointments_available(current_patient, @current_day.at_beginning_of_day, @current_day.end_of_day)
+        conditions_service = ConditionService.new(@current_day.at_beginning_of_day, @current_day.end_of_day)
       end
+
+      group_ubs_appointments = conditions_service.group_ubs_appointments(current_patient)
+
+      return if group_ubs_appointments.nil?
 
       group_ubs_appointments.each do |group_desc, ubs_appointments|
         time_slots = {}
@@ -130,51 +134,6 @@ class TimeSlotController < PatientSessionController
     @first_appointment = current_patient.first_appointment
 
     render 'patients/vaccineted'
-  end
-
-  def ubs_appointments_available(patient, start_time, end_time)
-    appointments_available = Appointment.where(start: start_time..end_time, patient_id: nil, active: true)
-    return {} unless appointments_available.exists?
-
-    groups_available = appointments_available.pluck(:group_id, :min_age, :commorbidity, :ubs_id).uniq
-    
-    group_ubs_appointments = {}
-    
-    groups_available.each do |group_age_comorbidity|
-      group_id = group_age_comorbidity[0]
-      min_age = group_age_comorbidity[1]
-      comorbidity = group_age_comorbidity[2]
-      ubs = group_age_comorbidity[3]
-      
-      ubs_appointments_available = {}
-      if group_id == nil && min_age > 0 && comorbidity == false
-        if current_patient.age >= min_age
-          groups_description = "População em geral com #{min_age} anos ou mais"
-          appointments = appointments_available.where(group_id: group_id, min_age: min_age, commorbidity: comorbidity, ubs_id: ubs)
-        end
-      elsif group_id == nil && min_age > 0 && comorbidity == true
-        if current_patient.age >= min_age && current_patient.groups.include?(Group.find_by(name: 'Portador(a) de comorbidade'))
-          groups_description = "População em geral com #{min_age} anos ou mais que tenha alguma comorbidade"
-          appointments = appointments_available.where(group_id: group_id, min_age: min_age, commorbidity: comorbidity, ubs_id: ubs)
-        end
-      elsif group_id != nil && min_age > 0 && comorbidity == false
-        if current_patient.age >= min_age && current_patient.groups.include?(Group.find(group_id))
-          groups_description = "#{Group.find(group_id).name} com #{min_age} anos ou mais"
-          appointments = appointments_available.where(group_id: group_id, min_age: min_age, commorbidity: comorbidity, ubs_id: ubs)
-        end
-      elsif group_id != nil && min_age > 0 && comorbidity == true
-        if current_patient.age >= min_age && current_patient.groups.include?(Group.find(group_id)) && current_patient.groups.include?(Group.find_by(name: 'Portador(a) de comorbidade'))
-          groups_description = "#{Group.find(group_id).name} com #{min_age} anos ou mais que tenha alguma comorbidade"
-          appointments = appointments_available.where(group_id: group_id, min_age: min_age, commorbidity: comorbidity, ubs_id: ubs)
-        end
-      end
-
-      next if appointments.nil?
-
-      ubs_appointments_available[ubs] = appointments
-      group_ubs_appointments[groups_description] = ubs_appointments_available
-    end
-    group_ubs_appointments
   end
 
   def slot_params

@@ -24,16 +24,16 @@
         <i class="fa fa-circle" aria-hidden="true" style="color: skyblue;"></i> Trabalhadores da Saúde de qualquer idade <br />
       </td>
       <td>
-        <% @ubs_conditions.each do |ubs, conditions| %>
-          <br />
-          <% if ubs == "Sem vagas" %>
-            <i class="fa fa-times-circle" aria-hidden="true" style="color: red;"></i> <strong><%= ubs %></strong>: <%= conditions[0] %>.
+        <% @condition_ubs.each do |condition, ubss| %>
+          <% if condition == "Sem vagas" %>
+            <i class="fa fa-times-circle" aria-hidden="true" style="color: red;"></i> <strong><%= condition %></strong>: <%= ubss[0] %>.
           <% else %>
-            <i class="fa fa-check-circle" aria-hidden="true" style="color: green;"></i> <strong><%= ubs %></strong>:
-            <% conditions.each do |condition| %>
-              <%= condition %>;
-            <% end %>
-            <br />
+            <i class="fa fa-check-circle" aria-hidden="true" style="color: green;"></i> <strong><%= condition %></strong>:
+            <ul>
+              <% ubss.each do |ubs| %>
+                <li> <%= ubs %>;</li>
+              <% end %>
+            </ul>
           <% end %>
         <% end %>
       </td>

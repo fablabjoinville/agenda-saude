@@ -6,7 +6,7 @@ class HomeController < ApplicationController
     return redirect_to index_time_slot_path if current_patient
     return redirect_to list_checkin_path if current_user
 
-    @ubs_conditions = ubs_conditions_available()
+    @condition_ubs = conditions_ubs_available()
 
     @is_scheduling_available = Appointment.free.within_allowed_window.exists?
   end
@@ -65,48 +65,16 @@ class HomeController < ApplicationController
     params.permit(:cpf)
   end
 
-  def ubs_conditions_available
-    conditions = {}
-
+  def conditions_ubs_available
     schedule_start_time = Time.zone.now
     schedule_end_time = (schedule_start_time + SLOTS_WINDOW_IN_DAYS.days).end_of_day
 
-    ubs_groups = ubs_schedule_groups_available(schedule_start_time, schedule_end_time)
+    conditions_service = ConditionService.new(schedule_start_time, schedule_end_time)
+    ubs_groups = conditions_service.groups_ubs_available
 
-    if ubs_groups.blank?
-      conditions["Sem vagas"] = ["Nenhum agendamento disponivel no momento"]
-      return conditions
+    if ubs_groups.nil?
+      ubs_groups["Sem vagas"] = ["Nenhum agendamento disponivel no momento"]
     end
-
-    ubs_groups.each do |ubs, groups|
-      ubs_name = ubs.name
-      groups_description = []
-      groups.each do |group|
-        group_id = group[0]
-        min_age = group[1]
-        comorbidity = group[2]
-        if group_id == nil && min_age > 0 && comorbidity == false
-          groups_description << "População em geral com #{min_age} anos ou mais"
-        elsif group_id == nil && min_age > 0 && comorbidity == true
-          groups_description << "População em geral com #{min_age} anos ou mais que tenha alguma comorbidade"
-        elsif group_id != nil && min_age > 0 && comorbidity == false
-          groups_description << "#{Group.find(group_id).name} com #{min_age} anos ou mais"
-        elsif group_id != nil && min_age > 0 && comorbidity == true
-          groups_description << "#{Group.find(group_id).name} com #{min_age} anos ou mais que tenha alguma comorbidade"
-        end
-      end
-      conditions[ubs_name] = groups_description
-    end
-    conditions
-  end
-
-  def ubs_schedule_groups_available(start_time, end_time)
-    groups_available = {}
-    Ubs.where(active: true).each do |ubs|
-      appointments_available = Appointment.where(start: start_time..end_time, patient_id: nil, active: true, ubs: ubs).select([:id, :ubs_id, :group_id, :min_age, :commorbidity])
-      next unless appointments_available.exists?
-        groups_available[ubs] = appointments_available.pluck(:group_id, :min_age, :commorbidity).uniq
-    end
-    groups_available
+    ubs_groups
   end
 end

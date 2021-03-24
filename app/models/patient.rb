@@ -42,23 +42,9 @@ class Patient < ApplicationRecord
     schedule_start_time = Time.zone.now
     schedule_end_time = (schedule_start_time + SLOTS_WINDOW_IN_DAYS.days).end_of_day
 
-    groups_available = schedule_groups_available(schedule_start_time, schedule_end_time)
+    conditions_service = ConditionService.new(schedule_start_time, schedule_end_time)
 
-    groups_available.each do |group_available|
-      group_id = group_available[0][0]
-      min_age = group_available[0][1]
-      comorbidity = group_available[0][2]
-      if group_id == nil && min_age > 0 && comorbidity == false
-        return true if age >= min_age
-      elsif group_id == nil && min_age > 0 && comorbidity == true
-        return true if age >= min_age && groups.include?(Group.find_by(name: 'Portador(a) de comorbidade'))
-      elsif group_id != nil && min_age > 0 && comorbidity == false
-        return true if groups.include?(Group.find(group_id)) && age >= min_age
-      elsif group_id != nil && min_age > 0 && comorbidity == true
-        return true if groups.include?(Group.find(group_id)) && age >= min_age && groups.include?(Group.find_by(name: 'Portador(a) de comorbidade'))
-      end
-    end
-    false
+    return conditions_service.patient_in_available_group(self)
   end
 
   def has_future_appointments?
@@ -122,16 +108,6 @@ class Patient < ApplicationRecord
   end
 
   private
-
-  def schedule_groups_available(start_time, end_time)
-    groups_available = []
-    Ubs.where(active: true).each do |ubs|
-      appointments_available = Appointment.where(start: start_time..end_time, patient_id: nil, active: true, ubs: ubs).select([:id, :ubs_id, :group_id, :min_age, :commorbidity])
-      groups_available << appointments_available.pluck(:group_id, :min_age, :commorbidity).uniq
-      # groups_available << appointments_available.pluck(:group_id, :min_age, :commorbidity).uniq
-    end
-    groups_available
-  end
 
   def valid_birth_date
     Date.parse(birth_date)

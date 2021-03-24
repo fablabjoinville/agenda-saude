@@ -116,88 +116,98 @@
     </div>
   <% end %>
 
-  <nav aria-label="Page navigation example">
-    <ul class="pagination justify-content-center">
-      <li class="page-item active <%= "disabled" if @gap_in_days < 1 %>">
-        <a class="page-link" href="?gap_in_days=<%= @gap_in_days - 1 %>" tabindex="-1">&laquo; Dia anterior</a>
-      </li>
-      <li class="page-item active disabled">
-        <a class="page-link" href="#">
-          <%= ApplicationHelper.humanize_date(@current_day) %>
-        </a>
-      </li>
-      <li class="page-item active <%= "disabled" if @gap_in_days >= TimeSlotController::SLOTS_WINDOW_IN_DAYS %>">
-        <a class="page-link" href="?gap_in_days=<%= @gap_in_days + 1 %>" tabindex="-1">Próximo dia &raquo;</a>
-      </li>
-    </ul>
-  </nav>
-  
-  <% if @group_time_slots.present? && @patient_can_schedule %>
-    <div class="container mt-5">
-      <div class="row">
-        <div class="col">
-          <h4>Agendamentos disponíveis:</h4>
-          <% if @appointment.present? && @appointment.start > Time.zone.now %>
-            <div class="alert alert-warning alert-dismissable" role="alert">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-            <h6 class="mb-0">
-              Caso queira trocar a data de seu agendamento, selecione o dia e unidade, escolha um horário disponível e clique em <strong>Substituir</strong>.
-            </h6>
-          </div>
-          <% end %>
-          <div class="alert alert-info alert-dismissable" role="alert">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-            <h6 class="mb-0">
-              <strong>Após escolher</strong> o local, dia e hora de seu agendamento e confirmar, <strong>entre novamente no site para verificar seu agendamento</strong>.
-            </h6>
+  <% if @patient_can_schedule %>
+    <nav aria-label="Page navigation example">
+      <ul class="pagination justify-content-center">
+        <li class="page-item active <%= "disabled" if @gap_in_days < 1 %>">
+          <a class="page-link" href="?gap_in_days=<%= @gap_in_days - 1 %>" tabindex="-1">&laquo; Dia anterior</a>
+        </li>
+        <li class="page-item active disabled">
+          <a class="page-link" href="#">
+            <%= ApplicationHelper.humanize_date(@current_day) %>
+          </a>
+        </li>
+        <li class="page-item active <%= "disabled" if @gap_in_days >= TimeSlotController::SLOTS_WINDOW_IN_DAYS %>">
+          <a class="page-link" href="?gap_in_days=<%= @gap_in_days + 1 %>" tabindex="-1">Próximo dia &raquo;</a>
+        </li>
+      </ul>
+    </nav>
+    
+    <% if @group_time_slots.present? %>
+      <div class="container mt-5">
+        <div class="row">
+          <div class="col">
+            <h4>Agendamentos disponíveis:</h4>
+            <% if @appointment.present? && @appointment.start > Time.zone.now %>
+              <div class="alert alert-warning alert-dismissable" role="alert">
+              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+              <h6 class="mb-0">
+                Caso queira trocar a data de seu agendamento, selecione o dia e unidade, escolha um horário disponível e clique em <strong>Substituir</strong>.
+              </h6>
+            </div>
+            <% end %>
+            <div class="alert alert-info alert-dismissable" role="alert">
+              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+              <h6 class="mb-0">
+                <strong>Após escolher</strong> o local, dia e hora de seu agendamento e confirmar, <strong>entre novamente no site para verificar seu agendamento</strong>.
+              </h6>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          <% @group_time_slots.each do |group_desc, time_slots| %>
-            <h5><strong><%= group_desc %>:</strong></h5>
-            <% time_slots.each do |ubs, slots| %>
-              <div id=<%= "ubsId#{ubs.id}Accordion" %>>
-                <div class="card">
-                  <div class="card-header" id=<%= "ubsId#{ubs.id}" %>>
-                    <h5 class="mb-0">
-                      <button class="btn btn-link" data-cy="ubsTimeSlots" data-toggle="collapse" data-target=<%= "#ubsControl#{ubs.id}" %> aria-expanded="true" aria-controls=<%= "ubsControl#{ubs.id}" %>>
-                        <%= ubs.identifier %>
-                      </button>
-                    </h5>
-                  </div>
-                  <div id=<%= "ubsControl#{ubs.id}" %> class="collapse" aria-labelledby=<%= "ubsId#{ubs.id}" %> data-parent=<%= "#ubsId#{ubs.id}Accordion" %>>
-                    <div class="card-body">
-                      <div class="container">
-                        <% slots.each do |slot| %>
-                          <div class="row">
-                            <% if slot[:commorbidity] %>
-                              <div class="col align-middle">
-                                Horário <br /> <%= ApplicationHelper.humanize_time(slot[:slot_start]) %> - Grupo: <%= slot[:group_name] %> com <%= slot[:min_age] %> anos ou mais que tenha alguma comorbidade
+        <div class="row">
+          <div class="col">
+            <% @group_time_slots.each do |group_desc, time_slots| %>
+              <h5><strong><%= group_desc %>:</strong></h5>
+              <% time_slots.each do |ubs, slots| %>
+                <div id=<%= "ubsId#{ubs.id}Accordion" %>>
+                  <div class="card">
+                    <div class="card-header" id=<%= "ubsId#{ubs.id}" %>>
+                      <h5 class="mb-0">
+                        <button class="btn btn-link" data-cy="ubsTimeSlots" data-toggle="collapse" data-target=<%= "#ubsControl#{ubs.id}" %> aria-expanded="true" aria-controls=<%= "ubsControl#{ubs.id}" %>>
+                          <%= ubs.identifier %>
+                        </button>
+                      </h5>
+                    </div>
+                    <div id=<%= "ubsControl#{ubs.id}" %> class="collapse" aria-labelledby=<%= "ubsId#{ubs.id}" %> data-parent=<%= "#ubsId#{ubs.id}Accordion" %>>
+                      <div class="card-body">
+                        <div class="container">
+                          <% slots.each do |slot| %>
+                            <div class="row">
+                              <% if slot[:commorbidity] %>
+                                <div class="col align-middle">
+                                  Horário <br /> <%= ApplicationHelper.humanize_time(slot[:slot_start]) %> - Grupo: <%= slot[:group_name] %> com <%= slot[:min_age] %> anos ou mais que tenha alguma comorbidade
+                                </div>
+                              <% else %>
+                                <div class="col align-middle">
+                                  Horário <br /> <%= ApplicationHelper.humanize_time(slot[:slot_start]) %> - Grupo: <%= slot[:group_name] %> com <%= slot[:min_age] %> anos ou mais
+                                </div>
+                              <% end %>
+                              <div class="col text-right">
+                                <%= button_to @appointment.present? ? 'Substituir' : 'Agendar', schedule_time_slot_path(start_time: slot[:slot_start], ubs_id: ubs.id), class: "btn btn-success", data: { cy: "ubsSlot#{slot[:slot_start]}" } %>
                               </div>
-                            <% else %>
-                              <div class="col align-middle">
-                                Horário <br /> <%= ApplicationHelper.humanize_time(slot[:slot_start]) %> - Grupo: <%= slot[:group_name] %> com <%= slot[:min_age] %> anos ou mais
-                              </div>
-                            <% end %>
-                            <div class="col text-right">
-                              <%= button_to @appointment.present? ? 'Substituir' : 'Agendar', schedule_time_slot_path(start_time: slot[:slot_start], ubs_id: ubs.id), class: "btn btn-success", data: { cy: "ubsSlot#{slot[:slot_start]}" } %>
                             </div>
-                          </div>
-                          <hr/>
-                        <% end %>
+                            <hr/>
+                          <% end %>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              <% end %>
             <% end %>
-          <% end %>
-          <br/>
+            <br/>
+          </div>
         </div>
       </div>
+    <% else %>
+      <h4>Nenhuma vaga disponível neste dia!</h4>
+    <div class="alert alert-info alert-dismissable" role="alert">
+      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+      <h6 class="mb-0">
+        Prezado usuário, no momento todas as vagas para este dia foram ocupadas, verifique os próximos dias.<br/>
+      </h6>
     </div>
+    <% end %>
   <% else %>
     <h4>Nenhuma vaga disponível no momento!</h4>
     <div class="alert alert-info alert-dismissable" role="alert">
