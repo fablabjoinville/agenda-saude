@@ -11,7 +11,7 @@ class Patients::SessionsController < Devise::SessionsController
     @mother_list = patient.fake_mothers
     super
   rescue ActionController::ParameterMissing
-    redirect_to '/'
+    redirect_to root_path
   end
 
   # POST /patient/sign_in

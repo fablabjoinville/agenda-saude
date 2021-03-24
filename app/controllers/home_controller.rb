@@ -14,8 +14,7 @@ class HomeController < ApplicationController
 
     unless CPF.valid?(cpf)
       flash[:alert] = 'CPF Inválido'
-      redirect_to '/'
-      return
+      return redirect_to(root_path)
     end
 
     return redirect_to new_patient_session_path(patient: { cpf: cpf }) if Patient.find_by(cpf: cpf)
@@ -40,8 +39,7 @@ class HomeController < ApplicationController
 
     unless CPF.valid?(cpf)
       flash[:notice] = 'CPF Inválido'
-      redirect_to '/'
-      return
+      return redirect_to(root_path)
     end
 
     return redirect_to new_patient_session_path(patient: { cpf: cpf }) if Patient.find_by(cpf: cpf)
