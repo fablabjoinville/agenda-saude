@@ -50,5 +50,5 @@ group :development do
 end
 
 group :test do
-  gem 'simplecov', '< 0.18', require: false # https://github.com/codeclimate/test-reporter/issues/413
+  gem 'simplecov', require: false
 end
