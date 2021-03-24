@@ -171,7 +171,7 @@ end_of_day_minutes = [600, 620, 640, 660, 680, 700]
     ubs: ubsf_america
   )
 
-  second_appointment = Appointment.create!(
+  Appointment.create!(
     start: second_appointment_start + time_multiplier,
     end: second_appointment_end + time_multiplier,
     patient_id: patient.id,
@@ -180,8 +180,6 @@ end_of_day_minutes = [600, 620, 640, 660, 680, 700]
     active: true,
     ubs: ubsf_america
   )
-
-  patient.update!(last_appointment: second_appointment)
 end
 
 ## TIME SLOTS / APPOINTMENTS ##
@@ -217,7 +215,7 @@ TimeSlotGeneratorExecution.where(date: current_time.to_date).update_all(status: 
 
 ## FIRST DOSE PATIENTS ##
 
-cpfs = %w[
+%w[
   82920382640
   41869202309
   82194769668
@@ -240,11 +238,10 @@ cpfs = %w[
   patient.save!
 
   today_range = begin_date.beginning_of_day..begin_date.end_of_day
-  
+
   appointment = Appointment.where(patient_id: nil, start: today_range).order(:start).last
   appointment.update(patient_id: patient.id)
 
   patient.appointments << appointment
-  patient.last_appointment = appointment
   patient.save!
 end

@@ -31,7 +31,6 @@ class Patients::RegistrationsController < Devise::RegistrationsController
     fields = convert_birth_date(fields)
 
     patient = Patient.new(fields)
-    patient.last_appointment = nil
     patient.groups = Group.where(id: groups_ids)
 
     # TODO: add `if` statement

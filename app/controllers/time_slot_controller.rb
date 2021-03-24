@@ -40,13 +40,8 @@ class TimeSlotController < PatientSessionController
   end
 
   def cancel
-    Appointment.transaction do
-      @current_patient.appointments
-        .where(id: cancel_params[:appointment_id])
-        .update_all(patient_id: nil)
-
-      @current_patient.update(last_appointment: nil)
-    end
+    @appointment = @current_patient.appointments.find_by!(id: cancel_params[:appointment_id])
+    @appointment.update!(patient_id: nil)
 
     redirect_to time_slot_path
   end

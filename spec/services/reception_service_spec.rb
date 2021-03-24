@@ -8,11 +8,9 @@ RSpec.describe ReceptionService, type: :service do
   let(:service) { ReceptionService.new(appointment) }
   let(:time) { Time.new('2020-01-01') }
   let(:vaccine_name) { 'coronavac' }
-  let(:last_appointment) { patient.appointments.order(:start).last }
 
   before do
     travel_to time
-    patient.update(last_appointment: appointment)
   end
 
   describe '#check in' do
@@ -29,7 +27,7 @@ RSpec.describe ReceptionService, type: :service do
 
     it 'updates vaccine_name on second_dose' do
       expect { service.check_out(vaccine_name) }
-        .to change { last_appointment.reload.vaccine_name }.from(nil).to(vaccine_name)
+        .to change { patient.appointments.current.reload.vaccine_name }.from(nil).to(vaccine_name)
     end
 
     it 'updates check out attribute' do
@@ -40,7 +38,7 @@ RSpec.describe ReceptionService, type: :service do
     it 'marks last_appointment as a second dose appointment' do
       service.check_out(vaccine_name)
 
-      expect(last_appointment.second_dose).to eq(true)
+      expect(patient.appointments.current.second_dose).to eq(true)
     end
 
     it 'schedules second dose appointment' do
@@ -54,7 +52,7 @@ RSpec.describe ReceptionService, type: :service do
 
       it 'updates the patient last_appointment attribute' do
         expect { service.check_out(vaccine_name) }
-          .not_to change { patient.reload.last_appointment.id }
+          .not_to change { patient.appointments.current.id }
       end
 
       it 'does not schedules a new appointment' do

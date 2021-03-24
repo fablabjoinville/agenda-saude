@@ -27,7 +27,7 @@ class ReceptionService
     next_appointment_start = @appointment.start + VACCINES_SECOND_DOSE_INTERVAL[vaccine_name]
     next_appointment_end = next_appointment_start + @appointment.ubs.slot_interval_minutes.minutes
 
-    next_appointment = Appointment.create!(
+    Appointment.create!(
       start: next_appointment_start,
       end: next_appointment_end,
       patient_id: @patient.id,
@@ -36,7 +36,5 @@ class ReceptionService
       vaccine_name: vaccine_name,
       ubs: @appointment.ubs
     )
-
-    @patient.update!(last_appointment: next_appointment)
   end
 end
