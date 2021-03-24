@@ -31,6 +31,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Install Code Climate reporter
+        run: |
+          export GIT_BRANCH="${GITHUB_REF/refs\/heads\//}"
+          sudo curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+          sudo chmod +x ./cc-test-reporter
+
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -52,3 +58,9 @@ jobs:
           POSTGRESQL_HOST: localhost
           RAILS_ENV: test
         run: bundle exec rspec
+
+      - name: Upload coverage information
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CODE_CLIMATE_ID }}
+        run: |
+          sudo ./cc-test-reporter after-build -r $CC_TEST_REPORTER_ID

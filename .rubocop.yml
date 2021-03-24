@@ -1,5 +1,4 @@
-require:
-  - rubocop-rails
+require: rubocop-rails
 
 Rails:
   Enabled: true
@@ -18,9 +17,14 @@ AllCops:
     - 'lib/tasks/*.rake'
     - 'Guardfile'
     - 'Dangerfile'
+  NewCops: enable
+  TargetRubyVersion: 2.6.5
 
 Documentation:
   Enabled: false
+
+Layout/LineLength:
+  Max: 130
 
 Metrics/AbcSize:
   Exclude:
@@ -38,9 +42,6 @@ Metrics/ClassLength:
   Exclude:
     - 'test/**/*'
     - 'spec/**/*'
-
-Metrics/LineLength:
-  Max: 130
 
 Metrics/MethodLength:
   Exclude:

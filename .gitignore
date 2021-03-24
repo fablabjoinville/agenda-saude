@@ -52,3 +52,4 @@ dump-*.sql*
 # Cypress logs
 spec/cypress/screenshots/
 spec/cypress/videos/
+coverage
