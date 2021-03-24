@@ -2,11 +2,10 @@ source 'https://rubygems.org'
 
 ruby '2.6.5'
 
-gem 'rails', '~> 6.0.1'
 gem 'pg' # Use postgresql as the database for Active Record
+gem 'rails', '~> 6.0.1'
 
 gem 'bootsnap', '>= 1.4.2', require: false
-gem "smarter_csv", "~> 1.2"
 gem 'bootstrap'
 gem 'caxlsx'
 gem 'caxlsx_rails'
@@ -20,6 +19,7 @@ gem 'puma', '~> 4.3' # Use Puma as the app server
 gem 'sass-rails', '>= 6' # Use SCSS for stylesheets
 gem 'sentry-rails'
 gem 'sentry-ruby'
+gem 'smarter_csv', '~> 1.2'
 gem 'tod'
 
 group :development, :test do
@@ -36,6 +36,9 @@ group :development, :test do
   gem 'reek', require: false
   gem 'rspec'
   gem 'rspec-rails'
+  gem 'rubocop', require: false
+  gem 'rubocop-rails', require: false
+  gem 'rubocop-rspec', require: false
 end
 
 group :development do
@@ -44,4 +47,8 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'web-console', '>= 3.3.0'
+end
+
+group :test do
+  gem 'simplecov', '< 0.18', require: false # https://github.com/codeclimate/test-reporter/issues/413
 end
