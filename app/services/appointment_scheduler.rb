@@ -1,10 +1,10 @@
 class AppointmentScheduler
   def initialize(max_schedule_time_ahead:)
     @max_schedule_time_ahead = if max_schedule_time_ahead.is_a?(ActiveSupport::Duration)
-      max_schedule_time_ahead
-    else
-      max_schedule_time_ahead.days
-    end
+                                 max_schedule_time_ahead
+                               else
+                                 max_schedule_time_ahead.days
+                               end
   end
 
   def schedule(raw_start_time:, ubs:, patient:)
@@ -12,35 +12,34 @@ class AppointmentScheduler
 
     return [:inactive_ubs] unless ubs.active?
     return [:invalid_schedule_time] if start_time > (Time.zone.now + @max_schedule_time_ahead).at_end_of_day
+    return [:schedule_conditions_unmet] unless patient.can_schedule?
 
-    Appointment.transaction(isolation: :repeatable_read) do
-      patient.reload
+    current_appointment = patient.appointments.future.current
 
-      return [:schedule_conditions_unmet] unless patient.can_schedule?
+    # Single SQL query to update the first available record it can find
+    # it will either return 0 if no rows could be found, or 1 if it was able to schedule an appointment
+    rows_updated = Appointment.
+      where(start: start_time, ubs_id: ubs, patient_id: nil).
+      limit(1).
+      update_all(patient_id: patient.id)
 
-      appointment = Appointment.where(start: start_time, ubs_id: ubs.id, patient_id: nil)
-        .order('random()') # reduces row lock contention
-        .first
+    return [:all_slots_taken] if rows_updated.zero?
 
-      return [:all_slots_taken] unless appointment.present?
-
-      patient.appointments.future.update_all(patient_id: nil)
-
+    appointment = patient.appointments.where.not(id: current_appointment&.id).find_by!(ubs: ubs, start: start_time)
+    if current_appointment
+      # Update new appointment with data from current
       appointment.update!(
-        patient_id: patient.id,
-        second_dose: patient.appointments.current&.check_out.present?,
-        vaccine_name: patient.appointments.current&.vaccine_name
+        second_dose: current_appointment.second_dose,
+        vaccine_name: current_appointment.vaccine_name
       )
 
-      # TODO: remove this after we get rid of last_appointment
-      patient.update!(last_appointment: appointment)
-
-      [:success, appointment]
+      # Free up current appointment
+      current_appointment.update!(patient: nil)
     end
-  rescue ActiveRecord::SerializationFailure
-    [:all_slots_taken]
+
+    [:success, appointment]
   rescue => e
-    Sentry.capture_exception(e)
+    ExceptionNotifierService.(e)
 
     [:internal_error, e.message]
   end
