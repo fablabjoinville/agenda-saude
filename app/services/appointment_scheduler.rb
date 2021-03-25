@@ -36,7 +36,7 @@ class AppointmentScheduler
         )
 
         # Free up future appointment
-        current_appointment.update!(patient: nil)
+        current_appointment.update!(patient: nil, check_in: nil, check_out: nil, second_dose: nil, vaccine_name: nil)
       end
     end
 
