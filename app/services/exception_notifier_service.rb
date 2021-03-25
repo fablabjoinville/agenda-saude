@@ -1,13 +1,7 @@
-class ExceptionNotifierService < ApplicationService
-  def initialize(exception)
-    @exception = exception
+class ExceptionNotifierService
+  def call(exception)
+    raise exception if Rails.env.development?
 
-    super()
-  end
-
-  def call
-    raise @exception if Rails.env.development?
-
-    Sentry.capture_exception(e)
+    Sentry.capture_exception(exception)
   end
 end
