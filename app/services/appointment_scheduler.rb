@@ -20,10 +20,10 @@ class AppointmentScheduler
     Appointment.transaction(isolation: :repeatable_read) do
       # Single SQL query to update the first available record it can find
       # it will either return 0 if no rows could be found, or 1 if it was able to schedule an appointment
-      rows_updated = Appointment.
-        where(start: start_time, ubs_id: ubs, patient_id: nil).
-        limit(1).
-        update_all(patient_id: patient.id)
+      rows_updated = Appointment
+                     .where(start: start_time, ubs_id: ubs, patient_id: nil)
+                     .limit(1)
+                     .update_all(patient_id: patient.id)
 
       return [:all_slots_taken] if rows_updated.zero?
 
@@ -41,8 +41,8 @@ class AppointmentScheduler
     end
 
     [:success, new_appointment]
-  rescue => e
-    ExceptionNotifierService.(e)
+  rescue StandardError => e
+    ExceptionNotifierService.call(e)
 
     [:internal_error, e.message]
   end
