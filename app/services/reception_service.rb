@@ -16,7 +16,7 @@ class ReceptionService
     Appointment.transaction do
       @appointment.update!(check_out: Time.zone.now, vaccine_name: vaccine_name)
 
-      create_second_dose_appointment(vaccine_name) if @appointment.patient.appointments.active.checked_out.size < 2
+      create_second_dose_appointment(vaccine_name) if @appointment.patient.appointments.active.checked_out.one?
     end
   end
 
