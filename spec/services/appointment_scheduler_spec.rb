@@ -124,19 +124,4 @@ RSpec.describe AppointmentScheduler, type: :service, use_transactional_tests: fa
       expect(data).to eq('no time information in "invalid"')
     end
   end
-
-  describe 'when a serialization error occurs' do
-    before do
-      create(:appointment, start: start_time, ubs: ubs, patient: nil)
-
-      allow_any_instance_of(Appointment)
-        .to receive(:update!).and_raise(ActiveRecord::SerializationFailure)
-    end
-
-    it 'returns an :all_slots_taken result' do
-      result = scheduler.schedule(**args)
-
-      expect(result).to eq([:all_slots_taken])
-    end
-  end
 end
