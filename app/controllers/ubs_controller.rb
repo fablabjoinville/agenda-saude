@@ -27,21 +27,11 @@ class UbsController < UserSessionController
   def confirm_check_out
     appointment = Appointment.find(params[:id])
     patient = appointment.patient
+    vaccine_name = appointment.vaccine_name.presence || params['patient']['vaccine']
 
-    if appointment.second_dose?
-      vaccine_name = appointment.vaccine_name
-    else
-      vaccine_name = params['patient']['vaccine']
-    end
+    second_dose_appointment = ReceptionService.new(patient.appointments.order(:start).last).check_out(vaccine_name)
 
-    if appointment.start.today?
-      ReceptionService.new(patient.appointments.order(:start).last).check_out(vaccine_name)
-
-      @second_dose_appointment = patient.appointments.where(second_dose: true).first
-      return redirect_to ubs_patient_checkout_path(id: appointment.id, second_dose_appointment: @second_dose_appointment)
-    end
-
-    redirect_to ubs_patient_checkout_path(id: appointment.id)
+    redirect_to ubs_patient_checkout_path(id: appointment.id, second_dose_appointment: second_dose_appointment)
   end
 
   def find_patients
@@ -97,7 +87,6 @@ class UbsController < UserSessionController
     @appointment = Appointment.find(params[:id])
     patient = @appointment.patient
     @second_dose_appointment = patient.appointments.where(second_dose: true).first
-
 
     groups = []
     Patient::CONDITIONS.each do |cond, func|

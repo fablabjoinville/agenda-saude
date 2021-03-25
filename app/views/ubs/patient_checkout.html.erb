@@ -10,7 +10,7 @@
   </div>
 </div>
 
-<% if @second_dose_appointment.present? && !@appointment.second_dose? %>
+<% if @second_dose_appointment.present? %>
   <div class="alert alert-info alert-dismissable", data-cy="alertMessage" role="alert">
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
     <div class="row" style="font-size: 2rem;">
@@ -23,7 +23,7 @@
     </div>
   </div>
   <p class="small patient-muted">* Lembre-se de instruir a pessoa para a data e hora da 2º dose da vacina.</p>
-<% elsif @patient[:vaccinated] %>
+<% elsif @patient.vaccinated? %>
   <div class="alert alert-info alert-dismissable", data-cy="alertMessage" role="alert">
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
     <div class="row" style="font-size: x-large;">
@@ -33,7 +33,6 @@
     </div>
   </div>
 <% end %>
-
 
 <%= form_with url: confirm_check_out_path(id: @appointment.id), method: :post, local: true do |f| %>
   <div class="card">

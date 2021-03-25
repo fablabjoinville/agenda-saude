@@ -21,12 +21,6 @@
       </div>
     </div>
 
-    <div class="row">
-      <div class="col">
-        <strong>Dose: </strong><%= appointment.second_dose? ? "Segunda dose" : "Primeira dose" %>
-      </div>
-    </div>
-
     <% if appointment.vaccine_name.present? %>
       <div class="row">
         <div class="col" data-cy="appliedVaccineName">
