@@ -3,9 +3,9 @@ require 'rails_helper'
 RSpec.describe ReceptionService, type: :service do
   # Eager UBS creation required because of patient.set_main_ubs
   let!(:ubs) { create(:ubs) }
-  let(:appointment) { create(:appointment, patient_id: patient.id) }
+  let!(:appointment) { create(:appointment, patient: patient) }
   let(:patient) { create(:patient) }
-  let(:service) { ReceptionService.new(appointment) }
+  let(:service) { described_class.new(appointment) }
   let(:time) { Time.new('2020-01-01') }
   let(:vaccine_name) { 'coronavac' }
 
@@ -15,24 +15,24 @@ RSpec.describe ReceptionService, type: :service do
 
   describe '#check in' do
     it 'updates check in attribute' do
-      expect { service.check_in }.to change { appointment.reload.check_in }.from(nil).to(time)
+      expect { service.check_in }.to change { appointment.check_in }.from(nil).to(time)
     end
   end
 
   describe '#check out' do
     it 'updates vaccine_name on first dose' do
       expect { service.check_out(vaccine_name) }
-        .to change { appointment.reload.vaccine_name }.from(nil).to(vaccine_name)
+        .to change { appointment.vaccine_name }.from(nil).to(vaccine_name)
     end
 
     it 'updates vaccine_name on second_dose' do
       expect { service.check_out(vaccine_name) }
-        .to change { patient.appointments.current.reload.vaccine_name }.from(nil).to(vaccine_name)
+        .to change { patient.appointments.current.vaccine_name }.from(nil).to(vaccine_name)
     end
 
     it 'updates check out attribute' do
       expect { service.check_out(vaccine_name) }
-        .to change { appointment.reload.check_out }.from(nil).to(time)
+        .to change { appointment.check_out }.from(nil).to(time)
     end
 
     it 'marks last_appointment as a second dose appointment' do
