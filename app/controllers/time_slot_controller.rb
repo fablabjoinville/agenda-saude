@@ -1,5 +1,3 @@
-# coding: utf-8
-
 class TimeSlotController < PatientSessionController
   before_action :render_patient_not_allowed
 
