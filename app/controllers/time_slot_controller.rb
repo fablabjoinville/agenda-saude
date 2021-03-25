@@ -1,4 +1,3 @@
-# coding: utf-8
 require_relative './../helpers/time_slot_helper'
 # include TimeSlotHelper
 
@@ -41,8 +40,8 @@ class TimeSlotController < PatientSessionController
 
   def cancel
     @current_patient.appointments
-      .where(id: cancel_params[:appointment_id])
-      .update_all(patient_id: nil)
+                    .where(id: cancel_params[:appointment_id])
+                    .update_all(patient_id: nil)
 
     redirect_to time_slot_path
   end
@@ -59,14 +58,14 @@ class TimeSlotController < PatientSessionController
     # The intention here is that, after a patient had the 2nd dose, they shouldn't be able to schedule new appointments
     # return if current_patient.appointments.current&.second_dose? && @current_day.to_date < current_patient.appointments.current&.start.to_date
 
-    @time_slots = Appointment.
-      includes(:ubs).
-      free. # can be scheduled
-      start_between(@current_day, @current_day.end_of_day). # in the date the user is looking for
-      order(:start). # in chronological order
-      select(:ubs_id, :start, :end). # only return what we care with
-      distinct. # remove duplicates (same as .uniq in pure Ruby)
-      group_by { |a| a.ubs } # transforms it into a Hash grouped by Ubs
+    @time_slots = Appointment
+                  .includes(:ubs)
+                  .free # can be scheduled
+                  .start_between(@current_day, @current_day.end_of_day) # in the date the user is looking for
+                  .order(:start) # in chronological order
+                  .select(:ubs_id, :start, :end) # only return what we care with
+                  .distinct # remove duplicates (same as .uniq in pure Ruby)
+                  .group_by(&:ubs) # transforms it into a Hash grouped by Ubs
   end
 
   private
