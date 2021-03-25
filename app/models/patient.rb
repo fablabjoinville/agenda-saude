@@ -105,7 +105,7 @@ class Patient < ApplicationRecord
   end
 
   def vaccinated?
-    appointments.current&.second_dose && appointments.current&.check_out.present?
+    appointments.active.checked_out.count >= 2
   end
 
   def allowed?

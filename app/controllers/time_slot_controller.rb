@@ -44,22 +44,15 @@ class TimeSlotController < PatientSessionController
   end
 
   def index
+    return render_vaccinated if current_patient.vaccinated?
+
     @appointment = current_patient.appointments.future.current
     @patient_can_schedule = current_patient.can_schedule?
-    return render_vaccinated if current_patient.vaccinated?
 
     @gap_in_days = gap_in_days
 
     # prevent users from scheduling in the past:
     @current_day = [Time.zone.now.at_beginning_of_day + @gap_in_days.days, Time.zone.now].max
-
-    # TODO: commented out this line while we don't have patient with second dose (at least not many), to save SQL
-    # resources. Consider how to optimize it.
-    # The intention here is that, after a patient had the 2nd dose, they shouldn't be able to schedule new appointments
-    # if current_patient.appointments.current&.second_dose? &&
-    #    @current_day.to_date < current_patient.appointments.current&.start.to_date
-    #   return
-    # end
 
     @time_slots = Appointment
                   .includes(:ubs)
@@ -106,9 +99,9 @@ class TimeSlotController < PatientSessionController
   end
 
   def render_vaccinated
-    # TODO: improve how we load current and first appointments
-    @appointment = current_patient.appointments.current
-    @first_appointment = current_patient.first_appointment
+    appointments = current_patient.appointments.active.checked_out.order(:check_out).limit(2).all
+    @first_dose_appointment = appointments.first
+    @second_dose_appointment = appointments.last
 
     render 'patients/vaccinated'
   end

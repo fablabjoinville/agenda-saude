@@ -4,52 +4,52 @@
       <div class="card-body">
         <div class="row">
           <div class="col" data-cy="vaccinatedPatientText">
-            <h4>Paciente Vacinado: <strong> <%= @appointment.patient.name %></strong> </h4>
-            <h5><strong>Vacina: </strong><%= @appointment.vaccine_name.capitalize %> </h5>
+            <h4>Paciente Vacinado: <strong> <%= @first_dose_appointment.patient.name %></strong> </h4>
+            <h5><strong>Vacina: </strong><%= @first_dose_appointment.vaccine_name.capitalize %> </h5>
           </div>
         </div>
         <div class="row">
           <div class="col">
             <div class="row">
               <div class="col">
-                <strong>Primeira Dose </strong>
+                <strong>Primeira Dose</strong>
               </div>
             </div>
             <div class="row">
               <div class="col">
-                <strong>Data: </strong><%= ApplicationHelper.humanize_datetime(@first_appointment.check_out) %>
+                <strong>Data: </strong><%= ApplicationHelper.humanize_datetime(@first_dose_appointment.check_out) %>
               </div>
             </div>
             <div class="row">
               <div class="col">
-                <strong>Unidade: </strong><%= @appointment.ubs.name %>
+                <strong>Unidade: </strong><%= @first_dose_appointment.ubs.name %>
               </div>
             </div>
             <div class="row">
               <div class="col">
-                <strong>Endereço: </strong><%= @appointment.ubs.address %>
+                <strong>Endereço: </strong><%= @first_dose_appointment.ubs.address %>
               </div>
             </div>
           </div>
           <div class="col">
             <div class="row">
               <div class="col">
-                <strong>Segunda Dose </strong>
+                <strong>Segunda Dose</strong>
               </div>
             </div>
             <div class="row">
               <div class="col">
-                <strong>Data: </strong><%= ApplicationHelper.humanize_datetime(@appointment.check_out) %>
+                <strong>Data: </strong><%= ApplicationHelper.humanize_datetime(@second_dose_appointment.check_out) %>
               </div>
             </div>
             <div class="row">
               <div class="col">
-                <strong>Unidade: </strong><%= @appointment.ubs.name %>
+                <strong>Unidade: </strong><%= @second_dose_appointment.ubs.name %>
               </div>
             </div>
             <div class="row">
               <div class="col">
-                <strong>Endereço: </strong><%= @appointment.ubs.address %>
+                <strong>Endereço: </strong><%= @second_dose_appointment.ubs.address %>
               </div>
             </div>
           </div>
