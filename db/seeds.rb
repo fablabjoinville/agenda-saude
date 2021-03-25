@@ -234,7 +234,7 @@ TimeSlotGeneratorExecution.where(date: current_time.to_date).update_all(status: 
   patient.birth_date = '1920-06-24'
   patient.phone = '(47) 91234-5678'
   patient.neighborhood = 'América'
-  patient.groups << Group.find_by(name: 'Trabalhador(a) da Saúde')
+  patient.groups << Group.find_by!(name: 'Trabalhador(a) da Saúde')
   patient.save!
 
   today_range = begin_date.beginning_of_day..begin_date.end_of_day
