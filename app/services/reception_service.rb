@@ -6,7 +6,6 @@ class ReceptionService
 
   def initialize(appointment)
     @appointment = appointment
-    @patient = appointment.patient
   end
 
   def check_in
@@ -30,7 +29,7 @@ class ReceptionService
     Appointment.create!(
       start: next_appointment_start,
       end: next_appointment_end,
-      patient_id: @patient.id,
+      patient_id: @appointment.patient.id,
       second_dose: true,
       active: true,
       vaccine_name: vaccine_name,
