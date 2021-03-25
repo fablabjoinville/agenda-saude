@@ -81,7 +81,7 @@ class TimeSlotGenerationWorker
           "Geração de time slots falhou (#{error}). Mais detalhes no Sentry."
         )
 
-        Sentry.capture_exception(e)
+        ExceptionNotifierService.call(e)
       end
     end
   end
