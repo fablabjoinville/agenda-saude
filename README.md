@@ -140,7 +140,13 @@ Deseja contribuir financeiramente? Acesse nosso [Open Collective](https://openco
 
 Esse projeto existe graças ao esforço e dedicação dessas pessoas:
 
+**desenvolvimento**
+
 [![Code Contribotors](https://opencollective.com/makersnetwork/contributors.svg?width=890&button=false)](https://github.com/makersnetwork/agenda-saude/graphs/contributors)
+
+**design**
+
+![gisele](https://user-images.githubusercontent.com/4171/112643532-38084e00-8e23-11eb-9ca6-4f947241dbac.png) ![gus](https://user-images.githubusercontent.com/4171/112643538-39397b00-8e23-11eb-826b-3612f8e8d9b4.png)
 
 **Empresas parceiras**
 
