@@ -29,6 +29,7 @@ group :development, :test do
   gem 'byebug'
   gem 'cypress-on-rails'
   gem 'database_cleaner-active_record'
+  gem 'dotenv-rails'
   gem 'factory_bot_rails'
   gem 'fasterer', require: false
   gem 'flay', require: false
