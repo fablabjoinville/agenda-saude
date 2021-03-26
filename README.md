@@ -11,15 +11,10 @@
 um sistema de [agendamento de vacinação e exames](https://vacinajoinville.com.br/) de COVID-19 para a prefeitura de Joinville.
 O sistema pode ser usado livremente, respeitando a [licença de uso](https://github.com/MakersNetwork/agenda-saude/blob/main/LICENSE), para gerenciar a fila de vacinação em outras cidades.
 
-* Quer saber como implantar na sua cidade? Veja nosso [fórum](https://github.com/MakersNetwork/agenda-saude/discussions/250);
-* Tire qualquer [dúvida](https://github.com/MakersNetwork/agenda-saude/discussions) sobre o projeto;
-* [Sugira](https://github.com/MakersNetwork/agenda-saude/issues) melhorias;
-* Fique a vontade para [contribuir](#contribuindo)!
-
-# Desenvolvimento
+Quer saber como implantar na sua cidade? Veja nosso [fórum](https://github.com/MakersNetwork/agenda-saude/discussions/250). Tire qualquer [dúvida](https://github.com/MakersNetwork/agenda-saude/discussions) sobre o projeto. [Sugira](https://github.com/MakersNetwork/agenda-saude/issues) melhorias. Fique a vontade para [contribuir](#contribuindo)!
 
 - [Dependências](#dependencias)
-- [Ambiente local](#ambiente-local)
+- [Desenvolvimento](#desenvolvimento)
 - [Testes](#testes)
 - [Style Guides](#style-guides)
 - [Deploy](#deploy)
@@ -37,7 +32,7 @@ dependências:
 - Install Docker ([documentação](https://docs.docker.com/install/overview/))
 - Install Docker Compose ([documentação](https://docs.docker.com/compose/install/))
 
-## Ambiente local
+## Desenvolvimento
 
 Se você quiser executar este projeto no seu ambiente de desenvolvimento,
 você deve clonar este código-fonte, compilá-lo e executá-lo localmente.
