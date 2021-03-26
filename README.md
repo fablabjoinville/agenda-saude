@@ -26,7 +26,7 @@ Quer saber como implantar na sua cidade? Veja nosso [fórum](https://github.com/
 Este projeto usa o framework de desenvolvimento Web Ruby on Rails e possui as seguintes
 dependências:
 
-- Ruby `>= 2.6.6`
+- Ruby `>= 2.7.2
 - Node `>= 13.2.0`
 - PostgreSQL `== 12.1`
 - Install Docker ([documentação](https://docs.docker.com/install/overview/))
