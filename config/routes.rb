@@ -3,9 +3,6 @@ Rails.application.routes.draw do
   devise_for :users, path: 'users', controllers: { sessions: 'users/sessions' }
 
   devise_scope :patient do
-    root 'home#index'
-    get '/home_teste_rapido', to: 'home#home_teste_rapido'
-
     resource :time_slot do
       get '/', as: :index, to: 'time_slot#index'
       post '/', as: :schedule, to: 'time_slot#schedule'
@@ -57,4 +54,5 @@ Rails.application.routes.draw do
 
   get 'cadastrar_paciente/:cpf', to: 'home#register_patient'
 
+  root 'home#index'
 end
