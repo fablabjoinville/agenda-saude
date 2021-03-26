@@ -14,7 +14,7 @@ describe('patient appointment flow', () => {
       cy.loginAsPatient(cpf)
     })
 
-    it('can cancel and reeschedule same vaccine', () => {
+    it('can cancel and reschedule same vaccine', () => {
       cy.get('[data-cy=appliedVaccineName]').should('contain', 'Coronavac')
 
       cy.get('[data-cy=cancelAppointmentButton]').click()

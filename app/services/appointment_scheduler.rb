@@ -15,7 +15,7 @@ class AppointmentScheduler
     return [:schedule_conditions_unmet] unless patient.can_schedule?
 
     new_appointment = nil
-    current_appointment = patient.appointments.future.current
+    current_appointment = patient.appointments.current
 
     Appointment.transaction(isolation: :repeatable_read) do
       # Single SQL query to update the first available record it can find
@@ -35,8 +35,10 @@ class AppointmentScheduler
           vaccine_name: current_appointment.vaccine_name
         )
 
-        # Free up future appointment
-        current_appointment.update!(patient: nil, check_in: nil, check_out: nil, second_dose: nil, vaccine_name: nil)
+        # Free up current appointment if it wasn't checkout out (completed)
+        unless current_appointment.checked_out?
+          current_appointment.update!(patient: nil, check_in: nil, check_out: nil, second_dose: nil, vaccine_name: nil)
+        end
       end
     end
 
