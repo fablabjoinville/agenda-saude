@@ -365,7 +365,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bootsnap (>= 1.4.2)
+  bootsnap
   bootstrap
   brakeman
   bullet
@@ -383,11 +383,11 @@ DEPENDENCIES
   guard
   jquery-rails
   kaminari
-  listen (>= 3.0.5, < 3.2)
+  listen
   newrelic_rpm
   pg
   pry-rails
-  puma (~> 4.3)
+  puma
   rails (~> 6.0.1)
   rails_best_practices
   reek
@@ -396,18 +396,18 @@ DEPENDENCIES
   rubocop
   rubocop-rails
   rubocop-rspec
-  sass-rails (>= 6)
+  sass-rails
   sentry-rails
   sentry-ruby
   simplecov
-  smarter_csv (~> 1.2)
+  smarter_csv
   spring
-  spring-watcher-listen (~> 2.0.0)
+  spring-watcher-listen
   tod
-  web-console (>= 3.3.0)
+  web-console
 
 RUBY VERSION
-   ruby 2.6.6p146
+   ruby 2.7.2p137
 
 BUNDLED WITH
    2.2.15
