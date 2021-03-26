@@ -8,19 +8,22 @@
 ![Open Collective backers and sponsors](https://img.shields.io/opencollective/all/makersnetwork)
 
 **Agenda Saúde** é um projeto de código aberto desenvolvido de forma colaborativa para fornecer
-um sistema de
-[agendamento de vacinação e exames de COVID-19 para a prefeitura de Joinville](https://vacinajoinville.com.br/).
-O sistema pode ser usado livremente, respeitando a
-[licença de uso](https://github.com/MakersNetwork/agenda-saude/blob/main/LICENSE),
-para gerenciar a fila de vacinação em outras cidades.
+um sistema de [agendamento de vacinação e exames de COVID-19 para a prefeitura de Joinville](https://vacinajoinville.com.br/).
+O sistema pode ser usado livremente, respeitando a [licença de uso](https://github.com/MakersNetwork/agenda-saude/blob/main/LICENSE), para gerenciar a fila de vacinação em outras cidades.
 
 Quer saber como implantar na sua cidade? Venha conversar conosco no
-[fórum](https://github.com/MakersNetwork/agenda-saude/discussions/250). Tire
-qualquer [dúvida sobre o projeto](https://github.com/MakersNetwork/agenda-saude/discussions),
-ou [sugira melhorias](https://github.com/MakersNetwork/agenda-saude/issues). Fique
-a vontade para contribuir! Essas aqui são
+[fórum](https://github.com/MakersNetwork/agenda-saude/discussions/250).
+
+Tire qualquer [dúvida sobre o projeto](https://github.com/MakersNetwork/agenda-saude/discussions),
+ou [sugira melhorias](https://github.com/MakersNetwork/agenda-saude/issues).
+
+Fique a vontade para contribuir! Essas aqui são
 [boas issues](https://github.com/MakersNetwork/agenda-saude/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
-para começar! Deseja contribuir financeiramente? Acesse nosso [Open Collective](https://opencollective.com/makersnetwork).
+para começar!
+
+Deseja contribuir financeiramente? Acesse nosso [Open Collective](https://opencollective.com/makersnetwork).
+
+Quer conversar com o time? [Estamos no Discord](https://discord.gg/fcYkv9RvN7).
 
 - [Dependências](#dependencias)
 - [Desenvolvimento](#desenvolvimento)
@@ -28,17 +31,16 @@ para começar! Deseja contribuir financeiramente? Acesse nosso [Open Collective]
 - [Style Guides](#style-guides)
 - [Deploy](#deploy)
 
-
 ## Dependências
 
 Este projeto usa o framework de desenvolvimento Web Ruby on Rails e possui as seguintes
 dependências:
 
-- Ruby >= 2.6.6
-- Node >= 13.2.0
-- PostgreSQL == 12.1
-- Install Docker - [See Instalation](https://docs.docker.com/install/overview/)
-- Install Docker Compose - [See instalation](https://docs.docker.com/compose/install/)
+- Ruby `>= 2.6.6`
+- Node `>= 13.2.0`
+- PostgreSQL `== 12.1`
+- Install Docker ([documentação](https://docs.docker.com/install/overview/))
+- Install Docker Compose ([documentação](https://docs.docker.com/compose/install/))
 
 ## Desenvolvimento
 
@@ -48,7 +50,7 @@ você deve clonar este código-fonte, compilá-lo e executá-lo localmente.
 Existem duas formas de configurar o projeto no seu ambiente. Usando o
 Docker Compose ou instalando manualmente as dependências.
 
-**Usando o Docker Compose**
+### Docker Compose
 
 A forma mais fácil de executar este projeto no seu ambiente é usando o
 Docker Compose, ferramenta responsável por criar um ambiente virtualizado e
@@ -62,7 +64,7 @@ docker-compose up
 
 E acesse no ambiente local [http://localhost:4000](http://localhost:4000).
 
-**Instalando as dependências manualmente**
+### Instalando manualmente
 
 Caso você queira instalar manualmente todas as dependências no seu ambiente, precisará
 executar os seguintes comandos:
