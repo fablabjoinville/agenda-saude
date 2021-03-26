@@ -228,6 +228,7 @@ today_range = begin_date.beginning_of_day..begin_date.end_of_day
   patient.groups << Group.find_by!(name: 'Trabalhador(a) da Saúde')
   patient.save!
 
+  today_range = begin_date.beginning_of_day..begin_date.end_of_day
   appointment = Appointment.where(patient_id: nil, start: today_range).order(:start).last
   appointment.update!(patient_id: patient.id)
 
