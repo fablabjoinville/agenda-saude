@@ -30,6 +30,8 @@ Quer conversar com o time? [Estamos no Discord](https://discord.gg/fcYkv9RvN7).
 - [Testes](#testes)
 - [Style Guides](#style-guides)
 - [Deploy](#deploy)
+- [Contribuindo](contribuindo)
+- [Licença](licenca)
 
 ## Dependências
 
@@ -136,7 +138,34 @@ Para fazer deploy da aplicação:
 git push heroku main
 ```
 
-## Contribuidores
+## Contribuindo
 
-[![](https://opencollective.com/html-react-parser/contributors.svg?width=890&button=false)](https://github.com/makersnetwork/agenda-saude/graphs/contributors)
+Este projeto existe graças a todas as pessoas que contribuem. Fique a vontade para contribuir!
 
+Essas aqui são
+[boas issues](https://github.com/MakersNetwork/agenda-saude/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
+para começar!
+
+Quer conversar com o time? [Estamos no Discord](https://discord.gg/fcYkv9RvN7).
+
+### Contribuição Financeira
+
+Deseja contribuir financeiramente? Acesse nosso [Open Collective](https://opencollective.com/makersnetwork).
+
+Nossos financiadores:
+
+[![Financial Contributors - Individuals](https://opencollective.com/makersnetwork/individuals.svg?width=890)](https://opencollective.com/makersnetwork)
+
+## Time
+
+Esse projeto existe graças ao esforço e dedicação dessas pessoas:
+
+[![Code Contribotors](https://opencollective.com/makersnetwork/contributors.svg?width=890&button=false)](https://github.com/makersnetwork/agenda-saude/graphs/contributors)
+
+Empresas parceiras:
+
+![Magrathea](https://user-images.githubusercontent.com/4171/112638262-d42f5680-8e1d-11eb-8dc5-157198ad6bef.png)
+
+## Licença
+
+[MIT](https://github.com/remarkablemark/html-react-parser/blob/master/LICENSE)
