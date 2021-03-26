@@ -9,32 +9,18 @@ module Operator
     }.freeze
 
     def index
-      @filter = (FILTERS.values & [index_params[:filter].to_s]).presence&.first || FILTERS[:waiting]
-
       appointments = @ubs.appointments
                          .today
                          .scheduled
                          .includes(:patient)
                          .order(:start)
 
-      if index_params[:search].present? && index_params[:search].size >= 3
-        @search = index_params[:search]
-        appointments = appointments.search_for(@search)
-        @filter = FILTERS[:search] # In case we're searching, move filter to all
-      end
-
-      case @filter
-      when FILTERS[:waiting]
-        appointments = appointments.not_checked_in.not_checked_out
-      when FILTERS[:checked_in]
-        appointments = appointments.checked_in.not_checked_out
-      when FILTERS[:checked_out]
-        appointments = appointments.checked_in.checked_out
-      end
-
-      @appointments = appointments
+      @appointments = filter(search(appointments))
+                      .order(:start)
+                      .joins(:patient)
+                      .order(Patient.arel_table[:name].lower.asc)
                       .page(index_params[:page])
-                      .per([[10, index_params[:per_page].to_i].max, 10_000].min) # max of 10k is for allowing exporting to XLS
+                      .per([[10, index_params[:per_page].to_i].max, 10_000].min) # max of 10k is for exporting to XLS
 
       respond_to do |format|
         format.html
@@ -42,10 +28,6 @@ module Operator
           response.headers['Content-Disposition'] = "attachment; filename=\"vacina_agendamentos_#{Date.current}.xlsx\""
         end
       end
-    end
-
-    def index_params
-      params.permit(:per_page, :page, :search, :filter)
     end
 
     def show
@@ -117,7 +99,7 @@ module Operator
           .not_checked_out
           .active
           .future
-          .update_all(active: false)
+          .update_all(active: false) # rubocop:disable Rails/SkipsModelValidations
 
       redirect_to operator_appointments_path
     end
@@ -129,15 +111,47 @@ module Operator
           .not_checked_out
           .suspended
           .future
-          .update_all(active: true)
+          .update_all(active: true) # rubocop:disable Rails/SkipsModelValidations
 
       redirect_to operator_appointments_path
     end
 
     private
 
+    # Filters out appointments
+    def filter(appointments)
+      # use @filter from search, or input from param (permit-listed), or set to default "waiting"
+      @filter ||= (FILTERS.values & [index_params[:filter].to_s]).presence&.first || FILTERS[:waiting]
+
+      case @filter
+      when FILTERS[:waiting]
+        appointments.not_checked_in.not_checked_out
+      when FILTERS[:checked_in]
+        appointments.checked_in.not_checked_out
+      when FILTERS[:checked_out]
+        appointments.checked_in.checked_out
+      else
+        appointments
+      end
+    end
+
+    # Searches for specific appointments
+    def search(appointments)
+      if index_params[:search].present? && index_params[:search].size >= 3
+        @filter = FILTERS[:search] # In case we're searching, use special filter
+        @search = index_params[:search]
+        return appointments.search_for(@search)
+      end
+
+      appointments
+    end
+
     def check_out_params
       params.permit(appointment: [:vaccine_name])
+    end
+
+    def index_params
+      params.permit(:per_page, :page, :search, :filter)
     end
   end
 end
