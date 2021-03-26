@@ -1,3 +1,5 @@
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
   devise_for :patients, path: 'patients', controllers: { sessions: 'patients/sessions', registrations: 'patients/registrations' }
   devise_for :users, path: 'users', controllers: { sessions: 'users/sessions' }
@@ -53,6 +55,19 @@ Rails.application.routes.draw do
   get 'Y29zaXNhbGVnYWxwb3JmYXZvcm5hb3RlbnRlbGVyCg/:cpf', to: 'home#unblock'
 
   get 'cadastrar_paciente/:cpf', to: 'home#register_patient'
+
+  Sidekiq::Web.use Rack::Auth::Basic do |u, p|
+    # Protect against timing attacks:
+    # - See https://codahale.com/a-lesson-in-timing-attacks/
+    # - See https://thisdata.com/blog/timing-attacks-against-string-comparison/
+    # - Use & (do not use &&) so that it doesn't short circuit.
+    # - Use digests to stop length information leaking (see also ActiveSupport::SecurityUtils.variable_size_secure_compare)
+    ActiveSupport::SecurityUtils.secure_compare(::Digest::SHA256.hexdigest(u),
+                                                ::Digest::SHA256.hexdigest(ENV["SIDEKIQ_ADMIN_USERNAME"])) &
+      ActiveSupport::SecurityUtils.secure_compare(::Digest::SHA256.hexdigest(p),
+                                                  ::Digest::SHA256.hexdigest(ENV["SIDEKIQ_ADMIN_PASSWORD"]))
+  end
+  mount Sidekiq::Web, at: "/sidekiq"
 
   root 'home#index'
 end
