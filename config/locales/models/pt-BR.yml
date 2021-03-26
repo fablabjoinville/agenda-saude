@@ -9,6 +9,21 @@
     teacher: Professor
     over_55: Entre 55 anos e 59 anos
     without_target: Nenhum
+    appointments:
+      state:
+        suspened: Agendamento suspenso
+        checked_out: Check-out realizado
+        checked_in: Check-in realizado
+        waiting: Aguardando check-in
+      confirmation:
+        suspend: Confirma suspender agendamento para %{name}?
+        activate: Confirma reativar agendamento para %{name}?
+        checkout: Confirma vacinação para %{name}?
+        checkin: Confirmar que %{name} fez check-in e está pronta(o) a entrar e receber vacina?
+        suspend_all: Confirma ATIVAR TODOS agendamentos futuros?
+        activate_all: Confirma SUSPENDER TODOS agendamentos futuros?
+      messages:
+        not_allowed_window: Não é possível fazer checkin para outra data
     activerecord:
         errors:
           messages:
