@@ -135,3 +135,8 @@ Para fazer deploy da aplicação:
 ```sh
 git push heroku main
 ```
+
+## Contribuidores
+
+[![](https://opencollective.com/html-react-parser/contributors.svg?width=890&button=false)](https://github.com/makersnetwork/agenda-saude/graphs/contributors)
+
