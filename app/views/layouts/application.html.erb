@@ -49,6 +49,7 @@
       <% end %>
     </nav>
     <div class="container">
+
       <% if flash[:notice].present? %>
         <div class="alert alert-info">
           <%= flash[:notice] %>
@@ -59,6 +60,7 @@
           <%= flash[:alert] %>
         </div>
       <% end %>
+
       <%= yield %>
     </div>
     <footer class="footer">
