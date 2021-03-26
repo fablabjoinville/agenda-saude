@@ -1,5 +1,5 @@
 module Operator
-  class Base < UserSessionController
+  class Base < ApplicationController
     before_action :authenticate_user!
     before_action :set_ubs
 

@@ -50,14 +50,24 @@
     </nav>
     <div class="container">
 
-      <% if flash[:notice].present? %>
-        <div class="alert alert-info">
+      <% if flash[:notice].present? || flash[:notice_title].present?%>
+        <div class="alert alert-success">
+          <% if flash[:notice_title].present? -%>
+            <h4 class="alert-heading">
+              <%= flash[:notice_title] %>
+            </h4>
+          <% end -%>
           <%= flash[:notice] %>
         </div>
       <% end %>
       <% if flash[:alert].present? %>
-        <div class="alert alert-danger">
+        <div class="alert alert-warning">
           <%= flash[:alert] %>
+        </div>
+      <% end %>
+      <% if flash[:error].present? %>
+        <div class="alert alert-danger">
+          <%= flash[:error] %>
         </div>
       <% end %>
 
