@@ -144,7 +144,7 @@ Esse projeto existe graças ao esforço e dedicação dessas pessoas:
 
 **Empresas parceiras**
 
-![Magrathea](https://user-images.githubusercontent.com/4171/112638262-d42f5680-8e1d-11eb-8dc5-157198ad6bef.png)
+[![Magrathea](https://user-images.githubusercontent.com/4171/112638262-d42f5680-8e1d-11eb-8dc5-157198ad6bef.png)](http://magrathealabs.com)
 
 ## Licença
 
