@@ -1,5 +1,6 @@
 module Operator
   class Base < UserSessionController
+    before_action :authenticate_user!
     before_action :set_ubs
 
     private
