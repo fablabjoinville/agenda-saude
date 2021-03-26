@@ -11,9 +11,9 @@
     without_target: Nenhum
     appointments:
       state:
-        suspened: Agendamento suspenso
-        checked_out: Check-out realizado
-        checked_in: Check-in realizado
+        suspened: Suspenso
+        checked_out: Vacinado
+        checked_in: Aguardando check-out
         waiting: Aguardando check-in
       confirmation:
         suspend: Confirma suspender agendamento para %{name}?

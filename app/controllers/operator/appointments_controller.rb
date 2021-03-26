@@ -2,13 +2,13 @@ module Operator
   class AppointmentsController < Base
     FILTERS = {
       all: 'all',
-      for_check_in: 'in',
-      for_check_out: 'out',
-      completed: 'complete'
+      waiting: 'waiting',
+      checked_in: 'checked_in',
+      checked_out: 'checked_out'
     }.freeze
 
     def index
-      @filter = (FILTERS.values & [index_params[:filter].to_s]).presence&.first || FILTERS[:for_check_in]
+      @filter = (FILTERS.values & [index_params[:filter].to_s]).presence&.first || FILTERS[:waiting]
 
       appointments = @ubs.appointments
                          .today
@@ -25,11 +25,11 @@ module Operator
       end
 
       case @filter
-      when FILTERS[:for_check_in]
+      when FILTERS[:waiting]
         appointments = appointments.not_checked_in.not_checked_out
-      when FILTERS[:for_check_out]
+      when FILTERS[:checked_in]
         appointments = appointments.checked_in.not_checked_out
-      when FILTERS[:completed]
+      when FILTERS[:checked_out]
         appointments = appointments.checked_in.checked_out
       end
 
