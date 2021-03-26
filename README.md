@@ -8,22 +8,13 @@
 ![Open Collective backers and sponsors](https://img.shields.io/opencollective/all/makersnetwork)
 
 **Agenda Saúde** é um projeto de código aberto desenvolvido de forma colaborativa para fornecer
-um sistema de [agendamento de vacinação e exames de COVID-19 para a prefeitura de Joinville](https://vacinajoinville.com.br/).
+um sistema de [agendamento de vacinação e exames](https://vacinajoinville.com.br/) de COVID-19 para a prefeitura de Joinville.
 O sistema pode ser usado livremente, respeitando a [licença de uso](https://github.com/MakersNetwork/agenda-saude/blob/main/LICENSE), para gerenciar a fila de vacinação em outras cidades.
 
-Quer saber como implantar na sua cidade? Venha conversar conosco no
-[fórum](https://github.com/MakersNetwork/agenda-saude/discussions/250).
-
-Tire qualquer [dúvida sobre o projeto](https://github.com/MakersNetwork/agenda-saude/discussions),
-ou [sugira melhorias](https://github.com/MakersNetwork/agenda-saude/issues).
-
-Fique a vontade para contribuir! Essas aqui são
-[boas issues](https://github.com/MakersNetwork/agenda-saude/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
-para começar!
-
-Deseja contribuir financeiramente? Acesse nosso [Open Collective](https://opencollective.com/makersnetwork).
-
-Quer conversar com o time? [Estamos no Discord](https://discord.gg/fcYkv9RvN7).
+* Quer saber como implantar na sua cidade? Veja nosso [fórum](https://github.com/MakersNetwork/agenda-saude/discussions/250);
+* Tire qualquer [dúvida](https://github.com/MakersNetwork/agenda-saude/discussions) sobre o projeto;
+* [Sugira](https://github.com/MakersNetwork/agenda-saude/issues) melhorias;
+* Fique a vontade para [contribuir](#contribuindo)!
 
 - [Dependências](#dependencias)
 - [Desenvolvimento](#desenvolvimento)
@@ -140,19 +131,11 @@ git push heroku main
 
 ## Contribuindo
 
-Este projeto existe graças a todas as pessoas que contribuem. Fique a vontade para contribuir!
-
-Essas aqui são
-[boas issues](https://github.com/MakersNetwork/agenda-saude/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
-para começar!
-
-Quer conversar com o time? [Estamos no Discord](https://discord.gg/fcYkv9RvN7).
+Este projeto existe graças a todas as pessoas que contribuem. Fique a vontade para contribuir! Essas aqui são boas [issues](https://github.com/MakersNetwork/agenda-saude/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) para começar! Quer conversar com o time? Estamos no [Discord](https://discord.gg/fcYkv9RvN7).
 
 ### Contribuição Financeira
 
-Deseja contribuir financeiramente? Acesse nosso [Open Collective](https://opencollective.com/makersnetwork).
-
-Nossos financiadores:
+Deseja contribuir financeiramente? Acesse nosso [Open Collective](https://opencollective.com/makersnetwork). Nossos financiadores:
 
 [![Financial Contributors - Individuals](https://opencollective.com/makersnetwork/individuals.svg?width=890)](https://opencollective.com/makersnetwork)
 
@@ -162,7 +145,7 @@ Esse projeto existe graças ao esforço e dedicação dessas pessoas:
 
 [![Code Contribotors](https://opencollective.com/makersnetwork/contributors.svg?width=890&button=false)](https://github.com/makersnetwork/agenda-saude/graphs/contributors)
 
-Empresas parceiras:
+**Empresas parceiras**
 
 ![Magrathea](https://user-images.githubusercontent.com/4171/112638262-d42f5680-8e1d-11eb-8dc5-157198ad6bef.png)
 
