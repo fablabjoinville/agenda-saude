@@ -146,7 +146,7 @@ Esse projeto existe graças ao esforço e dedicação dessas pessoas:
 
 **design**
 
-![gisele](https://user-images.githubusercontent.com/4171/112643532-38084e00-8e23-11eb-9ca6-4f947241dbac.png) ![gus](https://user-images.githubusercontent.com/4171/112643538-39397b00-8e23-11eb-826b-3612f8e8d9b4.png)
+[![gisele](https://user-images.githubusercontent.com/4171/112643532-38084e00-8e23-11eb-9ca6-4f947241dbac.png)](https://www.linkedin.com/in/gisele-votre-235323115/) [![gus](https://user-images.githubusercontent.com/4171/112643538-39397b00-8e23-11eb-826b-3612f8e8d9b4.png)](https://www.linkedin.com/in/olagus/)
 
 **Empresas parceiras**
 
