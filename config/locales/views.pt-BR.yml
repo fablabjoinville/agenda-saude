@@ -16,19 +16,9 @@ pt-BR:
     models:
       user: Usuário
       patient: Paciente
-  date:
-    order:
-      - :day
-      - :month
-      - :year
-    month_names: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
-    formats:
-      default: '%d/%m/%Y'
-  time:
-      formats:
-        default: '%d/%m/%Y %H:%M'
   errors:
     messages:
       not_saved:
         one: 'Não foi possível salvar %{resource}: 1 erro'
         other: 'Não foi possível salvar %{resource}: %{count} erros.'
+
