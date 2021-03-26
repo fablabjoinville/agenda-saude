@@ -4,15 +4,15 @@ require_relative 'boot'
 
 require 'rails'
 
+# action_cable/engine
 # action_mailbox/engine
 # action_text/engine
+# active_storage/engine
 %w(
-  action_cable/engine
-  active_record/railtie
-  active_storage/engine
   action_controller/railtie
-  action_view/railtie
   action_mailer/railtie
+  action_view/railtie
+  active_record/railtie
   rails/test_unit/railtie
   sprockets/railtie
 ).each do |railtie|
