@@ -1,7 +1,12 @@
 class ReceptionService
+  CORONAVAC = "coronavac"
+  ASTRAZENECA = "astra_zeneca"
+
+  VACCINES = [CORONAVAC, ASTRAZENECA].freeze
+
   VACCINES_SECOND_DOSE_INTERVAL = {
-    'coronavac' => 4.weeks,
-    'astra_zeneca' => 13.weeks
+    CORONAVAC => 4.weeks,
+    ASTRAZENECA => 13.weeks
   }.freeze
 
   def initialize(appointment)

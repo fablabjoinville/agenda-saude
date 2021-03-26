@@ -41,10 +41,12 @@ class Patient < ApplicationRecord
     appointments.where.not(check_out: nil).order(:start).first
   end
 
+  def conditions
+    CONDITIONS.select { |_, f| f.call(self) }.map { |c, _| c }
+  end
+
   def can_schedule?
-    CONDITIONS.values.any? do |condition|
-      condition.call(self)
-    end
+    conditions.any?
   end
 
   def has_future_appointments?
@@ -104,8 +106,18 @@ class Patient < ApplicationRecord
     ((Time.zone.now - birth_date.to_time) / 1.year.seconds).floor
   end
 
-  def vaccinated?
+  # Until we have a proper way to remember vaccines for patients
+  def got_first_dose?
+    !appointments.active.checked_out.count.zero?
+  end
+
+  # Until we have a proper way to remember vaccines for patients
+  def got_second_dose?
     appointments.active.checked_out.count >= 2
+  end
+
+  def vaccinated?
+    got_second_dose?
   end
 
   def allowed?

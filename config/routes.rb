@@ -16,23 +16,30 @@ Rails.application.routes.draw do
   end
 
   devise_scope :user do
-    get 'ubs/active_hours', as: :ubs_active_hours
-    patch 'ubs/change_active_hours', as: :ubs_change_active_hours
+    namespace :operator do
+      resources :appointments, only: %i[index show] do
+        member do
+          patch :check_in
+          patch :check_out
+          patch :suspend
+          patch :activate
+        end
 
-    get 'ubs/slot_duration', as: :ubs_slot_duration
-    patch 'ubs/change_slot_duration', as: :ubs_change_slot_duration
+        collection do
+          patch :suspend_future
+          patch :activate_future
+        end
+      end
 
-    get 'ubs/patient_checkin', as: :ubs_patient_checkin, to: 'ubs#patient_checkin'
-    get 'ubs/patient_checkout', as: :ubs_patient_checkout, to: 'ubs#patient_checkout'
-    get 'ubs/status', as: :status
-    get 'ubs/checkin', as: :list_checkin
-    post 'ubs/find_patients', as: :find_patients
-    get 'ubs/checkout', as: :list_checkout
-    get 'ubs/confirm_check_in', as: :confirm_check_in
-    post 'ubs/confirm_check_out', as: :confirm_check_out
+      resources :ubs, only: [:show] do
+        member do
+          patch :activate
+          patch :suspend
+        end
+      end
+    end
   end
 
-  resources :appointments
   resources :patients
 
   resources :ubs do
