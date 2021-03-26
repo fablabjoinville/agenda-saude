@@ -57,7 +57,7 @@ class TimeSlotGenerationWorker
       # we must always know when an execution happens. If success
       # or failure notifications do not arrive it's fine because
       # we know some issue happened inbetween.
-      SlackNotifier.info('Iniciando geração de time slots', async: false)
+      NotificationJob.info 'Iniciando geração de time slots'
 
       begin
         Ubs.active.each do |ubs|
@@ -68,7 +68,7 @@ class TimeSlotGenerationWorker
           .where(date: current_time.to_date)
           .update_all(status: 'done')
 
-        SlackNotifier.success('Geração de time slots finalizada com sucesso')
+        NotificationJob.success 'Geração de time slots finalizada com sucesso'
       rescue StandardError => e
         error = "#{e.class.name}: #{e.message}"
         Rails.logger.warn(error)
@@ -77,9 +77,7 @@ class TimeSlotGenerationWorker
           .where(date: current_time.to_date)
           .update_all(status: 'failed', details: error)
 
-        SlackNotifier.error(
-          "Geração de time slots falhou (#{error}). Mais detalhes no Sentry."
-        )
+        NotificationJob.error "Geração de time slots falhou (#{error}). Mais detalhes no Sentry."
 
         Sentry.capture_exception(e)
       end

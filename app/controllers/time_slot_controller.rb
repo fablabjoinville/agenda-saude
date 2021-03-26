@@ -80,16 +80,11 @@ class TimeSlotController < PatientSessionController
   end
 
   def notify_invalid_schedule_attempt
-    SlackNotifier.warn(
-      "Tentativa de agendamento fora da janela permitida.\n" \
-      "Contexto: `#{context.to_json}`"
-    )
+    NotificationJob.warn "Tentativa de agendamento fora da janela permitida.\nContexto: `#{context.to_json}`"
   end
 
   def notify_unexpected_result(data)
-    SlackNotifier.warn(
-      "Agendamento com resultado inesperado! Dados: `#{data.to_json}`"
-    )
+    NotificationJob.warn "Agendamento com resultado inesperado! Dados: `#{data.to_json}`"
   end
 
   def appointment_scheduler
