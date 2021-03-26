@@ -38,7 +38,6 @@ yarn-debug.log*
 .byebug_history
 
 .DS_Store
-/.env
 /coverage
 
 .idea/
@@ -53,3 +52,5 @@ dump-*.sql*
 spec/cypress/screenshots/
 spec/cypress/videos/
 coverage
+
+/.env*.local
