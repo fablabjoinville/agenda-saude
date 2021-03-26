@@ -156,6 +156,7 @@
       <% @other_appointments.each do |appointment| -%>
         <li>
           <%= link_to l(appointment.start, format: :human), [:operator, appointment] %>
+          (<%= appointment.start.future? ? "em " : "foi a " %><%= distance_of_time_in_words_to_now(appointment.start) %>)
         </li>
       <% end -%>
     </ol>
