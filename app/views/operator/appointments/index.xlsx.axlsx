@@ -3,15 +3,15 @@ xlsx_package.workbook.add_worksheet do |sheet|
 
   @appointments.each_with_index do |appointment, index|
     sheet.add_row [
-        index,
-        l(appointment.start, format: :default),
-        appointment.patient.name,
-        appointment.patient.cpf,
-        appointment.patient.phone,
-        l(Date.parse appointment.patient.birth_date, format: :default),
-        appointment.patient.public_place,
-        appointment.patient.place_number,
-        appointment.patient.neighborhood
-      ]
+      index,
+      l(appointment.start, format: :default),
+      appointment.patient.name,
+      appointment.patient.cpf,
+      appointment.patient.phone,
+      l(Date.parse(appointment.patient.birth_date, format: :default)),
+      appointment.patient.public_place,
+      appointment.patient.place_number,
+      appointment.patient.neighborhood
+    ]
   end
 end

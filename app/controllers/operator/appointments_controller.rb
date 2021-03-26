@@ -1,10 +1,10 @@
 module Operator
   class AppointmentsController < Base
     FILTERS = {
-      all: "all",
-      for_check_in: "in",
-      for_check_out: "out",
-      completed: "complete"
+      all: 'all',
+      for_check_in: 'in',
+      for_check_out: 'out',
+      completed: 'complete'
     }.freeze
 
     def index
@@ -16,7 +16,7 @@ module Operator
                          .includes(:patient)
                          .order(:start)
 
-      index_params[:search] = "" if index_params[:search].present? && index_params[:search].size < 4
+      index_params[:search] = '' if index_params[:search].present? && index_params[:search].size < 4
       if index_params[:search].present?
         appointments = appointments.search_for(index_params[:search])
 
@@ -33,9 +33,9 @@ module Operator
         appointments = appointments.checked_in.checked_out
       end
 
-      @appointments = appointments.
-        page(index_params[:page]).
-        per([[10, index_params[:per_page].to_i].max, 10_000].min) # max of 10k is for allowing exporting to XLS
+      @appointments = appointments
+                      .page(index_params[:page])
+                      .per([[10, index_params[:per_page].to_i].max, 10_000].min) # max of 10k is for allowing exporting to XLS
 
       respond_to do |format|
         format.html
@@ -99,7 +99,7 @@ module Operator
       appointment = @ubs.appointments.scheduled.find(params[:id])
       appointment.update!(active: true, suspend_reason: nil)
 
-      redirect_to operator_appointment_path(appointment), flash: { notice: "Agendamento reativado." }
+      redirect_to operator_appointment_path(appointment), flash: { notice: 'Agendamento reativado.' }
     end
 
     # Suspends all future appointments

@@ -1,6 +1,6 @@
 class ReceptionService
-  CORONAVAC = "coronavac"
-  ASTRAZENECA = "astra_zeneca"
+  CORONAVAC = 'coronavac'.freeze
+  ASTRAZENECA = 'astra_zeneca'.freeze
 
   VACCINES = [CORONAVAC, ASTRAZENECA].freeze
 

@@ -4,12 +4,12 @@ class Patient < ApplicationRecord
   MAX_LOGIN_ATTEMPTS = 2
 
   CONDITIONS = {
-    'População em geral com 70 anos ou mais' => ->(patient) { patient.age >= 70 },
+    'População em geral com 70 anos ou mais' => ->(patient) { patient.age >= 70 }
     # 'Trabalhador(a) da Saúde que possua vínculo ativo em alguma unidade registrada no CNES' => ->(patient) { patient.in_group?('Trabalhador(a) da Saúde') },
     # 'Paciente de teste' => ->(patient) { patient.cpf == ENV['ROOT_PATIENT_CPF'] },
     # 'Maiores de 60 anos institucionalizadas' => ->(patient) { patient.age >= 60 && patient.in_group?('Institucionalizado(a)') },
     # 'População Indígena' => ->(patient) { patient.in_group?('Indígena') },
-  }
+  }.freeze
 
   has_many :appointments, dependent: :destroy do
     # Returns the last available active appointment
@@ -35,7 +35,8 @@ class Patient < ApplicationRecord
   scope :bedridden, -> { where(bedridden: true) }
 
   # TODO: remove `chronic` field from schema
-  enum target_audience: [:kid, :elderly, :chronic, :disabled, :pregnant, :postpartum, :teacher, :over_55, :without_target]
+  enum target_audience: { kid: 0, elderly: 1, chronic: 2, disabled: 3, pregnant: 4, postpartum: 5,
+                          teacher: 6, over_55: 7, without_target: 8 }
 
   def first_appointment
     appointments.where.not(check_out: nil).order(:start).first
@@ -50,10 +51,10 @@ class Patient < ApplicationRecord
   end
 
   def has_future_appointments?
-    appointments.
-      future.
-      active.
-      any?
+    appointments
+      .future
+      .active
+      .any?
   end
 
   def in_group?(name)
