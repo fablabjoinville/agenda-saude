@@ -48,7 +48,8 @@ Se você quiser executar este projeto no seu ambiente de desenvolvimento,
 você deve clonar este código-fonte, compilá-lo e executá-lo localmente.
 
 Existem duas formas de configurar o projeto no seu ambiente. Usando o
-Docker Compose ou instalando manualmente as dependências.
+[Docker Compose](#docker-compose) ou
+[instalando manualmente as dependências](#instalando-manualmente).
 
 ### Docker Compose
 
@@ -56,7 +57,7 @@ A forma mais fácil de executar este projeto no seu ambiente é usando o
 Docker Compose, ferramenta responsável por criar um ambiente virtualizado e
 instalar todas as outras dependências.
 
-Depois de clonar o repositório, você pode executar o seguinte na pasta de origem:
+Depois de clonar o repositório, você pode executar o seguinte no diretório da aplicação:
 
 ```sh
 docker-compose up
@@ -66,8 +67,8 @@ E acesse no ambiente local [http://localhost:4000](http://localhost:4000).
 
 ### Instalando manualmente
 
-Caso você queira instalar manualmente todas as dependências no seu ambiente, precisará
-executar os seguintes comandos:
+Caso você queira instalar manualmente todas as dependências no seu ambiente GNU/Linux,
+precisará executar os seguintes comandos:
 
 ```sh
 apt-get update
@@ -103,9 +104,16 @@ bundle exec rspec
 - [Rails style guide](https://github.com/bbatsov/rails-style-guide)
 - [JavaScript style guide](https://github.com/airbnb/javascript)
 
+Você pode verificar se o código está em conformidade com os padrões do projeto
+executando o robocop e corrigindo qualquer alerta evidenciado:
+
+```sh
+bundle exec rubocop
+```
+
 ## Deploy
 
-É necessário adicionar o remote da Heroku:
+Apenas pessoas autorizadas podem fazer o deploy. É necessário adicionar o remote da Heroku:
 
 ```sh
 git remote set-url origin git@github.com:MakersNetwork/agenda-saude.git
