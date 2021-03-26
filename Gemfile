@@ -5,8 +5,7 @@ ruby '2.7.2'
 gem 'pg' # Use postgresql as the database for Active Record
 gem 'rails', '~> 6.0.1'
 
-gem 'activeadmin'
-gem 'bootsnap', '>= 1.4.2', require: false
+gem 'bootsnap', require: false
 gem 'bootstrap'
 gem 'caxlsx'
 gem 'caxlsx_rails'
@@ -16,11 +15,11 @@ gem 'font-awesome-sass'
 gem 'jquery-rails'
 gem 'kaminari'
 gem 'newrelic_rpm'
-gem 'puma', '~> 4.3' # Use Puma as the app server
-gem 'sass-rails', '>= 6' # Use SCSS for stylesheets
+gem 'puma' # Use Puma as the app server
+gem 'sass-rails' # Use SCSS for stylesheets
 gem 'sentry-rails'
 gem 'sentry-ruby'
-gem 'smarter_csv', '~> 1.2'
+gem 'smarter_csv'
 gem 'tod'
 
 group :development, :test do
@@ -44,10 +43,10 @@ end
 
 group :development do
   gem 'guard', require: false
-  gem 'listen', '>= 3.0.5', '< 3.2'
+  gem 'listen'
   gem 'spring'
-  gem 'spring-watcher-listen', '~> 2.0.0'
-  gem 'web-console', '>= 3.3.0'
+  gem 'spring-watcher-listen'
+  gem 'web-console'
 end
 
 group :test do
