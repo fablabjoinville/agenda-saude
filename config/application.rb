@@ -8,18 +8,15 @@ require 'rails'
 # action_mailbox/engine
 # action_text/engine
 # active_storage/engine
-%w(
+%w[
   action_controller/railtie
   action_mailer/railtie
   action_view/railtie
   active_record/railtie
   rails/test_unit/railtie
   sprockets/railtie
-).each do |railtie|
-  begin
-    require railtie
-  rescue LoadError
-  end
+].each do |railtie|
+  require railtie
 end
 
 # Require the gems listed in Gemfile, including any gems
@@ -44,7 +41,7 @@ module TemplateRails
     end
 
     config.i18n.load_path += Dir[Rails.root.join('config/locales/**/*.{rb,yml}')]
-    config.i18n.available_locales = ['pt-BR', 'en']
+    config.i18n.available_locales = %w[pt-BR en]
     config.i18n.default_locale = :'pt-BR'
     config.time_zone = 'Brasilia'
 
