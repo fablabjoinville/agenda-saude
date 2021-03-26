@@ -1,5 +1,5 @@
 patient = Patient.new
-patient.name = 'vaccineted marvin'
+patient.name = 'vaccinated marvin'
 patient.cpf = command_options['cpf']
 patient.mother_name = 'Tristeza'
 patient.birth_date = '1920-01-10'

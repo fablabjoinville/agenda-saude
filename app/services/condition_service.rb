@@ -6,6 +6,7 @@ class ConditionService
 
   def groups_ubs_available
     conditions_pluck = create_conditions_pluck(@start_time, @end_time)
+
     return conditions_pluck if conditions_pluck.nil?
 
     groups_ubs = description_groups(conditions_pluck)
@@ -57,7 +58,7 @@ class ConditionService
     return appointments_available.pluck(:group_id, :min_age, :commorbidity, :ubs_id).uniq
   end
 
-  def description_groups(conditions_pluck, patient)
+  def description_groups(conditions_pluck)
     group_ubs = {}
 
     conditions_pluck.each do |conditions|
@@ -123,8 +124,15 @@ class ConditionService
         end
       end
 
+      next if appointments.nil?
+
       ubs_appointments_available[ubs_id] = appointments
-      group_ubs_appointments[groups_description] = ubs_appointments_available
+
+      if group_ubs_appointments[groups_description].nil?
+        group_ubs_appointments[groups_description] = [ubs_appointments_available]
+      else
+        group_ubs_appointments[groups_description] << ubs_appointments_available
+      end
     end
     group_ubs_appointments
   end

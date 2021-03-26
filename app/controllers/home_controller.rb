@@ -8,7 +8,9 @@ class HomeController < ApplicationController
 
     @condition_ubs = conditions_ubs_available()
 
-    @is_scheduling_available = Appointment.free.within_allowed_window.exists?
+    from = Time.zone.now
+    to = (from + Appointment::SLOTS_WINDOW_IN_DAYS.days).end_of_day
+    @is_scheduling_available = Appointment.free.start_between(from, to).any?
   end
 
   def patient_base_login

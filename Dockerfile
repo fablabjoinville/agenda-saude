@@ -11,6 +11,7 @@ COPY Gemfile.lock .
 
 RUN gem update --system && gem install bundler
 RUN bundle install --jobs 4
+RUN bundle exec rails db:setup RAILS_ENV=development
 
 COPY . .
 

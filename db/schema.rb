@@ -32,6 +32,8 @@ ActiveRecord::Schema.define(version: 2021_03_16_213034) do
     t.integer "min_age", default: 18
     t.boolean "commorbidity", default: false
     t.index ["group_id"], name: "index_appointments_on_group_id"
+    t.index ["patient_id"], name: "index_appointments_on_patient_id"
+    t.index ["start"], name: "index_appointments_on_start"
     t.index ["ubs_id"], name: "index_appointments_on_ubs_id"
   end
 
