@@ -1,4 +1,4 @@
-describe('ubs appointments list', () => {
+describe('operator appointments list', () => {
   const [name, password] = ['mlabs', 'dontpanic']
 
   beforeEach(() => {
@@ -6,7 +6,7 @@ describe('ubs appointments list', () => {
 
     cy.loginAsUbs(name, password)
 
-    cy.visit('/ubs')
+    cy.visit('/operator')
   })
 
   context('when has patients scheduled to today', () => {
@@ -26,7 +26,7 @@ describe('ubs appointments list', () => {
     beforeEach(() => {
       cy.appScenario('no_patients_scheduled')
 
-      cy.visit('/ubs')
+      cy.visit('/operator')
     })
 
     it('show no appointments text', () => {
