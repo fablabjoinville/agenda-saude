@@ -1,0 +1,16 @@
+---
+pt-BR:
+  time:
+    formats:
+      default: '%d/%m/%Y %H:%M'
+      human: '%d/%m/%Y às %H:%M'
+      short_date: "%d/%m/%Y"
+      short_hour: "%H:%M"
+  date:
+    order:
+      - :day
+      - :month
+      - :year
+    month_names: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
+    formats:
+      default: '%d/%m/%Y'
