@@ -1,11 +1,10 @@
 source 'https://rubygems.org'
 
-ruby '2.6.5'
+ruby '2.6.6'
 
 gem 'pg' # Use postgresql as the database for Active Record
 gem 'rails', '~> 6.0.1'
 
-gem 'activeadmin'
 gem 'bootsnap', '>= 1.4.2', require: false
 gem 'bootstrap'
 gem 'caxlsx'
