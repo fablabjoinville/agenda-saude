@@ -1,0 +1,27 @@
+<h1><%= @ubs.name %></h1>
+
+<div class="row mt-4">
+  <div class="col-12">
+    <%= form_with url: operator_appointments_path, method: :get, local: true do |f| %>
+      <div class="input-group input-group-lg">
+        <%= f.text_field :search, autofocus: true, minlength: 3, maxlength: 100, class: "form-control", placeholder: "Digite aqui o CPF ou nome do paciente agendado para hoje", value: params[:search] %>
+        <div class="input-group-append">
+          <%= f.submit "Buscar", class: "btn btn-outline-secondary", data: { cy: "submitSearchButton" } %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<ul class="nav nav-tabs mt-4" style="margin-bottom: 10px;">
+  <%= operator_nav_link "Todos", Operator::AppointmentsController::FILTERS[:all] %>
+  <%= operator_nav_link "Check-in", Operator::AppointmentsController::FILTERS[:for_check_in] %>
+  <%= operator_nav_link "Check-out", Operator::AppointmentsController::FILTERS[:for_check_out] %>
+  <%= operator_nav_link "Vacinados", Operator::AppointmentsController::FILTERS[:completed] %>
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Configurações</a>
+    <div class="dropdown-menu">
+      <%= link_to "Status desta unidade", operator_ubs_path(@ubs), class: "dropdown-item" %>
+    </div>
+  </li>
+</ul>
