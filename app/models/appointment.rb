@@ -4,17 +4,17 @@ class Appointment < ApplicationRecord
 
   SLOTS_WINDOW_IN_DAYS = ENV['SLOTS_WINDOW_IN_DAYS']&.to_i || 7
 
-  scope :start_between, -> (from, to) { where(start: from..to) }
+  scope :start_between, ->(from, to) { where(start: from..to) }
 
   scope :today, -> { start_between(Time.zone.now.beginning_of_day, Time.zone.now.end_of_day) }
 
-  scope :checked_in, -> { where.not(check_in: nil)}
+  scope :checked_in, -> { where.not(check_in: nil) }
   scope :not_checked_in, -> { where(check_in: nil) }
 
-  scope :checked_out, -> { where.not(check_out: nil)}
+  scope :checked_out, -> { where.not(check_out: nil) }
   scope :not_checked_out, -> { where(check_out: nil) }
 
-  scope :scheduled, -> { where.not(patient_id: nil)}
+  scope :scheduled, -> { where.not(patient_id: nil) }
 
   scope :future, -> { where(arel_table[:start].gt(Time.zone.now)) }
 
@@ -23,7 +23,7 @@ class Appointment < ApplicationRecord
   scope :active, -> { where(active: true) }
   scope :suspended, -> { where(active: false) }
 
-  scope :search_for, -> (text) {
+  scope :search_for, lambda { |text|
     joins(:patient)
       .where(
         Patient.arel_table[:cpf].eq(text).or(
