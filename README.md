@@ -16,8 +16,10 @@ O sistema pode ser usado livremente, respeitando a [licença de uso](https://git
 * [Sugira](https://github.com/MakersNetwork/agenda-saude/issues) melhorias;
 * Fique a vontade para [contribuir](#contribuindo)!
 
+# Desenvolvimento
+
 - [Dependências](#dependencias)
-- [Desenvolvimento](#desenvolvimento)
+- [Ambiente local](#ambiente-local)
 - [Testes](#testes)
 - [Style Guides](#style-guides)
 - [Deploy](#deploy)
@@ -35,7 +37,7 @@ dependências:
 - Install Docker ([documentação](https://docs.docker.com/install/overview/))
 - Install Docker Compose ([documentação](https://docs.docker.com/compose/install/))
 
-## Desenvolvimento
+## Ambiente local
 
 Se você quiser executar este projeto no seu ambiente de desenvolvimento,
 você deve clonar este código-fonte, compilá-lo e executá-lo localmente.
