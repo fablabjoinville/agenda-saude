@@ -4,12 +4,14 @@ class BedriddenController < ApplicationController
   end
 
   def toggle
-    patient = current_patient
-    patient.bedridden = !patient.bedridden?
-    patient.save!
+    current_patient.update!(bedridden: !current_patient.bedridden?)
 
-    return redirect_to index_bedridden_path if patient.bedridden?
-
-    redirect_to index_time_slot_path
+    redirect_to(
+      if current_patient.bedridden?
+        index_bedridden_path
+      else
+        index_time_slot_path
+      end
+    )
   end
 end

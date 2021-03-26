@@ -18,9 +18,9 @@
             <% if appointment.active %>
               <tr data-cy=<%= "appointment#{appointment.start.strftime("%H%M")}" %>>
                 <th scope="row"><%= appointment.start.strftime("%d/%m/%Y -- %H:%M") %></th>
-                <td><a href=<%= "/patients/#{appointment.patient_id}" %>><%= find_appointment_patient(appointment.patient_id).name %></a></td>
-                <td><%= find_appointment_patient(appointment.patient_id).phone %></td>
-                <td><%= find_appointment_patient(appointment.patient_id).other_phone %></td>
+                <td><a href=<%= "/patients/#{appointment.patient_id}" %>><%= appointment.patient.name %></a></td>
+                <td><%= appointment.patient.phone %></td>
+                <td><%= appointment.patient.other_phone %></td>
                 <td><a class="btn btn-primary" href=<%= "/ubs/#{appointment.id}/suspend_appointment" %>
                               onclick="return confirm('Você tem certeza?')"
                     >Suspender agendamento</a></td>
@@ -29,9 +29,9 @@
             <% else %>
               <tr>
                 <th scope="row"><del><%= appointment.start.strftime("%H:%M - %d/%m/%Y") %></del></th>
-                <td><del><a href=<%= "/patients/#{appointment.patient_id}" %>><%= find_appointment_patient(appointment.patient_id).name %></a></del></td>
-                <td><%= find_appointment_patient(appointment.patient_id).phone %></td>
-                <td><%= find_appointment_patient(appointment.patient_id).other_phone %></td>
+                <td><del><a href=<%= "/patients/#{appointment.patient_id}" %>><%= appointment.patient.name %></a></del></td>
+                <td><%= appointment.patient.phone %></td>
+                <td><%= appointment.patient.other_phone %></td>
                 <td><a class="btn btn-primary" href=<%= "/ubs/#{appointment.id}/activate_appointment" %>
                               onclick="return confirm('Você tem certeza?')"
                     >Reativar agendamento</a></td>
