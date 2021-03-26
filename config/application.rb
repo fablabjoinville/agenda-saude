@@ -51,5 +51,7 @@ module TemplateRails
     # the framework and any gems in your application.
     #
     config.action_controller.include_all_helpers = true
+
+    config.active_job.queue_adapter = :sidekiq
   end
 end

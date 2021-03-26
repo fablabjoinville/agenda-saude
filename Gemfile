@@ -19,6 +19,7 @@ gem 'puma' # Use Puma as the app server
 gem 'sass-rails' # Use SCSS for stylesheets
 gem 'sentry-rails'
 gem 'sentry-ruby'
+gem 'sidekiq'
 gem 'smarter_csv'
 gem 'tod'
 
