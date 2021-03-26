@@ -4,11 +4,11 @@ xlsx_package.workbook.add_worksheet do |sheet|
   @appointments.each_with_index do |appointment, index|
     sheet.add_row [
       index,
-      l(appointment.start, format: :default),
+      l(appointment.start, format: :short_date_hour),
       appointment.patient.name,
       appointment.patient.cpf,
       appointment.patient.phone,
-      l(Date.parse(appointment.patient.birth_date, format: :default)),
+      l(Date.parse(appointment.patient.birth_date, format: :short_date_hour)),
       appointment.patient.public_place,
       appointment.patient.place_number,
       appointment.patient.neighborhood
