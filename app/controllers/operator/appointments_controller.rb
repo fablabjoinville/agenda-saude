@@ -1,6 +1,7 @@
 module Operator
   class AppointmentsController < Base
     FILTERS = {
+      search: 'search',
       all: 'all',
       waiting: 'waiting',
       checked_in: 'checked_in',
@@ -16,12 +17,10 @@ module Operator
                          .includes(:patient)
                          .order(:start)
 
-      index_params[:search] = '' if index_params[:search].present? && index_params[:search].size < 4
-      if index_params[:search].present?
-        appointments = appointments.search_for(index_params[:search])
-
-        # In case we're searching, move filter to all
-        @filter = FILTERS[:all]
+      if index_params[:search].present? && index_params[:search].size >= 3
+        @search = index_params[:search]
+        appointments = appointments.search_for(@search)
+        @filter = FILTERS[:search] # In case we're searching, move filter to all
       end
 
       case @filter

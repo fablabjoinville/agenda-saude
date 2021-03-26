@@ -21,14 +21,14 @@ class Appointment < ApplicationRecord
   scope :free, -> { left_joins(:ubs).where(ubs: { active: true }).where(patient_id: nil) }
 
   scope :active, -> { where(active: true) }
-  scope :suspended, -> { where(active: false) }
+  scope :suspended, -> { where(active: fals) }
 
   scope :search_for, lambda { |text|
     joins(:patient)
       .where(
-        Patient.arel_table[:cpf].eq(text).or(
-          Patient.arel_table[:name].matches("%#{text}%")
-        )
+        Patient.arel_table[:cpf].
+          eq(text.delete(".").delete("-").strip). # Search for CPF without . and -
+          or(Patient.arel_table[:name].matches("%#{text.strip}%"))
       )
   }
 

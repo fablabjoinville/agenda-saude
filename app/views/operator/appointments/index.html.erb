@@ -1,73 +1,79 @@
 <%= render "operator/shared/nav" %>
 
-<div class="mt-3">
-  <% if @appointments.any? %>
-    <table class="table table-hover">
-      <thead>
-        <tr>
-          <th scope="col">Horário</th>
-          <th scope="col">Paciente</th>
-          <th scope="col">Telefones</th>
-          <th scope="col"></th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @appointments.each do |appointment| -%>
-          <%= content_tag :tr, data: { cy: appointment.active ? "appointment#{appointment.start.strftime("%H%M")}" : "" } do %>
-            <th scope="row">
-              <%= l appointment.start, format: :short_hour %>
-            </th>
-            <td>
-              <%= link_to appointment.patient.name, [:operator, appointment] %>
-            </td>
-            <td>
-              <small class="text-muted">
-                <%= [appointment.patient.phone, appointment.patient.other_phone].compact.join(", ") %>
-              </small>
-            </td>
-            <td>
-              <%
-                case appointment.state
-                when :suspended
-              -%>
-                <%= link_to "Reativar",
-                            activate_operator_appointment_path(appointment),
-                            method: :patch,
-                            class: "btn btn-warning",
-                            prompt: t(:"appointments.confirmation.activate", name: appointment.patient.name) %>
-              <% when :checked_out -%>
-                <%= link_to "Vacinado", [:operator, appointment], class: "btn btn-light" %>
-              <% when :checked_in -%>
-                <%= link_to "Check-out", [:operator, appointment], class: "btn btn-success" %>
-              <% when :waiting -%>
-                <%= link_to "Check-in", [:operator, appointment], class: "btn btn-primary" %>
-            <% end -%>
-            </td>
+<% if @appointments.any? %>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">Horário</th>
+        <th scope="col">Paciente</th>
+        <th scope="col">Telefones</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @appointments.each do |appointment| -%>
+        <%= content_tag :tr, data: { cy: appointment.active ? "appointment#{appointment.start.strftime("%H%M")}" : "" } do %>
+          <th scope="row">
+            <%= l appointment.start, format: :short_hour %>
+          </th>
+          <td>
+            <%= link_to appointment.patient.name, [:operator, appointment] %>
+          </td>
+          <td>
+            <small class="text-muted">
+              <%= [appointment.patient.phone, appointment.patient.other_phone].compact.join(", ") %>
+            </small>
+          </td>
+          <td>
+            <%
+              case appointment.state
+              when :suspended
+            -%>
+              <%= link_to "Reativar",
+                          activate_operator_appointment_path(appointment),
+                          method: :patch,
+                          class: "btn btn-block btn-warning",
+                          prompt: t(:"appointments.confirmation.activate", name: appointment.patient.name) %>
+            <% when :checked_out -%>
+              <%= link_to "Vacinado", [:operator, appointment], class: "btn btn-block btn-light" %>
+            <% when :checked_in -%>
+              <%= link_to "Check-out", [:operator, appointment], class: "btn btn-block btn-success" %>
+            <% when :waiting -%>
+              <%= link_to "Check-in", [:operator, appointment], class: "btn btn-block btn-primary" %>
           <% end -%>
+          </td>
         <% end -%>
-      </tbody>
-    </table>
+      <% end -%>
+    </tbody>
+  </table>
 
-    <div>
-      <%= paginate @appointments %>
-    </div>
+  <div>
+    <%= paginate @appointments %>
+  </div>
 
-    <div class="">
-      <%= link_to 'Exportar agendamentos do dia',
-                  operator_appointments_path(filter: nil, search: nil, per_page: 10_000, format: :xlsx),
-                  class: 'btn btn-outline-primary' %>
-      <%= link_to 'Suspender todos agendamentos futuros',
-                  suspend_future_operator_appointments_path,
-                  method: :patch,
-                  class: 'btn btn-outline-danger',
-                  data: { confirm: t(:"appointments.confirmation.suspend_all") } %>
-      <%= link_to 'Reativar todos agendamentos futuros',
-                  activate_future_operator_appointments_path,
-                  method: :patch,
-                  class: 'btn btn-outline-warning',
-                  data: { confirm: t(:"appointments.confirmation.activate_all") } %>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm">
+        <%= link_to 'Exportar agendamentos do dia',
+                    operator_appointments_path(filter: nil, search: nil, per_page: 10_000, format: :xlsx),
+                    class: 'btn btn-block btn-outline-primary' %>
+      </div>
+      <div class="col-sm">
+        <%= link_to 'Suspender agendamentos futuros',
+                    suspend_future_operator_appointments_path,
+                    method: :patch,
+                    class: 'btn btn-block btn-outline-danger',
+                    data: { confirm: t(:"appointments.confirmation.suspend_all") } %>
+      </div>
+      <div class="col-sm">
+        <%= link_to 'Reativar agendamentos futuros',
+                    activate_future_operator_appointments_path,
+                    method: :patch,
+                    class: 'btn btn-block btn-outline-warning',
+                    data: { confirm: t(:"appointments.confirmation.activate_all") } %>
+      </div>
     </div>
-  <% else -%>
-    <h3>Nenhum agendamento com os critérios selecionados para este dia.</h3>
-  <% end -%>
-</div>
+  </div>
+<% else -%>
+  <h3>Nenhum agendamento com os critérios selecionados para este dia.</h3>
+<% end -%>

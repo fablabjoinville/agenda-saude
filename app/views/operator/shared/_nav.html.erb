@@ -4,7 +4,7 @@
   <div class="col-12">
     <%= form_with url: operator_appointments_path, method: :get, local: true do |f| %>
       <div class="input-group input-group-lg">
-        <%= f.text_field :search, autofocus: true, minlength: 3, maxlength: 100, class: "form-control", placeholder: "Digite aqui o CPF ou nome do paciente agendado para hoje", value: params[:search] %>
+        <%= f.text_field :search, autofocus: true, minlength: 3, maxlength: 100, class: "form-control", placeholder: "Digite aqui o CPF ou nome do paciente agendado para hoje", value: @search %>
         <div class="input-group-append">
           <%= f.submit "Buscar", class: "btn btn-outline-secondary", data: { cy: "submitSearchButton" } %>
         </div>
@@ -18,6 +18,7 @@
   <%= operator_nav_link t(:"appointments.state.waiting"), Operator::AppointmentsController::FILTERS[:waiting] %>
   <%= operator_nav_link t(:"appointments.state.checked_in"), Operator::AppointmentsController::FILTERS[:checked_in] %>
   <%= operator_nav_link t(:"appointments.state.checked_out"), Operator::AppointmentsController::FILTERS[:checked_out] %>
+  <%= operator_nav_link "Busca: #{@search}", Operator::AppointmentsController::FILTERS[:search] if @search %>
   <li class="nav-item dropdown">
     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Configurações</a>
     <div class="dropdown-menu">
