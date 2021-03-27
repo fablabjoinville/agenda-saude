@@ -1,9 +1,9 @@
 require 'concurrent'
 
 module SlackNotifier
-  class << self
-    mattr_accessor :slack_webhook_url
+  mattr_accessor :slack_webhook_url
 
+  class << self
     def error(message, async: true)
       send_message("‼️ #{message}")
     end

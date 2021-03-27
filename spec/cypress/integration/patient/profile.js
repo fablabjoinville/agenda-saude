@@ -42,7 +42,7 @@ describe('patient profile', () => {
         cy.get('[data-cy=editPatientNeighborhoodNameInputField]').select('América')
         cy.get('[data-cy=updatePatientButton]').click()
 
-        cy.get('[data-cy=alertMessage]').should('exist')
+        cy.get('[data-cy=noticeMessage]').should('exist')
       })
     })
   })

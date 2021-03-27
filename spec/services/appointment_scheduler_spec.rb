@@ -108,11 +108,10 @@ RSpec.describe AppointmentScheduler, type: :service, use_transactional_tests: fa
     end
 
     it 'updates exactly one appointment' do
-      expect(Appointment.count).to eq(3)
       expect {
         expect(scheduler.schedule(**args))
           .to eq([:success, Appointment.find_by(patient_id: patient.id)])
-      }.to change { Appointment.where(patient_id: nil).count }.from(3).to(2)
+      }.to change { Appointment.where(patient_id: nil).count }.by(-1)
     end
   end
 
