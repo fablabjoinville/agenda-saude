@@ -16,7 +16,7 @@
 </div>
 
 <ul class="nav nav-tabs mt-4" style="margin-bottom: 10px;">
-  <%= operator_nav_links(@filter, @search, @appointments.total_count) %>
+  <%= operator_nav_links(@filter, @search, @appointments&.total_count) %>
   <li class="nav-item dropdown">
     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Configurações</a>
     <div class="dropdown-menu">
