@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  devise :database_authenticatable, :registerable,
+  devise :database_authenticatable,
          :recoverable, :rememberable, :validatable, authentication_keys: [:name]
 
   has_one :ubs, dependent: :restrict_with_exception
