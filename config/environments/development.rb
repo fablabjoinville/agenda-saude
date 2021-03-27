@@ -83,7 +83,6 @@ Rails.application.configure do
   # Uncomment if you wish to allow Action Cable access from any origin.
   # config.action_cable.disable_request_forgery_protection = true
 
-  ENV['SECOND_DOSE_INTERVAL'] ||= '4'
   ENV['LATE_PATIENT_TOLERANCE_MINUTES'] ||= '10'
   ENV['EARLY_PATIENT_WARNING_MINUTES'] ||= '30'
   ENV['SLOTS_WINDOW_IN_DAYS'] ||= '7'
