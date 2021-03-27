@@ -21,7 +21,7 @@
           </td>
           <td>
             <small class="text-muted">
-              <%= [appointment.patient.phone, appointment.patient.other_phone].compact.join(", ") %>
+              <%= [appointment.patient.phone.presence, appointment.patient.other_phone.presence].compact.join(", ") %>
             </small>
           </td>
           <td>

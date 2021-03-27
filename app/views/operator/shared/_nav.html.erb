@@ -14,7 +14,7 @@
 </div>
 
 <ul class="nav nav-tabs mt-4" style="margin-bottom: 10px;">
-  <%= operator_nav_link "Todos", Operator::AppointmentsController::FILTERS[:all] %>
+  <%= operator_nav_link "Agendamentos para hoje", Operator::AppointmentsController::FILTERS[:all] %>
   <%= operator_nav_link t(:"appointments.state.waiting"), Operator::AppointmentsController::FILTERS[:waiting] %>
   <%= operator_nav_link t(:"appointments.state.checked_in"), Operator::AppointmentsController::FILTERS[:checked_in] %>
   <%= operator_nav_link t(:"appointments.state.checked_out"), Operator::AppointmentsController::FILTERS[:checked_out] %>
