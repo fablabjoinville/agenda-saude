@@ -4,12 +4,6 @@
   </div>
 </div>
 
-<% if flash[:notice] %>
-  <div class="alert alert-danger" role="alert">
-    <%= flash[:notice] %>
-  </div>
-<% end %>
-
 <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
     <div class="row text-center">
       <div class="col-md-12">

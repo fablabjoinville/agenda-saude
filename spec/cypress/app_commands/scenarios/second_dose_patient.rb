@@ -10,7 +10,7 @@ patient.save!
 
 ubs = Ubs.first
 
-Appointment.create(
+Appointment.create!(
   start: Time.zone.yesterday.at_beginning_of_day,
   end: Time.zone.yesterday.at_beginning_of_day,
   patient_id: patient.id,
@@ -22,7 +22,7 @@ Appointment.create(
   ubs: ubs
 )
 
-second_appointment = Appointment.create(
+second_appointment = Appointment.create!(
   start: Time.zone.today.end_of_day - 15.minutes,
   end: Time.zone.today.end_of_day,
   patient_id: patient.id,
@@ -34,4 +34,4 @@ second_appointment = Appointment.create(
   ubs: ubs
 )
 
-patient.update(last_appointment: second_appointment)
+patient.update!(last_appointment: second_appointment)
