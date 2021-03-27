@@ -11,6 +11,7 @@
     without_target: Nenhum
     appointments:
       state:
+        all: "Agendamentos para hoje" # used as a filter on Operator's Appointment's index
         suspened: Suspenso
         checked_out: Vacinado
         checked_in: Aguardando check-out

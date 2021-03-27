@@ -16,15 +16,7 @@
 </div>
 
 <ul class="nav nav-tabs mt-4" style="margin-bottom: 10px;">
-  <%= operator_nav_link "Agendamentos para hoje", Operator::AppointmentsController::FILTERS[:all],
-                        data: { cy: "allListTab" } %>
-  <%= operator_nav_link t(:"appointments.state.waiting"), Operator::AppointmentsController::FILTERS[:waiting],
-                        data: { cy: "waitingListTab" } %>
-  <%= operator_nav_link t(:"appointments.state.checked_in"), Operator::AppointmentsController::FILTERS[:checked_in],
-                        data: { cy: "checkedInListTab" } %>
-  <%= operator_nav_link t(:"appointments.state.checked_out"), Operator::AppointmentsController::FILTERS[:checked_out],
-                        data: { cy: "checkedOutListTab" } %>
-  <%= operator_nav_link "Busca: #{@search}", Operator::AppointmentsController::FILTERS[:search] if @search %>
+  <%= operator_nav_links(@filter, @search, @appointments.total_count) %>
   <li class="nav-item dropdown">
     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Configurações</a>
     <div class="dropdown-menu">
