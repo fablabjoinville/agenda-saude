@@ -42,18 +42,6 @@ Rails.application.routes.draw do
 
   resources :patients
 
-  resources :ubs do
-    member do
-      get 'suspend_appointment'
-      get 'activate_appointment'
-      get 'cancel_all_future_appointments'
-      get 'activate_all_future_appointments'
-      get 'activate_ubs'
-      get 'deactivate_ubs'
-      get 'today_appointments'
-    end
-  end
-
   post 'home/patient_base_login', as: :patient_base_login, to: 'home#patient_base_login'
 
   # FIXME: This is a temp method to allow the unblocking of a patient. We will use this route until we have the super-admin feature
