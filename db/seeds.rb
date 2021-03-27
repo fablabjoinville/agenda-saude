@@ -205,7 +205,7 @@ ubsf_america.create_time_slot_generation_config!(ubs_id: ubsf_america.id).tap do
 end
 
 # Config second Ubs
-ubsf_gloria.create_time_slot_generation_config!(ubs_id: ubsf_america.id).tap do |config|
+ubsf_gloria.create_time_slot_generation_config!(ubs_id: ubsf_gloria.id).tap do |config|
   config[:windows] = [
     { start_time: '08:00', end_time: '12:00', slots: 4 },
     { start_time: '12:00', end_time: '16:00', slots: 2 }
