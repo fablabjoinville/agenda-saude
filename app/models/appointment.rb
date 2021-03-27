@@ -26,9 +26,9 @@ class Appointment < ApplicationRecord
   scope :search_for, lambda { |text|
     joins(:patient)
       .where(
-        Patient.arel_table[:cpf].
-          eq(text.delete(".").delete("-").strip). # Search for CPF without . and -
-          or(Patient.arel_table[:name].matches("%#{text.strip}%"))
+        Patient.arel_table[:cpf]
+          .eq(text.delete('.').delete('-').strip) # Search for CPF without . and -
+          .or(Patient.arel_table[:name].matches("%#{text.strip}%"))
       )
   }
 
