@@ -5,7 +5,7 @@ Cypress.Commands.add('signupPatient', (cpf) => {
   cy.get('[data-cy=newPatientNameInputField]').type('Marvin')
   cy.get('[data-cy=newPatientEmailInputField]').type('marvin@mlabs.com')
   cy.get('#patient_birth_date_3i').select('1')
-  cy.get('#patient_birth_date_2i').select('Janeiro')
+  cy.get('#patient_birth_date_2i').select('janeiro')
   cy.get('#patient_birth_date_1i').select('1900')
   cy.get('[data-cy=newPatientMotherNameInputField]').type('Tristeza')
   cy.get('[data-cy=patientGroups]').get('[type="checkbox"]').first().check()
