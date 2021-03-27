@@ -18,7 +18,8 @@ class AppointmentScheduler
 
       return [:schedule_conditions_unmet] unless patient.can_schedule?
 
-      appointment = Appointment.where(start: start_time, ubs_id: ubs.id, patient_id: nil)
+      appointment = Appointment.where(start: (start_time - 1.minute)..(start_time + 1.minute),
+                                      ubs_id: ubs.id, patient_id: nil)
         .order('random()') # reduces row lock contention
         .first
 

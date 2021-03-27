@@ -26,7 +26,7 @@
 
     <div class="form-group col-md-6">
       <%= f.label :email, "E-mail" %>
-      <%= f.email_field :email, autofocus: true, autocomplete: "email", required: false, class: "form-control" %>
+      <%= f.email_field :email, autocomplete: "email", required: false, class: "form-control" %>
     </div>
   </div>
 
@@ -40,13 +40,13 @@
           day = @patient.birth_date[8..9].to_i
           start_year = (Date.current.year.to_i) - 18
         %>
-        <%= f.date_select :birth_date, { selected: { year: year, month: month, day: day }, start_year: start_year, end_year: 1900, with_css_classes: true } , autofocus: true, autocomplete: "birth_date", required: true, class: "form-control" %>
+        <%= f.date_select :birth_date, { selected: { year: year, month: month, day: day }, start_year: start_year, end_year: 1900, with_css_classes: true } , autocomplete: "birth_date", required: true, class: "form-control" %>
       </div>
     </div>
 
     <div class="form-group col-md-6">
       <%= f.label :sus, "Cartão SUS (Não obrigatório)" %>
-      <%= f.number_field :sus, autofocus: true, autocomplete: "sus", required: false, class: "form-control" %>
+      <%= f.number_field :sus, autocomplete: "sus", required: false, class: "form-control" %>
     </div>
   </div>
 
@@ -70,7 +70,7 @@
                   <% if s.text == "Outra(s)" %>
                     <div class="row" id="specific-comorbidity-input">
                       <div class="form-group col-md-12">
-                        <%= f.text_field :specific_comorbidity, autofocus: true, required: false, class: "form-control" %>
+                        <%= f.text_field :specific_comorbidity, required: false, class: "form-control" %>
                       </div>
                     </div>
                   <% end %>
@@ -89,12 +89,12 @@
   <div class="form-row">
     <div class="form-group col-md-6">
       <%= f.label :public_place, "Endereço (Rua, Avenida)" %> <b style="color: red;">*</b>
-      <%= f.text_field :public_place, autofocus: true, autocomplete: "place", required: true, class: "form-control" %>
+      <%= f.text_field :public_place, autocomplete: "place", required: true, class: "form-control" %>
     </div>
 
     <div class="form-group col-md-2">
       <%= f.label :place_number, "Número" %> <b style="color: red;">*</b>
-      <%= f.text_field :place_number, autofocus: true, required: true, class: "form-control" %>
+      <%= f.text_field :place_number, required: true, class: "form-control" %>
     </div>
 
     <div class="form-group col-md-4">
@@ -106,12 +106,12 @@
   <div class="form-row">
     <div class="form-group col-md-6">
       <%= f.label :phone, "Telefone" %> <b style="color: red;">*</b>
-      <%= f.text_field :phone, autofocus: true, autocomplete: "phone", required: true, class: "form-control sp-celphones" %>
+      <%= f.text_field :phone, autocomplete: "phone", required: true, class: "form-control sp-celphones" %>
     </div>
 
     <div class="form-group col-md-6">
       <%= f.label :other_phone, "Telefone Secundário (opcional)" %>
-      <%= f.text_field :other_phone, autofocus: true, autocomplete: "other_phone", required: false, class: "form-control sp-celphones" %>
+      <%= f.text_field :other_phone, autocomplete: "other_phone", required: false, class: "form-control sp-celphones" %>
     </div>
   </div>
 
