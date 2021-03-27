@@ -35,10 +35,13 @@ RSpec.describe ReceptionService, type: :service do
         .to change { appointment.check_out }.from(nil).to(time)
     end
 
-    it 'marks last_appointment as a second dose appointment' do
+    it 'have checked out appointment and new current appointment' do
       service.check_out(vaccine_name)
 
-      expect(patient.appointments.current.second_dose).to eq(true)
+      expect(patient.appointments.checked_out.count).to eq(1)
+      expect(patient.appointments.current).to be_waiting
+
+      expect(patient.appointments.current.id).not_to be_in(patient.appointments.checked_out.pluck(:id))
     end
 
     it 'schedules second dose appointment' do
@@ -48,8 +51,7 @@ RSpec.describe ReceptionService, type: :service do
 
     context "when the patient check's out from second dose appointment" do
       let!(:second_appointment) do
-        create(:appointment, patient: patient, vaccine_name: vaccine_name, start: 15.minutes.from_now,
-               second_dose: true)
+        create(:appointment, patient: patient, vaccine_name: vaccine_name, start: 15.minutes.from_now)
       end
       let(:service) { described_class.new(second_appointment) }
 

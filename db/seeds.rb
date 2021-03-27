@@ -161,7 +161,6 @@ end_of_day_minutes = [600, 620, 640, 660, 680, 700]
     start: second_appointment_start - 4.weeks + time_multiplier,
     end: second_appointment_end - 4.weeks + time_multiplier,
     patient_id: patient.id,
-    second_dose: false,
     active: true,
     check_in: second_appointment_start - 4.weeks + time_multiplier,
     check_out: second_appointment_start - 4.weeks + 10.minutes + time_multiplier,
