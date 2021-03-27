@@ -49,7 +49,7 @@ describe('reception flow', () => {
     })
 
     it('finds and vaccinates the patient', () => {
-      cy.get('[data-cy=checkInPatientCpf]').should('contain', '711.431.680-11')
+      cy.get('[data-cy=patientCpf]').should('contain', '711.431.680-11')
 
       cy.get('[data-cy=checkInButton]').click()
       cy.get('[data-cy=checkInConfirmationButton]').click()
