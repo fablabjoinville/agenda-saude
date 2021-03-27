@@ -7,6 +7,7 @@ class AppointmentScheduler
                                end
   end
 
+  # rubocop:disable Metrics/PerceivedComplexity
   def schedule(raw_start_time:, ubs:, patient:)
     start_time = Time.parse(raw_start_time)
 
@@ -48,4 +49,5 @@ class AppointmentScheduler
 
     [:internal_error, e.message]
   end
+  # rubocop:enable Metrics/PerceivedComplexity
 end

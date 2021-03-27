@@ -36,7 +36,7 @@ class Patient < ApplicationRecord
 
   # TODO: remove `chronic` field from schema
   enum target_audience: { kid: 0, elderly: 1, chronic: 2, disabled: 3, pregnant: 4, postpartum: 5,
-                          teacher: 6, over_55: 7, without_target: 8 }
+                          teacher: 6, over55: 7, without_target: 8 }
 
   def first_appointment
     appointments.where.not(check_out: nil).order(:start).first

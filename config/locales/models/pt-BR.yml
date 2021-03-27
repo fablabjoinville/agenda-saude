@@ -7,7 +7,7 @@
     postpartum: Pós-parto (Puérpere)
     kid: Criança de 6 meses até 5 anos
     teacher: Professor
-    over_55: Entre 55 anos e 59 anos
+    over55: Entre 55 anos e 59 anos
     without_target: Nenhum
     appointments:
       state:
