@@ -1,5 +1,9 @@
 version: "2"
 
+checks:
+  method-count:
+    enabled: true
+
 plugins:
   duplication:
     enabled: true

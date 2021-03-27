@@ -8,6 +8,7 @@ module Operator
       checked_out: 'checked_out'
     }.freeze
 
+    # rubocop:disable Metrics/AbcSize
     def index
       appointments = @ubs.appointments
                          .today
@@ -29,6 +30,7 @@ module Operator
         end
       end
     end
+    # rubocop:enable Metrics/AbcSize
 
     def show
       @appointment = @ubs.appointments.scheduled.find(params[:id])
@@ -50,6 +52,7 @@ module Operator
     end
 
     # Check-out single appointment
+    # rubocop:disable Metrics/AbcSize
     def check_out
       appointment = @ubs.appointments.scheduled.not_checked_out.find(params[:id])
       vaccine_name = appointment.vaccine_name.presence || check_out_params[:appointment].try(:[], :vaccine_name)
@@ -70,6 +73,7 @@ module Operator
                                   end
                   }
     end
+    # rubocop:enable Metrics/AbcSize
 
     # Suspend single appointment
     def suspend
