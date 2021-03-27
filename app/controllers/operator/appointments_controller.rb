@@ -61,11 +61,11 @@ module Operator
 
       redirect_to operator_appointment_path(appointment),
                   flash: {
-                    notice_title: if next_appointment.patient.vaccinated?
-                                    "#{next_appointment.patient.name} está imunizada(o) com duas doses."
-                                  else
+                    notice_title: if next_appointment
                                     "#{next_appointment.patient.name} tomou primeira dose e está com segunda dose " \
                                     "agendada para #{I18n.l next_appointment.start, format: :human}"
+                                  else appointment.patient.vaccinated?
+                                    "#{appointment.patient.name} está imunizada(o) com duas doses."
                                   end
                   }
     end

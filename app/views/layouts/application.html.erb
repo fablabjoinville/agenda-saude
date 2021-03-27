@@ -39,7 +39,7 @@
           <% end %>
         </div>
       <% elsif current_user %>
-        <%= button_to destroy_user_session_path, method: :delete, class: "btn btn-primary", data: { cy: "ubsLogoutButton" }, type: "button" do %>
+        <%= button_to destroy_user_session_path, method: :delete, class: "btn btn-primary", data: { cy: "operatorLogoutButton" }, type: "button" do %>
           Sair
         <% end %>
       <% else %>

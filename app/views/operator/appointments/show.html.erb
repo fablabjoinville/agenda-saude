@@ -25,7 +25,7 @@
       <i class="fa fa-hourglass-half" aria-hidden="true" style="color: blue"></i>
     <% end %>
 
-    <div class="patient-muted">
+    <div class="text-muted">
       CPF: <%= ApplicationHelper.humanize_cpf(@appointment.patient.cpf) %>
       <br>
       Telefones: <%= [@appointment.patient.phone.presence, @appointment.patient.other_phone.presence].compact.join(", ") %>
@@ -91,25 +91,28 @@
 <% elsif @appointment.checked_in? %>
   <%= form_for @appointment, url: check_out_operator_appointment_path, local: true do |f| %>
     <div class="row">
-      <div class="col-md-12 text-center mb-3">
-        <h3>Vacina aplicada</h3>
+      <div class="col text-center mb-2">
+        <h3>Qual vacina foi aplicada?</h3>
       </div>
     </div>
-    <div class="row">
-      <div class="col-md-12 text-center mb-3">
-        <% ReceptionService::VACCINES.sort.each do |vaccine_name_code| -%>
-          <%= f.radio_button :vaccine_name, vaccine_name_code %>
-          <%= f.label "vaccine_name_#{vaccine_name_code}", vaccine_name_code.humanize.capitalize, style: "font-size: 1.3em" %>
-          <br>
-        <% end -%>
-      </div>
+    <div class="row justify-content-md-center mb-4">
+      <% ReceptionService::VACCINES.sort.each do |vaccine_name_code| -%>
+        <div class="col text-center col-lg-2">
+          <%= f.radio_button :vaccine_name, vaccine_name_code,
+                             autocomplete: false,
+                             class: "btn-check",
+                             data: { cy: "vaccineRadioButton" } %>
+          <%= f.label "vaccine_name_#{vaccine_name_code}", vaccine_name_code.humanize.capitalize,
+                      class: "btn btn-secondary" %>
+        </div>
+      <% end -%>
     </div>
     <div class="row">
       <div class="col-md-12 text-center mb-5">
         <%= f.submit "Realizar Check-out",
                      class: "btn btn-success btn-block btn-lg",
                      data: {
-                       cy: 'executePatientCheckOut',
+                       cy: "checkOutConfirmationButton",
                        confirm: t(:"appointments.confirmation.checkout", name: @appointment.patient.name)
                      } %>
       </div>
@@ -123,7 +126,7 @@
           <%= f.submit "Realizar Check-in",
                         class: "btn btn-success btn-block btn-lg",
                         data: {
-                          cy: "executePatientCheckIn",
+                          cy: "checkInConfirmationButton",
                           confirm: t(:"appointments.confirmation.checkin", name: @appointment.patient.name)
                         } %>
         <% end -%>
@@ -167,7 +170,8 @@
 
 <div class="row text-center">
   <div class="col-md-12">
-    <%= link_to "Voltar para agendamentos", operator_appointments_path, class: "btn-lg", data: { cy: "goBackToCheckInSearchButton" } %>
+    <%= link_to "Voltar para agendamentos aguardando check-in", operator_appointments_path, class: "btn-lg",
+                data: { cy: "backToCheckInListButton" } %>
   </div>
 </div>
 

@@ -12,19 +12,21 @@
     </thead>
     <tbody>
       <% @appointments.each do |appointment| -%>
-        <%= content_tag :tr, data: { cy: appointment.active ? "appointment#{appointment.start.strftime("%H%M")}" : "" } do %>
-          <th scope="row">
+        <%= content_tag :tr, data: { cy: "appointment" } do %>
+          <th scope="row" class="align-middle">
             <%= l appointment.start, format: :short_hour %>
           </th>
-          <td>
+          <td class="align-middle">
             <%= link_to appointment.patient.name, [:operator, appointment] %>
+            <br>
+            <small class="badge bg-light text-dark"><%= ApplicationHelper.humanize_cpf appointment.patient.cpf %></small>
           </td>
-          <td>
+          <td class="align-middle">
             <small class="text-muted">
               <%= [appointment.patient.phone.presence, appointment.patient.other_phone.presence].compact.join(", ") %>
             </small>
           </td>
-          <td>
+          <td class="align-middle">
             <%
               case appointment.state
               when :suspended
@@ -35,12 +37,15 @@
                           class: "btn btn-block btn-warning",
                           prompt: t(:"appointments.confirmation.activate", name: appointment.patient.name) %>
             <% when :checked_out -%>
-              <%= link_to "Vacinado", [:operator, appointment], class: "btn btn-block btn-light" %>
+              <%= link_to "Vacinado", [:operator, appointment], class: "btn btn-block btn-light",
+                          data: { cy: "vaccinatedButton" } %>
             <% when :checked_in -%>
-              <%= link_to "Check-out", [:operator, appointment], class: "btn btn-block btn-success" %>
+              <%= link_to "Check-out", [:operator, appointment], class: "btn btn-block btn-success",
+                          data: { cy: "checkOutButton" } %>
             <% when :waiting -%>
-              <%= link_to "Check-in", [:operator, appointment], class: "btn btn-block btn-primary" %>
-          <% end -%>
+              <%= link_to "Check-in", [:operator, appointment], class: "btn btn-block btn-primary",
+                          data: { cy: "checkInButton" } %>
+            <% end -%>
           </td>
         <% end -%>
       <% end -%>
@@ -75,5 +80,5 @@
     </div>
   </div>
 <% else -%>
-  <h3>Nenhum agendamento com os critérios selecionados para este dia.</h3>
+  <h3 data-cy="noAppointmentsText">Nenhum agendamento com os critérios selecionados para este dia.</h3>
 <% end -%>
