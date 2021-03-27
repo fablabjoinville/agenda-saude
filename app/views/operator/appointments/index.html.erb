@@ -19,7 +19,7 @@
           <td class="align-middle">
             <%= link_to appointment.patient.name, [:operator, appointment] %>
             <br>
-            <small class="badge bg-light text-dark"><%= ApplicationHelper.humanize_cpf appointment.patient.cpf %></small>
+            <small class="badge bg-light text-dark" data-cy="patientCpf"><%= ApplicationHelper.humanize_cpf appointment.patient.cpf %></small>
           </td>
           <td class="align-middle">
             <small class="text-muted">
