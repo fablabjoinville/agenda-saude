@@ -17,7 +17,7 @@ describe('ubs appointments list', () => {
       context('navigating the pages', () => {
         it('shows the last patient for the day', () => {
           cy.get('[data-cy=nextPageLink]').click()
-	  cy.get('[data-cy=appointment2140]').should('exist')
+	  cy.get('[data-cy=appointment2130]').should('exist')
 	})
       })
   })
