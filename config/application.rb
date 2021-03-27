@@ -4,20 +4,20 @@ require_relative 'boot'
 
 require 'rails'
 
-# action_cable/engine
-# action_mailbox/engine
-# action_text/engine
-# active_storage/engine
-%w[
-  action_controller/railtie
-  action_mailer/railtie
-  action_view/railtie
-  active_record/railtie
-  rails/test_unit/railtie
-  sprockets/railtie
-].each do |railtie|
-  require railtie
-end
+require "rails"
+# Pick the frameworks you want:
+require "active_model/railtie"
+# require "active_job/railtie"
+require "active_record/railtie"
+# require "active_storage/engine"
+require "action_controller/railtie"
+# require "action_mailer/railtie"
+# require "action_mailbox/engine"
+# require "action_text/engine"
+require "action_view/railtie"
+# require "action_cable/engine"
+require "sprockets/railtie"
+# require "rails/test_unit/railtie"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
