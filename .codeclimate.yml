@@ -2,7 +2,9 @@ version: "2"
 
 checks:
   method-count:
-    enabled: true
+    enabled: false # use rubocop's
+    method-lines:
+      enabled: false # use rubocop's
 
 plugins:
   duplication:
@@ -17,4 +19,9 @@ plugins:
     enabled: true
   rubocop:
     enabled: true
-    channel: "rubocop-1-9-1"
+  reek:
+    enabled: true
+  flog:
+    enabled: true
+  bundler-audit:
+    enabled: true
