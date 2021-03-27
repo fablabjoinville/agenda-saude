@@ -123,6 +123,11 @@ GEM
       colorize (~> 0.7)
       ruby_parser (>= 3.14.1)
     ffi (1.13.1)
+    flay (2.12.1)
+      erubis (~> 2.7.0)
+      path_expander (~> 1.0)
+      ruby_parser (~> 3.0)
+      sexp_processor (~> 4.0)
     font-awesome-sass (5.13.0)
       sassc (>= 1.11)
     formatador (0.2.5)
@@ -157,6 +162,7 @@ GEM
       activerecord
       kaminari-core (= 1.2.1)
     kaminari-core (1.2.1)
+    kwalify (0.7.2)
     listen (3.1.5)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
@@ -188,8 +194,9 @@ GEM
       shellany (~> 0.0)
     orm_adapter (0.5.0)
     parallel (1.20.1)
-    parser (2.7.2.0)
+    parser (3.0.0.0)
       ast (~> 2.4.1)
+    path_expander (1.1.0)
     pg (1.2.3)
     popper_js (1.16.0)
     pry (0.13.1)
@@ -197,6 +204,7 @@ GEM
       method_source (~> 1.0)
     pry-rails (0.3.9)
       pry (>= 0.10.4)
+    psych (3.3.1)
     puma (5.2.2)
       nio4r (~> 2.0)
     racc (1.5.2)
@@ -244,6 +252,11 @@ GEM
     rb-fsevent (0.10.4)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
+    reek (6.0.3)
+      kwalify (~> 0.7.0)
+      parser (~> 3.0.0)
+      psych (~> 3.1)
+      rainbow (>= 2.0, < 4.0)
     regexp_parser (2.1.1)
     require_all (3.0.0)
     responders (3.0.1)
@@ -292,7 +305,7 @@ GEM
     ruby-progressbar (1.11.0)
     ruby2_keywords (0.0.2)
     ruby_dep (1.5.0)
-    ruby_parser (3.15.0)
+    ruby_parser (3.15.1)
       sexp_processor (~> 4.9)
     rubyzip (2.3.0)
     sass-rails (6.0.0)
@@ -371,6 +384,7 @@ DEPENDENCIES
   devise
   factory_bot_rails
   fasterer
+  flay
   font-awesome-sass
   guard
   jquery-rails
@@ -383,6 +397,7 @@ DEPENDENCIES
   rack-mini-profiler
   rails (~> 6.1, < 6.2)
   rails_best_practices
+  reek
   rspec
   rspec-rails
   rubocop

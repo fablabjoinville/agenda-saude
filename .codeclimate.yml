@@ -21,8 +21,8 @@ plugins:
     enabled: true
     channel: "rubocop-1-7-0"
   reek:
-    enabled: true
+    enabled: false
   flog:
-    enabled: true
+    enabled: false
   bundler-audit:
     enabled: true

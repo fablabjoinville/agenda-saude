@@ -30,9 +30,11 @@ group :development, :test do
   gem 'database_cleaner-active_record'
   gem 'factory_bot_rails'
   gem 'fasterer', require: false
+  gem 'flay', require: false
   gem 'pry-rails'
   gem 'rack-mini-profiler'
   gem 'rails_best_practices', require: false
+  gem 'reek', require: false
   gem 'rspec'
   gem 'rspec-rails'
   gem 'rubocop', require: false
