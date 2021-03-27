@@ -11,7 +11,7 @@ describe('ubs appointments list', () => {
 
   context('when has patients scheduled to today', () => {
     it('show appointments list', () => {
-      cy.get('[data-cy=appointment1900]').should('exist')
+      cy.get('[data-cy=appointment1920]').should('exist')
     })
 
       context('navigating the pages', () => {
