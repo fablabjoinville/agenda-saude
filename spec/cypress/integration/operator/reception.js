@@ -24,7 +24,7 @@ describe('reception flow', () => {
       cy.get('[data-cy=checkInButton]').click()
       cy.get('[data-cy=checkInConfirmationButton]').click()
 
-      cy.get('[data-cy=checkedinListTab]').click()
+      cy.get('[data-cy=checked_inListTab]').click()
       cy.get('[data-cy=checkOutButton]').click()
       cy.get('[data-cy=vaccineRadioButton]').first().check()
       cy.get('[data-cy=checkOutConfirmationButton]').click()
@@ -54,7 +54,7 @@ describe('reception flow', () => {
       cy.get('[data-cy=checkInButton]').click()
       cy.get('[data-cy=checkInConfirmationButton]').click()
 
-      cy.get('[data-cy=checkedinListTab]').click()
+      cy.get('[data-cy=checked_inListTab]').click()
       cy.get('[data-cy=checkOutButton]').click()
       cy.get('[data-cy=vaccineRadioButton]').first().check()
       cy.get('[data-cy=checkOutConfirmationButton]').click()
