@@ -186,19 +186,18 @@ end
 
 ## TIME SLOTS / APPOINTMENTS ##
 
-TimeSlotGenerationService.
-  new(create_slot: lambda { |attrs| Appointment.create(attrs) }).
-  execute(
-    TimeSlotGenerationService::Options.new(
-      start_date: 15.minutes.from_now.to_datetime,
-      end_date: 4.days.from_now.to_datetime,
-      weekdays: [*0..6],
-      excluded_dates: [],
-      windows: [{ start_time: '7:00', end_time: '23:59', slots: 2 }],
-      slot_interval_minutes: 30,
-      ubs_id: Ubs.first.id
-    )
-  )
+TimeSlotGenerationService.new(create_slot: lambda { |attrs| Appointment.create(attrs) })
+                         .execute(
+                           TimeSlotGenerationService::Options.new(
+                             ubs_id: Ubs.first.id,
+                             start_date: 15.minutes.from_now.to_datetime,
+                             end_date: 4.days.from_now.to_datetime,
+                             weekdays: [*0..6],
+                             excluded_dates: [],
+                             windows: [{ start_time: '7:00', end_time: '23:59', slots: 2 }],
+                             slot_interval_minutes: 30
+                           )
+                         )
 
 ## FIRST DOSE PATIENTS ##
 
