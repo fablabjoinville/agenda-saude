@@ -18,7 +18,7 @@ AllCops:
     - 'Guardfile'
     - 'Dangerfile'
   NewCops: enable
-  TargetRubyVersion: 2.6.5
+  TargetRubyVersion: 2.7.2
 
 Documentation:
   Enabled: false
