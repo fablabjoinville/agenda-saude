@@ -35,7 +35,7 @@
                           activate_operator_appointment_path(appointment),
                           method: :patch,
                           class: "btn btn-block btn-warning",
-                          prompt: t(:"appointments.confirmation.activate", name: appointment.patient.name) %>
+                          data: { confirm: t(:"appointments.confirmation.activate", name: appointment.patient.name) } %>
             <% when :checked_out -%>
               <%= link_to "Vacinado", [:operator, appointment], class: "btn btn-block btn-light",
                           data: { cy: "vaccinatedButton" } %>
