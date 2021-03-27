@@ -10,11 +10,11 @@ xlsx_package.workbook.add_worksheet do |sheet|
 
     sheet.add_row [
         index,
-        l(appointment.start, format: :default),
+        l(appointment.start, format: :short_date_hour),
         patient.name,
         patient.cpf,
         patient.phone,
-        l(birth_date, format: :default),
+        l(birth_date, format: :short_date_hour),
         patient.public_place,
         patient.place_number,
         patient.neighborhood
