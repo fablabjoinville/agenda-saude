@@ -3,8 +3,8 @@ version: "2"
 checks:
   method-count:
     enabled: false # use rubocop's
-    method-lines:
-      enabled: false # use rubocop's
+  method-lines:
+    enabled: false # use rubocop's
 
 plugins:
   duplication:
