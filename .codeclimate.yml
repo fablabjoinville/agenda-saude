@@ -19,6 +19,7 @@ plugins:
     enabled: true
   rubocop:
     enabled: true
+    channel: "rubocop-1-7-0"
   reek:
     enabled: true
   flog:
