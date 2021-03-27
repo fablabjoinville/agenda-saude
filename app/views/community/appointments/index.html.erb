@@ -1,0 +1,98 @@
+<div class="container">
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col">
+          <h4>Sua próxima vacinação:</h4>
+        </div>
+      </div>
+
+      <%= render @appointment, full: false %>
+    </div>
+  </div>
+</div>
+
+<div class="row mt-3">
+  <div class="col">
+    <%= link_to "Manter meu agendamento",
+                home_community_appointments_path,
+                class: "btn btn-secondary" %>
+  </div>
+  <div class="col">
+    <nav aria-label="Page navigation">
+      <ul class="pagination justify-content-center">
+        <%=
+          content_tag :li, class: "page-item #{@days <= 0 ? :disabled : :active}" do
+            link_to "&laquo; Dia anterior".html_safe,
+                    community_appointments_path(page: @days - 1),
+                    class: "page-link"
+          end
+        %>
+        <li class="page-item active disabled">
+          <a class="page-link" href="#">
+            <%= l @days.days.from_now, format: :short_date %>
+          </a>
+        </li>
+        <%=
+          content_tag :li, class: "page-item #{@days >= Rails.configuration.x.schedule_up_to_days ? :disabled : :active}" do
+            link_to "Próximo dia &raquo".html_safe,
+                    community_appointments_path(page: @days + 1),
+                    class: "page-link"
+          end
+        %>
+      </ul>
+    </nav>
+  </div>
+</div>
+
+<div class="container mt-5">
+  <div class="row">
+    <div class="col">
+      <div class="alert alert-info">
+          Para reagendar, escolha um dia, unidade e clique no horário disponível desejado.
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <% @appointments.each do |ubs, slots| %>
+        <div id=<%= "ubsId#{ubs.id}Accordion" %>>
+          <div class="card">
+            <div class="card-header" id=<%= "ubsId#{ubs.id}" %>>
+              <h5 class="mb-0">
+                <button class="btn btn-link" data-cy="ubsTimeSlots" data-toggle="collapse" data-target=<%= "#ubsControl#{ubs.id}" %> aria-expanded="true" aria-controls=<%= "ubsControl#{ubs.id}" %>>
+                  <%= ubs.identifier %>
+                </button>
+              </h5>
+            </div>
+            <div id=<%= "ubsControl#{ubs.id}" %> class="collapse" aria-labelledby=<%= "ubsId#{ubs.id}" %> data-parent=<%= "#ubsId#{ubs.id}Accordion" %>>
+              <div class="card-body">
+                <div class="container">
+                  <% slots.each do |slot| %>
+                    <div class="row">
+                      <div class="col align-middle">
+                        <%= l(slot.start, format: :short_hour) %>
+                      </div>
+                      <div class="col text-right">
+                        <%= form_with url: community_appointments_path, method: :post, local: true do |f| %>
+                          <%= hidden_field_tag "appointment[ubs_id]", ubs.id %>
+                          <%= hidden_field_tag "appointment[start]", slot.start %>
+                          <%= f.submit l(slot.start, format: :short_hour),
+                                       class: "btn btn-success",
+                                       data: { cy: "ubsSlot#{slot.start}" } %>
+                        <% end -%>
+                      </div>
+                    </div>
+                    <hr/>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+      <br/>
+    </div>
+  </div>
+</div>

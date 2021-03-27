@@ -42,10 +42,12 @@
         <%= button_to destroy_user_session_path, method: :delete, class: "btn btn-primary", data: { cy: "operatorLogoutButton" }, type: "button" do %>
           Sair
         <% end %>
-      <% else %>
-        <%= button_to destroy_patient_session_path, method: :delete, class: "btn btn-primary", data: { cy: "logoutButton" }, type: "button" do %>
-          Sair
-        <% end %>
+      <% elsif current_patient %>
+        <div class="btn-group" role="group">
+          <%= link_to current_patient.name.truncate(30), "#", class: "btn btn-light", data: { cy: "patientNameButton" } %>
+          <%= link_to "Alterar meus dados", "#", class: "btn btn-light", data: { cy: "patientEditButton" } %>
+          <%= link_to "Sair", destroy_patient_session_path, class: "btn btn-danger", data: { cy: "patientLogoutButton" }, method: :delete %>
+        </div>
       <% end %>
     </nav>
     <div class="container">
@@ -80,7 +82,10 @@
       <div class="row text-center">
         <div class="col">
           <small class="text-muted">
-            <a href="https://www.joinville.sc.gov.br/coronavirus/"><u>Acompanhe as principais informações sobre o combate ao coronavírus em Joinville</u></a>
+            <a href="https://www.joinville.sc.gov.br/coronavirus/">
+              Acompanhe as principais informações sobre o combate ao coronavírus em Joinville
+              <span class="d-none d-print-block">em www.joinville.sc.gov.br/coronavirus</span>
+            </a>
           </small>
         </div>
       </div>

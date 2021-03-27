@@ -28,6 +28,9 @@ module TemplateRails
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.0
 
+    config.x.schedule_from_hours = 1 # Patient can't schedule free appointments before 1 hour in the future
+    config.x.schedule_up_to_days = 7 # Patient can't schedule free appointments after 7 days in the future
+
     # https://guides.rubyonrails.org/autoloading_and_reloading_constants.html#autoload-paths
     config.autoload_paths += [
       Rails.root.join('app', 'services'),

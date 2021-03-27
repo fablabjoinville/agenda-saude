@@ -4,9 +4,7 @@ class Appointment < ApplicationRecord
 
   SLOTS_WINDOW_IN_DAYS = ENV['SLOTS_WINDOW_IN_DAYS']&.to_i || 7
 
-  scope :start_between, ->(from, to) { where(start: from..to) }
-
-  scope :today, -> { start_between(Time.zone.now.beginning_of_day, Time.zone.now.end_of_day) }
+  scope :today, -> { where(start: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day) }
 
   scope :checked_in, -> { where.not(check_in: nil) }
   scope :not_checked_in, -> { where(check_in: nil) }
@@ -18,10 +16,16 @@ class Appointment < ApplicationRecord
 
   scope :future, -> { where(arel_table[:start].gt(Time.zone.now)) }
 
-  scope :free, -> { left_joins(:ubs).where(ubs: { active: true }).where(patient_id: nil) }
+  scope :not_scheduled, -> { where(patient_id: nil) }
 
   scope :active, -> { where(active: true) }
-  scope :suspended, -> { where(active: fals) }
+  scope :suspended, -> { where(active: false) }
+
+  # Where the UBS is active
+  scope :active_ubs, -> { joins(:ubs).where(Ubs.arel_table[:active].eq(true)) }
+
+  # Active and not checked in or out (regardless if in the past or future)
+  scope :open, -> { active.not_checked_in.not_checked_out }
 
   scope :search_for, lambda { |text|
     joins(:patient)

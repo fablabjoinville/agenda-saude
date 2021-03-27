@@ -44,7 +44,7 @@ class Patients::RegistrationsController < Devise::RegistrationsController
 
     return redirect_to index_bedridden_path if patient.bedridden?
 
-    redirect_to index_time_slot_path
+    redirect_to home_community_appointments_path
   end
 
   # GET /patients/sign_up
@@ -72,7 +72,7 @@ class Patients::RegistrationsController < Devise::RegistrationsController
       flash[:notice] = 'Dados editados com sucesso!'
       return render 'patients/not_allowed' unless @patient.allowed?
 
-      redirect_to index_time_slot_path
+      redirect_to home_community_appointments_path
     else
       return redirect_to edit_patient_registration_path(@patient), alert: @patient.errors.full_messages
     end

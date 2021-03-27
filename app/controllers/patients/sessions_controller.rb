@@ -57,6 +57,6 @@ class Patients::SessionsController < Devise::SessionsController
 
     return redirect_to index_bedridden_path if patient.bedridden?
 
-    redirect_to time_slot_path
+    redirect_to home_community_appointments_path
   end
 end

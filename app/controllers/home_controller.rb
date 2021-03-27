@@ -1,12 +1,17 @@
 class HomeController < ApplicationController
   def index
     return redirect_to index_bedridden_path if current_patient.try(:bedridden?)
-    return redirect_to index_time_slot_path if current_patient
+    return redirect_to home_community_appointments_path if current_patient
     return redirect_to operator_appointments_path if current_user
 
-    from = Time.zone.now
-    to = (from + Appointment::SLOTS_WINDOW_IN_DAYS.days).end_of_day
-    @is_scheduling_available = Appointment.free.start_between(from, to).any?
+    from = Rails.configuration.x.schedule_from_hours.hours.from_now
+    to = Rails.configuration.x.schedule_up_to_days.days.from_now.end_of_day
+    @is_scheduling_available = Appointment.active_ubs
+                                          .active
+                                          .not_scheduled
+                                          .open
+                                          .where(start: from..to)
+                                          .any?
   end
 
   def patient_base_login

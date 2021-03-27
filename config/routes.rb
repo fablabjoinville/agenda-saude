@@ -3,15 +3,18 @@ Rails.application.routes.draw do
   devise_for :users, controllers: { sessions: 'users/sessions' }
 
   devise_scope :patient do
-    resource :time_slot do
-      get '/', as: :index, to: 'time_slot#index'
-      post '/', as: :schedule, to: 'time_slot#schedule'
-      delete '/', as: :cancel, to: 'time_slot#cancel'
-    end
-
     resource :bedridden do
       get '/', as: :index, to: 'bedridden#index'
       put '/', as: :toggle, to: 'bedridden#toggle'
+    end
+
+    namespace :community do
+      resources :appointments, only: %i[index create destroy] do
+        collection do
+          get :home
+          get :vaccinated # not a collection one but due to the way we have appointments right now
+        end
+      end
     end
   end
 

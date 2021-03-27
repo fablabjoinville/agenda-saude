@@ -10,7 +10,7 @@ class BedriddenController < ApplicationController
       if current_patient.bedridden?
         index_bedridden_path
       else
-        index_time_slot_path
+        home_community_appointments_path
       end
     )
   end
