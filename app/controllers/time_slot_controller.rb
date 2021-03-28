@@ -63,10 +63,10 @@ class TimeSlotController < PatientSessionController
 
     group_ubs_appointments = conditions_service.group_ubs_appointments(current_patient)
     return if group_ubs_appointments.nil?
-    
+
     group_ubs_appointments.each do |group_desc, ubs_appointments_list|
       time_slots = {}
-      
+
       ubs_appointments_list.each do |ubs_appointments|
         ubs_appointments.each do |ubs_id, appointments|
           ubs = Ubs.find(ubs_id)
@@ -74,7 +74,7 @@ class TimeSlotController < PatientSessionController
 
           slots = []
           appointments.each do |appointment|
-            slots << { slot_start: appointment.start, slot_end: appointment.end, group_name: appointment.group&.name || "População em geral", min_age: appointment.min_age, commorbidity: appointment.commorbidity }
+            slots << { slot_start: appointment.start }
           end
           time_slots[ubs] = slots.uniq
         end

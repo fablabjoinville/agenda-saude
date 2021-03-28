@@ -42,7 +42,7 @@ class Patient < ApplicationRecord
 
     conditions_service = ConditionService.new(schedule_start_time, schedule_end_time)
 
-    return conditions_service.patient_in_available_group(self)
+    conditions_service.patient_in_available_group(self)
   end
 
   def has_future_appointments?

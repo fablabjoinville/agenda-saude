@@ -26,13 +26,13 @@ class Appointment < ApplicationRecord
   end
 
   def patient_group
-    if group == nil && min_age > 0 && commorbidity == false
+    if group_id.nil? && min_age.positive? && commorbidity == false
       groups_description = "População em geral com #{min_age} anos ou mais"
-    elsif group == nil && min_age > 0 && commorbidity == true
+    elsif group_id.nil? && min_age.positive? && commorbidity == true
       groups_description = "População em geral com #{min_age} anos ou mais que tenha alguma comorbidade"
-    elsif group != nil && min_age > 0 && commorbidity == false
+    elsif !group_id.nil? && min_age.positive? && commorbidity == false
       groups_description = "#{group.name} com #{min_age} anos ou mais"
-    elsif group != nil && min_age > 0 && commorbidity == true
+    elsif !group_id.nil? && min_age.positive? && commorbidity == true
       groups_description = "#{group.name} com #{min_age} anos ou mais que tenha alguma comorbidade"
     end
     groups_description
