@@ -1,5 +1,5 @@
 class Patient < ApplicationRecord
-  MAX_LOGIN_ATTEMPTS = 2
+  MAX_LOGIN_ATTEMPTS = 3
 
   CONDITIONS = {
     'População em geral com 70 anos ou mais' => ->(patient) { patient.age >= 70 }
@@ -65,10 +65,10 @@ class Patient < ApplicationRecord
     self.main_ubs =
       # samples an active ubs near the patient neighborhood
       Neighborhood.find_by(name: neighborhood)&.active_ubs&.sample ||
-      # samples any active ubs
-      Ubs.active.sample ||
-      # samples any inactive ubs
-      Ubs.all.sample
+        # samples any active ubs
+        Ubs.active.sample ||
+        # samples any inactive ubs
+        Ubs.all.sample
   end
 
   def age
@@ -102,6 +102,34 @@ class Patient < ApplicationRecord
     return nil if self[:birth_date].blank?
 
     Date.iso8601(self[:birth_date])
+  end
+
+  def mothers_first_name
+    mother_name.split.first.downcase.camelize
+  end
+
+  def match_mothers_name?(try)
+    mothers_first_name == try.downcase.camelize
+  end
+
+  def generate_fake_mothers_list!
+    update! fake_mothers: MotherNameService.name_list(mothers_first_name)
+  end
+
+  def record_failed_login!
+    update! login_attempts: login_attempts + 1
+  end
+
+  def record_successful_login!
+    update! login_attempts: 0, fake_mothers: nil
+  end
+
+  def locked?
+    remaining_login_attempts <= 0
+  end
+
+  def remaining_login_attempts
+    MAX_LOGIN_ATTEMPTS - login_attempts
   end
 
   private

@@ -25,7 +25,8 @@ module Community
       @patient = Patient.new create_params
 
       if @patient.save
-        render plain: "user created #{@patient.inspect}"
+        session[:patient_id] = @patient.id
+        redirect_to home_community_appointments_path
       else
         render :new
       end

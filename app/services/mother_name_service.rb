@@ -9,12 +9,6 @@ module MotherNameService
   ]
 
   def self.name_list(name)
-    processed_name = process_name(name)
-
-    (MOTHER_LIST.reject { |mother| mother == processed_name }.sample(6) << processed_name).sort
-  end
-
-  def self.process_name(name)
-    name.split.first.downcase.camelize
+    (MOTHER_LIST.reject { |mother| mother == name }.sample(8) << name).sort
   end
 end
