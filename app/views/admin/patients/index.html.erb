@@ -1,0 +1,31 @@
+<h1>Desloqueio de pacientes</h1>
+
+<table class="table table-hover">
+  <thead>
+  <tr>
+    <th scope="col">CPF</th>
+    <th scope="col">Paciente</th>
+    <th scope="col"></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @patients.each do |patient| -%>
+    <tr data-cy="patient">
+      <th scope="row" class="align-middle">
+        <%= patient.cpf %>
+      </th>
+      <td>
+        <%= patient.name %>
+      </td>
+      <td>
+        <%= link_to "Desbloquear", unblock_admin_patient_path(id: patient.id), method: :patch,
+                    class: "btn btn-secondary " %>
+      </td>
+    </tr>
+  <% end -%>
+  </tbody>
+</table>
+
+<div>
+  <%= paginate @patients %>
+</div>

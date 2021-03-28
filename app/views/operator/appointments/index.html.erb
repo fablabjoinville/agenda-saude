@@ -12,7 +12,7 @@
     </thead>
     <tbody>
       <% @appointments.each do |appointment| -%>
-        <%= content_tag :tr, data: { cy: "appointment" } do %>
+        <tr data-cy="appointment">
           <th scope="row" class="align-middle">
             <%= l appointment.start, format: :short_hour %>
           </th>
@@ -47,7 +47,7 @@
                           data: { cy: "checkInButton" } %>
             <% end -%>
           </td>
-        <% end -%>
+        </tr>
       <% end -%>
     </tbody>
   </table>

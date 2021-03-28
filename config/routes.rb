@@ -1,6 +1,4 @@
 Rails.application.routes.draw do
-  devise_for :users, controllers: { sessions: 'users/sessions' }
-
   namespace :community do
     resource :session, only: %i[create destroy]
     resource :patient, only: %i[new create edit update]
@@ -13,6 +11,7 @@ Rails.application.routes.draw do
     end
   end
 
+  devise_for :users, controllers: { sessions: 'users/sessions' }
   devise_scope :user do
     namespace :operator do
       resources :appointments, only: %i[index show] do
@@ -38,8 +37,13 @@ Rails.application.routes.draw do
     end
   end
 
-  # FIXME: This is a temp method to allow the unblocking of a patient. We will use this route until we have the super-admin feature
-  get 'Y29zaXNhbGVnYWxwb3JmYXZvcm5hb3RlbnRlbGVyCg/:cpf', to: 'home#unblock'
+  namespace :admin do
+    resources :patients, only: %i[index] do
+      member do
+        patch :unblock
+      end
+    end
+  end
 
   root 'home#index'
 end
