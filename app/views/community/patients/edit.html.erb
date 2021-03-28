@@ -1,0 +1,7 @@
+<div class="container">
+  <h2 data-cy="signUpText">Alterar cadastro</h2>
+
+  <%= form_for @patient, url: community_patient_path, method: :patch do |f| -%>
+    <%= render "form", f: f, patient: @patient %>
+  <% end -%>
+</div>

@@ -1,6 +1,4 @@
 class Patient < ApplicationRecord
-  devise :database_authenticatable, :registerable, :rememberable, authentication_keys: [:cpf]
-
   MAX_LOGIN_ATTEMPTS = 2
 
   CONDITIONS = {
@@ -20,12 +18,14 @@ class Patient < ApplicationRecord
   has_and_belongs_to_many :groups
   belongs_to :main_ubs, class_name: 'Ubs'
 
-  validates :name, presence: true
   validates :cpf, presence: true, uniqueness: true, cpf_format: true
-  validates :mother_name, presence: true
+  validates :name, presence: true
   validates :birth_date, presence: true
+  validates :mother_name, presence: true
   validates :phone, presence: true, phone_format: true
   validates :neighborhood, presence: true
+  validates :place_number, presence: true
+  validates :public_place, presence: true
 
   validate :valid_birth_date
 
@@ -38,8 +38,8 @@ class Patient < ApplicationRecord
   enum target_audience: { kid: 0, elderly: 1, chronic: 2, disabled: 3, pregnant: 4, postpartum: 5,
                           teacher: 6, over55: 7, without_target: 8 }
 
-  def first_appointment
-    appointments.where.not(check_out: nil).order(:start).first
+  def cpf=(c)
+    self[:cpf] = c.gsub(/[^\d]/, '')
   end
 
   def conditions
@@ -71,45 +71,13 @@ class Patient < ApplicationRecord
       Ubs.all.sample
   end
 
-  def email_required?
-    false
-  end
-
-  def email_changed?
-    false
-  end
-
-  def increase_login_attempts
-    update!(login_attempts: login_attempts + 1)
-  end
-
-  def remaining_attempts
-    MAX_LOGIN_ATTEMPTS - login_attempts
-  end
-
-  def blocked?
-    login_attempts >= MAX_LOGIN_ATTEMPTS
-  end
-
-  def bedridden?
-    bedridden
-  end
-
-  def unblock!
-    update!(login_attempts: 0)
-  end
-
-  def encrypted_password
-    ''
-  end
-
   def age
     ((Time.zone.now - birth_date.to_time) / 1.year.seconds).floor
   end
 
   # Until we have a proper way to remember vaccines for patients
   def got_first_dose?
-    !appointments.active.checked_out.count.zero?
+    appointments.active.checked_out.count.positive?
   end
 
   # Until we have a proper way to remember vaccines for patients
@@ -123,6 +91,17 @@ class Patient < ApplicationRecord
 
   def allowed?
     can_schedule? || has_future_appointments?
+  end
+
+  def birthday=(date)
+    date = [date[1], date[2], date[3]].join('-') if date.is_a? Hash
+    self[:birth_date] = Date.iso8601(date)
+  end
+
+  def birthday
+    return nil if self[:birth_date].blank?
+
+    Date.iso8601(self[:birth_date])
   end
 
   private

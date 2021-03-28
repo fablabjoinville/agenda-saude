@@ -1,0 +1,21 @@
+<h1 class="display-6">
+  Temos
+  <strong>
+    <%= @appointments_count %> doses disponíveis
+  </strong>
+</h1>
+<p class="lead">
+  As doses disponíveis são para o grupo do qual você faz parte.
+</p>
+<hr class="my-4">
+<p>
+  Ao clicar em "Agendar sua vacina agora" abaixo, uma dose no primeiro dia e horário disponível será agendada para você.
+  Você poderá então cancelar caso não possa comparecer no horário estipulado, ou trocar para outro horário, dia, ou local, caso haja disponibilidade.
+</p>
+
+<%= link_to "Agendar sua vacina agora",
+            community_appointments_path, method: :post,
+            class: "btn btn-primary btn-lg btn-block",
+            data: {
+              cy: "scheduleAppointmentButton"
+            } %>

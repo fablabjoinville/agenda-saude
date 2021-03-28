@@ -6,13 +6,20 @@ pt-BR:
         password: Senha
         remember_me: Lembre-se de mim
       patient:
-        name: Nome completo
-        cpf: CPF
-        mother_name: Nome da mãe
         birth_date: Data de nascimento
-        phone: Telefone
-        neighborhood: Bairro
         chronic: Crônico
+        cpf: CPF
+        email: Email
+        mother_name: Nome da mãe
+        name: Nome
+        neighborhood: Bairro
+        other_phone: Telefone Secundário
+        phone: Telefone
+        place_number: Número
+        public_place: Endereço
+        sus: Número do cartão SUS
+        groups: Grupos que faz parte
+
     models:
       user: Usuário
       patient: Paciente

@@ -1,5 +1,7 @@
 module Community
   class AppointmentsController < Base
+    class NoFreeAppointments < StandardError; end
+
     ROUNDING = 2.minutes # delta to avoid rounding issues
 
     def home
@@ -38,6 +40,8 @@ module Community
                                  .select(:ubs_id, :start, :end) # only return what we care with
                                  .distinct # remove duplicates (same as .uniq in pure Ruby)
                                  .group_by(&:ubs) # transforms it into a Hash grouped by Ubs
+    rescue NoFreeAppointments
+      redirect_to home_community_appointments_path, flash: { alert: "Não há vagas disponíveis para reagendamento." }
     end
 
     def parse_start
@@ -127,6 +131,7 @@ module Community
                                               .order(:start)
                                               .pick(:start)
 
+      raise NoFreeAppointments unless next_available_appointment
       ((next_available_appointment - Time.zone.now.end_of_day) / 1.day).ceil
     end
 

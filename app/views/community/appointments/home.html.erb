@@ -1,56 +1,5 @@
 <% if @appointment.present? %>
-  <% unless @appointment.active %>
-    <div class="row">
-      <div class="col">
-        <div class="alert alert-danger" role="alert">
-          Este agendamento foi suspenso. Favor entrar em contato com o Ligue/Web Saúde no (47) 3481-5165,
-          ou a Unidade de atendimento.
-        </div>
-      </div>
-    </div>
-  <% end %>
-
-  <div class="container">
-    <div class="card">
-      <h4 class="card-header">Sua vacinação agendada:</h4>
-      <ul class="list-group list-group-flush">
-        <li class="list-group-item">
-          <%= render @appointment %>
-        </li>
-        <li class="list-group-item">
-          <div class="row">
-            <div class="col">
-              <strong>Imprima ou salve uma imagem esta página no seu celular para se lembrar do agendamento.</strong>
-            </div>
-          </div>
-
-          <%= render "shared/required_documents" %>
-        </li>
-        <li class="list-group-item d-print-none">
-          <div class="row">
-            <div class="col">
-              <%= button_to community_appointment_path(id: @appointment.id), method: :delete,
-                            class: "btn btn-danger btn-block",
-                            data: {
-                              cy: "appointmentCancelButton",
-                              confirm: "Confirma CANCELAR seu agendamento? Você poderá remarcar, porém estará sujeito a disponibilidade de vagas."
-                            } do %>
-                Cancelar este agendamento
-              <% end %>
-            </div>
-            <div class="col">
-              <%= link_to "Reagendar vacinação para outro dia, horário ou local",
-                          community_appointments_path,
-                          class: "btn btn-secondary btn-block",
-                          data: {
-                            cy: "appointmentRescheduleButton",
-                          } %>
-            </div>
-          </div>
-        </li>
-      </ul>
-    </div>
-  </div>
+  <%= render "home_has_appointment" %>
 
 <% else %>
   <div class="row">
@@ -60,55 +9,9 @@
   </div>
 
   <% if current_patient.can_schedule? -%>
-    <% if @appointments_count.positive? -%>
-
-      <div class="jumbotron">
-        <h1 class="display-6">
-          Temos
-          <strong>
-            <%= @appointments_count %> doses disponíveis
-          </strong>
-        </h1>
-        <p class="lead">
-          As doses disponíveis são para o grupo do qual você faz parte.
-        </p>
-        <hr class="my-4">
-        <p>
-          Ao clicar em "Agendar sua vacina agora" abaixo, uma dose no primeiro dia e horário disponível será agendada para você.
-          Você poderá então cancelar caso não possa comparecer no horário estipulado, ou trocar para outro horário, dia, ou local, caso haja disponibilidade.
-        </p>
-
-        <%= link_to "Agendar sua vacina agora",
-                    community_appointments_path, method: :post,
-                    class: "btn btn-primary btn-lg btn-block",
-                    data: {
-                      cy: "scheduleAppointmentButton"
-                    } %>
-
-        <p class="mt-4">
-          Mesmo sendo parte de grupo que pode agendar, você <strong>não poderá</strong> agendar a receber a vacina caso você:
-
-          <ul>
-            <li>Esteja em estado febril;</li>
-            <li>Tenha suspeita ou Covid-19 positivo nos últimos 30 dias;</li>
-            <li>Tenha tomado qualquer outro tipo de vacina nos últimos 15 dias;</li>
-            <li>Esteja gestante ou lactante (mulheres que estão amamentando).</li>
-          </ul>
-        </p>
-      </div>
-
-    <% else -%>
-      <p>
-        Você faz parte de grupo para receber a vacina, mas no momento não temos disponibilidade de dose.
-        Retorne aqui novamente para verificar futura disponibilidade.
-      </p>
-
-    <% end -%>
+    <%= render "home_can_schedule" %>
 
   <% else -%>
-    <p>
-      Você não faz parte de grupo que pode receber dose.
-      Fique atento aos veículos de imprensa e a este site para saber quando você poderá agendar sua vacina.
-    </p>
+    <%= render "home_cannot_schedule" %>
   <% end -%>
 <% end %>

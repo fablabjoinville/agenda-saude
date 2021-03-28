@@ -1,0 +1,14 @@
+<p>
+  Você não faz parte de grupo que pode receber dose.
+  Mediante disponibilidade de doses, atualmente os seguintes grupos estão sendo vacinados:
+</p>
+<ul>
+  <% Patient::CONDITIONS.each do |name, _| -%>
+    <li>
+      <i class="fa fa-check-circle" aria-hidden="true" style="color: green"></i> <%= name %>
+    </li>
+  <% end -%>
+</ul>
+<p>
+  Fique atento a página inicial deste site e a veículos oficiais de imprensa para saber quando você poderá agendar sua vacina.
+</p>

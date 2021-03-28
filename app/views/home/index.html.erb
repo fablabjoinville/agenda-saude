@@ -41,7 +41,7 @@
 
 <div class="card mt-3">
   <div class="card-body">
-    <%= form_for :patient, url: patient_base_login_path do |f| %>
+    <%= form_for :patient, url: community_session_path, method: :post do |f| %>
       <div class="form-row">
         <div class="form-group col-md-12">
           <div class="input-group mb-2">
@@ -52,7 +52,7 @@
                              autofocus: true,
                              minlength: 11, maxlength: 14,
                              required: true,
-                             class: "form-control",
+                             class: "form-control form-control-lg",
                              aria: { describedby: 'cpfHelpInLine' },
                              placeholder: '000.000.000-00',
                              data: { cy: "cpfInputField" } %>
