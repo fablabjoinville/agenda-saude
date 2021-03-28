@@ -1,5 +1,11 @@
 version: "2"
 
+checks:
+  method-count:
+    enabled: false # use rubocop's
+  method-lines:
+    enabled: false # use rubocop's
+
 plugins:
   duplication:
     enabled: true
@@ -13,4 +19,10 @@ plugins:
     enabled: true
   rubocop:
     enabled: true
-    channel: "rubocop-1-9-1"
+    channel: "rubocop-1-7-0"
+  reek:
+    enabled: false
+  flog:
+    enabled: false
+  bundler-audit:
+    enabled: true
