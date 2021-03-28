@@ -1,68 +1,58 @@
-<%= render :layout => '/shared/panel' do %>
-  <div class="container">
-    <div class="card">
-      <div class="card-body">
-        <div class="row">
-          <div class="col" data-cy="vaccinatedPatientText">
-            <h4>Paciente Vacinado: <strong> <%= @first_dose_appointment.patient.name %></strong> </h4>
-            <h5><strong>Vacina: </strong><%= @first_dose_appointment.vaccine_name.capitalize %> </h5>
-          </div>
+<div class="container">
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col" data-cy="vaccinatedPatientText">
+          <h4>Paciente Vacinado:<strong> <%= @first_dose_appointment.patient.name %></strong> </h4>
+          <h5><strong>Vacina:</strong> <%= @first_dose_appointment.vaccine_name.capitalize %> </h5>
         </div>
-        <div class="row">
-          <div class="col">
-            <div class="row">
-              <div class="col">
-                <strong>Primeira Dose</strong>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <strong>Data: </strong><%= ApplicationHelper.humanize_datetime(@first_dose_appointment.check_out) %>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <strong>Unidade: </strong><%= @first_dose_appointment.ubs.name %>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <strong>Endereço: </strong><%= @first_dose_appointment.ubs.address %>
-              </div>
-            </div>
-          </div>
-          <div class="col">
-            <div class="row">
-              <div class="col">
-                <strong>Segunda Dose</strong>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <strong>Data: </strong><%= ApplicationHelper.humanize_datetime(@second_dose_appointment.check_out) %>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <strong>Unidade: </strong><%= @second_dose_appointment.ubs.name %>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <strong>Endereço: </strong><%= @second_dose_appointment.ubs.address %>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row mt-3">
+      </div>
+      <div class="row mt-4">
+        <div class="col">
+          <div class="row">
             <div class="col">
-              <%= button_to "patients/edit", class: "btn btn-primary btn-block", data: { cy: "editPatientButton" }, method: :get do %>
-                Alterar meus dados
-              <% end %>
+              <h4>Primera dose</h4>
             </div>
           </div>
+          <div class="row">
+            <div class="col">
+              <strong>Data:</strong> <%= ApplicationHelper.humanize_datetime(@first_dose_appointment.check_out) %>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <strong>Unidade:</strong> <%= @first_dose_appointment.ubs.name %>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <strong>Endereço:</strong> <%= @first_dose_appointment.ubs.address %>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="row">
+            <div class="col">
+              <h4>Segunda dose</h4>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <strong>Data:</strong> <%= ApplicationHelper.humanize_datetime(@second_dose_appointment.check_out) %>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <strong>Unidade:</strong> <%= @second_dose_appointment.ubs.name %>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <strong>Endereço:</strong> <%= @second_dose_appointment.ubs.address %>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-<% end %>
-
+</div>

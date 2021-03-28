@@ -1,15 +1,6 @@
 Rails.application.routes.draw do
   devise_for :users, controllers: { sessions: 'users/sessions' }
 
-  # TODO: remove me
-  resources :patients
-  post 'home/patient_base_login', as: :patient_base_login, to: 'home#patient_base_login'
-  get 'cadastrar_paciente/:cpf', to: 'home#register_patient'
-  resource :bedridden do
-    get '/', as: :index, to: 'bedridden#index'
-    put '/', as: :toggle, to: 'bedridden#toggle'
-  end
-
   namespace :community do
     resource :session, only: %i[create destroy]
     resource :patient, only: %i[new create edit update]
