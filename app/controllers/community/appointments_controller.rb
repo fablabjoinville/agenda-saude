@@ -44,12 +44,6 @@ module Community
       redirect_to home_community_appointments_path, flash: { alert: 'Não há vagas disponíveis para reagendamento.' }
     end
 
-    def parse_start
-      create_params[:appointment]&.key?(:start) && create_params[:appointment][:start]&.to_time
-    rescue ArgumentError
-      nil
-    end
-
     def create
       start = [
         Rails.configuration.x.schedule_from_hours.hours.from_now,
@@ -134,6 +128,12 @@ module Community
       raise NoFreeAppointments unless next_available_appointment
 
       ((next_available_appointment - Time.zone.now.end_of_day) / 1.day).ceil
+    end
+
+    def parse_start
+      create_params[:appointment]&.key?(:start) && create_params[:appointment][:start]&.to_time
+    rescue ArgumentError
+      nil
     end
 
     def create_params
