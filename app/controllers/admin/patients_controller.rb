@@ -19,7 +19,7 @@ module Admin
     protected
 
     def set_patient
-      @patient = Patient.find_by!(id: params[:id])
+      @patient = Patient.find(params[:id])
     end
 
     def index_params

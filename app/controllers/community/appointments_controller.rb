@@ -11,12 +11,12 @@ module Community
 
       return if @appointment
 
-      if current_patient.can_schedule?
-        @appointments_count = Appointment.active_ubs
-                                         .open
-                                         .not_scheduled
-                                         .count
-      end
+      return unless current_patient.can_schedule?
+
+      @appointments_count = Appointment.active_ubs
+                                       .open
+                                       .not_scheduled
+                                       .count
     end
 
     # Reschedules appointment (only if patient already has one scheduled)

@@ -52,7 +52,7 @@ class Patient < ApplicationRecord
     conditions.any?
   end
 
-  def has_future_appointments?
+  def future_appointments?
     appointments
       .future
       .active
@@ -92,7 +92,7 @@ class Patient < ApplicationRecord
   end
 
   def allowed?
-    can_schedule? || has_future_appointments?
+    can_schedule? || future_appointments?
   end
 
   def birthday=(date)
