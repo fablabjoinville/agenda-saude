@@ -19,6 +19,12 @@
   </div>
 </div>
 
+<div class="row">
+  <div class="col text-muted">
+    Código do agendamento: <%= "U#{@appointment.ubs_id}P#{@appointment.patient_id}A#{@appointment.id}" %>
+  </div>
+</div>
+
 <% if appointment.vaccine_name.present? %>
   <div class="row">
     <div class="col" data-cy="appliedVaccineName">
@@ -26,18 +32,3 @@
     </div>
   </div>
 <% end %>
-
-<% if full -%>
-  <div class="row mt-4">
-    <div class="col">
-      <strong>Imprima ou salve uma imagem esta página no seu celular para se lembrar do agendamento.</strong>
-    </div>
-  </div>
-  <div class="row mb-4">
-    <div class="col text-muted">
-      Código do agendamento: <%= "U#{appointment.ubs_id}P#{appointment.patient_id}A#{appointment.id}" %>
-    </div>
-  </div>
-
-  <%= render "shared/required_documents" %>
-<% end -%>

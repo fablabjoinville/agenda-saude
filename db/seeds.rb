@@ -35,7 +35,7 @@ ubsf_america = Ubs.new.tap do |ubs|
   ubs.name = 'UBSF America'
   ubs.user = mlabs
   ubs.neighborhoods << america
-  ubs.neighborhood = america
+  ubs.neighborhood = america.name
   ubs.address = 'Rua Magrathea, 42'
   ubs.phone = '(47) 3443-3443'
   ubs.shift_start = '9:00'
@@ -50,8 +50,8 @@ end
 Ubs.new.tap do |ubs|
   ubs.name = 'UBSF Gloria'
   ubs.user = mlabs_two
-  ubs.neighborhood = gloria
   ubs.neighborhoods << gloria
+  ubs.neighborhood = gloria.name
   ubs.address = 'Rua dos Bobos, 0'
   ubs.phone = '(47) 3443-3455'
   ubs.shift_start = '9:00'

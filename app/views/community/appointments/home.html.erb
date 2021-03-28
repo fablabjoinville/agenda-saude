@@ -1,30 +1,33 @@
 <% if @appointment.present? %>
+  <% unless @appointment.active %>
+    <div class="row">
+      <div class="col">
+        <div class="alert alert-danger" role="alert">
+          Este agendamento foi suspenso. Favor entrar em contato com o Ligue/Web Saúde no (47) 3481-5165,
+          ou a Unidade de atendimento.
+        </div>
+      </div>
+    </div>
+  <% end %>
+
   <div class="container">
     <div class="card">
-      <div class="card-body">
-        <% unless @appointment.active %>
+      <h4 class="card-header">Sua vacinação agendada:</h4>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+          <%= render @appointment %>
+        </li>
+        <li class="list-group-item">
           <div class="row">
             <div class="col">
-              <div class="alert alert-danger" role="alert">
-                Este agendamento foi suspenso. Favor entrar em contato com o Ligue/Web Saúde ou a Unidade de
-                atendimento.
-              </div>
+              <strong>Imprima ou salve uma imagem esta página no seu celular para se lembrar do agendamento.</strong>
             </div>
           </div>
-        <% end %>
 
-        <div class="row">
-          <div class="col">
-            <h4>Sua próxima vacinação:</h4>
-          </div>
-        </div>
-
-        <%= render @appointment, full: true %>
-
-        <div class="d-print-none">
-          <hr>
-
-          <div class="row mt-3">
+          <%= render "shared/required_documents" %>
+        </li>
+        <li class="list-group-item d-print-none">
+          <div class="row">
             <div class="col">
               <%= button_to community_appointment_path(id: @appointment.id), method: :delete,
                             class: "btn btn-danger btn-block",
@@ -44,8 +47,8 @@
                           } %>
             </div>
           </div>
-        </div>
-      </div>
+        </li>
+      </ul>
     </div>
   </div>
 
