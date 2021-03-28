@@ -50,36 +50,62 @@
   </div>
 
 <% else %>
-
   <div class="row">
-    <div class="col">
-      <h4 class="text-center" data-cy="noAppointmentText">Você não possui vacinação agendada.</h4>
-
-      <% if current_patient.can_schedule? -%>
-        <% if @appointments_count.positive? -%>
-          <%= link_to "Agendar sua vacina agora", community_appointments_path, class: "btn btn-primary", method: :post %>
-
-          <p>
-            No momento, há <%= @appointments_count %> doses disponíveis para seu grupo.
-            Clicando no botão acima, um dose no primeiro dia e horário disponível será agendada para você.
-            Você poderá então trocar para outro dia ou horário, caso haja disponibilidade, ou cancelar caso não possa
-            comparecer no horário estipulado.
-          </p>
-
-        <% else -%>
-          <p>
-            Você faz parte de grupo para receber a vacina, mas no momento não temos disponibilidade de dose.
-            Retorne aqui novamente para verificar futura disponibilidade.
-          </p>
-
-        <% end -%>
-
-      <% else -%>
-        <p>
-          Você não faz parte de grupo que pode receber dose.
-          Fique atento aos veículos de imprensa e a este site para saber quando você poderá agendar sua vacina.
-        </p>
-      <% end -%>
+    <div class="col mb-4 text-center">
+      <h4 data-cy="noAppointmentText">Você não possui vacinação agendada.</h4>
     </div>
   </div>
+
+  <% if current_patient.can_schedule? -%>
+    <% if @appointments_count.positive? -%>
+
+      <div class="jumbotron">
+        <h1 class="display-6">
+          Temos
+          <strong>
+            <%= @appointments_count %> doses disponíveis
+          </strong>
+        </h1>
+        <p class="lead">
+          As doses disponíveis são para o grupo do qual você faz parte.
+        </p>
+        <hr class="my-4">
+        <p>
+          Ao clicar em "Agendar sua vacina agora" abaixo, uma dose no primeiro dia e horário disponível será agendada para você.
+          Você poderá então cancelar caso não possa comparecer no horário estipulado, ou trocar para outro horário, dia, ou local, caso haja disponibilidade.
+        </p>
+
+        <%= link_to "Agendar sua vacina agora",
+                    community_appointments_path, method: :post,
+                    class: "btn btn-primary btn-lg btn-block",
+                    data: {
+                      cy: "scheduleAppointmentButton"
+                    } %>
+
+        <p class="mt-4">
+          Mesmo sendo parte de grupo que pode agendar, você <strong>não poderá</strong> agendar a receber a vacina caso você:
+
+          <ul>
+            <li>Esteja em estado febril;</li>
+            <li>Tenha suspeita ou Covid-19 positivo nos últimos 30 dias;</li>
+            <li>Tenha tomado qualquer outro tipo de vacina nos últimos 15 dias;</li>
+            <li>Esteja gestante ou lactante (mulheres que estão amamentando).</li>
+          </ul>
+        </p>
+      </div>
+
+    <% else -%>
+      <p>
+        Você faz parte de grupo para receber a vacina, mas no momento não temos disponibilidade de dose.
+        Retorne aqui novamente para verificar futura disponibilidade.
+      </p>
+
+    <% end -%>
+
+  <% else -%>
+    <p>
+      Você não faz parte de grupo que pode receber dose.
+      Fique atento aos veículos de imprensa e a este site para saber quando você poderá agendar sua vacina.
+    </p>
+  <% end -%>
 <% end %>
