@@ -6,7 +6,7 @@ module MotherNameService
     Marsilia Aurora Cecília Rosanna Leandra Graziella Giulieta Paola Olga Rafaela Eva Silvia Berenice Allegra Lívia
     Fiametta Dulce Iuliana Galicia Micola Cathalina Anzola Fordelise Giorgia Fabia Filippa Melissa Vanessa Verônica
     Adele Iris Antonella
-  ]
+  ].freeze
 
   def self.name_list(name)
     (MOTHER_LIST.reject { |mother| mother == name }.sample(8) << name).sort

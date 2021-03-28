@@ -1,2 +1,0 @@
-module Community::SessionsHelper
-end

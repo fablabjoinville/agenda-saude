@@ -41,11 +41,11 @@ module Community
                                  .distinct # remove duplicates (same as .uniq in pure Ruby)
                                  .group_by(&:ubs) # transforms it into a Hash grouped by Ubs
     rescue NoFreeAppointments
-      redirect_to home_community_appointments_path, flash: { alert: "Não há vagas disponíveis para reagendamento." }
+      redirect_to home_community_appointments_path, flash: { alert: 'Não há vagas disponíveis para reagendamento.' }
     end
 
     def parse_start
-      create_params[:appointment]&.has_key?(:start) && create_params[:appointment][:start]&.to_time
+      create_params[:appointment]&.key?(:start) && create_params[:appointment][:start]&.to_time
     rescue ArgumentError
       nil
     end
@@ -65,17 +65,17 @@ module Community
       case result
       when :schedule_conditions_unmet
         redirect_to home_community_appointments_path, flash: {
-          alert: "Você não está entre grupos que podem fazer agendamentos."
+          alert: 'Você não está entre grupos que podem fazer agendamentos.'
         }
       when :all_slots_taken
         redirect_to home_community_appointments_path, flash: {
-          alert: "Desculpe, mas não há mais vagas disponíveis. Tente novamente mais tarde."
+          alert: 'Desculpe, mas não há mais vagas disponíveis. Tente novamente mais tarde.'
         }
       when :success
         notice = if (start - data.start).abs > ROUNDING
                    "O primeiro horário disponível para agendamento foi #{I18n.l data.start, format: :short}."
                  else
-                   "Vacinação agendada para o horário desejado."
+                   'Vacinação agendada para o horário desejado.'
                  end
 
         redirect_to home_community_appointments_path, flash: {
@@ -84,7 +84,7 @@ module Community
       else
         notify_unexpected_result(result: result, data: data, context: context)
         redirect_to home_community_appointments_path, flash: {
-          alert: "Ocorreu um erro inesperado, tente novamente mais tarde."
+          alert: 'Ocorreu um erro inesperado, tente novamente mais tarde.'
         }
       end
     end
@@ -132,11 +132,12 @@ module Community
                                               .pick(:start)
 
       raise NoFreeAppointments unless next_available_appointment
+
       ((next_available_appointment - Time.zone.now.end_of_day) / 1.day).ceil
     end
 
     def create_params
-      params.permit(appointment: [:ubs_id, :start])
+      params.permit(appointment: %i[ubs_id start])
     end
 
     def slot_params

@@ -65,10 +65,10 @@ class Patient < ApplicationRecord
     self.main_ubs =
       # samples an active ubs near the patient neighborhood
       Neighborhood.find_by(name: neighborhood)&.active_ubs&.sample ||
-        # samples any active ubs
-        Ubs.active.sample ||
-        # samples any inactive ubs
-        Ubs.all.sample
+      # samples any active ubs
+      Ubs.active.sample ||
+      # samples any inactive ubs
+      Ubs.all.sample
   end
 
   def age

@@ -22,7 +22,7 @@ module Community
         return locked_account! if @patient.locked?
 
         flash.now[:alert] = "Nome incorreto! Você têm mais #{@patient.remaining_login_attempts} tentativa, caso " \
-                              "contrário esta conta será bloqueada por medida de segurança."
+                              'contrário esta conta será bloqueada por medida de segurança.'
         render :challenge
       end
     end
@@ -47,8 +47,8 @@ module Community
 
     def locked_account!
       redirect_to root_path, flash: {
-        alert: "CPF bloqueado devido a repetidas tentativas de acesso. " \
-            "Para desbloquear, entre em contato com o Ligue/Web Saúde (telefone abaixo)."
+        alert: 'CPF bloqueado devido a repetidas tentativas de acesso. ' \
+            'Para desbloquear, entre em contato com o Ligue/Web Saúde (telefone abaixo).'
       }
     end
   end

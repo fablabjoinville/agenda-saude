@@ -2,20 +2,20 @@ module Community
   class PatientsController < Base
     skip_before_action :authenticate!, only: %i[new create]
 
-    FIELDS = [
-      :birthday,
-      :email,
-      :mother_name,
-      :name,
-      :neighborhood,
-      :other_phone,
-      :phone,
-      :place_number,
-      :public_place,
-      :specific_comorbidity,
-      :sus,
-      :target_audience
-    ]
+    FIELDS = %i[
+      birthday
+      email
+      mother_name
+      name
+      neighborhood
+      other_phone
+      phone
+      place_number
+      public_place
+      specific_comorbidity
+      sus
+      target_audience
+    ].freeze
 
     def new
       @patient = Patient.new create_params
@@ -41,7 +41,7 @@ module Community
 
       if @patient.update(update_params)
         redirect_to home_community_appointments_path, flash: {
-          notice: "Cadastro atualizado."
+          notice: 'Cadastro atualizado.'
         }
       else
         render :edit
