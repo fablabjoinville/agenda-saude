@@ -13,18 +13,24 @@ module Community
       # Received user from home, show challenge form
       return challenge if session_params[:challenged_mothers_name].blank?
 
-      if @patient.match_mothers_name?(session_params[:challenged_mothers_name])
-        @patient.record_successful_login!
-        session[:patient_id] = @patient.id
-        redirect_to home_community_appointments_path
-      else
-        @patient.record_failed_login!
-        return locked_account! if @patient.locked?
+      return failed_login! unless @patient.match_mothers_name?(session_params[:challenged_mothers_name])
 
-        flash.now[:alert] = "Nome incorreto! Você têm mais #{@patient.remaining_login_attempts} tentativa, caso " \
+      successful_login!
+    end
+
+    def successful_login!
+      @patient.record_successful_login!
+      session[:patient_id] = @patient.id
+      redirect_to home_community_appointments_path
+    end
+
+    def failed_login!
+      @patient.record_failed_login!
+      return locked_account! if @patient.locked?
+
+      flash.now[:alert] = "Nome incorreto! Você têm mais #{@patient.remaining_login_attempts} tentativa, caso " \
                               'contrário esta conta será bloqueada por medida de segurança.'
-        render :challenge
-      end
+      render :challenge
     end
 
     def destroy
