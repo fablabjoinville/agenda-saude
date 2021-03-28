@@ -1,12 +1,4 @@
 <%= render :layout => '/shared/panel' do %>
-  <% if flash[:notice] %>
-    <div class="alert alert-info alert-dismissable", data-cy="alertMessage" role="alert">
-      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-      <h6 class="mb-0">
-        <%= flash[:notice] %>
-      </h6>
-    </div>
-  <% end %>
   <% if @appointment.present? %>
     <div class="container">
       <div class="card">
@@ -60,15 +52,6 @@
   <hr>
 
   <br/>
-  <% if flash[:alert] %>
-    <div class="alert alert-danger alert-dismissable" role="alert">
-      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-      <h6 class="mb-0">
-        <%= flash[:alert] %>
-      </h6>
-    </div>
-  <% end %>
-
   <% if @patient_can_schedule %>
     <nav aria-label="Page navigation example">
       <ul class="pagination justify-content-center">
@@ -85,19 +68,19 @@
         </li>
       </ul>
     </nav>
-    
+
     <% if @group_time_slots.present? %>
       <div class="container mt-5">
         <div class="row">
           <div class="col">
             <h4>Agendamentos disponíveis:</h4>
-            <% if @appointment.present? && @appointment.start > Time.zone.now %>
+            <% if @appointment.present? %>
               <div class="alert alert-warning alert-dismissable" role="alert">
-              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-              <h6 class="mb-0">
-                Caso queira trocar a data de seu agendamento, selecione o dia e unidade, escolha um horário disponível e clique em <strong>Substituir</strong>.
-              </h6>
-            </div>
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <h6 class="mb-0">
+                  Caso queira trocar a data de seu agendamento, selecione o dia e unidade, escolha um horário disponível e clique em <strong>Substituir</strong>.
+                </h6>
+              </div>
             <% end %>
             <div class="alert alert-info alert-dismissable" role="alert">
               <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -148,12 +131,12 @@
       </div>
     <% else %>
       <h4>Nenhuma vaga disponível neste dia!</h4>
-    <div class="alert alert-info alert-dismissable" role="alert">
-      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-      <h6 class="mb-0">
-        Prezado usuário, no momento todas as vagas para este dia foram ocupadas, verifique os próximos dias.<br/>
-      </h6>
-    </div>
+      <div class="alert alert-info alert-dismissable" role="alert">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <h6 class="mb-0">
+          Prezado usuário, no momento todas as vagas para este dia foram ocupadas, verifique os próximos dias.<br/>
+        </h6>
+      </div>
     <% end %>
   <% else %>
     <h4>Nenhuma vaga disponível no momento!</h4>

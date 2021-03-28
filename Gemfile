@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 ruby '2.7.2'
 
 gem 'pg' # Use postgresql as the database for Active Record
-gem 'rails', '~> 6.0.1'
+gem 'rails', '~> 6.1', '< 6.2'
 
 gem 'bootsnap', require: false
 gem 'bootstrap'
@@ -32,6 +32,7 @@ group :development, :test do
   gem 'fasterer', require: false
   gem 'flay', require: false
   gem 'pry-rails'
+  gem 'rack-mini-profiler'
   gem 'rails_best_practices', require: false
   gem 'reek', require: false
   gem 'rspec'

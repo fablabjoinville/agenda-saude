@@ -34,7 +34,7 @@
           </span>
         </button>
         <div class="collapse navbar-collapse ml-auto flex-shrink-1 flex-grow-0" id="navbarTogglerDemo01">
-          <%= button_to new_user_session_path, class: "btn btn-primary w-100 mt-2", data: { cy: "userLoginButton"}, type: "button" do %>
+          <%= link_to new_user_session_path, class: "btn btn-primary w-100 mt-2", data: { cy: "userLoginButton" } do %>
             Entrar como Operador
           <% end %>
         </div>
@@ -51,12 +51,12 @@
     <div class="container">
 
       <% if flash[:notice].present? %>
-        <div class="alert alert-info">
+        <div class="alert alert-info" data-cy="noticeMessage">
           <%= flash[:notice] %>
         </div>
       <% end %>
       <% if flash[:alert].present? %>
-        <div class="alert alert-danger">
+        <div class="alert alert-danger" data-cy="alertMessage">
           <%= flash[:alert] %>
         </div>
       <% end %>

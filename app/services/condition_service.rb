@@ -6,9 +6,12 @@ class ConditionService
 
   def groups_ubs_available
     conditions_pluck = create_conditions_pluck(@start_time, @end_time)
-    return nil if conditions_pluck.nil?
-
     group_ubs = {}
+
+    if conditions_pluck.nil?
+      group_ubs["Sem vagas"] = ["Nenhuma vaga disponível no momento"]
+      return group_ubs
+    end
 
     conditions_pluck.each do |conditions|
       ubs_id = conditions[3]
@@ -17,15 +20,15 @@ class ConditionService
 
       group_description = create_group_description(conditions)
 
-      if group_ubs.include?(groups_description)
+      if group_ubs.include?(group_description)
         group_ubs[group_description] << ubs.name
       else
         group_ubs[group_description] = [ubs.name]
       end
     end
 
-    return nil if groups_ubs.blank?
-    groups_ubs
+    return nil if group_ubs.blank?
+    group_ubs
   end
 
   def patient_in_available_group(patient)
@@ -92,8 +95,7 @@ class ConditionService
     elsif !group_id.nil? && min_age.positive? && comorbidity == false
       return true if patient.groups.include?(Group.find(group_id)) && patient.age >= min_age
     elsif !group_id.nil? && min_age.positive? && comorbidity == true
-      return true if patient.groups.include?(Group.find(group_id)) && patient.age >= min_age 
-        && patient.groups.include?(Group.find_by(name: 'Portador(a) de comorbidade'))
+      return true if patient.groups.include?(Group.find(group_id)) && patient.age >= min_age && patient.groups.include?(Group.find_by(name: 'Portador(a) de comorbidade'))
     end
     false
   end
@@ -126,10 +128,10 @@ class ConditionService
 
       ubs_appointments_available[ubs_id] = appointments
 
-      if group_ubs_appointments[groups_description].nil?
-        group_ubs_appointments[groups_description] = [ubs_appointments_available]
+      if group_ubs_appointments[group_description].nil?
+        group_ubs_appointments[group_description] = [ubs_appointments_available]
       else
-        group_ubs_appointments[groups_description] << ubs_appointments_available
+        group_ubs_appointments[group_description] << ubs_appointments_available
       end
     end
     group_ubs_appointments

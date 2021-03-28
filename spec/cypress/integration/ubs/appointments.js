@@ -11,13 +11,13 @@ describe('ubs appointments list', () => {
 
   context('when has patients scheduled to today', () => {
     it('show appointments list', () => {
-      cy.get('[data-cy=appointment1920]').should('exist')
+      cy.get('[data-cy=appointment1800]').should('exist')
     })
 
       context('navigating the pages', () => {
         it('shows the last patient for the day', () => {
           cy.get('[data-cy=nextPageLink]').click()
-	  cy.get('[data-cy=appointment2140]').should('exist')
+	  cy.get('[data-cy=appointment2130]').should('exist')
 	})
       })
   })

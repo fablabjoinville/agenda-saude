@@ -190,54 +190,37 @@ end
 
 ## TIME SLOTS / APPOINTMENTS ##
 
-# Config first Ubs
-ubsf_america.create_time_slot_generation_config!(ubs_id: ubsf_america.id).tap do |config|
-  config[:windows] = [
-    { start_time: '07:40', end_time: '08:00', slots: 6 },
-    { start_time: '08:00', end_time: '16:20', slots: 8 },
-    { start_time: '16:20', end_time: '22:00', slots: 4 }
-  ]
-  config[:max_appointment_time_ahead] = 0
-  config[:group] = Group.find_by(name: 'Trabalhador(a) da Saúde')
-  config[:min_age] = 60
-  config[:commorbidity] = false
-  config.save!
-end
+TimeSlotGenerationService.new(create_slot: lambda { |attrs| Appointment.create(attrs) })
+                         .execute(
+                           TimeSlotGenerationService::Options.new(
+                              ubs_id: Ubs.first.id,
+                              start_date: 15.minutes.from_now.to_datetime,
+                              end_date: 4.days.from_now.to_datetime,
+                              weekdays: [*0..6],
+                              excluded_dates: [],
+                              group: Group.find_by(name: 'Trabalhador(a) da Saúde'),
+                              min_age: 60,
+                              commorbidity: false,
+                              windows: [{ start_time: '7:00', end_time: '23:59', slots: 2 }],
+                              slot_interval_minutes: 30
+                           )
+                         )
 
-# Config second Ubs
-ubsf_gloria.create_time_slot_generation_config!(ubs_id: ubsf_gloria.id).tap do |config|
-  config[:windows] = [
-    { start_time: '08:00', end_time: '12:00', slots: 4 },
-    { start_time: '12:00', end_time: '16:00', slots: 2 }
-  ]
-  config[:max_appointment_time_ahead] = 0
-  config[:group] = nil
-  config[:min_age] = 75
-  config[:commorbidity] = true
-  config.save!
-end
-
-create_slot = lambda do |attributes|
-  Appointment.create!(attributes)
-end
-
-generation_service = TimeSlotGenerationService.new(create_slot: create_slot)
-
-worker = TimeSlotGenerationWorker.new(
-  time_slot_generation_service: generation_service
-)
-
-worker_opts = TimeSlotGenerationWorker::Options.new(
-  sleep_interval: 5.seconds,
-  execution_hour: current_time.hour
-)
-
-# mimic successfull worker.execute
-worker.generate_ubs_time_slots(ubsf_america, worker_opts, current_time)
-
-worker.generate_ubs_time_slots(ubsf_gloria, worker_opts, current_time)
-
-TimeSlotGeneratorExecution.where(date: current_time.to_date).update_all(status: 'done')
+TimeSlotGenerationService.new(create_slot: lambda { |attrs| Appointment.create(attrs) })
+                         .execute(
+                           TimeSlotGenerationService::Options.new(
+                              ubs_id: Ubs.second.id,
+                              start_date: 15.minutes.from_now.to_datetime,
+                              end_date: 4.days.from_now.to_datetime,
+                              weekdays: [*0..6],
+                              excluded_dates: [],
+                              group: nil,
+                              min_age: 75,
+                              commorbidity: true,
+                              windows: [{ start_time: '7:00', end_time: '23:59', slots: 2 }],
+                              slot_interval_minutes: 30
+                           )
+                         )
 
 ## FIRST DOSE PATIENTS ##
 
