@@ -103,7 +103,7 @@ class Patient < ApplicationRecord
 
   # TODO: Replace birth_date with birthday in the database (setting it to Date instead of String)
   def birthday=(date)
-    date = [date[1], date[2], date[3]].join('-') if date.is_a? Hash
+    date = [date[1], date[2].to_s.rjust(2, '0'), date[3].to_s.rjust(2, '0')].join('-') if date.is_a? Hash
     self[:birth_date] = Date.iso8601(date)
   end
 

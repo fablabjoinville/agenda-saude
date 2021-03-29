@@ -37,8 +37,7 @@
     <%= f.text_field :name,
                      autofocus: true, autocomplete: "name", required: true,
                      class: "form-control",
-                     aria: { describedby: "nameHelp" },
-                     data: { cy: "patientNameInput" } %>
+                     aria: { describedby: "nameHelp" } %>
     <small id="nameHelp" class="form-text text-muted">
       Nome completo conforme documento de identificação com foto.
     </small>
@@ -66,8 +65,7 @@
     <%= f.label :mother_name %>
     <%= f.text_field :mother_name,
                      autocomplete: "mother_name", required: true,
-                     class: "form-control",
-                     data: { cy: "newPatientMotherNameInputField" } %>
+                     class: "form-control" %>
     <small id="birthDateHelp" class="form-text text-muted">
       Nome completo da <strong>mãe</strong>.
     </small>
@@ -82,33 +80,27 @@
     <%= f.label :public_place %>
     <%= f.text_field :public_place,
                      autocomplete: "place", required: true,
-                     class: "form-control",
-                     data: { cy: "newPatientStreetNameInputField" } %>
+                     class: "form-control" %>
   </div>
 
   <div class="form-group col-md-2">
     <%= f.label :place_number %>
     <%= f.text_field :place_number,
                      required: true,
-                     class: "form-control",
-                     data: { cy: "newPatientStreetNumberInputField" } %>
+                     class: "form-control" %>
   </div>
 
   <div class="form-group col-md-2">
     <%= f.label :neighborhood %>
     <%= f.select :neighborhood, Neighborhood.pluck(:name), {},
-                 {
-                   class: "form-control",
-                   data: { cy: "newPatientNeighborhoodNameInputField" }
-                 } %>
+                 class: "form-control" %>
   </div>
 
   <div class="form-group col-md-6">
     <%= f.label :phone %>
     <%= f.text_field :phone,
                      autocomplete: "phone", required: true,
-                     class: "form-control sp-celphones",
-                     data: { cy: "newPatientPhoneNumberInputField" } %>
+                     class: "form-control sp-celphones" %>
   </div>
 
   <div class="form-group col-md-6">
@@ -116,16 +108,15 @@
     <%= optional_field_tag %>
     <%= f.text_field :other_phone,
                      autocomplete: "other_phone", required: false,
-                     class: "form-control sp-celphones",
-                     data: { cy: "newPatientOtherPhoneNumberInputField" } %>
+                     class: "form-control sp-celphones" %>
   </div>
 </div>
 
 <h3>Grupos que faz parte</h3>
 
 <div class="form-row">
-  <div class="form-group col-md-12" data-cy="patientGroups">
-    <%# In the future, replace this with: %>
+  <div class="form-group col-md-12">
+    <%# TODO: In the future, replace this with: %>
     <%# Group.root.includes(:children).each do |group| -%>
 
     <div class="form-check">
@@ -136,7 +127,7 @@
 
         <% if Group.where(parent_group_id: b.value).any? %>
           <div class="form-row" hidden=true id="<%= "subgroups-list-#{b.value}" %>">
-            <div class="form-group col-md-8" data-cy="patientGroups">
+            <div class="form-group col-md-8">
               <div class="form-check">
                 <%= f.collection_check_boxes :groups, Group.where(parent_group_id: b.value), :id, :name do |s| %>
                   <div class="row">
@@ -173,8 +164,7 @@
     <%= f.email_field :email,
                       autocomplete: "email", required: false,
                       class: "form-control",
-                      aria: { describedby: "emailHelp" },
-                      data: { cy: "patientEmailInput" } %>
+                      aria: { describedby: "emailHelp" } %>
     <small id="emailHelp" class="form-text text-muted">
       Endereço de email.
     </small>
@@ -185,8 +175,7 @@
     <%= optional_field_tag %>
     <%= f.number_field :sus,
                        autocomplete: "sus", required: false,
-                       class: "form-control",
-                       data: { cy: "newPatientSusNumberInputField" } %>
+                       class: "form-control" %>
     <small id="susHelp" class="form-text text-muted">
       Número do cartão SUS. Descubra o número acessando
       <a href="https://cartaosusdigital.saude.gov.br" target="cartaosus">Cartão SUS Digital</a>.
@@ -198,7 +187,7 @@
   <div class="form-group col-md-12">
     <%= f.submit patient.new_record? ? "Cadastrar" : "Atualizar",
                  class: "btn btn-primary btn-block pull-right",
-                 data: { cy: "newPatientSubmitButton" } %>
+                 data: { cy: "patientSubmitButton" } %>
   </div>
 </div>
 

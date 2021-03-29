@@ -37,7 +37,8 @@
             content_tag :li, class: "page-item #{@days <= 0 ? :disabled : :active}" do
               link_to "« Dia anterior",
                       community_appointments_path(page: @days - 1),
-                      class: "page-link"
+                      class: "page-link",
+                      data: { cy: "previousDayButton" }
             end
           %>
           <li class="page-item active disabled">
@@ -49,7 +50,8 @@
             content_tag :li, class: "page-item #{@days >= Rails.configuration.x.schedule_up_to_days ? :disabled : :active}" do
               link_to "Próximo dia »",
                       community_appointments_path(page: @days + 1),
-                      class: "page-link"
+                      class: "page-link",
+                      data: { cy: "nextDayButton" }
             end
           %>
         </ul>
@@ -83,7 +85,7 @@
                           <%= f.button name: "appointment[start]",
                                        value: slot.start,
                                        class: "btn btn-success btn-lg btn-block",
-                                       data: { cy: "ubsSlot#{slot.start}" } do %>
+                                       data: { cy: "scheduleTimeButton" } do %>
                             <%= l(slot.start, format: :short_hour) %>
                           <% end -%>
                         <% end -%>
