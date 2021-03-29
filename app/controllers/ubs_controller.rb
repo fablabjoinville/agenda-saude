@@ -51,11 +51,11 @@ class UbsController < UserSessionController
     if @cpf.present?
       @patients = Patient.where(cpf: @cpf)
 
-      @appointments_patients = build_appointments_patients(@patients)
+      @appointments_patients = build_appointments_patients(@patients, @ubs)
     elsif @name.present?
       @patients = Patient.where('name ~* ?', @name)
 
-      @appointments_patients = build_appointments_patients(@patients)
+      @appointments_patients = build_appointments_patients(@patients, @ubs)
     end
 
     render 'ubs/checkin'
@@ -67,7 +67,7 @@ class UbsController < UserSessionController
     patients_ids = Appointment.where.not(check_in: nil).where(check_out: nil, start: now.beginning_of_day..now.end_of_day).pluck(:patient_id)
     @patients = Patient.find(patients_ids)
 
-    @appointments_patients = build_appointments_patients(@patients, check_out: true)
+    @appointments_patients = build_appointments_patients(@patients, @ubs, check_out: true)
 
     render 'ubs/checkout'
   end
@@ -216,18 +216,20 @@ class UbsController < UserSessionController
 
   private
 
-  def build_appointments_patients(patients, check_out: false)
+  def build_appointments_patients(patients, ubs, check_out: false)
     appointments_patients = []
 
     # FIXME: Should we reduce the scope of this search to improve performance?
     if check_out
       appointments = Appointment.where(
         patient_id: patients.map(&:id),
+        ubs: ubs,
         start: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day
       ).where.not(check_in: nil)
     else
       appointments = Appointment.where(
         patient_id: patients.map(&:id),
+        ubs: ubs,
         check_in: nil
       )
     end
