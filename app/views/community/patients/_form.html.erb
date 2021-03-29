@@ -120,12 +120,12 @@
       <%= f.collection_check_boxes :groups, Group.root.includes(:children), :id, :name do |b| %>
         <div class="row">
           <%= b.label do
-              b.check_box(
-                checked: patient.groups.map(&:id).include?(b.value),
-                class: "form-check-input #{"healthWorker" if b.object.health_worker?}",
-                onclick: "updateSubGroups(#{b.value});"
-              ) + b.text
-            end %>
+            b.check_box(
+              checked: patient.groups.map(&:id).include?(b.value),
+              class: "form-check-input #{"healthWorker" if b.object.health_worker?}",
+              onclick: "updateSubGroups(#{b.value});"
+            ) + b.text
+          end %>
         </div>
 
         <% if b.object.children.any? %>
@@ -151,9 +151,13 @@
       <% end %>
     </div>
 
-    <div class="row" hidden=true id="alert-health-worker" style="color: red;">
-      <strong>Atenção:</strong> Para receber a vacina, será necessário apresentar a comprovação de vínculo ativo em
-      algum estabelecimento de saúde na cidade de Joinville e/ou a carteira do conselho regional de classe.
+    <div class="row mt-3 mb-3" hidden=true id="alert-health-worker">
+      <div class="col">
+        <div class="alert alert-warning">
+          <strong>Atenção:</strong> Para receber a vacina, será necessário apresentar a comprovação de vínculo ativo em
+          algum estabelecimento de saúde na cidade de Joinville e/ou a carteira do conselho regional de classe.
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -195,9 +199,9 @@
 </div>
 
 <script type="text/javascript">
-  $(document).ready(function () {
-    <% Group.root.includes(:children).each do |group| %>
-    <%= "updateSubGroups(#{group.id});" %>
+  $(function () {
+    <% Group.root.pluck(:id).each do |id| %>
+    <%= "updateSubGroups(#{id});" %>
     <% end %>
 
     initializeSpecificComorbidityOnChange();
