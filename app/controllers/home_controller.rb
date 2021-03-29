@@ -6,11 +6,11 @@ class HomeController < ApplicationController
 
     from = Rails.configuration.x.schedule_from_hours.hours.from_now
     to = Rails.configuration.x.schedule_up_to_days.days.from_now.end_of_day
-    @available_appointments_count = Appointment.active_ubs
-                                               .active
-                                               .not_scheduled
-                                               .open
-                                               .where(start: from..to)
-                                               .count
+    @available_appointments_any = Appointment.active_ubs
+                                             .active
+                                             .not_scheduled
+                                             .open
+                                             .where(start: from..to)
+                                             .any? # TODO: change it to count after we have caching
   end
 end
