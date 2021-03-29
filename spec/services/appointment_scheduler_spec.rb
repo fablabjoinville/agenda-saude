@@ -4,20 +4,14 @@ require 'rails_helper'
 # transaction, which will be nested within RSpec transaction, causing the
 # :isolation option to fail as it's only allowed for top-level transactions
 RSpec.describe AppointmentScheduler, type: :service, use_transactional_tests: false do
-  let(:max_schedule_time_ahead) { 3.days }
-  let(:scheduler) do
-    AppointmentScheduler.new(
-      max_schedule_time_ahead: max_schedule_time_ahead
-    )
-  end
-  # Eager UBS creation required because of patient.set_main_ubs
+  subject(:scheduler) { described_class.new }
+
   let!(:ubs) { create(:ubs, active: true) }
-  let(:patient) { create(:patient, cpf: '29468604004') }
+  let(:patient) { create(:patient, cpf: '29468604004', main_ubs: ubs) }
   let(:start_time) { '2020-01-01 12:40:00 -0300' }
-  let(:args) do
-    { raw_start_time: start_time, ubs: ubs, patient: patient }
-  end
-  let(:time) { Time.new('2020-01-01') }
+  let(:time) { Time.zone.local('2020-01-01') }
+  let(:quick_schedule_args) { { patient: patient, ubs_id: nil, start: 1.minute.from_now...3.days.from_now } }
+  let(:specific_ubs_args) { { patient: patient, ubs_id: ubs.id, start: 1.minute.from_now...3.days.from_now } }
 
   before { travel_to time }
   after { travel_back }
@@ -31,13 +25,12 @@ RSpec.describe AppointmentScheduler, type: :service, use_transactional_tests: fa
       ubs.update!(active: false)
     end
 
-    it 'returns an :inactive_ubs result' do
-      expect(scheduler.schedule(**args)).to eq([:inactive_ubs])
-    end
-
-    it 'does not update any appointment' do
-      expect { scheduler.schedule(**args) }
-        .not_to change { Appointment.all.map(&:attributes) }
+    it 'returns no slots result with no changes to appointments' do
+      expect do
+        expect(
+          scheduler.schedule(**quick_schedule_args)
+        ).to eq([AppointmentScheduler::NO_SLOTS])
+      end.not_to(change { Appointment.order(:id).map(&:attributes) })
     end
   end
 
@@ -52,13 +45,12 @@ RSpec.describe AppointmentScheduler, type: :service, use_transactional_tests: fa
       )
     end
 
-    it 'does not update any appointment' do
-      expect { scheduler.schedule(**args) }
-        .not_to change { Appointment.all.map(&:attributes) }
-    end
-
-    it 'returns an :all_slots_taken result' do
-      expect(scheduler.schedule(**args)).to eq([:all_slots_taken])
+    it 'returns no slots result with no changes to appointments' do
+      expect do
+        expect(
+          scheduler.schedule(**quick_schedule_args)
+        ).to eq([AppointmentScheduler::NO_SLOTS])
+      end.not_to(change { Appointment.order(:id).map(&:attributes) })
     end
   end
 
@@ -67,32 +59,29 @@ RSpec.describe AppointmentScheduler, type: :service, use_transactional_tests: fa
       allow(patient).to receive(:can_schedule?).and_return(false)
     end
 
-    it 'returns a :schedule_conditions_unmet result' do
-      expect(scheduler.schedule(**args)).to eq([:schedule_conditions_unmet])
-    end
-
-    it 'does not update any appointment' do
-      expect { scheduler.schedule(**args) }
-        .not_to change { Appointment.all.map(&:attributes) }
+    it 'returns conditions unmet result with no changes to appointments' do
+      expect do
+        expect(
+          scheduler.schedule(patient: patient, ubs_id: nil, start: 1.minute.from_now...3.days.from_now)
+        ).to eq([described_class::CONDITIONS_UNMET])
+      end.not_to(change { Appointment.order(:id).map(&:attributes) })
     end
   end
 
   describe 'when start time is past allowed window' do
-    let(:start_time) { time + max_schedule_time_ahead + 1.day }
-    let(:schedule) do
-      scheduler.schedule(raw_start_time: start_time.to_s, patient: patient, ubs: ubs)
-    end
+    let(:past_max_schedule_time_ahead) { Rails.configuration.x.schedule_up_to_days.days.from_now.end_of_day + 1.minute}
 
     before do
-      create(:appointment, start: start_time, ubs: ubs, patient_id: nil)
+      create(:appointment, start: Rails.configuration.x.schedule_from_hours.hours.from_now + 1.minute, ubs: ubs, patient_id: nil)
     end
 
-    it 'returns an :invalid_schedule_time result' do
-      expect(schedule).to eq([:invalid_schedule_time])
-    end
-
-    it 'does not update any appointment' do
-      expect { schedule }.not_to change { Appointment.all.map(&:attributes) }
+    it 'returns no slots result with no changes to appointments' do
+      expect do
+        expect(
+          scheduler.schedule(patient: patient, ubs_id: nil,
+                             start: past_max_schedule_time_ahead..(past_max_schedule_time_ahead + 1.year))
+        ).to eq([AppointmentScheduler::NO_SLOTS])
+      end.not_to(change { Appointment.order(:id).map(&:attributes) })
     end
   end
 
@@ -108,19 +97,10 @@ RSpec.describe AppointmentScheduler, type: :service, use_transactional_tests: fa
     end
 
     it 'updates exactly one appointment' do
-      expect {
-        expect(scheduler.schedule(**args))
-          .to eq([:success, Appointment.find_by(patient_id: patient.id)])
-      }.to change { Appointment.where(patient_id: nil).count }.by(-1)
-    end
-  end
-
-  describe 'when an exception is thrown' do
-    it 'returns an :internal_error result along with the error message' do
-      result, data = scheduler.schedule(raw_start_time: 'invalid', **args.except(:raw_start_time))
-
-      expect(result).to eq(:internal_error)
-      expect(data).to eq('no time information in "invalid"')
+      expect do
+        expect(scheduler.schedule(**quick_schedule_args))
+          .to eq([described_class::SUCCESS, Appointment.find_by(patient_id: patient.id)])
+      end.to change { Appointment.where(patient_id: nil).count }.by(-1)
     end
   end
 end

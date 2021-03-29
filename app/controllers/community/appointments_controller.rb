@@ -57,15 +57,15 @@ module Community
       )
 
       case result
-      when :schedule_conditions_unmet
+      when AppointmentScheduler::CONDITIONS_UNMET
         redirect_to home_community_appointments_path, flash: {
           alert: 'Você não está entre grupos que podem fazer agendamentos.'
         }
-      when :all_slots_taken
+      when AppointmentScheduler::NO_SLOTS
         redirect_to home_community_appointments_path, flash: {
           alert: 'Desculpe, mas não há mais vagas disponíveis. Tente novamente mais tarde.'
         }
-      when :success
+      when AppointmentScheduler::SUCCESS
         notice = if (start - data.start).abs > ROUNDING
                    "O primeiro horário disponível para agendamento foi #{I18n.l data.start, format: :short}."
                  else

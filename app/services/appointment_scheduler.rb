@@ -1,6 +1,10 @@
 class AppointmentScheduler
+  CONDITIONS_UNMET = :conditions_unmet
+  NO_SLOTS = :no_slots
+  SUCCESS = :success
+
   def schedule(patient:, ubs_id:, start:)
-    return [:conditions_unmet] unless patient.can_schedule?
+    return [CONDITIONS_UNMET] unless patient.can_schedule?
 
     current_appointment = patient.appointments.current
 
@@ -10,7 +14,7 @@ class AppointmentScheduler
         ubs_id: ubs_id,
         start: start
       )
-      return [:all_slots_taken] unless success
+      return [NO_SLOTS] unless success
 
       new_appointment = patient.appointments.open.where.not(id: current_appointment&.id).first!
       if current_appointment
@@ -25,7 +29,7 @@ class AppointmentScheduler
         end
       end
 
-      [:success, new_appointment]
+      [SUCCESS, new_appointment]
     end
   end
 

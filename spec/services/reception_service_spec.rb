@@ -5,7 +5,7 @@ RSpec.describe ReceptionService, type: :service do
   let!(:ubs) { create(:ubs) }
   let!(:appointment) { create(:appointment, patient: patient) }
   let(:patient) { create(:patient) }
-  let(:time) { Time.new('2020-01-01') }
+  let(:time) { Time.zone.local('2020-01-01') }
   let(:vaccine_name) { 'coronavac' }
   let(:service) { described_class.new(appointment) }
 
@@ -60,8 +60,7 @@ RSpec.describe ReceptionService, type: :service do
       end
 
       it 'updates the patient last_appointment attribute' do
-        expect { service.check_out(vaccine_name) }
-          .not_to change { patient.appointments.current.id }
+        expect { service.check_out(vaccine_name) }.not_to(change { patient.appointments.current.id })
       end
 
       it 'does not schedules a new appointment' do
