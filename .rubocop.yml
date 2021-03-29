@@ -57,3 +57,6 @@ Style/ClassAndModuleChildren:
 
 Style/FrozenStringLiteralComment:
   Enabled: false
+
+Rails/HasAndBelongsToMany:
+  Enabled: false

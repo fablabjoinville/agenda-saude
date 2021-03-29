@@ -144,16 +144,17 @@ end_of_day_minutes = [600, 620, 640, 660, 680, 700]
   56105631430
   25532025126
 ].each_with_index do |cpf, i|
-  patient = Patient.new.tap do |patient|
-    patient.name = "marvin#{i}"
-    patient.cpf = cpf
-    patient.mother_name = 'Tristeza'
-    patient.birth_date = '1920-01-31'
-    patient.phone = '(47) 91234-5678'
-    patient.neighborhood = 'América'
-    patient.groups << Group.find_by!(name: 'Trabalhador(a) da Saúde')
-    patient.save!
-  end
+  patient = Patient.create!(
+    name: "marvin#{i}",
+    cpf: cpf,
+    mother_name: 'Tristeza',
+    birth_date: '1920-01-31',
+    phone: '(47) 91234-5678',
+    public_place: 'Rua das Flores',
+    place_number: '1',
+    neighborhood: 'América',
+    groups: [Group.find_by!(name: 'Trabalhador(a) da Saúde')]
+  )
 
   time_multiplier = end_of_day_minutes.sample.minutes
 
@@ -199,15 +200,17 @@ today_range = begin_date.beginning_of_day..begin_date.end_of_day
   89452953136
   45445585654
 ].each_with_index do |cpf, i|
-  patient = Patient.new
-  patient.name = "marvin#{i+10}"
-  patient.cpf = cpf
-  patient.mother_name = 'Tristeza'
-  patient.birth_date = '1920-06-24'
-  patient.phone = '(47) 91234-5678'
-  patient.neighborhood = 'América'
-  patient.groups << Group.find_by!(name: 'Trabalhador(a) da Saúde')
-  patient.save!
+  patient = Patient.create!(
+    name: "marvin#{i + 10}",
+    cpf: cpf,
+    mother_name: 'Tristeza',
+    birth_date: '1920-06-24',
+    phone: '(47) 91234-5678',
+    public_place: 'Rua das Flores',
+    place_number: '1',
+    neighborhood: 'América',
+    groups: [Group.find_by!(name: 'Trabalhador(a) da Saúde')]
+  )
 
   today_range = begin_date.beginning_of_day..begin_date.end_of_day
   appointment = Appointment.where(patient_id: nil, start: today_range).order(:start).last

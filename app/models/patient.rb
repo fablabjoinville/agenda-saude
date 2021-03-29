@@ -3,9 +3,11 @@ class Patient < ApplicationRecord
 
   CONDITIONS = {
     'População em geral com 70 anos ou mais' => ->(patient) { patient.age >= 70 }
-    # 'Trabalhador(a) da Saúde que possua vínculo ativo em alguma unidade registrada no CNES' => ->(patient) { patient.in_group?('Trabalhador(a) da Saúde') },
+    # 'Trabalhador(a) da Saúde que possua vínculo ativo em alguma unidade registrada no CNES' =>
+    #   ->(patient) { patient.in_group?('Trabalhador(a) da Saúde') },
     # 'Paciente de teste' => ->(patient) { patient.cpf == ENV['ROOT_PATIENT_CPF'] },
-    # 'Maiores de 60 anos institucionalizadas' => ->(patient) { patient.age >= 60 && patient.in_group?('Institucionalizado(a)') },
+    # 'Maiores de 60 anos institucionalizadas' =>
+    #   ->(patient) { patient.age >= 60 && patient.in_group?('Institucionalizado(a)') },
     # 'População Indígena' => ->(patient) { patient.in_group?('Indígena') },
   }.freeze
 
@@ -15,6 +17,7 @@ class Patient < ApplicationRecord
       order(:start).active.includes(:ubs).last
     end
   end
+
   has_and_belongs_to_many :groups
   belongs_to :main_ubs, class_name: 'Ubs'
 
@@ -40,8 +43,9 @@ class Patient < ApplicationRecord
   enum target_audience: { kid: 0, elderly: 1, chronic: 2, disabled: 3, pregnant: 4, postpartum: 5,
                           teacher: 6, over55: 7, without_target: 8 }
 
-  def cpf=(c)
-    self[:cpf] = c.gsub(/[^\d]/, '')
+  # Receives CPF, sanitizing everything different from a digit
+  def cpf=(string)
+    self[:cpf] = string.gsub(/[^\d]/, '')
   end
 
   def conditions
@@ -74,7 +78,7 @@ class Patient < ApplicationRecord
   end
 
   def age
-    ((Time.zone.now - birth_date.to_time) / 1.year.seconds).floor
+    ((Time.zone.now - birthday) / 1.year.seconds).floor
   end
 
   # Until we have a proper way to remember vaccines for patients
@@ -95,6 +99,7 @@ class Patient < ApplicationRecord
     can_schedule? || future_appointments?
   end
 
+  # TODO: Replace birth_date with birthday in the database (setting it to Date instead of String)
   def birthday=(date)
     date = [date[1], date[2], date[3]].join('-') if date.is_a? Hash
     self[:birth_date] = Date.iso8601(date)
@@ -104,6 +109,8 @@ class Patient < ApplicationRecord
     return nil if self[:birth_date].blank?
 
     Date.iso8601(self[:birth_date])
+  rescue Date::Error
+    nil
   end
 
   def mothers_first_name
@@ -137,8 +144,6 @@ class Patient < ApplicationRecord
   private
 
   def valid_birth_date
-    Date.parse(birth_date)
-  rescue ArgumentError
-    errors.add(:birth_date, :invalid)
+    errors.add(:birth_date, :invalid) unless birthday
   end
 end
