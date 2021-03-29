@@ -100,7 +100,7 @@ class TimeSlotGenerationService
 
       next if appointment_end > date + window_range.end
 
-      taken_slots_count = Appointment.where(start: appointment_start).count
+      taken_slots_count = Appointment.where(start: appointment_start, ubs_id: options.ubs_id).count
       new_slots_count = window[:slots] - taken_slots_count
 
       report[appointment_start.to_s] = { taken_slots_count: taken_slots_count, new_slots_count: new_slots_count }

@@ -184,6 +184,19 @@ TimeSlotGenerationService.new(create_slot: lambda { |attrs| Appointment.create(a
                            )
                          )
 
+TimeSlotGenerationService.new(create_slot: lambda { |attrs| Appointment.create(attrs) })
+                         .execute(
+                           TimeSlotGenerationService::Options.new(
+                             ubs_id: Ubs.second.id,
+                             start_date: 15.minutes.from_now.to_datetime,
+                             end_date: 4.days.from_now.to_datetime,
+                             weekdays: [*0..6],
+                             excluded_dates: [],
+                             windows: [{ start_time: '12:00', end_time: '19:00', slots: 2 }],
+                             slot_interval_minutes: 20
+                           )
+                         )
+
 ## FIRST DOSE PATIENTS ##
 
 today_range = begin_date.beginning_of_day..begin_date.end_of_day
