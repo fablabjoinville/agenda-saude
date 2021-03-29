@@ -5,6 +5,7 @@ module Community
     FIELDS = %i[
       birthday
       email
+      groups
       mother_name
       name
       neighborhood
@@ -24,6 +25,10 @@ module Community
     def create
       @patient = Patient.new create_params
 
+      # FIXME: use group_ids instead
+      @patient.target_audience = Patient.target_audiences["without_target"]
+      @patient.groups = Group.where id: params.require(:patient).permit(groups: [])['groups']
+
       if @patient.save
         session[:patient_id] = @patient.id
         redirect_to home_community_appointments_path
@@ -38,6 +43,10 @@ module Community
 
     def update
       @patient = current_patient
+
+      # FIXME
+      @patient.target_audience = Patient.target_audiences["without_target"]
+      @patient.groups = Group.where id: params.require(:patient).permit(groups: [])['groups']
 
       if @patient.update(update_params)
         redirect_to home_community_appointments_path, flash: {

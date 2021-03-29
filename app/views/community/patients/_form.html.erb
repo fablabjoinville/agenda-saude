@@ -116,27 +116,30 @@
 
 <div class="form-row">
   <div class="form-group col-md-12">
-    <%# TODO: In the future, replace this with: %>
-    <%# Group.root.includes(:children).each do |group| -%>
-
     <div class="form-check">
-      <%= f.collection_check_boxes :groups, Group.root, :id, :name do |b| %>
+      <%= f.collection_check_boxes :groups, Group.root.includes(:children), :id, :name do |b| %>
         <div class="row">
-          <%= b.label { b.check_box(checked: patient.groups.map(&:id).include?(b.value), class: "form-check-input #{"healthWorker" if b.text == "Trabalhador(a) da Saúde"}", onclick: "updateSubGroups(#{b.value});") + b.text } %>
+          <%= b.label do
+              b.check_box(
+                checked: patient.groups.map(&:id).include?(b.value),
+                class: "form-check-input #{"healthWorker" if b.object.health_worker?}",
+                onclick: "updateSubGroups(#{b.value});"
+              ) + b.text
+            end %>
         </div>
 
-        <% if Group.where(parent_group_id: b.value).any? %>
-          <div class="form-row" hidden=true id="<%= "subgroups-list-#{b.value}" %>">
+        <% if b.object.children.any? %>
+          <div class="form-row" hidden="true" id="<%= "subgroups-list-#{b.value}" %>">
             <div class="form-group col-md-8">
               <div class="form-check">
-                <%= f.collection_check_boxes :groups, Group.where(parent_group_id: b.value), :id, :name do |s| %>
+                <%= f.collection_check_boxes :groups, b.object.children, :id, :name do |s| %>
                   <div class="row">
-                    <%= s.label { s.check_box(checked: patient.groups.map(&:id).include?(s.value), class: "form-check-input #{"specificComorbidity" if s.text == "Outra(s)"}") + s.text } %>
+                    <%= s.label { s.check_box(checked: patient.groups.map(&:id).include?(s.value), class: "form-check-input #{"specificComorbidity" if s.object.specific_comorbidity? }") + s.text } %>
                   </div>
-                  <% if s.text == "Outra(s)" %>
+                  <% if s.object.specific_comorbidity? %>
                     <div class="row" id="specific-comorbidity-input">
                       <div class="form-group col-md-12">
-                        <%= f.text_field :specific_comorbidity, autofocus: true, required: false, class: "form-control" %>
+                        <%= f.text_field :specific_comorbidity, required: false, class: "form-control" %>
                       </div>
                     </div>
                   <% end %>
@@ -193,7 +196,7 @@
 
 <script type="text/javascript">
   $(document).ready(function () {
-    <% Group.where(parent_group_id: nil).each do |group| %>
+    <% Group.root.includes(:children).each do |group| %>
     <%= "updateSubGroups(#{group.id});" %>
     <% end %>
 
