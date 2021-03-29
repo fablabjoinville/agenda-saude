@@ -45,5 +45,8 @@ Rails.application.routes.draw do
     end
   end
 
+  get 'community', to: redirect('/community/appointments/home')
+  get 'operator', to: redirect('/operator/appointments')
+  get 'admin', to: redirect('/admin/patients')
   root 'home#index'
 end

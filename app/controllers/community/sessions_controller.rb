@@ -36,8 +36,8 @@ module Community
       @patient.record_failed_login!
       return locked_account! if @patient.locked?
 
-      flash.now[:alert] = "Nome incorreto! Você têm mais #{@patient.remaining_login_attempts} tentativa, caso " \
-                              'contrário esta conta será bloqueada por medida de segurança.'
+      flash.now[:alert] = "Nome incorreto! Você têm mais #{@patient.remaining_login_attempts} tentativa(s), caso " \
+                              'acabe o número tentativas esta conta será bloqueada por medida de segurança.'
       render :challenge
     end
 

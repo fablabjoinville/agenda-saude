@@ -4,11 +4,12 @@
   <%= f.hidden_field :cpf, value: @patient.cpf %>
 
   <p>
-    Para prossegui no acesso ao sistema de agendamento, por favor, responda a pergunta de segurança abaixo:
+    Para prosseguir com acesso ao sistema de agendamento, por favor, responda a pergunta de segurança abaixo:
   </p>
 
-  <h3>Qual o primeiro nome da sua mãe?</h3>
-  <div class="form-row">
+  <h3 class="mt-5">Qual o primeiro nome da sua mãe?</h3>
+  <p class="text-muted">Clique (ou toque) no botão abaixo contendo o nome da sua mãe.</p>
+  <div class="form-row mt-3">
     <% @patient.fake_mothers.each do |name| -%>
       <div class="form-group col-md-4">
         <%= f.button name: "patient[challenged_mothers_name]",
