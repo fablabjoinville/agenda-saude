@@ -58,27 +58,40 @@
       <% end %>
     </nav>
     <div class="container">
+      <div class="container d-print-none">
+        <% if flash[:notice].present? || flash[:notice_title].present?%>
+          <div class="alert alert-success alert-dismissible fade show" data-cy="noticeMessage">
+            <% if flash[:notice_title].present? -%>
+              <h4 class="alert-heading">
+                <%= flash[:notice_title] %>
+              </h4>
+            <% end -%>
+            <%= flash[:notice] %>
 
-      <% if flash[:notice].present? || flash[:notice_title].present?%>
-        <div class="alert alert-success" data-cy="noticeMessage">
-          <% if flash[:notice_title].present? -%>
-            <h4 class="alert-heading">
-              <%= flash[:notice_title] %>
-            </h4>
-          <% end -%>
-          <%= flash[:notice] %>
-        </div>
-      <% end %>
-      <% if flash[:alert].present? %>
-        <div class="alert alert-warning" data-cy="alertMessage">
-          <%= flash[:alert] %>
-        </div>
-      <% end %>
-      <% if flash[:error].present? %>
-        <div class="alert alert-danger" data-cy="errorMessage">
-          <%= flash[:error] %>
-        </div>
-      <% end %>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        <% end %>
+        <% if flash[:alert].present? %>
+          <div class="alert alert-warning alert-dismissible fade show" data-cy="alertMessage">
+            <%= flash[:alert] %>
+
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        <% end %>
+        <% if flash[:error].present? %>
+          <div class="alert alert-danger alert-dismissible fade show" data-cy="errorMessage">
+            <%= flash[:error] %>
+
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        <% end %>
+      </div>
 
       <%= yield %>
     </div>

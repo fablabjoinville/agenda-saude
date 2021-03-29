@@ -32,6 +32,7 @@ module AgendaSaude
     config.x.admin_password = ENV.fetch("ADMIN_PASSWORD", SecureRandom.uuid)
     config.x.schedule_from_hours = 1 # Patient can't schedule free appointments before 1 hour in the future
     config.x.schedule_up_to_days = 7 # Patient can't schedule free appointments after 7 days in the future
+    config.x.disabled_reschedule_toggle = ENV.fetch("DISABLED_RESCHEDULE_TOGGLE", "")
 
     # https://guides.rubyonrails.org/autoloading_and_reloading_constants.html#autoload-paths
     config.autoload_paths += [
