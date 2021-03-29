@@ -1,11 +1,11 @@
 class AppointmentScheduler
+  class NoFreeSlotsAhead < StandardError; end
+
   ROUNDING = 2.minutes # delta to avoid rounding issues
 
   CONDITIONS_UNMET = :conditions_unmet
   NO_SLOTS = :no_slots
   SUCCESS = :success
-
-  class NoFreeSlotsAhead < StandardError; end
 
   attr_reader :earliest_allowed, :latest_allowed
 

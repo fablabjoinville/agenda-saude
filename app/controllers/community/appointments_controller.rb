@@ -28,13 +28,14 @@ module Community
     end
 
     def create
-      result, appointment = scheduler.schedule(
+      result, new_appointment = scheduler.schedule(
         patient: current_patient,
         ubs_id: params[:ubs_id].presence,
         from: parse_start
       )
 
-      redirect_to home_community_appointments_path, flash: message_for(result, appointment)
+      redirect_to home_community_appointments_path,
+                  flash: message_for(result, appointment: new_appointment, desired_start: parse_start)
     end
 
     def destroy
@@ -60,7 +61,7 @@ module Community
       )
     end
 
-    def message_for(result, appointment)
+    def message_for(result, appointment:, desired_start:)
       case result
       when AppointmentScheduler::CONDITIONS_UNMET
         {
@@ -72,7 +73,7 @@ module Community
         }
       when AppointmentScheduler::SUCCESS
         {
-          notice: success_message(start, appointment.start)
+          notice: success_message(desired_start, appointment.start)
         }
       else
         raise "Unexpected result #{result}"
@@ -80,10 +81,11 @@ module Community
     end
 
     def success_message(desired_date, scheduled_date)
-      if (desired_date - scheduled_date).abs > ROUNDING
-        "O primeiro horário disponível para agendamento foi #{I18n.l scheduled_date, format: :short}."
+      if desired_date.present? && (desired_date - scheduled_date).abs > AppointmentScheduler::ROUNDING
+        'Vacinação agendada, porém em horário diferente dado que o desejado já encontrava-se agendado. ' \
+          "O horário mais próximo disponível foi #{I18n.l scheduled_date, format: :short}."
       else
-        'Vacinação agendada para o horário desejado.'
+        'Vacinação agendada.'
       end
     end
 

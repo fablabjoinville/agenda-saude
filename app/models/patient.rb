@@ -77,8 +77,10 @@ class Patient < ApplicationRecord
       Ubs.all.sample
   end
 
+  DAYS_IN_YEAR = 1.year / 1.day
+
   def age
-    ((Time.zone.now - birthday) / 1.year.seconds).floor
+    ((Time.zone.now.to_date - birthday) / DAYS_IN_YEAR).floor
   end
 
   # Until we have a proper way to remember vaccines for patients
