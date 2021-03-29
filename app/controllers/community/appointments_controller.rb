@@ -16,6 +16,7 @@ module Community
     end
 
     # Reschedules appointment (only if patient already has one scheduled)
+    # rubocop:disable Metrics/AbcSize
     def index
       if Rails.configuration.x.disabled_reschedule_toggle.present?
         return redirect_to(home_community_appointments_path,
@@ -31,6 +32,7 @@ module Community
     rescue AppointmentScheduler::NoFreeSlotsAhead
       redirect_to home_community_appointments_path, flash: { alert: 'Não há vagas disponíveis para reagendamento.' }
     end
+    # rubocop:enable Metrics/AbcSize
 
     def create
       result, new_appointment = scheduler.schedule(

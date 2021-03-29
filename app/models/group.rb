@@ -7,10 +7,10 @@ class Group < ApplicationRecord
   scope :root, -> { where(parent_group_id: nil) }
 
   def health_worker?
-    name == "Trabalhador(a) da Saúde"
+    name == 'Trabalhador(a) da Saúde'
   end
 
   def specific_comorbidity?
-    name == "Outra(s)"
+    name == 'Outra(s)'
   end
 end
