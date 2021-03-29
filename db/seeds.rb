@@ -59,6 +59,7 @@ Ubs.new.tap do |ubs|
   ubs.break_end = '13:30'
   ubs.shift_end = '17:00'
   ubs.slot_interval_minutes = 15
+  ubs.active = true
   ubs.save!
 end
 
