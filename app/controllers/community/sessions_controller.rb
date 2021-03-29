@@ -19,7 +19,7 @@ module Community
     end
 
     def destroy
-      session[:patient_id] = nil
+      session.delete(:patient_id)
 
       redirect_to root_path
     end
