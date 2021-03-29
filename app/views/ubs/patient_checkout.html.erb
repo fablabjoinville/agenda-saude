@@ -15,7 +15,8 @@
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
     <div class="row" style="font-size: 2rem;">
       <div class="col-8">
-        <b data-cy="secondDoseScheduledText">Agendamento Marcado</b> - 2ª dose da vacina:
+        <b data-cy="secondDoseScheduledText">Agendamento Marcado</b> - 2ª dose da vacina:<br/>
+        <b>Unidade:</b> <%= @second_dose_appointment.ubs.name %>
       </div>
       <div class="col-4" style="text-align: right">
         <b><%= @second_dose_appointment.start.strftime("%d/%m - %H:%M") %></b>
