@@ -5,6 +5,9 @@ checks:
     enabled: false # use rubocop's
   method-lines:
     enabled: false # use rubocop's
+  method-complexity:
+    config:
+      threshold: 10 # keeping it high until we can fix other issues
 
 plugins:
   duplication:

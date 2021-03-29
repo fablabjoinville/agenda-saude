@@ -18,6 +18,14 @@ module Community
       successful_login!
     end
 
+    def destroy
+      session[:patient_id] = nil
+
+      redirect_to root_path
+    end
+
+    protected
+
     def successful_login!
       @patient.record_successful_login!
       session[:patient_id] = @patient.id
@@ -33,13 +41,12 @@ module Community
       render :challenge
     end
 
-    def destroy
-      session[:patient_id] = nil
-
-      redirect_to root_path
+    def locked_account!
+      redirect_to root_path, flash: {
+        alert: 'CPF bloqueado devido a repetidas tentativas de acesso. ' \
+            'Para desbloquear, entre em contato com o Ligue/Web Saúde (telefone abaixo).'
+      }
     end
-
-    protected
 
     def session_params
       params.require(:patient).permit(:cpf, :challenged_mothers_name)
@@ -49,13 +56,6 @@ module Community
       @patient.generate_fake_mothers_list! if @patient.fake_mothers.blank?
 
       render :challenge
-    end
-
-    def locked_account!
-      redirect_to root_path, flash: {
-        alert: 'CPF bloqueado devido a repetidas tentativas de acesso. ' \
-            'Para desbloquear, entre em contato com o Ligue/Web Saúde (telefone abaixo).'
-      }
     end
   end
 end
