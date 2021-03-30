@@ -22,7 +22,7 @@ class Appointment < ApplicationRecord
   scope :suspended, -> { where(active: false) }
 
   # Where the UBS is active
-  scope :active_ubs, -> { joins(:ubs).where(Ubs.arel_table[:active].eq(true)) }
+  scope :active_ubs, -> { left_joins(:ubs).where(Ubs.arel_table[:active].eq(true)) }
 
   # Active and not checked in or out (regardless if in the past or future)
   scope :open, -> { active.not_checked_in.not_checked_out }
