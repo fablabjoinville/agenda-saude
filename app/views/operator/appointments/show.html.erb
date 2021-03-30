@@ -167,7 +167,9 @@
           <%= link_to l(appointment.start, format: :human), [:operator, appointment] %>
           (<%= appointment.start.future? ? "em " : "foi a " %><%= distance_of_time_in_words_to_now(appointment.start) %>)
           na unidade <%= appointment.ubs.name %>
-          para receber <%= appointment.vaccine_name.humanize.capitalize %>
+          <% if appointment.vaccine_name.present? %>
+            para receber <%= appointment.vaccine_name.humanize.capitalize %>
+          <% end %>
         </li>
       <% end -%>
     </ol>
