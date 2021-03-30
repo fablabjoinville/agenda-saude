@@ -92,7 +92,7 @@
                         <% if slot -%>
                           <%= f.button name: "appointment[start]",
                                        value: slot.start,
-                                       class: "btn btn-info btn-lg btn-block",
+                                       class: "btn btn-primary btn-lg btn-block",
                                        data: { cy: "scheduleTimeButton" } do %>
                             <%= l(slot.start, format: :short_hour) %>
                           <% end -%>
