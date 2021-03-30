@@ -19,7 +19,14 @@ describe('patient appointment flow', () => {
     context('when there are doses', () => {
       it('can schedule, reschedule, and cancel', () => {
         cy.get('[data-cy=dosesAvailableText]').should('exist')
-        cy.get('[data-cy=scheduleAppointmentButton]').click()
+
+        // cy.get('[data-cy=scheduleAppointmentButton]').click()
+
+        cy.get('[data-cy=appointmentRescheduleButton]').click()
+        cy.get('[data-cy=nextDayButton]').click()
+        cy.get('[data-cy=scheduleTimeButton]:last').click()
+        cy.get('[data-cy=scheduledAppointmentText]').should('exist')
+
         cy.get('[data-cy=scheduledAppointmentText]').should('exist')
 
         cy.get('[data-cy=appointmentRescheduleButton]').click()
@@ -61,7 +68,14 @@ describe('patient appointment flow', () => {
 
       // Cancel and re-schedule
       cy.get('[data-cy=appointmentCancelButton]').click()
-      cy.get('[data-cy=scheduleAppointmentButton]').click()
+
+      // cy.get('[data-cy=scheduleAppointmentButton]').click()
+
+      cy.get('[data-cy=appointmentRescheduleButton]').click()
+      cy.get('[data-cy=nextDayButton]').click()
+      cy.get('[data-cy=scheduleTimeButton]:last').click()
+      cy.get('[data-cy=scheduledAppointmentText]').should('exist')
+
       cy.get('[data-cy=appliedVaccineName]').should('contain', 'Coronavac')
     })
   })

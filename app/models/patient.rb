@@ -45,7 +45,7 @@ class Patient < ApplicationRecord
 
   # Receives CPF, sanitizing everything different from a digit
   def cpf=(string)
-    self[:cpf] = parse_cpf(string)
+    self[:cpf] = Patient.parse_cpf(string)
   end
 
   def conditions
