@@ -123,7 +123,6 @@ end
 
 ## SECOND DOSE PATIENTS ##
 
-begin_date = 0.days.from_now.to_date.in_time_zone
 today = Time.zone.now.at_beginning_of_day
 second_appointment_start = today + 7.hours + 40.minutes
 second_appointment_end = today + 8.hours
@@ -198,7 +197,8 @@ TimeSlotGenerationService.new(create_slot: lambda { |attrs| Appointment.create(a
 
 ## FIRST DOSE PATIENTS ##
 
-today_range = begin_date.beginning_of_day..begin_date.end_of_day
+begin_date = 1.day.from_now.to_date.in_time_zone
+tomorrow_range = begin_date.beginning_of_day..begin_date.end_of_day
 
 %w[
   82920382640
@@ -224,8 +224,7 @@ today_range = begin_date.beginning_of_day..begin_date.end_of_day
     groups: [Group.find_by!(name: 'Trabalhador(a) da Saúde')]
   )
 
-  today_range = begin_date.beginning_of_day..begin_date.end_of_day
-  appointment = Appointment.where(patient_id: nil, start: today_range).order(:start).last
+  appointment = Appointment.where(patient_id: nil, start: tomorrow_range).order(:start).last!
   appointment.update!(patient_id: patient.id)
 
   patient.save!
