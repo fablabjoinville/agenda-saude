@@ -56,7 +56,7 @@ describe('reception flow', () => {
 
       cy.get('[data-cy=checked_inListTab]').click()
       cy.get('[data-cy=checkOutButton]').click()
-      cy.get('[data-cy=vaccineRadioButton]').first().check()
+      cy.get('[data-cy=secondDoseVaccineText]').should('exist')
       cy.get('[data-cy=checkOutConfirmationButton]').click()
 
       cy.get('[data-cy=vaccineNameTag]').should('contain', 'Coronavac') // same as first dose

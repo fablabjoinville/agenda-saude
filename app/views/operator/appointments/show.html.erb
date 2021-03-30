@@ -96,7 +96,7 @@
       </div>
     </div>
     <% if @appointment.vaccine_name.present? -%>
-      <p>Paciente obrigatoriamente deverá receber o reforço com a vacina <strong><%= @appointment.vaccine_name %></strong>.</p>
+      <p data-cy="secondDoseVaccineText">Paciente obrigatoriamente deverá receber o reforço com a vacina <strong><%= @appointment.vaccine_name %></strong>.</p>
     <% else -%>
       <div class="row justify-content-md-center mb-4">
         <% ReceptionService::VACCINES.sort.each do |vaccine_name_code| -%>
