@@ -23,7 +23,6 @@ module Community
       end
 
       @appointment = current_patient.appointments.not_checked_in.current
-      return redirect_to(home_community_appointments_path) unless @appointment
 
       @days = parse_days
       @appointments = scheduler.open_times_per_ubs(from: @days.days.from_now.beginning_of_day,
