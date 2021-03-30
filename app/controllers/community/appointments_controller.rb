@@ -33,13 +33,14 @@ module Community
     rescue AppointmentScheduler::NoFreeSlotsAhead
       redirect_to home_community_appointments_path, flash: { alert: 'Não há vagas disponíveis para reagendamento.' }
     end
+
     # rubocop:enable Metrics/AbcSize
 
     def create
       result, new_appointment = scheduler.schedule(
         patient: current_patient,
-        ubs_id: params[:ubs_id].presence,
-        from: parse_start
+        ubs_id: create_params[:ubs_id].presence,
+        from: parse_start.presence
       )
 
       redirect_to home_community_appointments_path,
@@ -110,7 +111,7 @@ module Community
 
     # rubocop:disable Rails/Date (as we're generating the string it with timezone)
     def parse_start
-      create_params[:appointment]&.key?(:start) && create_params[:appointment][:start]&.to_time
+      create_params[:start].present? && create_params[:start]&.to_time
     rescue ArgumentError
       nil
     end
@@ -118,7 +119,7 @@ module Community
     # rubocop:enable Rails/Date
 
     def create_params
-      params.permit(appointment: %i[ubs_id start])
+      params.require(:appointment).permit(:ubs_id, :start)
     end
 
     def slot_params
