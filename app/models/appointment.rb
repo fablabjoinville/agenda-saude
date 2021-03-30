@@ -22,6 +22,8 @@ class Appointment < ApplicationRecord
   scope :suspended, -> { where(active: false) }
 
   # Where the UBS is active
+  # Needs to be left_joins due to query on AppointmentScheduler#open_times_per_ubs, to allow us to get proper results
+  # when used with DISTINCT
   scope :active_ubs, -> { left_joins(:ubs).where(Ubs.arel_table[:active].eq(true)) }
 
   # Active and not checked in or out (regardless if in the past or future)
