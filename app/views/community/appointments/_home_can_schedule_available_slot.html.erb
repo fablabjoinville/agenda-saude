@@ -8,18 +8,10 @@
   As doses disponíveis são para o grupo do qual você faz parte.
 </p>
 <hr class="my-4">
-<p>
-  Ao clicar em "Agendar sua vacina agora" abaixo, uma dose no primeiro dia e horário disponível será agendada para você.
-  Você poderá então cancelar caso não possa comparecer no horário estipulado, ou trocar para outro horário, dia, ou
-  local, caso haja disponibilidade.
-</p>
 
-<%= form_for Appointment.new, url: community_appointments_path, method: :post, local: true do |f| -%>
-  <%= f.hidden_field :ubs_id %>
-  <%= f.button name: "appointment[ubs_id]",
-               value: "",
-               class: "btn btn-primary btn-lg btn-block",
-               data: { cy: "scheduleAppointmentButton" } do %>
-    Agendar sua vacina agora
-  <% end -%>
-<% end -%>
+<%= link_to "Agendar sua vacina",
+            community_appointments_path,
+            class: "btn btn-primary btn-block",
+            data: {
+              cy: "appointmentRescheduleButton",
+            } %>

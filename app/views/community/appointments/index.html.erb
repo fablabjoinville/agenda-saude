@@ -1,28 +1,30 @@
-<ul class="container">
-  <li class="card">
-    <h4 class="card-header">Sua vacinação agendada:</h4>
-    <ul class="list-group list-group-flush">
-      <li class="list-group-item">
-        <%= render @appointment %>
-      </li>
-      <li class="list-group-item">
-        <div class="row">
-          <div class="col">
-            <%= link_to "« Voltar e manter meu agendamento",
-                        home_community_appointments_path,
-                        class: "btn btn-secondary btn-block" %>
+<% if @appointment -%>
+  <ul class="container">
+    <li class="card">
+      <h4 class="card-header">Sua vacinação agendada:</h4>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+          <%= render @appointment %>
+        </li>
+        <li class="list-group-item">
+          <div class="row">
+            <div class="col">
+              <%= link_to "« Voltar e manter meu agendamento",
+                          home_community_appointments_path,
+                          class: "btn btn-secondary btn-block" %>
+            </div>
           </div>
-        </div>
-      </li>
-    </ul>
-  </li>
-</ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+<% end -%>
 
 <div class="container">
   <div class="row">
     <div class="col">
       <div class="alert alert-info">
-        Para reagendar, escolha um dia, unidade e clique no horário disponível desejado.
+        Para agendar, escolha um dia, unidade e clique no horário disponível desejado.
       </div>
     </div>
   </div>
@@ -90,7 +92,7 @@
                         <% if slot -%>
                           <%= f.button name: "appointment[start]",
                                        value: slot.start,
-                                       class: "btn btn-success btn-lg btn-block",
+                                       class: "btn btn-primary btn-lg btn-block",
                                        data: { cy: "scheduleTimeButton" } do %>
                             <%= l(slot.start, format: :short_hour) %>
                           <% end -%>
