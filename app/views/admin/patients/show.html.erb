@@ -10,8 +10,8 @@
 </p>
 
 <p>
-  Paciente bloqueado.
   <% if @patient.locked? -%>
+    Paciente bloqueado.
     <%= link_to "Desbloquear", unblock_admin_patient_path(id: @patient.id), method: :patch,
                 class: "btn btn-secondary " %>
   <% end -%>
