@@ -3,10 +3,10 @@ module Community
     skip_before_action :authenticate!, only: %i[create destroy]
 
     def create
-      @patient = Patient.find_by(cpf: session_params[:cpf])
+      @patient = Patient.find_by(cpf: parse_cpf)
 
       # New Patient, sent to creation form
-      return redirect_to(new_community_patient_path(patient: { cpf: session_params[:cpf] })) unless @patient
+      return redirect_to(new_community_patient_path(patient: { cpf: parse_cpf })) unless @patient
 
       return locked_account! if @patient.locked?
 
@@ -25,6 +25,10 @@ module Community
     end
 
     protected
+
+    def parse_cpf
+      Patient.parse_cpf session_params[:cpf]
+    end
 
     def successful_login!
       @patient.record_successful_login!

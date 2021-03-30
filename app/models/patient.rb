@@ -45,7 +45,7 @@ class Patient < ApplicationRecord
 
   # Receives CPF, sanitizing everything different from a digit
   def cpf=(string)
-    self[:cpf] = string.gsub(/[^\d]/, '')
+    self[:cpf] = parse_cpf(string)
   end
 
   def conditions
@@ -141,6 +141,10 @@ class Patient < ApplicationRecord
 
   def remaining_login_attempts
     MAX_LOGIN_ATTEMPTS - login_attempts
+  end
+
+  def self.parse_cpf(cpf)
+    cpf.gsub(/[^\d]/, '')
   end
 
   private
