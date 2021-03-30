@@ -43,6 +43,8 @@ on_worker_boot do
   ActiveRecord::Base.establish_connection
 end
 
+require 'barnes'
+
 # https://devcenter.heroku.com/articles/language-runtime-metrics-ruby#getting-started
 before_fork do
   Barnes.start # Must have enabled worker mode for this to block to be called
