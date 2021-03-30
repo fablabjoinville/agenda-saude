@@ -79,7 +79,7 @@ module Operator
     # Suspend single appointment
     def suspend
       appointment = @ubs.appointments.scheduled.not_checked_in.find(params[:id])
-      appointment.update!(active: false, suspend_reason: params[:reason])
+      appointment.update!(active: false, suspend_reason: params[:appointment][:suspend_reason])
 
       redirect_to operator_appointments_path,
                   flash: {

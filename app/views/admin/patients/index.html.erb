@@ -1,4 +1,10 @@
-<h1>Desbloqueio de pacientes</h1>
+<h1>Pacientes</h1>
+
+<p>
+  Filtros:
+  <%= link_to "Nenhum filtro", admin_patients_path %> |
+  <%= link_to "Bloqueados", admin_patients_path(filter: "locked") %>
+</p>
 
 <table class="table table-hover">
   <thead>
@@ -12,14 +18,12 @@
   <% @patients.each do |patient| -%>
     <tr data-cy="patient">
       <th scope="row" class="align-middle">
-        <%= patient.cpf %>
+        <%= link_to patient.cpf, admin_patient_path(id: patient.id) %>
       </th>
       <td>
-        <%= patient.name %>
+        <%= link_to patient.name, admin_patient_path(id: patient.id) %>
       </td>
       <td>
-        <%= link_to "Desbloquear", unblock_admin_patient_path(id: patient.id), method: :patch,
-                    class: "btn btn-secondary " %>
       </td>
     </tr>
   <% end -%>

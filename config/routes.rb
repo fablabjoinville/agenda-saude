@@ -38,7 +38,7 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
-    resources :patients, only: %i[index] do
+    resources :patients, only: %i[index show] do
       member do
         patch :unblock
       end

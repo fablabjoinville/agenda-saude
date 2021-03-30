@@ -1,0 +1,71 @@
+<h1>
+  Paciente <%= @patient.cpf %>
+</h1>
+
+<p>
+  Nome: <%= @patient.name %>
+</p>
+
+<p>
+</p>
+
+<p>
+  Paciente bloqueado.
+  <% if @patient.locked? -%>
+    <%= link_to "Desbloquear", unblock_admin_patient_path(id: @patient.id), method: :patch,
+                class: "btn btn-secondary " %>
+  <% end -%>
+</p>
+
+<div class="mt-4 mb-5">
+  <% if @patient.appointments.any? -%>
+    <h4>Agendamentos deste paciente</h4>
+    <table class="table">
+      <thead>
+      <tr>
+        <th scope="col">Data agendada</th>
+        <th scope="col">Unidade</th>
+        <th scope="col">Check-in</th>
+        <th scope="col">Check-out</th>
+        <th scope="col">Vacina</th>
+        <th scope="col">Suspenso?</th>
+      </tr>
+      </thead>
+      <tbody>
+
+      <% @patient.appointments.each do |appointment| -%>
+        <tr>
+          <th scope="row">
+            <strong><%= l(appointment.start, format: :human) %></strong>
+          </th>
+          <td>
+            <%= appointment.ubs.name %>
+          </td>
+          <td>
+            <% if appointment.checked_in? -%>
+              <%= l(appointment.check_in, format: :human) %>
+            <% end -%>
+          </td>
+          <td>
+            <% if appointment.checked_out? -%>
+              <%= l(appointment.check_out, format: :human) %>
+            <% end -%>
+          </td>
+          <td>
+            <%= appointment.vaccine_name %>
+          </td>
+          <td>
+            <%= appointment.active ? "" : "Suspenso por #{appointment.suspend_reason}" %>
+          </td>
+        </tr>
+      <% end -%>
+      </tbody>
+    </table>
+  <% end -%>
+</div>
+
+
+<p>
+  <%= link_to "Voltar", :back %>
+</p>
+

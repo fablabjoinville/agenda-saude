@@ -1,14 +1,17 @@
 module Admin
   class PatientsController < Base
-    before_action :set_patient, only: %i[unblock]
+    before_action :set_patient, only: %i[show unblock]
 
     # For now, only showing locked patients
     def index
-      @patients = Patient.locked
-                         .order(:cpf)
+      @patients = Patient.order(:cpf)
                          .page(index_params[:page])
-                         .per(100)
+                         .per(25)
+
+      @patients = @patients.locked if index_params[:filter] == "locked"
     end
+
+    def show; end
 
     def unblock
       @patient.record_successful_login!
@@ -23,7 +26,7 @@ module Admin
     end
 
     def index_params
-      params.permit(:per_page, :page, :search, :filter)
+      params.permit(:page, :search, :filter)
     end
   end
 end
