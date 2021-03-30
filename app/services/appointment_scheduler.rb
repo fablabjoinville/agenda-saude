@@ -35,7 +35,7 @@ class AppointmentScheduler
       )
       return [NO_SLOTS] unless success
 
-      new_appointment = patient.appointments.open.where.not(id: current_appointment&.id).first!
+      new_appointment = patient.appointments.waiting.where.not(id: current_appointment&.id).first!
       if current_appointment
         # Update new appointment with data from current
         new_appointment.update!(
