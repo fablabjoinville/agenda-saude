@@ -123,10 +123,7 @@ end
 
 ## SECOND DOSE PATIENTS ##
 
-current_time = Time.now.in_time_zone
 begin_date = 0.days.from_now.to_date.in_time_zone
-finish_date = 3.days.from_now.to_date.in_time_zone
-
 today = Time.zone.now.at_beginning_of_day
 second_appointment_start = today + 7.hours + 40.minutes
 second_appointment_end = today + 8.hours
@@ -166,6 +163,7 @@ end_of_day_minutes = [600, 620, 640, 660, 680, 700]
     active: true,
     check_in: second_appointment_start - 4.weeks + time_multiplier,
     check_out: second_appointment_start - 4.weeks + 10.minutes + time_multiplier,
+    vaccine_name: ReceptionService::ASTRAZENECA,
     ubs: ubsf_america
   )
 end
