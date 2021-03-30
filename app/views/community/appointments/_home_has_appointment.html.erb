@@ -1,0 +1,77 @@
+<% unless @appointment.active %>
+  <div class="row">
+    <div class="col">
+      <div class="alert alert-danger" role="alert">
+        Este agendamento foi suspenso. Favor entrar em contato com o Ligue/Web Saúde no (47) 3481-5165,
+        ou a Unidade de atendimento.
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<div class="container">
+  <div class="card">
+    <h4 class="card-header" data-cy="scheduledAppointmentText">Sua vacinação agendada:</h4>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">
+        <%= render @appointment %>
+      </li>
+      <li class="list-group-item">
+        <div class="row">
+          <div class="col">
+            <strong>Imprima ou salve uma imagem esta página no seu celular para se lembrar do agendamento.</strong>
+          </div>
+        </div>
+
+        <%= render "shared/required_documents" %>
+
+        <p class="mt-4">
+          Lembre-se que você <strong>não poderá</strong> receber a vacina caso:
+        </p>
+
+        <ul>
+          <li>Esteja em estado febril;</li>
+          <li>Tenha suspeita ou Covid-19 positivo nos últimos 30 dias;</li>
+          <li>Tenha tomado qualquer outro tipo de vacina nos últimos 15 dias;</li>
+          <li>Esteja gestante ou lactante (mulheres que estão amamentando).</li>
+        </ul>
+
+        <p>
+          Se você tiver uma das condições acima, solicitamos que cancele seu agendamento e reagendando-o no
+          futuro quando sair da condição temporária.
+        </p>
+      </li>
+      <li class="list-group-item d-print-none">
+        <div class="row">
+          <div class="col">
+            <%= button_to community_appointment_path(id: @appointment.id), method: :delete,
+                          class: "btn btn-danger btn-block",
+                          data: {
+                            cy: "appointmentCancelButton",
+                            confirm: "Confirma CANCELAR seu agendamento? Você poderá remarcar, porém estará sujeito a disponibilidade de vagas."
+                          } do %>
+              Cancelar este agendamento
+            <% end %>
+          </div>
+          <div class="col">
+            <%= link_to "Reagendar e escolher outro dia, horário ou local",
+                        community_appointments_path,
+                        class: "btn btn#{'-outline' if Rails.configuration.x.disabled_reschedule_toggle.present?}-secondary btn-block",
+                        data: {
+                          cy: "appointmentRescheduleButton",
+                        } %>
+          </div>
+        </div>
+        <% if Rails.configuration.x.disabled_reschedule_toggle.present? -%>
+          <div class="row mt-4">
+            <div class="col">
+              <div class="alert alert-warning">
+                <%= I18n.t(:'alerts.patient_disabled_reschedule') %>
+              </div>
+            </div>
+          </div>
+        <% end -%>
+      </li>
+    </ul>
+  </div>
+</div>

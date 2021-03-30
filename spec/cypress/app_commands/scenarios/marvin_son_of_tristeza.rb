@@ -1,12 +1,11 @@
-patient = Patient.new(
+Patient.create!(
   name: 'marvin',
   cpf: command_options['cpf'],
   mother_name: 'Tristeza',
-  birth_date: '1900-01-31',
-  public_place: 'Rua',
-  place_number: '200',
+  birth_date: '1920-06-24',
+  phone: '(47) 91234-5678',
+  public_place: 'Rua das Flores',
+  place_number: '1',
   neighborhood: 'Glória',
-  phone: '(47) 91234-5678'
+  groups: [Group.find_by!(name: 'Trabalhador(a) da Saúde')]
 )
-patient.groups << Group.find_by(name: 'Trabalhador(a) da Saúde')
-patient.save!

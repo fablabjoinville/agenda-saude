@@ -6,13 +6,21 @@ pt-BR:
         password: Senha
         remember_me: Lembre-se de mim
       patient:
-        name: Nome completo
-        cpf: CPF
-        mother_name: Nome da mãe
         birth_date: Data de nascimento
-        phone: Telefone
-        neighborhood: Bairro
+        birthday: Data de nascimento
         chronic: Crônico
+        cpf: CPF
+        email: Email
+        mother_name: Nome da mãe
+        name: Nome
+        neighborhood: Bairro
+        other_phone: Telefone Secundário
+        phone: Telefone
+        place_number: Número
+        public_place: Endereço
+        sus: Número do cartão SUS
+        groups: Grupos que faz parte
+
     models:
       user: Usuário
       patient: Paciente
@@ -21,4 +29,10 @@ pt-BR:
       not_saved:
         one: 'Não foi possível salvar %{resource}: 1 erro'
         other: 'Não foi possível salvar %{resource}: %{count} erros.'
+
+  alerts:
+    patient_disabled_reschedule: >
+      Devido a alta demanda, o reagendamento está temporariamente desativado. Se você não poder comparecer no horário,
+      dia e local estabelecidos, tente reagendar novamente mais tarde, ou cancele seu agendamento e tente agende
+      novamente mais tarde ou quando mais doses forem disponibilizadas.
 

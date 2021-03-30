@@ -1,0 +1,84 @@
+<%= render "operator/shared/nav" %>
+
+<% if @appointments.any? %>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">Horário</th>
+        <th scope="col">Paciente</th>
+        <th scope="col">Telefones</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @appointments.each do |appointment| -%>
+        <tr data-cy="appointment">
+          <th scope="row" class="align-middle">
+            <%= l appointment.start, format: :short_hour %>
+          </th>
+          <td class="align-middle">
+            <%= link_to appointment.patient.name, [:operator, appointment] %>
+            <br>
+            <small class="badge bg-light text-dark" data-cy="patientCpf"><%= ApplicationHelper.humanize_cpf appointment.patient.cpf %></small>
+          </td>
+          <td class="align-middle">
+            <small class="text-muted">
+              <%= [appointment.patient.phone.presence, appointment.patient.other_phone.presence].compact.join(", ") %>
+            </small>
+          </td>
+          <td class="align-middle">
+            <%
+              case appointment.state
+              when :suspended
+            -%>
+              <%= link_to "Reativar",
+                          activate_operator_appointment_path(appointment),
+                          method: :patch,
+                          class: "btn btn-block btn-warning",
+                          data: { confirm: t(:"appointments.confirmation.activate", name: appointment.patient.name) } %>
+            <% when :checked_out -%>
+              <%= link_to "Vacinado", [:operator, appointment], class: "btn btn-block btn-light",
+                          data: { cy: "vaccinatedButton" } %>
+            <% when :checked_in -%>
+              <%= link_to "Check-out", [:operator, appointment], class: "btn btn-block btn-success",
+                          data: { cy: "checkOutButton" } %>
+            <% when :waiting -%>
+              <%= link_to "Check-in", [:operator, appointment], class: "btn btn-block btn-primary",
+                          data: { cy: "checkInButton" } %>
+            <% end -%>
+          </td>
+        </tr>
+      <% end -%>
+    </tbody>
+  </table>
+
+  <div>
+    <%= paginate @appointments %>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-sm">
+        <%= link_to 'Exportar agendamentos do dia',
+                    operator_appointments_path(filter: nil, search: nil, per_page: 10_000, format: :xlsx),
+                    class: 'btn btn-block btn-outline-primary' %>
+      </div>
+      <div class="col-sm">
+        <%= link_to 'Suspender agendamentos futuros',
+                    suspend_future_operator_appointments_path,
+                    method: :patch,
+                    class: 'btn btn-block btn-outline-danger',
+                    data: { confirm: t(:"appointments.confirmation.suspend_all") } %>
+      </div>
+      <div class="col-sm">
+        <%= link_to 'Reativar agendamentos futuros',
+                    activate_future_operator_appointments_path,
+                    method: :patch,
+                    class: 'btn btn-block btn-outline-warning',
+                    data: { confirm: t(:"appointments.confirmation.activate_all") } %>
+      </div>
+    </div>
+  </div>
+<% else -%>
+  <h3 data-cy="noAppointmentsText">Nenhum agendamento com os critérios selecionados para este dia.</h3>
+<% end -%>

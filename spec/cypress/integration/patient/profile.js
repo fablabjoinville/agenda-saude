@@ -9,7 +9,7 @@ describe('patient profile', () => {
     it('signup', () => {
       cy.signupPatient(cpf)
 
-      cy.get('[data-cy=editPatientButton]').should('exist')
+      cy.get('[data-cy=patientEditButton]').should('exist')
     })
   })
 
@@ -22,7 +22,7 @@ describe('patient profile', () => {
       it('login', () => {
         cy.loginAsPatient(cpf)
 
-        cy.get('[data-cy=editPatientButton]').should('exist')
+        cy.get('[data-cy=patientEditButton]').should('exist')
       })
     })
 
@@ -32,16 +32,15 @@ describe('patient profile', () => {
       })
 
       it('logout', () => {
-        cy.get('[data-cy=logoutButton]').click()
+        cy.get('[data-cy=patientLogoutButton]').click()
 
         cy.get('[data-cy=cpfInputField]').should('exist')
       })
 
       it('edit profile', () => {
-        cy.get('[data-cy=editPatientButton]').click()
-        cy.get('[data-cy=editPatientNeighborhoodNameInputField]').select('América')
-        cy.get('[data-cy=updatePatientButton]').click()
-
+        cy.get('[data-cy=patientEditButton]').click()
+        cy.get('#patient_neighborhood').select('América')
+        cy.get('[data-cy=patientSubmitButton]').click()
         cy.get('[data-cy=noticeMessage]').should('exist')
       })
     })

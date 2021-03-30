@@ -3,14 +3,14 @@ FactoryBot.define do
     name { 'UBS Norte' }
     neighborhood { 'Centro' }
     neighborhoods { [] }
-    user { create(:user) }
+    user
     shift_start { '08:00' }
     shift_end { '18:00' }
     break_start { '12:00' }
     break_end { '13:00' }
     slot_interval_minutes { 15 }
-    cnes { 123 }
+    sequence(:cnes) { |n| n }
     phone { '9999-8888' }
-    address { 'Rua principal, 256' }
+    address { 'Rua Principal, 256' }
   end
 end

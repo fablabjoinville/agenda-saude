@@ -23,10 +23,16 @@ require "sprockets/railtie"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-module TemplateRails
+module AgendaSaude
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.0
+
+    config.x.admin_username = ENV.fetch("ADMIN_USERNAME", SecureRandom.uuid) # in case it isn't set, for safety
+    config.x.admin_password = ENV.fetch("ADMIN_PASSWORD", SecureRandom.uuid)
+    config.x.schedule_from_hours = 1 # Patient can't schedule free appointments before 1 hour in the future
+    config.x.schedule_up_to_days = 7 # Patient can't schedule free appointments after 7 days in the future
+    config.x.disabled_reschedule_toggle = ENV.fetch("DISABLED_RESCHEDULE_TOGGLE", "")
 
     # https://guides.rubyonrails.org/autoloading_and_reloading_constants.html#autoload-paths
     config.autoload_paths += [

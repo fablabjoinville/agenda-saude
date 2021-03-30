@@ -7,8 +7,24 @@
     postpartum: Pós-parto (Puérpere)
     kid: Criança de 6 meses até 5 anos
     teacher: Professor
-    over_55: Entre 55 anos e 59 anos
+    over55: Entre 55 anos e 59 anos
     without_target: Nenhum
+    appointments:
+      state:
+        all: "Agendamentos para hoje" # used as a filter on Operator's Appointment's index
+        suspended: Suspenso
+        checked_out: Vacinado
+        checked_in: Aguardando check-out
+        waiting: Aguardando check-in
+      confirmation:
+        suspend: Confirma suspender agendamento para %{name}?
+        activate: Confirma reativar agendamento para %{name}?
+        checkout: Confirma vacinação para %{name}?
+        checkin: Confirmar que %{name} fez check-in e está pronta(o) a entrar e receber vacina?
+        suspend_all: Confirma ATIVAR TODOS agendamentos futuros?
+        activate_all: Confirma SUSPENDER TODOS agendamentos futuros?
+      messages:
+        not_allowed_window: Não é possível fazer checkin para outra data
     activerecord:
         errors:
           messages:
@@ -34,16 +50,3 @@
                   blank: em branco
                 main_ubs:
                   required: obrigatório
-        models:
-          attributes:
-            cpf: CPF
-            mother_name: Nome da mãe
-            phone: Telefone
-            email: Email
-            name: Nome
-            birth_date: Data de nascimento
-            other_phone: Telefone Secundário
-            neighborhood: Bairro
-            public_place: Endereço
-            place_number: Número
-

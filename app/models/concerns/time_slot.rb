@@ -25,7 +25,7 @@ module TimeSlot
   end
 
   def available_time_slots_for_day(day, time_now)
-    appointments = Appointment.where(ubs: self).start_between(day.beginning_of_day, day.end_of_day)
+    appointments = Appointment.where(ubs: self).where(day.beginning_of_day..day.end_of_day)
 
     if day.saturday?
       all_time_slots = time_slots(morning_saturday(day)) + time_slots(afternoon_saturday(day))

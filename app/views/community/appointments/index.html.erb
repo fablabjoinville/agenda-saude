@@ -1,0 +1,109 @@
+<ul class="container">
+  <li class="card">
+    <h4 class="card-header">Sua vacinação agendada:</h4>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">
+        <%= render @appointment %>
+      </li>
+      <li class="list-group-item">
+        <div class="row">
+          <div class="col">
+            <%= link_to "« Voltar e manter meu agendamento",
+                        home_community_appointments_path,
+                        class: "btn btn-secondary btn-block" %>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <div class="alert alert-info">
+        Para reagendar, escolha um dia, unidade e clique no horário disponível desejado.
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row mt-3">
+    <div class="col">
+      <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+          <%=
+            content_tag :li, class: "page-item #{@days <= 0 ? :disabled : :active}" do
+              link_to "« Dia anterior",
+                      community_appointments_path(page: @days - 1),
+                      class: "page-link",
+                      data: { cy: "previousDayButton" }
+            end
+          %>
+          <li class="page-item active disabled">
+            <a class="page-link" href="#">
+              <%= l @days.days.from_now, format: :short_date %>
+            </a>
+          </li>
+          <%=
+            content_tag :li, class: "page-item #{@days >= Rails.configuration.x.schedule_up_to_days ? :disabled : :active}" do
+              link_to "Próximo dia »",
+                      community_appointments_path(page: @days + 1),
+                      class: "page-link",
+                      data: { cy: "nextDayButton" }
+            end
+          %>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <div class="card">
+        <ul class="list-group list-group-flush">
+          <% if @appointments.empty? -%>
+            <li class="list-group-item">
+              <h4 class="text-muted mt-5 mb-5 text-center">Nenhuma vaga disponível neste dia.</h4>
+            </ul>
+          <% end -%>
+
+          <% @appointments.each do |ubs, slots| -%>
+            <li class="list-group-item">
+              <h4>
+                <%= ubs.name %>
+                <small>
+                  <%= ubs.address %>
+                  (<%= ubs.neighborhood %>)
+                </small>
+              </h4>
+
+              <%= form_with url: community_appointments_path, method: :post, local: true do |f| %>
+                <%= hidden_field_tag "appointment[ubs_id]", ubs.id %>
+                <% slots.in_groups_of(4) do |slot_group| -%>
+                  <div class="row">
+                    <% slot_group.each do |slot| -%>
+                      <div class="col-sm mt-4">
+                        <% if slot -%>
+                          <%= f.button name: "appointment[start]",
+                                       value: slot.start,
+                                       class: "btn btn-success btn-lg btn-block",
+                                       data: { cy: "scheduleTimeButton" } do %>
+                            <%= l(slot.start, format: :short_hour) %>
+                          <% end -%>
+                        <% end -%>
+                      </div>
+                    <% end -%>
+                  </div>
+                <% end -%>
+              <% end -%>
+            </li>
+          <% end -%>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

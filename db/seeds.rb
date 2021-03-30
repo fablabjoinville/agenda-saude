@@ -35,7 +35,7 @@ ubsf_america = Ubs.new.tap do |ubs|
   ubs.name = 'UBSF America'
   ubs.user = mlabs
   ubs.neighborhoods << america
-  ubs.neighborhood = america
+  ubs.neighborhood = america.name
   ubs.address = 'Rua Magrathea, 42'
   ubs.phone = '(47) 3443-3443'
   ubs.shift_start = '9:00'
@@ -50,8 +50,8 @@ end
 Ubs.new.tap do |ubs|
   ubs.name = 'UBSF Gloria'
   ubs.user = mlabs_two
-  ubs.neighborhood = gloria
   ubs.neighborhoods << gloria
+  ubs.neighborhood = gloria.name
   ubs.address = 'Rua dos Bobos, 0'
   ubs.phone = '(47) 3443-3455'
   ubs.shift_start = '9:00'
@@ -123,12 +123,7 @@ end
 
 ## SECOND DOSE PATIENTS ##
 
-current_time = Time.now.in_time_zone
 begin_date = 0.days.from_now.to_date.in_time_zone
-finish_date = 3.days.from_now.to_date.in_time_zone
-
-range = begin_date..finish_date
-
 today = Time.zone.now.at_beginning_of_day
 second_appointment_start = today + 7.hours + 40.minutes
 second_appointment_end = today + 8.hours
@@ -147,16 +142,17 @@ end_of_day_minutes = [600, 620, 640, 660, 680, 700]
   56105631430
   25532025126
 ].each_with_index do |cpf, i|
-  patient = Patient.new.tap do |patient|
-    patient.name = "marvin#{i}"
-    patient.cpf = cpf
-    patient.mother_name = 'Tristeza'
-    patient.birth_date = '1920-01-31'
-    patient.phone = '(47) 91234-5678'
-    patient.neighborhood = 'América'
-    patient.groups << Group.find_by!(name: 'Trabalhador(a) da Saúde')
-    patient.save!
-  end
+  patient = Patient.create!(
+    name: "marvin#{i}",
+    cpf: cpf,
+    mother_name: 'Tristeza',
+    birth_date: '1920-01-31',
+    phone: '(47) 91234-5678',
+    public_place: 'Rua das Flores',
+    place_number: '1',
+    neighborhood: 'América',
+    groups: [Group.find_by!(name: 'Trabalhador(a) da Saúde')]
+  )
 
   time_multiplier = end_of_day_minutes.sample.minutes
 
@@ -164,25 +160,12 @@ end_of_day_minutes = [600, 620, 640, 660, 680, 700]
     start: second_appointment_start - 4.weeks + time_multiplier,
     end: second_appointment_end - 4.weeks + time_multiplier,
     patient_id: patient.id,
-    second_dose: false,
     active: true,
-    vaccine_name: 'coronavac',
     check_in: second_appointment_start - 4.weeks + time_multiplier,
     check_out: second_appointment_start - 4.weeks + 10.minutes + time_multiplier,
+    vaccine_name: ReceptionService::ASTRAZENECA,
     ubs: ubsf_america
   )
-
-  second_appointment = Appointment.create!(
-    start: second_appointment_start + time_multiplier,
-    end: second_appointment_end + time_multiplier,
-    patient_id: patient.id,
-    second_dose: true,
-    vaccine_name: 'coronavac',
-    active: true,
-    ubs: ubsf_america
-  )
-
-  patient.update!(last_appointment: second_appointment)
 end
 
 ## TIME SLOTS / APPOINTMENTS ##
@@ -215,7 +198,9 @@ TimeSlotGenerationService.new(create_slot: lambda { |attrs| Appointment.create(a
 
 ## FIRST DOSE PATIENTS ##
 
-cpfs = %w[
+today_range = begin_date.beginning_of_day..begin_date.end_of_day
+
+%w[
   82920382640
   41869202309
   82194769668
@@ -227,22 +212,21 @@ cpfs = %w[
   89452953136
   45445585654
 ].each_with_index do |cpf, i|
-  patient = Patient.new
-  patient.name = "marvin#{i+10}"
-  patient.cpf = cpf
-  patient.mother_name = 'Tristeza'
-  patient.birth_date = '1920-06-24'
-  patient.phone = '(47) 91234-5678'
-  patient.neighborhood = 'América'
-  patient.groups << Group.find_by!(name: 'Trabalhador(a) da Saúde')
-  patient.save!
+  patient = Patient.create!(
+    name: "marvin#{i + 10}",
+    cpf: cpf,
+    mother_name: 'Tristeza',
+    birth_date: '1920-06-24',
+    phone: '(47) 91234-5678',
+    public_place: 'Rua das Flores',
+    place_number: '1',
+    neighborhood: 'América',
+    groups: [Group.find_by!(name: 'Trabalhador(a) da Saúde')]
+  )
 
   today_range = begin_date.beginning_of_day..begin_date.end_of_day
-
   appointment = Appointment.where(patient_id: nil, start: today_range).order(:start).last
-  appointment.update(patient_id: patient.id)
+  appointment.update!(patient_id: patient.id)
 
-  patient.appointments << appointment
-  patient.last_appointment = appointment
   patient.save!
 end

@@ -1,58 +1,52 @@
 Rails.application.routes.draw do
-  devise_for :patients, path: 'patients', controllers: { sessions: 'patients/sessions', registrations: 'patients/registrations' }
-  devise_for :users, path: 'users', controllers: { sessions: 'users/sessions' }
+  namespace :community do
+    resource :session, only: %i[create destroy]
+    resource :patient, only: %i[new create edit update]
 
-  devise_scope :patient do
-    resource :time_slot do
-      get '/', as: :index, to: 'time_slot#index'
-      post '/', as: :schedule, to: 'time_slot#schedule'
-      delete '/', as: :cancel, to: 'time_slot#cancel'
-    end
-
-    resource :bedridden do
-      get '/', as: :index, to: 'bedridden#index'
-      put '/', as: :toggle, to: 'bedridden#toggle'
+    resources :appointments, only: %i[index create destroy] do
+      collection do
+        get :home
+        get :vaccinated # not a collection one but due to the way we have appointments right now
+      end
     end
   end
 
+  devise_for :users, controllers: { sessions: 'users/sessions' }
   devise_scope :user do
-    get 'ubs/active_hours', as: :ubs_active_hours
-    patch 'ubs/change_active_hours', as: :ubs_change_active_hours
+    namespace :operator do
+      resources :appointments, only: %i[index show] do
+        member do
+          patch :check_in
+          patch :check_out
+          patch :suspend
+          patch :activate
+        end
 
-    get 'ubs/slot_duration', as: :ubs_slot_duration
-    patch 'ubs/change_slot_duration', as: :ubs_change_slot_duration
+        collection do
+          patch :suspend_future
+          patch :activate_future
+        end
+      end
 
-    get 'ubs/patient_checkin', as: :ubs_patient_checkin, to: 'ubs#patient_checkin'
-    get 'ubs/patient_checkout', as: :ubs_patient_checkout, to: 'ubs#patient_checkout'
-    get 'ubs/status', as: :status
-    get 'ubs/checkin', as: :list_checkin
-    post 'ubs/find_patients', as: :find_patients
-    get 'ubs/checkout', as: :list_checkout
-    get 'ubs/confirm_check_in', as: :confirm_check_in
-    post 'ubs/confirm_check_out', as: :confirm_check_out
-  end
-
-  resources :appointments
-  resources :patients
-
-  resources :ubs do
-    member do
-      get 'suspend_appointment'
-      get 'activate_appointment'
-      get 'cancel_all_future_appointments'
-      get 'activate_all_future_appointments'
-      get 'activate_ubs'
-      get 'deactivate_ubs'
-      get 'today_appointments'
+      resources :ubs, only: [:show] do
+        member do
+          patch :activate
+          patch :suspend
+        end
+      end
     end
   end
 
-  post 'home/patient_base_login', as: :patient_base_login, to: 'home#patient_base_login'
+  namespace :admin do
+    resources :patients, only: %i[index show] do
+      member do
+        patch :unblock
+      end
+    end
+  end
 
-  # FIXME: This is a temp method to allow the unblocking of a patient. We will use this route until we have the super-admin feature
-  get 'Y29zaXNhbGVnYWxwb3JmYXZvcm5hb3RlbnRlbGVyCg/:cpf', to: 'home#unblock'
-
-  get 'cadastrar_paciente/:cpf', to: 'home#register_patient'
-
+  get 'community', to: redirect('/community/appointments/home')
+  get 'operator', to: redirect('/operator/appointments')
+  get 'admin', to: redirect('/admin/patients')
   root 'home#index'
 end

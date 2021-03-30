@@ -1,0 +1,17 @@
+xlsx_package.workbook.add_worksheet do |sheet|
+  sheet.add_row ['', 'Agenda_Inicio', 'Nome', 'CPF', 'Telefone', 'Data_Nascimento', 'Rua', 'Numero', 'Bairro']
+
+  @appointments.each_with_index do |appointment, index|
+    sheet.add_row [
+      index,
+      l(appointment.start, format: :short_date_hour),
+      appointment.patient.name,
+      appointment.patient.cpf,
+      appointment.patient.phone,
+      l(Date.parse(appointment.patient.birth_date, format: :short_date_hour)),
+      appointment.patient.public_place,
+      appointment.patient.place_number,
+      appointment.patient.neighborhood
+    ]
+  end
+end

@@ -1,0 +1,24 @@
+<h2>Validação de segurança</h2>
+
+<%= form_for @patient, url: community_session_path, method: :post do |f| %>
+  <%= f.hidden_field :cpf, value: @patient.cpf %>
+
+  <p>
+    Para prosseguir com acesso ao sistema de agendamento, por favor, responda a pergunta de segurança abaixo:
+  </p>
+
+  <h3 class="mt-5">Qual o primeiro nome da sua mãe?</h3>
+  <p class="text-muted">Clique (ou toque) no botão abaixo contendo o nome da sua mãe.</p>
+  <div class="form-row mt-3">
+    <% @patient.fake_mothers.each do |name| -%>
+      <div class="form-group col-md-4">
+        <%= f.button name: "patient[challenged_mothers_name]",
+                     value: name,
+                     class: "btn btn-success btn-lg btn-block",
+                     data: { cy: "#{name}MotherButton" } do %>
+          <%= name %>
+        <% end -%>
+      </div>
+    <% end -%>
+  </div>
+<% end %>

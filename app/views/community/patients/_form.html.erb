@@ -1,0 +1,213 @@
+<%# Temp way to present errors until we have something better %>
+<% if patient.errors.any? -%>
+  <div class="alert alert-danger">
+    <p>Não foi possível gravar:</p>
+    <ul>
+      <% patient.errors.full_messages.select { |m| m.is_a?(String) }.each do |msg| %>
+        <%= content_tag :li, msg, id: "error_#{msg}" %>
+      <% end %>
+    </ul>
+  </div>
+<% end -%>
+
+<p>
+  As informações coletadas são de uso único e exclusivo do sistema de agendamento da vacina, afim de atestar a
+  veracidade do cadastro.
+</p>
+
+<div class="form-row">
+  <div class="form-group col-md-12">
+    <div class="input-group mb-2">
+      <div class="input-group-prepend">
+        <div class="input-group-text">CPF</div>
+      </div>
+      <%= f.text_field :cpf,
+                       readonly: true,
+                       class: "form-control form-control-lg",
+                       aria: { describedby: "cpfHelp" } %>
+    </div>
+  </div>
+</div>
+
+<h3>Dados pessoais</h3>
+
+<div class="form-row">
+  <div class="form-group col-md-4">
+    <%= f.label :name %>
+    <%= f.text_field :name,
+                     autofocus: true, autocomplete: "name", required: true,
+                     class: "form-control",
+                     aria: { describedby: "nameHelp" } %>
+    <small id="nameHelp" class="form-text text-muted">
+      Nome completo conforme documento de identificação com foto.
+    </small>
+  </div>
+
+  <div class="form-group col-md-4">
+    <%= f.label :birthday %>
+    <div class="form-row">
+      <%= f.date_select :birthday,
+                        {
+                          start_year: (Date.current.year.to_i) - 17, # min age
+                          end_year: Date.current.year.to_i - 120, # max age
+                          with_css_classes: true
+                        },
+                        required: true,
+                        aria: { describedby: "birthDateHelp" },
+                        class: "form-control" %>
+    </div>
+    <small id="birthDateHelp" class="form-text text-muted">
+      Data de nascimento conforme documento de identificação com foto.
+    </small>
+  </div>
+
+  <div class="form-group col-md-4">
+    <%= f.label :mother_name %>
+    <%= f.text_field :mother_name,
+                     autocomplete: "mother_name", required: true,
+                     class: "form-control" %>
+    <small id="birthDateHelp" class="form-text text-muted">
+      Nome completo da <strong>mãe</strong>.
+    </small>
+  </div>
+</div>
+
+
+<h3>Endereço residencial</h3>
+
+<div class="form-row">
+  <div class="form-group col-md-8">
+    <%= f.label :public_place %>
+    <%= f.text_field :public_place,
+                     autocomplete: "place", required: true,
+                     class: "form-control" %>
+  </div>
+
+  <div class="form-group col-md-2">
+    <%= f.label :place_number %>
+    <%= f.text_field :place_number,
+                     required: true,
+                     class: "form-control" %>
+  </div>
+
+  <div class="form-group col-md-2">
+    <%= f.label :neighborhood %>
+    <%= f.select :neighborhood, Neighborhood.pluck(:name), {},
+                 class: "form-control" %>
+  </div>
+
+  <div class="form-group col-md-6">
+    <%= f.label :phone %>
+    <%= f.text_field :phone,
+                     autocomplete: "phone", required: true,
+                     class: "form-control sp-celphones" %>
+  </div>
+
+  <div class="form-group col-md-6">
+    <%= f.label :other_phone %>
+    <%= optional_field_tag %>
+    <%= f.text_field :other_phone,
+                     autocomplete: "other_phone", required: false,
+                     class: "form-control sp-celphones" %>
+  </div>
+</div>
+
+<h3>Grupos que faz parte</h3>
+
+<div class="form-row">
+  <div class="form-group col-md-12">
+    <div class="form-check">
+      <%= f.collection_check_boxes :group_ids, Group.root.includes(:children), :id, :name do |b| %>
+        <div class="row">
+          <%= b.label do
+            b.check_box(
+              checked: patient.groups.map(&:id).map(&:to_i).include?(b.value.to_i),
+              class: "form-check-input #{"healthWorker" if b.object.health_worker?}",
+              onclick: "updateSubGroups(#{b.value});"
+            ) + b.text
+          end %>
+        </div>
+
+        <% if b.object.children.any? %>
+          <div class="form-row" hidden="true" id="<%= "subgroups-list-#{b.value}" %>">
+            <div class="form-group col-md-8">
+              <div class="form-check">
+                <%= f.collection_check_boxes :group_ids, b.object.children, :id, :name do |s| %>
+                  <div class="row">
+                    <%= s.label { s.check_box(checked: patient.groups.map(&:id).map(&:to_i).include?(s.value.to_i), class: "form-check-input #{"specificComorbidity" if s.object.specific_comorbidity? }") + s.text } %>
+                  </div>
+                  <% if s.object.specific_comorbidity? %>
+                    <div class="row" id="specific-comorbidity-input">
+                      <div class="form-group col-md-12">
+                        <%= f.text_field :specific_comorbidity, required: false, class: "form-control" %>
+                      </div>
+                    </div>
+                  <% end %>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+
+    <div class="row mt-3 mb-3" hidden=true id="alert-health-worker">
+      <div class="col">
+        <div class="alert alert-warning">
+          <strong>Atenção:</strong> Para receber a vacina, será necessário apresentar a comprovação de vínculo ativo em
+          algum estabelecimento de saúde na cidade de Joinville e/ou a carteira do conselho regional de classe.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<h3>Dados complementares</h3>
+
+<div class="form-row">
+  <div class="form-group col-md-8">
+    <%= f.label :email %>
+    <%= optional_field_tag %>
+    <%= f.email_field :email,
+                      autocomplete: "email", required: false,
+                      class: "form-control",
+                      aria: { describedby: "emailHelp" } %>
+    <small id="emailHelp" class="form-text text-muted">
+      Endereço de email.
+    </small>
+  </div>
+
+  <div class="form-group col-md-4">
+    <%= f.label :sus %>
+    <%= optional_field_tag %>
+    <%= f.number_field :sus,
+                       autocomplete: "sus", required: false,
+                       class: "form-control" %>
+    <small id="susHelp" class="form-text text-muted">
+      Número do cartão SUS. Descubra o número acessando
+      <a href="https://cartaosusdigital.saude.gov.br" target="cartaosus">Cartão SUS Digital</a>.
+    </small>
+  </div>
+</div>
+
+<div class="form-row">
+  <div class="form-group col-md-12">
+    <%= f.submit patient.new_record? ? "Cadastrar" : "Atualizar",
+                 class: "btn btn-primary btn-block pull-right",
+                 data: { cy: "patientSubmitButton" } %>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $(function () {
+    <% Group.root.pluck(:id).each do |id| %>
+    <%= "updateSubGroups(#{id});" %>
+    <% end %>
+
+    initializeSpecificComorbidityOnChange();
+    toggleSpecificComorbidity();
+
+    initializeHealthWorkerOnChange();
+    toggleHealthWorker();
+  });
+</script>

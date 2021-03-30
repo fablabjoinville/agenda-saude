@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe TimeSlotGenerationService, type: :service do
   let(:all_generated_attributes) { [] }
   let(:create_slot) do
-    lambda { |attrs| all_generated_attributes << attrs }
+    ->(attrs) { all_generated_attributes << attrs }
   end
   let(:service) do
     TimeSlotGenerationService.new(
@@ -32,7 +32,7 @@ RSpec.describe TimeSlotGenerationService, type: :service do
       ],
       slot_interval_minutes: 20,
       excluded_dates: [Date.new(2021, 1, 4)],
-      weekdays: [*1..5], # 0 = Sunday
+      weekdays: [*1..5] # 0 = Sunday
     )
   end
   let(:expected_time_slot_attributes_file) do
@@ -69,7 +69,7 @@ RSpec.describe TimeSlotGenerationService, type: :service do
       Date.new(2021, 1, 2), # Saturday
       Date.new(2021, 1, 3), # Sunday
       Date.new(2021, 1, 9), # Saturday
-      Date.new(2021, 1, 10), # Sunday
+      Date.new(2021, 1, 10) # Sunday
     ]
     unexpected_date_found = all_generated_attributes.any? do |slot_attributes|
       slot_attributes[:start].to_date.in?(weekday_excluded_dates)
@@ -121,10 +121,7 @@ RSpec.describe TimeSlotGenerationService, type: :service do
   # writes to a file for diffing with expected attributes
   #
   def dump_attributes_and_build_failure_message(all_generated_attributes_json)
-    generated_attributes_file = Rails.root.join(
-      "tmp",
-      "generated_attributes_file.json"
-    )
+    generated_attributes_file = Rails.root.join('tmp/generated_attributes_file.json')
 
     File.write(generated_attributes_file, all_generated_attributes_json)
 

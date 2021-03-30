@@ -8,49 +8,55 @@ Rails:
 
 AllCops:
   Exclude:
-    - 'db/schema.rb'
-    - 'bin/**/*'
-    - 'vendor/**/*'
-    - 'node_modules/**/*'
-    - 'tmp/**/*'
-    - 'config/**/*'
-    - 'lib/tasks/*.rake'
-    - 'Guardfile'
-    - 'Dangerfile'
+    - './db/schema.rb'
+    - './bin/**/*'
+    - './vendor/**/*'
+    - './node_modules/**/*'
+    - './tmp/**/*'
+    - './config/**/*'
+    - './lib/tasks/*.rake'
+    - './Guardfile'
+    - './Dangerfile'
   NewCops: enable
   TargetRubyVersion: 2.7.2
 
 Documentation:
   Enabled: false
 
+Style/AsciiComments:
+  Enabled: false
+
 Layout/LineLength:
   Max: 130
 
 Metrics/AbcSize:
+  Max: 20
   Exclude:
-    - 'db/**/*'
+    - './db/**/*'
 
 Metrics/BlockLength:
   Exclude:
-    - 'Rakefile'
-    - '**/*.rake'
-    - 'test/**/*'
-    - 'spec/**/*'
-    - 'db/migrate/**'
+    - './Rakefile'
+    - './lib/**/*.rake'
+    - './spec/**/*'
+    - './db/migrate/**'
 
 Metrics/ClassLength:
+  Max: 200
   Exclude:
-    - 'test/**/*'
-    - 'spec/**/*'
+    - './spec/**/*'
 
 Metrics/MethodLength:
+  Max: 20
   Exclude:
-    - 'db/migrate/**'
-    - 'test/**/*'
-    - 'spec/**/*'
+    - './db/migrate/**'
+    - './spec/**/*'
 
 Style/ClassAndModuleChildren:
   EnforcedStyle: nested
 
 Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Rails/HasAndBelongsToMany:
   Enabled: false

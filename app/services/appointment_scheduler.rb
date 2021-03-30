@@ -1,48 +1,107 @@
 class AppointmentScheduler
-  def initialize(max_schedule_time_ahead:)
-    @max_schedule_time_ahead = if max_schedule_time_ahead.is_a?(ActiveSupport::Duration)
-      max_schedule_time_ahead
-    else
-      max_schedule_time_ahead.days
+  class NoFreeSlotsAhead < StandardError; end
+
+  ROUNDING = 2.minutes # delta to avoid rounding issues
+
+  CONDITIONS_UNMET = :conditions_unmet
+  NO_SLOTS = :no_slots
+  SUCCESS = :success
+
+  attr_reader :earliest_allowed, :latest_allowed
+
+  # Scheduler for appointments, enabling appointments to be made between +earliest_allowed+ and +latest_allowed+ dates
+  def initialize(earliest_allowed:, latest_allowed:)
+    @earliest_allowed = earliest_allowed
+    @latest_allowed = latest_allowed
+  end
+
+  # Schedules an appointment for +patient+ starting +from+ a given timestamp, optionally with a +ubs_id+ (which can be
+  # nil in case we want to schedule on any Ubs available to the +patient+).
+  # It will schedule on the first possible time until the +latest_allowed+.
+  # Checks if the user can schedule, otherwise returns +CONDITIONS_UNMET+.
+  # Looks for appointments, and tries to schedule one. If it can't, it will return +NO_SLOTS+.
+  # In case it can, it will also cancel the patient's current schedule for an existing appointment, and in the end it
+  # returns +SUCCESS+ and the newly scheduled appointment.
+  def schedule(patient:, ubs_id:, from:)
+    return [CONDITIONS_UNMET] unless patient.can_schedule?
+
+    current_appointment = patient.appointments.current
+
+    Appointment.transaction(isolation: :repeatable_read) do
+      success = update_appointment(
+        patient_id: patient.id,
+        ubs_id: ubs_id,
+        start: rounded_from(from)..latest_allowed
+      )
+      return [NO_SLOTS] unless success
+
+      new_appointment = patient.appointments.waiting.where.not(id: current_appointment&.id).first!
+      if current_appointment
+        # Update new appointment with data from current
+        new_appointment.update!(
+          vaccine_name: current_appointment.vaccine_name
+        )
+
+        # Free up current appointment if it wasn't checkout out (completed)
+        unless current_appointment.checked_out?
+          current_appointment.update!(patient: nil, check_in: nil, check_out: nil, second_dose: nil, vaccine_name: nil)
+        end
+      end
+
+      [SUCCESS, new_appointment]
     end
   end
 
-  def schedule(raw_start_time:, ubs:, patient:)
-    start_time = Time.parse(raw_start_time)
+  # Cancels schedule for an appointment for a given patient, in a SQL efficient way
+  def cancel_schedule(patient:, id:)
+    patient.appointments
+           .waiting
+           .where(id: id)
+           .update_all(patient_id: nil, updated_at: Time.zone.now) # rubocop:disable Rails/SkipsModelValidations
+  end
 
-    return [:inactive_ubs] unless ubs.active?
-    return [:invalid_schedule_time] if start_time > (Time.zone.now + @max_schedule_time_ahead).at_end_of_day
+  def open_times_per_ubs(from:, to:)
+    from = [from, earliest_allowed].compact.max - ROUNDING
 
-    Appointment.transaction(isolation: :repeatable_read) do
-      patient.reload
+    Appointment.available_doses
+               .where(start: rounded_from(from)..to)
+               .order(:start) # in chronological order
+               .select(:ubs_id, :start, :end) # only return what we care with
+               .distinct # remove duplicates (same as .uniq in pure Ruby)
+               .group_by(&:ubs) # transforms it into a Hash grouped by Ubs
+  end
 
-      return [:schedule_conditions_unmet] unless patient.can_schedule?
+  # Returns how many days ahead there are available appointments
+  def days_ahead_with_open_slot
+    next_available_appointment = Appointment.available_doses
+                                            .where(start: earliest_allowed..latest_allowed)
+                                            .order(:start)
+                                            .pick(:start)
 
-      appointment = Appointment.where(start: (start_time - 1.minute)..(start_time + 1.minute),
-                                      ubs_id: ubs.id, patient_id: nil)
-        .order('random()') # reduces row lock contention
-        .first
+    raise NoFreeSlotsAhead unless next_available_appointment
 
-      return [:all_slots_taken] unless appointment.present?
+    ((next_available_appointment - Time.zone.now.end_of_day) / 1.day).ceil
+  end
 
-      patient.appointments.future.update_all(patient_id: nil)
+  protected
 
-      appointment.update!(
-        patient_id: patient.id,
-        second_dose: patient.appointments.current&.check_out.present?,
-        vaccine_name: patient.appointments.current&.vaccine_name
-      )
+  # Checks if we can schedule +from+ that time and then rounds to avoid issues with time conversion
+  def rounded_from(from)
+    [earliest_allowed, from].compact.max - ROUNDING
+  end
 
-      # TODO: remove this after we get rid of last_appointment
-      patient.update!(last_appointment: appointment)
+  def update_appointment(patient_id:, start:, ubs_id:)
+    # Single SQL query to update the first available record it can find
+    # it will either return 0 if no rows could be found, or 1 if it was able to schedule an appointment
+    appointment = Appointment.available_doses
+                             .order(:start)
+                             .where(start: start)
+                             .limit(1)
 
-      [:success, appointment]
-    end
-  rescue ActiveRecord::SerializationFailure
-    [:all_slots_taken]
-  rescue => e
-    Sentry.capture_exception(e)
+    appointment = appointment.where(ubs_id: ubs_id) if ubs_id.present?
 
-    [:internal_error, e.message]
+    appointment
+      .update_all(patient_id: patient_id, updated_at: Time.zone.now) # rubocop:disable Rails/SkipsModelValidations
+      .positive? # 0 = false, 1 = true
   end
 end

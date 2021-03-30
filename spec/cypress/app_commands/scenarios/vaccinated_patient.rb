@@ -1,37 +1,33 @@
-patient = Patient.new
-patient.name = 'vaccinated marvin'
-patient.cpf = command_options['cpf']
-patient.mother_name = 'Tristeza'
-patient.birth_date = '1920-01-10'
-patient.phone = '(47) 91234-5678'
-patient.neighborhood = 'América'
-patient.groups << Group.find_by(name: 'Trabalhador(a) da Saúde')
-patient.save!
+Patient.create!(
+  name: 'vaccinated marvin',
+  cpf: command_options['cpf'],
+  mother_name: 'Tristeza',
+  birth_date: '1920-06-24',
+  phone: '(47) 91234-5678',
+  public_place: 'Rua das Flores',
+  place_number: '1',
+  neighborhood: 'América',
+  groups: [Group.find_by!(name: 'Trabalhador(a) da Saúde')]
+).tap do |patient|
+  ubs = Ubs.first!
 
-ubs = Ubs.first
+  patient.appointments.create!(
+    start: Time.zone.yesterday.at_beginning_of_day,
+    end: Time.zone.yesterday.at_beginning_of_day,
+    vaccine_name: 'coronavac',
+    check_in: Time.zone.yesterday.at_beginning_of_day,
+    check_out: Time.zone.yesterday.at_beginning_of_day,
+    active: true,
+    ubs: ubs
+  )
 
-Appointment.create!(
-  start: Time.zone.yesterday.at_beginning_of_day,
-  end: Time.zone.yesterday.at_beginning_of_day,
-  patient_id: patient.id,
-  second_dose: false,
-  vaccine_name: 'coronavac',
-  check_in: Time.zone.yesterday.at_beginning_of_day,
-  check_out: Time.zone.yesterday.at_beginning_of_day,
-  active: true,
-  ubs: ubs
-)
-
-second_appointment = Appointment.create!(
-  start: Time.zone.today.at_beginning_of_day,
-  end: Time.zone.today.at_beginning_of_day,
-  patient_id: patient.id,
-  second_dose: true,
-  vaccine_name: 'coronavac',
-  check_in: Time.zone.today.at_beginning_of_day,
-  check_out: Time.zone.today.at_beginning_of_day,
-  active: true,
-  ubs: ubs
-)
-
-patient.update!(last_appointment: second_appointment)
+  patient.appointments.create!(
+    start: Time.zone.today.at_beginning_of_day,
+    end: Time.zone.today.at_beginning_of_day,
+    vaccine_name: 'coronavac',
+    check_in: Time.zone.today.at_beginning_of_day,
+    check_out: Time.zone.today.at_beginning_of_day,
+    active: true,
+    ubs: ubs
+  )
+end

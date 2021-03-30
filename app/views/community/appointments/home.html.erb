@@ -1,0 +1,17 @@
+<% if @appointment.present? %>
+  <%= render "home_has_appointment" %>
+
+<% else %>
+  <div class="row">
+    <div class="col mb-4 text-center">
+      <h4 data-cy="noAppointmentText">Você não possui vacinação agendada.</h4>
+    </div>
+  </div>
+
+  <% if current_patient.can_schedule? -%>
+    <%= render "home_can_schedule" %>
+
+  <% else -%>
+    <%= render "home_cannot_schedule" %>
+  <% end -%>
+<% end %>

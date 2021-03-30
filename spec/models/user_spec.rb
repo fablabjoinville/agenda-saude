@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  it 'should have an emails' do
-    user = FactoryBot.build(:user)
-    expect(user.email).to include('@')
-    expect(user.password).to eq('password')
+  it 'has valid factory' do
+    expect(
+      build(:user)
+    ).to be_valid
   end
 end

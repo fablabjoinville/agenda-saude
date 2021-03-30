@@ -1,0 +1,184 @@
+<div class="row">
+  <div class="col-12">
+    <h3><%= t "appointments.state.#{@appointment.state}" %></h3>
+  </div>
+</div>
+
+<div class="card mb-5">
+  <div class="card-header" style="font-size: 1.5rem;">
+    <strong>
+      <%= l @appointment.start, format: :human %>
+    </strong>
+  </div>
+  <div class="card-body">
+    <div class="patient-name">
+      <%= @appointment.patient.name %>
+    </div>
+
+    <% if @appointment.state == :suspended %>
+      <i class="fa fa-times-circle icons" aria-hidden="true" style="color: red"></i>
+    <% elsif @appointment.state == :checked_out %>
+      <i class="fa fa-check-circle icons" aria-hidden="true" style="color: green"></i>
+    <% elsif @appointment.state == :checked_in %>
+      <i class="fa fa-user-circle icons" aria-hidden="true" style="color: green"></i>
+    <% elsif @appointment.state == :checked_in %>
+      <i class="fa fa-hourglass-half" aria-hidden="true" style="color: blue"></i>
+    <% end %>
+
+    <div class="text-muted">
+      CPF: <%= ApplicationHelper.humanize_cpf(@appointment.patient.cpf) %>
+      <br>
+      Telefones: <%= [@appointment.patient.phone.presence, @appointment.patient.other_phone.presence].compact.join(", ") %>
+      <br>
+      Bairro: <%= @appointment.patient.neighborhood %>
+    </div>
+
+    <p style="padding-top: 2%">
+      <% @appointment.patient.conditions.each do |group| %>
+        <span class="badge badge-pill badge-primary pills-groups"><%= group %></span>
+      <% end %>
+    </p>
+
+    <p>
+      <% if @appointment.suspended? %>
+        <span class="badge badge-pill badge-danger pills-info">Agendamento suspenso</span>
+        <p>
+          <strong>
+            Motivo:
+          </strong>
+          <em>
+            <%= @appointment.suspend_reason %>
+          </em>
+        </p>
+      <% end -%>
+
+      <% if @appointment.checked_in? %>
+        <span class="badge badge-pill badge-info pills-info" data-cy="checkInOkTag">Check-in OK</span>
+      <% else %>
+        <% if Time.zone.now + ENV['EARLY_PATIENT_WARNING_MINUTES'].to_i.minutes < @appointment.start %>
+          <span class="badge badge-pill badge-warning pills-info">Agendamento distante</span>
+        <% end %>
+        <% if @appointment.start < ENV['LATE_PATIENT_TOLERANCE_MINUTES'].to_i.minutes.ago %>
+          <span class="badge badge-pill badge-warning pills-info">Paciente atrasado</span>
+        <% end %>
+      <% end %>
+
+      <% if @appointment.checked_out? -%>
+        <span class="badge badge-pill badge-info pills-info" data-cy="checkOutOkTag">Check-out OK</span>
+      <% end -%>
+
+      <% if @appointment.vaccine_name.present? -%>
+        <span class="badge badge-pill badge-success pills-info" data-cy="vaccineNameTag">2<sup>a</sup> dose: <%= @appointment.vaccine_name.humanize.capitalize %></span>
+      <% end %>
+    </p>
+  </div>
+</div>
+
+<% if @appointment.suspended? -%>
+  <div class="row text-center mb-3">
+    <div class="col-md-12">
+      <%= form_with model: @appointment, url: activate_operator_appointment_path, method: :patch, local: true do |f| %>
+        <%= f.submit "Reativar agendamento (cancela a suspensão)",
+                    class: "btn btn-outline-danger btn-lg",
+                    data: {
+                      confirm: t(:"appointments.confirmation.activate", name: @appointment.patient.name)
+                    } %>
+        <% end %>
+    </div>
+  </div>
+<% elsif @appointment.checked_out? %>
+  <p>Atendimento finalizado.</p>
+<% elsif @appointment.checked_in? %>
+  <%= form_for @appointment, url: check_out_operator_appointment_path, local: true do |f| %>
+    <div class="row">
+      <div class="col text-center mb-2">
+        <h3>Qual vacina foi aplicada?</h3>
+      </div>
+    </div>
+    <% if @appointment.vaccine_name.present? -%>
+      <p data-cy="secondDoseVaccineText">Paciente obrigatoriamente deverá receber o reforço com a vacina <strong><%= @appointment.vaccine_name %></strong>.</p>
+    <% else -%>
+      <div class="row justify-content-md-center mb-4">
+        <% ReceptionService::VACCINES.sort.each do |vaccine_name_code| -%>
+          <div class="col text-center col-lg-3">
+            <%= f.radio_button :vaccine_name, vaccine_name_code,
+                               autocomplete: false,
+                               class: "btn-check",
+                               data: { cy: "vaccineRadioButton" } %>
+            <%= f.label "vaccine_name_#{vaccine_name_code}", vaccine_name_code.humanize.capitalize,
+                        class: "btn btn-secondary" %>
+          </div>
+        <% end -%>
+      </div>
+    <% end -%>
+    <div class="row">
+      <div class="col-md-12 text-center mb-5">
+        <%= f.submit "Realizar Check-out",
+                     class: "btn btn-success btn-block btn-lg",
+                     data: {
+                       cy: "checkOutConfirmationButton",
+                       confirm: t(:"appointments.confirmation.checkout", name: @appointment.patient.name)
+                     } %>
+      </div>
+    </div>
+  <% end -%>
+<% elsif @appointment.waiting? %>
+  <div class="row text-center">
+    <div class="col-md-12">
+      <% if @appointment.in_allowed_check_in_window? -%>
+        <%= form_with model: @appointment, url: check_in_operator_appointment_path, method: :patch, local: true do |f| %>
+          <%= f.submit "Realizar Check-in",
+                        class: "btn btn-success btn-block btn-lg",
+                        data: {
+                          cy: "checkInConfirmationButton",
+                          confirm: t(:"appointments.confirmation.checkin", name: @appointment.patient.name)
+                        } %>
+        <% end -%>
+      <% else -%>
+        Não é possível realizar check-in para outra data.
+      <% end -%>
+    </div>
+  </div>
+
+  <div class="row text-center mt-5">
+    <div class="col-md-12">
+      <%= form_with model: @appointment, url: suspend_operator_appointment_path, method: :patch, local: true do |f| %>
+        <div class="input-group mb-3">
+          <%= f.text_field :suspend_reason, required: true, class: "form-control", placeholder: 'Informe o motivo da suspensão' %>
+          <div class="input-group-append">
+            <%= f.submit "Suspender agendamento",
+                         class: "btn btn-outline-danger",
+                         data: {
+                           confirm: t(:"appointments.confirmation.suspend", name: @appointment.patient.name)
+                         } %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+
+<div class="mt-4 mb-5">
+  <% if @other_appointments.any? -%>
+    <h4>Outros agendamentos deste paciente:</h4>
+    <ol>
+      <% @other_appointments.each do |appointment| -%>
+        <li>
+          <%= link_to l(appointment.start, format: :human), [:operator, appointment] %>
+          (<%= appointment.start.future? ? "em " : "foi a " %><%= distance_of_time_in_words_to_now(appointment.start) %>)
+          na unidade <%= appointment.ubs.name %>
+          para receber <%= appointment.vaccine_name.humanize.capitalize %>
+        </li>
+      <% end -%>
+    </ol>
+  <% end -%>
+</div>
+
+<div class="row text-center">
+  <div class="col-md-12">
+    <%= link_to "Voltar para agendamentos aguardando check-in", operator_appointments_path, class: "btn-lg",
+                data: { cy: "backToCheckInListButton" } %>
+  </div>
+</div>
+
+<%= stylesheet_link_tag :ubs %>

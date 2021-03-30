@@ -1,0 +1,35 @@
+<h1>Pacientes</h1>
+
+<p>
+  Filtros:
+  <%= link_to "Nenhum filtro", admin_patients_path %> |
+  <%= link_to "Bloqueados", admin_patients_path(filter: "locked") %>
+</p>
+
+<table class="table table-hover">
+  <thead>
+  <tr>
+    <th scope="col">CPF</th>
+    <th scope="col">Paciente</th>
+    <th scope="col"></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @patients.each do |patient| -%>
+    <tr data-cy="patient">
+      <th scope="row" class="align-middle">
+        <%= link_to patient.cpf, admin_patient_path(id: patient.id) %>
+      </th>
+      <td>
+        <%= link_to patient.name, admin_patient_path(id: patient.id) %>
+      </td>
+      <td>
+      </td>
+    </tr>
+  <% end -%>
+  </tbody>
+</table>
+
+<div>
+  <%= paginate @patients %>
+</div>

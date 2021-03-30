@@ -5,77 +5,64 @@ describe('patient appointment flow', () => {
     cy.visit('/')
   })
 
-  context('when patient is a second dose patient', () => {
+  // TODO:
+  // context('when patient cannot schedule', () => {
+  // })
+
+  context('when patient can schedule', () => {
     beforeEach(() => {
-      cy.appScenario('second_dose_patient', { cpf: cpf });
-
+      cy.appScenario('marvin_son_of_tristeza', { cpf: cpf });
       cy.visit('/')
-
       cy.loginAsPatient(cpf)
     })
 
-    it('can cancel and reeschedule same vaccine', () => {
-      cy.get('[data-cy=appliedVaccineName]').should('contain', 'Coronavac')
+    context('when there are doses', () => {
+      it('can schedule, reschedule, and cancel', () => {
+        cy.get('[data-cy=dosesAvailableText]').should('exist')
+        cy.get('[data-cy=scheduleAppointmentButton]').click()
+        cy.get('[data-cy=scheduledAppointmentText]').should('exist')
 
-      cy.get('[data-cy=cancelAppointmentButton]').click()
-      cy.createOrReplaceAppointment()
+        cy.get('[data-cy=appointmentRescheduleButton]').click()
+        cy.get('[data-cy=nextDayButton]').click()
+        cy.get('[data-cy=scheduleTimeButton]:last').click()
+        cy.get('[data-cy=scheduledAppointmentText]').should('exist')
 
-      cy.get('[data-cy=appliedVaccineName]').should('contain', 'Coronavac')
+        cy.get('[data-cy=appointmentCancelButton]').click()
+        cy.get('[data-cy=scheduledAppointmentText]').should('not.exist')
+        cy.get('[data-cy=dosesAvailableText]').should('exist')
+      })
     })
+
+    // TODO:
+    // context('when there are no doses available', () => {
+    // })
   })
 
-  context('when patient is not already vaccinated', () => {
-    beforeEach(() => {
-      cy.visit('/')
+  // TODO:
+  // context('when appointment is in the past', () => {
+  // })
 
-      cy.appScenario('marvin_son_of_tristeza', { cpf: cpf })
+  context('when patient is a second dose patient', () => {
+    beforeEach(() => {
+      cy.appScenario('second_dose_patient', {cpf: cpf});
+      cy.visit('/')
 
       cy.loginAsPatient(cpf)
     })
 
-    context('when has future appointment scheduled', () => {
-      beforeEach(() => {
-        cy.appScenario('appointment_today', { cpf: cpf });
+    it('can replace same vaccine, and cancel and reschedule', () => {
+      cy.get('[data-cy=appliedVaccineName]').should('contain', 'Coronavac')
 
-        cy.visit('/')
-      })
+      // Reschedule button
+      cy.get('[data-cy=appointmentRescheduleButton]').click()
+      cy.get('[data-cy=nextDayButton]').click()
+      cy.get('[data-cy=scheduleTimeButton]:last').click()
+      cy.get('[data-cy=appliedVaccineName]').should('contain', 'Coronavac')
 
-      it('replace appointment', () => {
-        cy.createOrReplaceAppointment()
-
-        cy.get('[data-cy=currentAppointmentText]').should('exist')
-      })
-
-      it('cancel appointment', () => {
-        cy.get('[data-cy=cancelAppointmentButton]').click()
-        cy.get('[data-cy=noAppointmentYetText]').should('exist')
-      })
-    })
-
-    context('when has no future appointment scheduled', () => {
-      context('when patient is allowed', () => {
-        it('create appointment', () => {
-          cy.createOrReplaceAppointment()
-
-          cy.get('[data-cy=currentAppointmentText]').should('exist')
-        })
-      })
-    })
-
-    context('when patient not attended yesterday', () => {
-      beforeEach(() => {
-        cy.appScenario('appointment_no_attended_yesterday', { cpf: cpf });
-      })
-
-      it('has no appointment scheduled', () => {
-        cy.get('[data-cy=noAppointmentYetText]').should('exist')
-      })
-
-      it('create appointment', () => {
-        cy.createOrReplaceAppointment()
-
-        cy.get('[data-cy=currentAppointmentText]').should('exist')
-      })
+      // Cancel and re-schedule
+      cy.get('[data-cy=appointmentCancelButton]').click()
+      cy.get('[data-cy=scheduleAppointmentButton]').click()
+      cy.get('[data-cy=appliedVaccineName]').should('contain', 'Coronavac')
     })
   })
 

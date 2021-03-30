@@ -1,5 +1,5 @@
 function updateSubGroups(group_id) {
-  var parentCheckbox = document.getElementById(`patient_groups_${group_id}`);
+  var parentCheckbox = document.getElementById(`patient_group_ids_${group_id}`);
   var subGroupsList = document.getElementById(`subgroups-list-${group_id}`);
 
   if(subGroupsList == undefined) {
