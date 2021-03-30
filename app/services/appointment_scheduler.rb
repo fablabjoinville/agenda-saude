@@ -93,13 +93,10 @@ class AppointmentScheduler
   def update_appointment(patient_id:, start:, ubs_id:)
     # Single SQL query to update the first available record it can find
     # it will either return 0 if no rows could be found, or 1 if it was able to schedule an appointment
-    appointment = Appointment
-                  .active_ubs
-                  .open
-                  .not_scheduled
-                  .order(:start)
-                  .where(start: start)
-                  .limit(1)
+    appointment = Appointment.available_doses
+                             .order(:start)
+                             .where(start: start)
+                             .limit(1)
 
     appointment = appointment.where(ubs_id: ubs_id) if ubs_id.present?
 
