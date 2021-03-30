@@ -8,7 +8,7 @@ module Admin
                          .page(index_params[:page])
                          .per(25)
 
-      @patients = @patients.locked if index_params[:filter] == "locked"
+      @patients = @patients.locked if index_params[:filter] == 'locked'
     end
 
     def show; end
