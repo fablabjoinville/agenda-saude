@@ -43,6 +43,11 @@ on_worker_boot do
   ActiveRecord::Base.establish_connection
 end
 
+# https://devcenter.heroku.com/articles/language-runtime-metrics-ruby#getting-started
+before_fork do
+  Barnes.start # Must have enabled worker mode for this to block to be called
+end
+
 lowlevel_error_handler do |ex, env|
 #  Raven.capture_exception(ex, message: ex.message, extra: { puma: env }, culprit: 'Puma')
   [500, { 'Content-Type' => 'text/html' }, File.open(Rails.root.join('public', '500.html'))]
