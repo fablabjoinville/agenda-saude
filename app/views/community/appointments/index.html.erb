@@ -65,6 +65,12 @@
     <div class="col">
       <div class="card">
         <ul class="list-group list-group-flush">
+          <% if @appointments.empty? -%>
+            <li class="list-group-item">
+              <h4 class="text-muted mt-5 mb-5 text-center">Nenhuma vaga disponível neste dia.</h4>
+            </ul>
+          <% end -%>
+
           <% @appointments.each do |ubs, slots| -%>
             <li class="list-group-item">
               <h4>
