@@ -27,7 +27,14 @@ class Appointment < ApplicationRecord
   scope :active_ubs, -> { left_joins(:ubs).where(Ubs.arel_table[:active].eq(true)) }
 
   # Active and not checked in or out (regardless if in the past or future)
-  scope :open, -> { active.not_checked_in.not_checked_out }
+  scope :waiting, -> { not_checked_in.not_checked_out }
+
+  scope :available_doses, lambda {
+                            active_ubs
+                              .active
+                              .waiting
+                              .not_scheduled
+                          }
 
   scope :search_for, lambda { |text|
     joins(:patient)

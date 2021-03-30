@@ -9,9 +9,10 @@ module Community
 
       return unless current_patient.can_schedule?
 
-      @appointments_count = Appointment.active_ubs
-                                       .open
-                                       .not_scheduled
+      from = Rails.configuration.x.schedule_from_hours.hours.from_now
+      to = Rails.configuration.x.schedule_up_to_days.days.from_now.end_of_day
+      @appointments_count = Appointment.available_doses
+                                       .where(start: from..to)
                                        .count
     end
 

@@ -52,10 +52,10 @@ class AppointmentScheduler
     end
   end
 
-  # Cancels schedule for an appointment for a given user, in a SQL efficient way
+  # Cancels schedule for an appointment for a given patient, in a SQL efficient way
   def cancel_schedule(patient:, id:)
     patient.appointments
-           .open
+           .waiting
            .where(id: id)
            .update_all(patient_id: nil, updated_at: Time.zone.now) # rubocop:disable Rails/SkipsModelValidations
   end
@@ -63,10 +63,7 @@ class AppointmentScheduler
   def open_times_per_ubs(from:, to:)
     from = [from, earliest_allowed].compact.max - ROUNDING
 
-    Appointment.active_ubs
-               .active
-               .not_scheduled
-               .open
+    Appointment.available_doses
                .where(start: rounded_from(from)..to)
                .order(:start) # in chronological order
                .select(:ubs_id, :start, :end) # only return what we care with
@@ -76,9 +73,7 @@ class AppointmentScheduler
 
   # Returns how many days ahead there are available appointments
   def days_ahead_with_open_slot
-    next_available_appointment = Appointment.active_ubs
-                                            .open
-                                            .not_scheduled
+    next_available_appointment = Appointment.available_doses
                                             .where(start: earliest_allowed..latest_allowed)
                                             .order(:start)
                                             .pick(:start)
