@@ -1,6 +1,5 @@
 class HomeController < ApplicationController
   def index
-    return redirect_to index_bedridden_path if current_patient&.bedridden?
     return redirect_to home_community_appointments_path if current_patient
     return redirect_to operator_appointments_path if current_user
 
