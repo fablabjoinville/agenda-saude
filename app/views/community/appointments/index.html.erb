@@ -74,7 +74,7 @@
           <% end -%>
 
           <nav class="navbar navbar-light bg-light">
-            <h2 class="navbar-brand" id="top">Unidades:</h2>
+            <h2 class="navbar-brand" id="top">Unidades com disponibilidade neste dia:</h2>
             <ul class="nav nav-pills">
               <% @appointments.each do |ubs, _| -%>
                 <li class="nav-item">
@@ -87,7 +87,7 @@
           <% @appointments.each do |ubs, slots| -%>
             <li class="list-group-item mt-4">
               <div class="row">
-                <div class="col-10">
+                <div class="col-md-10">
                   <h4 id="ubs<%= ubs.id %>">
                     <%= ubs.name %>
                     <small>
@@ -96,7 +96,7 @@
                     </small>
                   </h4>
                 </div>
-                <div class="col-2">
+                <div class="col-md-2">
                   <a href="#top" class="btn btn-secondary btn-block">Voltar ao topo</a>
                 </div>
               </div>
