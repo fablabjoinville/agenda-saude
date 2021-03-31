@@ -1,6 +1,4 @@
 class Ubs < ApplicationRecord
-  include TimeSlot
-
   validate :times_must_be_ordered
   validates :slot_interval_minutes, inclusion: 1...120
   validates :appointments_per_time_slot, numericality: { greater_than: 0 }
@@ -54,6 +52,10 @@ class Ubs < ApplicationRecord
 
   def bedridden_patients
     Patient.where(main_ubs: self).bedridden
+  end
+
+  def time_of_day(time, date)
+    Tod::TimeOfDay.parse(time).on(date).in_time_zone
   end
 
   private
