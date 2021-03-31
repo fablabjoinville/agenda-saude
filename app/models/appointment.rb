@@ -79,4 +79,8 @@ class Appointment < ApplicationRecord
 
     :waiting
   end
+
+  def hashid
+    Hasher.for appointment: self
+  end
 end

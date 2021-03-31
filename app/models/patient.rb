@@ -56,6 +56,10 @@ class Patient < ApplicationRecord
     self[:cpf] = Patient.parse_cpf(string)
   end
 
+  def human_cpf
+    ApplicationHelper.humanize_cpf(cpf)
+  end
+
   def conditions
     CONDITIONS.select { |_, f| f.call(self) }.map { |c, _| c }
   end

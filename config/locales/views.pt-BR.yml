@@ -31,6 +31,12 @@ pt-BR:
         other: 'Não foi possível salvar %{resource}: %{count} erros.'
 
   alerts:
+    mismatched_hashid: >
+      A senha apresentada é referente ao paciente %{name} (CPF %{cpf}), porém a vaga atualmente encontra-se reservada
+      para outra pessoa. Isso pode significar que o paciente cancelou a vaga ou a reagendou para outra data, e este
+      agendamento foi reservado para outra pessoa. Abaixo encontra-se a lista de agendamentos para este paciente
+      nesta unidade no dia de hoje.
+
     patient_disabled_reschedule: >
       Devido a alta demanda, o reagendamento está temporariamente desativado. Se você não poder comparecer no horário,
       dia e local estabelecidos, tente reagendar novamente mais tarde, ou cancele seu agendamento e tente agende

@@ -9,6 +9,11 @@ module Admin
                         .per(25)
 
       if index_params[:search].present?
+        @search = index_params[:search]
+
+        _, patient_id = Hasher.find_ids(index_params[:search])
+        return redirect_to admin_patient_path(id: patient_id) if patient_id.present?
+
         patients = patients.search_for(index_params[:search])
       end
 

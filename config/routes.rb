@@ -45,6 +45,8 @@ Rails.application.routes.draw do
     end
   end
 
+  get 'a/:id', to: redirect('/operator/appointments?search=%{id}'), as: :notary_appointment
+
   get 'community', to: redirect('/community/appointments/home')
   get 'operator', to: redirect('/operator/appointments')
   get 'admin', to: redirect('/admin/patients')

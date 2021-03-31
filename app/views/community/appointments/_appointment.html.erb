@@ -10,18 +10,13 @@
 </div>
 <div class="row">
   <div class="col">
-    <strong>Endereço:</strong> <%= appointment.ubs.address %>
+    <strong>Endereço:</strong> <%= appointment.ubs.address %> (<%= appointment.ubs.neighborhood %>)
   </div>
 </div>
 <div class="row">
   <div class="col">
     <strong>Paciente:</strong> <%= appointment.patient.name %>
-  </div>
-</div>
-
-<div class="row">
-  <div class="col text-muted">
-    Código do agendamento: <%= "U#{@appointment.ubs_id}P#{@appointment.patient_id}A#{@appointment.id}" %>
+    (<%= ApplicationHelper.humanize_cpf appointment.patient.cpf %>)
   </div>
 </div>
 

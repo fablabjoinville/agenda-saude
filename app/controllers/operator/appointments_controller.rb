@@ -8,6 +8,8 @@ module Operator
       checked_out: 'checked_out'
     }.freeze
 
+    before_action :process_hashid, only: :index
+
     # rubocop:disable Metrics/AbcSize
     def index
       appointments = @ubs.appointments
@@ -30,6 +32,7 @@ module Operator
         end
       end
     end
+
     # rubocop:enable Metrics/AbcSize
 
     def show
@@ -74,6 +77,7 @@ module Operator
                                   end
                   }
     end
+
     # rubocop:enable Metrics/AbcSize
 
     # Suspend single appointment
@@ -124,6 +128,25 @@ module Operator
 
     private
 
+    def process_hashid
+      return if index_params[:search].blank?
+
+      appointment_id, patient_id = Hasher.find_ids(index_params[:search])
+
+      return if appointment_id.blank? || patient_id.blank?
+
+      appointment = Appointment.find(appointment_id)
+      tentative_patient = Patient.find(patient_id)
+
+      if appointment.patient_id.present? && tentative_patient.id == appointment.patient&.id
+        redirect_to(operator_appointment_path(id: appointment_id))
+      else
+        @search = tentative_patient.cpf
+        flash.now[:alert] =
+          I18n.t('alerts.mismatched_hashid', name: tentative_patient.name, cpf: tentative_patient.human_cpf)
+      end
+    end
+
     # Filters out appointments
     def filter(appointments)
       # use @filter from search, or input from param (permit-listed), or set to default "waiting"
@@ -143,9 +166,9 @@ module Operator
 
     # Searches for specific appointments
     def search(appointments)
-      if index_params[:search].present? && index_params[:search].size >= 3
+      if @search.present? || (index_params[:search].present? && index_params[:search].size >= 3)
         @filter = FILTERS[:search] # In case we're searching, use special filter
-        @search = index_params[:search]
+        @search ||= index_params[:search]
         return appointments.search_for(@search)
       end
 

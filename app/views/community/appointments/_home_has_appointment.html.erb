@@ -14,15 +14,43 @@
     <h4 class="card-header" data-cy="scheduledAppointmentText">Sua vacinação agendada:</h4>
     <ul class="list-group list-group-flush">
       <li class="list-group-item">
-        <%= render @appointment %>
-      </li>
-      <li class="list-group-item">
         <div class="row">
-          <div class="col">
-            <strong>Imprima ou salve uma imagem esta página no seu celular para se lembrar do agendamento.</strong>
+          <div class="order-2 col-lg-8">
+            <%= render @appointment %>
+
+            <div class="row">
+              <div class="col mt-2">
+                <strong>Atenção:</strong> para garantir seu atendimento,
+                <strong>imprima esta página</strong>,
+                <strong>salve como imagem no seu celular</strong>,
+                ou <strong>anote a senha em um pedaço de papel</strong> para apresentar no dia agendado.
+              </div>
+            </div>
+          </div>
+          <div class="order-1 col-lg-4 text-center">
+            <div id="qrcode"></div>
+            <span style="font-size: 2em">
+              Senha: <code data-cy="hashid"><%= @appointment.hashid %></code>
+            </span>
+
+            <script>
+              $(function () {
+                document.querySelector('#qrcode').appendChild(
+                  kjua({
+                    text: '<%= notary_appointment_url(id: @appointment.hashid, qrcode: '1') %>',
+                    render: 'image',
+                    crisp: true,
+                    minVersion: 1,
+                    size: 250,
+                  })
+                )
+                document.querySelector('#qrcode img').classList.add("img-thumbnail")
+              })
+            </script>
           </div>
         </div>
-
+      </li>
+      <li class="list-group-item">
         <%= render "shared/required_documents" %>
 
         <p class="mt-4">
