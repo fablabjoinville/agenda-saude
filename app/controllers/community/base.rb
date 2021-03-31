@@ -5,9 +5,13 @@ module Community
     protected
 
     def authenticate!
-      current_patient || return redirect_to(root_path)
+      if current_patient
+        Sentry.set_user(id: current_patient.id, username: current_patient.cpf)
 
-      Sentry.set_user(id: current_patient.id, username: current_patient.cpf)
+        return current_patient
+      end
+
+      redirect_to(root_path)
     end
   end
 end
