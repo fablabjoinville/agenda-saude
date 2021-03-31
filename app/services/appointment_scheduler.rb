@@ -50,6 +50,10 @@ class AppointmentScheduler
 
       [SUCCESS, new_appointment]
     end
+  rescue StandardError => e
+    Sentry.capture_exception(e)
+
+    [NO_SLOTS]
   end
 
   # Cancels schedule for an appointment for a given patient, in a SQL efficient way
