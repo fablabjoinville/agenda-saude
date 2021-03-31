@@ -25,6 +25,7 @@
       <tr>
         <th scope="col">Data agendada</th>
         <th scope="col">Unidade</th>
+        <th scope="col">Senha</th>
         <th scope="col">Check-in</th>
         <th scope="col">Check-out</th>
         <th scope="col">Vacina</th>
@@ -40,6 +41,9 @@
           </th>
           <td>
             <%= appointment.ubs.name %>
+          </td>
+          <td>
+            <%= appointment.hashid %>
           </td>
           <td>
             <% if appointment.checked_in? -%>
