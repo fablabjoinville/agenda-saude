@@ -17,12 +17,6 @@
 
 <ul class="nav nav-tabs mt-5 mb-1">
   <%= admin_nav_links(@filter, @search, @patients&.total_count) %>
-  <li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Configurações</a>
-    <div class="dropdown-menu">
-      <%= link_to "Unidades", "operator_ubs_path", class: "dropdown-item" %>
-    </div>
-  </li>
 </ul>
 
 <table class="table table-hover">
