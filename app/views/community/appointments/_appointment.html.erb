@@ -10,12 +10,13 @@
 </div>
 <div class="row">
   <div class="col">
-    <strong>Endereço:</strong> <%= appointment.ubs.address %>
+    <strong>Endereço:</strong> <%= appointment.ubs.address %> (<%= appointment.ubs.neighborhood %>)
   </div>
 </div>
 <div class="row">
   <div class="col">
     <strong>Paciente:</strong> <%= appointment.patient.name %>
+    (<%= ApplicationHelper.humanize_cpf appointment.patient.cpf %>)
   </div>
 </div>
 

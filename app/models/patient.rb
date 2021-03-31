@@ -39,6 +39,14 @@ class Patient < ApplicationRecord
 
   scope :locked, -> { where(arel_table[:login_attempts].gteq(MAX_LOGIN_ATTEMPTS)) }
 
+  scope :search_for, lambda { |text|
+    where(
+      Patient.arel_table[:cpf]
+             .eq(Patient.parse_cpf(text)) # Search for CPF without . and -
+             .or(Patient.arel_table[:name].matches("%#{text.strip}%"))
+    )
+  }
+
   # TODO: remove `chronic` field from schema
   enum target_audience: { kid: 0, elderly: 1, chronic: 2, disabled: 3, pregnant: 4, postpartum: 5,
                           teacher: 6, over55: 7, without_target: 8 }

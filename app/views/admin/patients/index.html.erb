@@ -6,6 +6,21 @@
   <%= link_to "Bloqueados", admin_patients_path(filter: "locked") %>
 </p>
 
+<div class="row mt-4">
+  <div class="col-12">
+    <%= form_with url: admin_patients_path, method: :get, local: true do |f| %>
+      <div class="input-group input-group-lg">
+        <%= f.text_field :search, autofocus: true, minlength: 3, maxlength: 100, class: "form-control",
+                         placeholder: "Digite o CPF ou nome do paciente", value: @search,
+                         data: { cy: "searchInput" } %>
+        <div class="input-group-append">
+          <%= f.submit "Buscar", class: "btn btn-outline-secondary", data: { cy: "searchSubmit" } %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
 <table class="table table-hover">
   <thead>
   <tr>
