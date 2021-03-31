@@ -24,14 +24,16 @@ describe('patient appointment flow', () => {
 
         cy.get('[data-cy=appointmentRescheduleButton]').click()
         cy.get('[data-cy=nextDayButton]').click()
-        cy.get('[data-cy=scheduleTimeButton]:last').click()
+        cy.get('[data-cy=ubs1Button]').click()
+        cy.get('#ubs1 [data-cy=scheduleTimeButton]:first').click()
         cy.get('[data-cy=scheduledAppointmentText]').should('exist')
 
         cy.get('[data-cy=scheduledAppointmentText]').should('exist')
 
         cy.get('[data-cy=appointmentRescheduleButton]').click()
         cy.get('[data-cy=nextDayButton]').click()
-        cy.get('[data-cy=scheduleTimeButton]:last').click()
+        cy.get('[data-cy=ubs1Button]').click()
+        cy.get('#ubs1 [data-cy=scheduleTimeButton]:first').click()
         cy.get('[data-cy=scheduledAppointmentText]').should('exist')
 
         cy.get('[data-cy=appointmentCancelButton]').click()
@@ -63,7 +65,8 @@ describe('patient appointment flow', () => {
       // Reschedule button
       cy.get('[data-cy=appointmentRescheduleButton]').click()
       cy.get('[data-cy=nextDayButton]').click()
-      cy.get('[data-cy=scheduleTimeButton]:last').click()
+      cy.get('[data-cy=ubs1Button]').click()
+      cy.get('#ubs1 [data-cy=scheduleTimeButton]:first').click()
       cy.get('[data-cy=appliedVaccineName]').should('contain', 'Coronavac')
 
       // Cancel and re-schedule
@@ -73,7 +76,8 @@ describe('patient appointment flow', () => {
 
       cy.get('[data-cy=appointmentRescheduleButton]').click()
       cy.get('[data-cy=nextDayButton]').click()
-      cy.get('[data-cy=scheduleTimeButton]:last').click()
+      cy.get('[data-cy=ubs1Button]').click()
+      cy.get('#ubs1 [data-cy=scheduleTimeButton]:first').click()
       cy.get('[data-cy=scheduledAppointmentText]').should('exist')
 
       cy.get('[data-cy=appliedVaccineName]').should('contain', 'Coronavac')

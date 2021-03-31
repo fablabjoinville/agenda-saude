@@ -79,7 +79,11 @@
 
           <% @appointments.each do |ubs, slots| -%>
             <li class="list-group-item mt-2">
-              <a class="" data-toggle="collapse" href="#ubs<%= ubs.id %>" role="button" aria-expanded="false" aria-controls="ubs<%= ubs.id %>">
+              <a class="" data-toggle="collapse" role="button" aria-expanded="false"
+                 href="#ubs<%= ubs.id %>"
+                 aria-controls="ubs<%= ubs.id %>"
+                 data-cy="ubs<%= ubs.id %>Button"
+              >
                 <h5>
                   <%= ubs.name %>
                   <small>
