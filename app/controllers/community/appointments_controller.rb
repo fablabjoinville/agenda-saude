@@ -80,7 +80,7 @@ module Community
         }
       when AppointmentScheduler::NO_SLOTS
         {
-          alert: 'Desculpe, mas não há mais vagas disponíveis. Tente novamente mais tarde.'
+          alert: 'Desculpe, mas não foi possível agendar. Tente novamente mais tarde.'
         }
       when AppointmentScheduler::SUCCESS
         {
