@@ -22,6 +22,7 @@ class AppointmentScheduler
   # Looks for appointments, and tries to schedule one. If it can't, it will return +NO_SLOTS+.
   # In case it can, it will also cancel the patient's current schedule for an existing appointment, and in the end it
   # returns +SUCCESS+ and the newly scheduled appointment.
+  # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
   def schedule(patient:, ubs_id:, from:)
     return [CONDITIONS_UNMET] unless patient.can_schedule?
 
@@ -50,7 +51,12 @@ class AppointmentScheduler
 
       [SUCCESS, new_appointment]
     end
+  rescue StandardError => e
+    Sentry.capture_exception(e)
+
+    [NO_SLOTS]
   end
+  # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
   # Cancels schedule for an appointment for a given patient, in a SQL efficient way
   def cancel_schedule(patient:, id:)

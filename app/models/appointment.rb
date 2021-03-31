@@ -2,8 +2,6 @@ class Appointment < ApplicationRecord
   belongs_to :ubs
   belongs_to :patient, optional: true
 
-  SLOTS_WINDOW_IN_DAYS = ENV['SLOTS_WINDOW_IN_DAYS']&.to_i || 7
-
   scope :today, -> { where(start: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day) }
 
   scope :checked_in, -> { where.not(check_in: nil) }

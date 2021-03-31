@@ -55,10 +55,10 @@
       <% if @appointment.checked_in? %>
         <span class="badge badge-pill badge-info pills-info" data-cy="checkInOkTag">Check-in OK</span>
       <% else %>
-        <% if Time.zone.now + ENV['EARLY_PATIENT_WARNING_MINUTES'].to_i.minutes < @appointment.start %>
+        <% if Time.zone.now + Rails.configuration.x.early_patient_warning_minutes.minutes < @appointment.start %>
           <span class="badge badge-pill badge-warning pills-info">Agendamento distante</span>
         <% end %>
-        <% if @appointment.start < ENV['LATE_PATIENT_TOLERANCE_MINUTES'].to_i.minutes.ago %>
+        <% if @appointment.start < Rails.configuration.x.late_patient_tolerance_minutes.ago %>
           <span class="badge badge-pill badge-warning pills-info">Paciente atrasado</span>
         <% end %>
       <% end %>

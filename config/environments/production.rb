@@ -117,14 +117,4 @@ Rails.application.configure do
   # config.active_record.database_selector = { delay: 2.seconds }
   # config.active_record.database_resolver = ActiveRecord::Middleware::DatabaseSelector::Resolver
   # config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
-
-  # Sentry DSN
-  Sentry.init do |config|
-    config.dsn = ENV['SENTRY_DSN']
-    config.breadcrumbs_logger = [:active_support_logger]
-  end
-
-  ENV['LATE_PATIENT_TOLERANCE_MINUTES'] ||= '10'
-  ENV['EARLY_PATIENT_WARNING_MINUTES'] ||= '30'
-  ENV['SLOTS_WINDOW_IN_DAYS'] ||= '7'
 end
