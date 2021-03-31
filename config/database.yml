@@ -28,3 +28,5 @@ production:
   database: <%= ENV['POSTGRESQL_DATABASE'] %>
   username: <%= ENV['POSTGRESQL_USERNAME'] %>
   password: <%= ENV['POSTGRESQL_PASSWORD'] %>
+  # PgBouncer does not support prepared statements
+  prepared_statements: false
