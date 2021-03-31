@@ -4,9 +4,16 @@ module Admin
 
     # For now, only showing locked patients
     def index
-      @patients = Patient.order(:cpf)
-                         .page(index_params[:page])
-                         .per(25)
+      patients = Patient.order(:cpf)
+                        .page(index_params[:page])
+                        .per(25)
+
+      if index_params[:search].present?
+        patients = patients.search_for(index_params[:search])
+      end
+
+      @patients = patients.page(index_params[:page])
+                          .per(25)
 
       @patients = @patients.locked if index_params[:filter] == 'locked'
     end
