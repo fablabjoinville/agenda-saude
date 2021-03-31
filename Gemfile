@@ -10,6 +10,7 @@ gem 'bootsnap', require: false
 gem 'bootstrap'
 gem 'caxlsx'
 gem 'caxlsx_rails'
+gem 'connection_pool'
 gem 'cpf_cnpj'
 gem 'devise'
 gem 'font-awesome-sass'
