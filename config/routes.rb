@@ -45,6 +45,7 @@ Rails.application.routes.draw do
     end
   end
 
+  # URL embedded in the QR code, making it short and simple so we can redirect it to any place we want
   get 'a/:id', to: redirect('/operator/appointments?search=%{id}'), as: :notary_appointment
 
   get 'community', to: redirect('/community/appointments/home')
