@@ -1,11 +1,5 @@
 <h1>Pacientes</h1>
 
-<p>
-  Filtros:
-  <%= link_to "Nenhum filtro", admin_patients_path %> |
-  <%= link_to "Bloqueados", admin_patients_path(filter: "locked") %>
-</p>
-
 <div class="row mt-4">
   <div class="col-12">
     <%= form_with url: admin_patients_path, method: :get, local: true do |f| %>
@@ -20,6 +14,16 @@
     <% end %>
   </div>
 </div>
+
+<ul class="nav nav-tabs mt-5 mb-1">
+  <%= admin_nav_links(@filter, @search, @patients&.total_count) %>
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Configurações</a>
+    <div class="dropdown-menu">
+      <%= link_to "Unidades", "operator_ubs_path", class: "dropdown-item" %>
+    </div>
+  </li>
+</ul>
 
 <table class="table table-hover">
   <thead>
