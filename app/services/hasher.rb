@@ -1,7 +1,8 @@
 class Hasher
   include Singleton
 
-  HASH_DICTIONARY = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'.freeze
+  # Hash of possibilities, WITHOUT the number 0 to avoid confusion with letter O
+  HASH_DICTIONARY = '123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'.freeze
   VERSION_0 = 'A'.freeze
 
   attr_reader :hasher
