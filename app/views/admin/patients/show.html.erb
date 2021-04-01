@@ -1,13 +1,26 @@
-<h1>
-  Paciente <%= @patient.cpf %>
-</h1>
+<h2>
+  Paciente: <%= @patient.name %>
+</h2>
 
-<p>
-  Nome: <%= @patient.name %>
-</p>
+<br/>
 
-<p>
-</p>
+<div class='row'>
+  <div class='col'>
+    <strong>CPF:</strong> <%= ApplicationHelper.humanize_cpf(@patient.cpf) %>
+  </div>
+
+  <div class='col'>
+    <strong>Nome da mãe:</strong> <%= @patient.mother_name %>
+  </div>
+
+  <div class='col'>
+    <strong>Data de Nascimento:</strong> <%= l(@patient.birth_date.to_date) %>
+  </div>
+</div>
+
+<br/>
+<hr>
+<br/>
 
 <p>
   <% if @patient.locked? -%>
@@ -55,17 +68,19 @@
             <%= appointment.vaccine_name %>
           </td>
           <td>
-            <%= appointment.active ? "" : "Suspenso por #{appointment.suspend_reason}" %>
+            <%= appointment.active ? "Não" : "Suspenso por #{appointment.suspend_reason}" %>
           </td>
         </tr>
       <% end -%>
       </tbody>
     </table>
+  <% else -%>
+    <h4>Paciente sem nenhum agendamento realizado.</h4>
   <% end -%>
 </div>
 
 
 <p>
-  <%= link_to "Voltar", :back %>
+  <%= link_to "Voltar", admin_patients_path %>
 </p>
 
