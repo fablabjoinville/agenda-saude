@@ -2,9 +2,9 @@ class Patient < ApplicationRecord
   MAX_LOGIN_ATTEMPTS = 3
 
   CONDITIONS = {
-    'População em geral com 68 anos ou mais' => ->(patient) { patient.age >= 68 }
-    # 'Trabalhador(a) da Saúde que possua vínculo ativo em alguma unidade registrada no CNES' =>
-    #   ->(patient) { patient.in_group?('Trabalhador(a) da Saúde') },
+    'Trabalhadores da saúde segundo OFÍCIO Nº 234/2021/CGPNI/DEIDT/SVS/MS' =>
+      ->(patient) { patient.in_group?('Trabalhador(a) da Saúde') },
+    # 'População em geral com 68 anos ou mais' => ->(patient) { patient.age >= 68 }
     # 'Paciente de teste' => ->(patient) { patient.cpf == ENV['ROOT_PATIENT_CPF'] },
     # 'Maiores de 60 anos institucionalizadas' =>
     #   ->(patient) { patient.age >= 60 && patient.in_group?('Institucionalizado(a)') },
