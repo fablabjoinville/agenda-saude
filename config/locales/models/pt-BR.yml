@@ -9,6 +9,10 @@
     teacher: Professor
     over55: Entre 55 anos e 59 anos
     without_target: Nenhum
+    patients:
+      state:
+        all: "Todos" # used as a filter on Admin's Patient's index
+        locked: "Bloqueado"
     appointments:
       state:
         all: "Agendamentos para hoje" # used as a filter on Operator's Appointment's index

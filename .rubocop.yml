@@ -40,6 +40,11 @@ Metrics/BlockLength:
     - './lib/**/*.rake'
     - './spec/**/*'
     - './db/migrate/**'
+    - './config/routes.rb'
+
+Style/FormatStringToken:
+  Exclude:
+    - './config/routes.rb'
 
 Metrics/ClassLength:
   Max: 200

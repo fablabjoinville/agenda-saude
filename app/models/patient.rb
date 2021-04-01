@@ -2,9 +2,9 @@ class Patient < ApplicationRecord
   MAX_LOGIN_ATTEMPTS = 3
 
   CONDITIONS = {
-    'População em geral com 68 anos ou mais' => ->(patient) { patient.age >= 68 }
-    # 'Trabalhador(a) da Saúde que possua vínculo ativo em alguma unidade registrada no CNES' =>
-    #   ->(patient) { patient.in_group?('Trabalhador(a) da Saúde') },
+    'Trabalhadores da saúde segundo OFÍCIO Nº 234/2021/CGPNI/DEIDT/SVS/MS' =>
+      ->(patient) { patient.in_group?('Trabalhador(a) da Saúde') },
+    # 'População em geral com 68 anos ou mais' => ->(patient) { patient.age >= 68 }
     # 'Paciente de teste' => ->(patient) { patient.cpf == ENV['ROOT_PATIENT_CPF'] },
     # 'Maiores de 60 anos institucionalizadas' =>
     #   ->(patient) { patient.age >= 60 && patient.in_group?('Institucionalizado(a)') },
@@ -38,6 +38,14 @@ class Patient < ApplicationRecord
   scope :bedridden, -> { where(bedridden: true) }
 
   scope :locked, -> { where(arel_table[:login_attempts].gteq(MAX_LOGIN_ATTEMPTS)) }
+
+  scope :search_for, lambda { |text|
+    where(
+      Patient.arel_table[:cpf]
+             .eq(Patient.parse_cpf(text)) # Search for CPF without . and -
+             .or(Patient.arel_table[:name].matches("%#{text.strip}%"))
+    )
+  }
 
   # TODO: remove `chronic` field from schema
   enum target_audience: { kid: 0, elderly: 1, chronic: 2, disabled: 3, pregnant: 4, postpartum: 5,
