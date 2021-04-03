@@ -3,6 +3,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable, authentication_keys: [:name]
 
   has_one :ubs, dependent: :restrict_with_exception
+  has_and_belongs_to_many :ubs # For future use [jmonteiro]
 
   def email_required?
     false
