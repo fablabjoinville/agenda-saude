@@ -138,6 +138,7 @@ ActiveRecord::Schema.define(version: 2021_04_03_182001) do
   create_table "ubs_users", force: :cascade do |t|
     t.bigint "ubs_id", null: false
     t.bigint "user_id", null: false
+    t.index ["ubs_id", "user_id"], name: "index_ubs_users_on_ubs_id_and_user_id", unique: true
     t.index ["ubs_id"], name: "index_ubs_users_on_ubs_id"
     t.index ["user_id"], name: "index_ubs_users_on_user_id"
   end
