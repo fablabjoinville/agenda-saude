@@ -17,6 +17,7 @@ gem 'jquery-rails'
 gem 'kaminari'
 gem 'newrelic_rpm'
 gem 'puma' # Use Puma as the app server
+gem 'rails_autoscale_agent'
 gem 'sass-rails' # Use SCSS for stylesheets
 gem 'sentry-rails'
 gem 'sentry-ruby'
