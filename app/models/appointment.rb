@@ -1,7 +1,6 @@
 class Appointment < ApplicationRecord
   belongs_to :ubs
   belongs_to :patient, optional: true
-  has_one :schedule, optional: true
 
   scope :today, -> { where(start: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day) }
 
