@@ -2,7 +2,8 @@ default: &default
   adapter: postgresql
   encoding: unicode
   # http://guides.rubyonrails.org/configuring.html#database-pooling
-  pool: <%= ENV.fetch('RAILS_POSTGRESQL_POOL') { 5 } %>
+  # https://devcenter.heroku.com/articles/concurrency-and-database-connections
+  pool: <%= ENV.fetch('RAILS_POSTGRESQL_POOL') { ENV.fetch('RAILS_MAX_THREADS') { 5 } } %>
   timeout: <%= ENV.fetch('RAILS_POSTGRESQL_TIMEOUT') { 5000 } %>
 
 development:
@@ -25,8 +26,6 @@ test:
 
 production:
   <<: *default
-  database: <%= ENV['POSTGRESQL_DATABASE'] %>
-  username: <%= ENV['POSTGRESQL_USERNAME'] %>
-  password: <%= ENV['POSTGRESQL_PASSWORD'] %>
+  url: <%= ENV["DATABASE_URL"] %>
   # PgBouncer does not support prepared statements
   prepared_statements: false
