@@ -22,7 +22,6 @@ class Patient < ApplicationRecord
   belongs_to :neighborhood, optional: true # For future use [jmonteiro]
   has_and_belongs_to_many :groups
   has_many :doses, dependent: :destroy # For future use [jmonteiro]
-  has_many :schedules, dependent: :destroy # For future use [jmonteiro]
 
   validates :cpf, presence: true, uniqueness: true, cpf_format: true
   validates :name, presence: true
