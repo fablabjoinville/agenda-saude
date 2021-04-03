@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_03_171540) do
+ActiveRecord::Schema.define(version: 2021_04_03_173612) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -141,6 +141,18 @@ ActiveRecord::Schema.define(version: 2021_04_03_171540) do
     t.boolean "administrator", default: false, null: false
     t.index ["name"], name: "index_users_on_name", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  end
+
+  create_table "vaccines", force: :cascade do |t|
+    t.string "name"
+    t.string "formal_name"
+    t.integer "second_dose_after_in_days"
+    t.integer "third_dose_after_in_days"
+    t.string "legacy_name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["legacy_name"], name: "index_vaccines_on_legacy_name"
+    t.index ["name"], name: "index_vaccines_on_name"
   end
 
   add_foreign_key "appointments", "ubs"
