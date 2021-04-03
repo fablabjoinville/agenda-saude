@@ -3,5 +3,4 @@ class Vaccine < ApplicationRecord
 
   validates :name, presence: true
   validates :formal_name, presence: true
-  validates :legacy_name
 end

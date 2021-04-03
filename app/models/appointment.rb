@@ -1,6 +1,7 @@
 class Appointment < ApplicationRecord
-  belongs_to :ubs
   belongs_to :patient, optional: true
+  belongs_to :ubs
+  has_one :dose, dependent: :restrict_with_exception # For future use [jmonteiro]
 
   scope :today, -> { where(start: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day) }
 

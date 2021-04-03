@@ -19,7 +19,7 @@ class Patient < ApplicationRecord
   end
 
   belongs_to :main_ubs, class_name: 'Ubs'
-  belongs_to :neighborhood, optional: true # For future use [jmonteiro]
+  # belongs_to :neighborhood, optional: true # For future use [jmonteiro]
   has_and_belongs_to_many :groups
   has_many :doses, dependent: :destroy # For future use [jmonteiro]
 
