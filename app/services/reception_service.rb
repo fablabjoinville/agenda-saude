@@ -29,7 +29,7 @@ class ReceptionService
 
   def create_second_dose_appointment(vaccine_name)
     next_appointment_start = @appointment.start + VACCINES_SECOND_DOSE_INTERVAL[vaccine_name]
-    next_appointment_end = next_appointment_start + @appointment.ubs.slot_interval_minutes.minutes
+    next_appointment_end = @appointment.end + VACCINES_SECOND_DOSE_INTERVAL[vaccine_name]
 
     Appointment.create!(
       start: next_appointment_start,
@@ -37,6 +37,7 @@ class ReceptionService
       patient_id: @appointment.patient.id,
       active: true,
       vaccine_name: vaccine_name,
+      second_dose: true,
       ubs: @appointment.ubs
     )
   end
