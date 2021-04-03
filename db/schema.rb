@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_25_161545) do
+ActiveRecord::Schema.define(version: 2021_04_03_171135) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -118,6 +118,15 @@ ActiveRecord::Schema.define(version: 2021_03_25_161545) do
     t.integer "appointments_per_time_slot", default: 1
     t.index ["cnes"], name: "index_ubs_on_cnes", unique: true
     t.index ["user_id"], name: "index_ubs_on_user_id"
+  end
+
+  create_table "ubs_users", force: :cascade do |t|
+    t.bigint "ubs_id"
+    t.bigint "user_id"
+    t.index ["ubs_id", "user_id"], name: "index_ubs_users_on_ubs_id_and_user_id"
+    t.index ["ubs_id"], name: "index_ubs_users_on_ubs_id"
+    t.index ["user_id", "ubs_id"], name: "index_ubs_users_on_user_id_and_ubs_id"
+    t.index ["user_id"], name: "index_ubs_users_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
