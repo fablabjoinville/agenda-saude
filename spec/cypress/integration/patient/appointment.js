@@ -1,13 +1,45 @@
 describe('patient appointment flow', () => {
   const cpf = '83274229792'
 
-  beforeEach(() => {
-    cy.visit('/')
-  })
+  context('when patient cannot schedule', () => {
+    beforeEach(() => {
+      cy.appScenario('marvin_son_of_tristeza', { cpf: cpf, birth_date: '2000-06-08' });
+      cy.visit('/')
+      cy.loginAsPatient(cpf)
+    })
 
-  // TODO:
-  // context('when patient cannot schedule', () => {
-  // })
+    it('can see conditions unmet text and can not schedule appointment', () => {
+      cy.visit('/')
+      
+      cy.get('[data-cy=conditionsUnmetText]').should('exist')
+      cy.get('[data-cy=appointmentRescheduleButton]').should('not.exist')
+    })
+
+    context('when patient has previous scheduled appointment', () => {
+      beforeEach(() => {
+        cy.appScenario('appointment_today', { cpf: cpf });
+        cy.visit('/')
+      })
+
+      it('can see and cancel own appointment, but can not re-schedule', () => {
+        cy.get('[data-cy=scheduledAppointmentText]').should('exist')
+
+        // Can not re-schedule
+        cy.get('[data-cy=appointmentRescheduleButton]').click()
+        cy.get('[data-cy=nextDayButton]').click()
+        cy.get('[data-cy=ubs1Button]').click()
+        cy.get('#ubs1 [data-cy=scheduleTimeButton]:first').click()
+        cy.get('[data-cy=appointmentSchedulerConditionsUnmetAlertText]').should('exist')
+
+        // Cancel
+        cy.get('[data-cy=appointmentCancelButton]').click()
+        cy.visit('/')
+        cy.get('[data-cy=scheduledAppointmentText]').should('not.exist')
+        cy.get('[data-cy=conditionsUnmetText]').should('exist')
+        cy.get('[data-cy=appointmentRescheduleButton]').should('not.exist')
+      })
+    })
+  })
 
   context('when patient can schedule', () => {
     beforeEach(() => {
@@ -19,8 +51,6 @@ describe('patient appointment flow', () => {
     context('when there are doses', () => {
       it('can schedule, reschedule, and cancel', () => {
         cy.get('[data-cy=dosesAvailableText]').should('exist')
-
-        // cy.get('[data-cy=scheduleAppointmentButton]').click()
 
         cy.get('[data-cy=appointmentRescheduleButton]').click()
         cy.get('[data-cy=nextDayButton]').click()
@@ -42,14 +72,17 @@ describe('patient appointment flow', () => {
       })
     })
 
-    // TODO:
-    // context('when there are no doses available', () => {
-    // })
-  })
+    context('when there are no doses available', () => {
+      beforeEach(() => {
+        cy.appScenario('no_appointments_available');
+        cy.visit('/')
+      })
 
-  // TODO:
-  // context('when appointment is in the past', () => {
-  // })
+      it('can see no appointments available text', () => {
+        cy.get('[data-cy=noAppointmentsAvailableText]').should('exist')
+      })      
+    })
+  })
 
   context('when patient is a second dose patient', () => {
     beforeEach(() => {
@@ -71,9 +104,6 @@ describe('patient appointment flow', () => {
 
       // Cancel and re-schedule
       cy.get('[data-cy=appointmentCancelButton]').click()
-
-      // cy.get('[data-cy=scheduleAppointmentButton]').click()
-
       cy.get('[data-cy=appointmentRescheduleButton]').click()
       cy.get('[data-cy=nextDayButton]').click()
       cy.get('[data-cy=ubs1Button]').click()
@@ -88,6 +118,7 @@ describe('patient appointment flow', () => {
     beforeEach(()=>{
       cy.appScenario('vaccinated_patient', { cpf: cpf });
 
+      cy.visit('/')
       cy.loginAsPatient(cpf)
     })
 

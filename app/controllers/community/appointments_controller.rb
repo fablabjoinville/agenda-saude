@@ -76,7 +76,8 @@ module Community
       case result
       when AppointmentScheduler::CONDITIONS_UNMET
         {
-          alert: 'Você não está entre grupos que podem fazer agendamentos.'
+          alert: 'Você não está entre grupos que podem fazer agendamentos.',
+          cy: 'appointmentSchedulerConditionsUnmetAlertText'
         }
       when AppointmentScheduler::NO_SLOTS
         {
