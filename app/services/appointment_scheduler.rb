@@ -63,7 +63,7 @@ class AppointmentScheduler
     patient.appointments
            .waiting
            .where(id: id)
-           .update_all(patient_id: nil, updated_at: Time.zone.now) # rubocop:disable Rails/SkipsModelValidations
+           .update_all(patient_id: nil, second_dose: nil, vaccine_name: nil, updated_at: Time.zone.now) # rubocop:disable Rails/SkipsModelValidations
   end
 
   def open_times_per_ubs(from:, to:)
