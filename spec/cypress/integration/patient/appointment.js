@@ -1,6 +1,39 @@
 describe('patient appointment flow', () => {
   const cpf = '83274229792'
 
+  beforeEach(() => {
+    cy.appScenario('schedulling_is_enabled');
+  })
+
+  context('when schedulling is disabled', () => {
+    beforeEach(() => {
+      cy.appScenario('marvin_son_of_tristeza', { cpf: cpf });
+      cy.appScenario('schedulling_is_disabled');
+      cy.visit('/')
+      cy.loginAsPatient(cpf)
+    })
+  
+    context('when patient tries to create an appointment', () => {
+      it('shows disabled schedulling message and does not creates an appointment', () => {
+        cy.visit('/')
+        cy.get('[data-cy=appointmentRescheduleButton]').click()
+        cy.get('[data-cy=appointmentSchedullingIsDisabledText]').should('exist')
+        cy.get('[data-cy=scheduledAppointmentText]').should('not.exist')
+      })
+    })
+
+    context('when patient has appointment', () => {
+      beforeEach(() => {
+        cy.appScenario('appointment_today', { cpf: cpf });
+      })
+
+      it('shows disabled schedulling message', () => {
+        cy.visit('/')
+        cy.get('[data-cy=appointmentSchedullingIsDisabledText]').should('exist')
+      })
+    })
+  })
+
   context('when patient cannot schedule', () => {
     beforeEach(() => {
       cy.appScenario('marvin_son_of_tristeza', { cpf: cpf, birth_date: '2000-06-08' });
@@ -80,7 +113,7 @@ describe('patient appointment flow', () => {
 
       it('can see no appointments available text', () => {
         cy.get('[data-cy=noAppointmentsAvailableText]').should('exist')
-      })      
+      })
     })
   })
 

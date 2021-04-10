@@ -1,0 +1,1 @@
+Rails.configuration.x.disabled_reschedule_toggle = 'true'

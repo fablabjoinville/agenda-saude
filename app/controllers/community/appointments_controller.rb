@@ -19,7 +19,7 @@ module Community
     def index
       if Rails.configuration.x.disabled_reschedule_toggle.present?
         return redirect_to(home_community_appointments_path,
-                           flash: { alert: I18n.t(:'alerts.patient_disabled_reschedule') })
+                           flash: { alert: I18n.t(:'alerts.patient_disabled_reschedule'), cy: 'appointmentSchedullingIsDisabledText' })
       end
 
       @appointment = current_patient.appointments.not_checked_in.current
@@ -28,6 +28,7 @@ module Community
       @appointments = scheduler.open_times_per_ubs(from: @days.days.from_now.beginning_of_day,
                                                    to: @days.days.from_now.end_of_day)
     rescue AppointmentScheduler::NoFreeSlotsAhead
+      # TODO: no test coverage for this scenario on cypress
       redirect_to home_community_appointments_path, flash: { alert: 'Não há vagas disponíveis para reagendamento.' }
     end
 
