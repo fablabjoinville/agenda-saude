@@ -98,30 +98,6 @@ module Operator
                   }
     end
 
-    # Suspends all future appointments
-    def suspend_future
-      @ubs.appointments
-          .not_checked_in
-          .not_checked_out
-          .active
-          .future
-          .update_all(active: false) # rubocop:disable Rails/SkipsModelValidations
-
-      redirect_to operator_appointments_path
-    end
-
-    # Reactivate all future appointments
-    def activate_future
-      @ubs.appointments
-          .not_checked_in
-          .not_checked_out
-          .suspended
-          .future
-          .update_all(active: true) # rubocop:disable Rails/SkipsModelValidations
-
-      redirect_to operator_appointments_path
-    end
-
     private
 
     # Filters out appointments
