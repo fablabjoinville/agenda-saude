@@ -2,7 +2,7 @@ namespace :backfill do
   desc "Backfill vaccines"
   task vaccines: :environment do
     Appointment.distinct(:vaccine_name).pluck(:vaccine_name).compact.each do |vaccine_name|
-      vaccine = Vaccine.find_by_legacy_name!(vaccine_name)
+      vaccine = Vaccine.find_by!(legacy_name: vaccine_name)
       puts "For vaccine #{vaccine.name}:"
       Appointment.
         includes(:dose).where(dose: { id: nil}).

@@ -18,7 +18,7 @@ class ReceptionService
   end
 
   def check_out(vaccine_name)
-    vaccine = Vaccine.find_by_legacy_name!(vaccine_name)
+    vaccine = Vaccine.find_by!(legacy_name: vaccine_name)
 
     Appointment.transaction do
       @appointment.update!(check_out: Time.zone.now, vaccine_name: vaccine_name)
