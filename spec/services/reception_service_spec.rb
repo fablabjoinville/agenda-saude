@@ -4,13 +4,13 @@ RSpec.describe ReceptionService, type: :service do
   # Eager UBS creation required because of patient.set_main_ubs
   let!(:ubs) { create(:ubs) }
   let!(:appointment) { create(:appointment, patient: patient) }
-  let!(:coronavac_vaccine) { create(:vaccine, :coronavac) }
   let(:patient) { create(:patient) }
   let(:time) { Time.zone.local('2020-01-01') }
   let(:vaccine_name) { 'coronavac' }
   let(:service) { described_class.new(appointment) }
 
   before do
+    Vaccine.find_by(legacy_name: vaccine_name) || create(:vaccine, legacy_name: vaccine_name)
     travel_to time
   end
 
