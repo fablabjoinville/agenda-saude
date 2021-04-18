@@ -21,11 +21,6 @@ Rails.application.routes.draw do
           patch :suspend
           patch :activate
         end
-
-        collection do
-          patch :suspend_future
-          patch :activate_future
-        end
       end
 
       resources :ubs, only: [:show] do
