@@ -24,6 +24,9 @@ pt-BR:
     models:
       user: Usuário
       patient: Paciente
+  alerts:
+    cannot_cancel_or_reschedule: |
+      Você só poderá cancelar ou reagendar seu atendimento (para outra data ou unidade) quando faltarem menos de %{days} dias a data do agendamento. Tente novamente mais próximo à data.
   errors:
     messages:
       not_saved:
