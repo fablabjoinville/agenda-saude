@@ -27,6 +27,8 @@ pt-BR:
   alerts:
     cannot_cancel_or_reschedule: |
       Você só poderá cancelar ou reagendar seu atendimento (para outra data ou unidade) quando faltarem menos de %{days} dias a data do agendamento. Tente novamente mais próximo à data.
+    cannot_update_profile_due_to_appointment_condition: |
+      Para realizar esta alteração, primeiro cancele seu agendamento do dia %{date}, para só então atualizar seu cadastro. Esta alteração irá remover você do grupo que pode agendar.
   errors:
     messages:
       not_saved:
