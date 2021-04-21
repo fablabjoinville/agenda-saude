@@ -40,11 +40,10 @@ module Community
       @patient = current_patient
       @patient.attributes = update_params
 
-      @appointment = current_patient.appointments.not_checked_in.current
-      if @patient.doses.empty? && @appointment.present? && !@patient.can_schedule?
-        flash.now[:alert] =
-          t('alerts.cannot_update_profile_due_to_appointment_condition', date: l(@appointment.start, format: :human))
-        return render :edit
+      if cannot_update_profile?
+        flash.now[:alert] = t('alerts.cannot_update_profile_due_to_appointment_condition')
+        render :edit
+        return
       end
 
       if @patient.save
@@ -57,6 +56,11 @@ module Community
     end
 
     protected
+
+    def cannot_update_profile?
+      # TODO: enhance how we deal with first doses [jmonteiro]
+      @patient.doses.empty? && @patient.appointments.not_checked_in.current.present? && !@patient.can_schedule?
+    end
 
     def create_params
       params.require(:patient).permit(*(FIELDS + [:cpf]), group_ids: [])

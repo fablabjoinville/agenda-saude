@@ -3,7 +3,7 @@ class Patient < ApplicationRecord
 
   CONDITIONS = {
     'População em geral com 62 anos ou mais' => lambda do |patient|
-      birthday = patient.birthday.to_time
+      birthday = patient.birthday.to_time # rubocop:disable Rails/Date timezone is respected
       cutoff = Rails.configuration.x.schedule_up_to_days.days.from_now.end_of_day
       age = ((cutoff - birthday) / 1.year.seconds).floor
       age >= 62
