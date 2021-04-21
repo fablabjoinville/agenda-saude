@@ -18,18 +18,11 @@
           </th>
           <td class="align-middle">
             <%= link_to appointment.patient.name, [:operator, appointment] %>
-            <% # Only supports patients having 1 single type of vaccine. Need to rethink and redo this once we support same patient getting different vaccines %>
-            <% appointment.patient.doses.count.tap do |doses_count| -%>
-              <% if doses_count.positive? -%>
-                <% appointment.patient.doses.each do |dose| %>
-                  <small class="badge bg-success text-light" data-cy="patientCpf"><%= doses_count + 1 %><sup>a</sup> dose (<%= dose.vaccine.name %>)</small>
-                <% end %>
-              <% else -%>
-                <small class="badge bg-light text-dark" data-cy="patientCpf">1<sup>a</sup> dose</small>
-              <% end -%>
-            <% end -%>
             <br>
             <small class="badge bg-light text-dark" data-cy="patientCpf"><%= ApplicationHelper.humanize_cpf appointment.patient.cpf %></small>
+            <% appointment.patient.doses.each do |dose| -%>
+              <small class="badge bg-success text-light" data-cy="patientCpf">Recebeu D<%= dose.sequence_number %> (<%= dose.vaccine.name %>)</small>
+            <% end -%>
           </td>
           <td class="align-middle">
             <small class="text-muted">
