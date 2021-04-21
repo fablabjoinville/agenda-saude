@@ -32,7 +32,6 @@ module AgendaSaude
     config.x.schedule_up_to_days = 7 # Patient can't schedule free appointments after 7 days in the future
     config.x.late_patient_tolerance_minutes = ENV.fetch('LATE_PATIENT_TOLERANCE_MINUTES', 10).to_i.minutes
     config.x.early_patient_warning_minutes = ENV.fetch('EARLY_PATIENT_WARNING_MINUTES', 30).to_i.minutes
-    config.x.disabled_reschedule_toggle = ENV.fetch('DISABLED_RESCHEDULE_TOGGLE', '')
 
     # https://guides.rubyonrails.org/autoloading_and_reloading_constants.html#autoload-paths
     config.autoload_paths += [

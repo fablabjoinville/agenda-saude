@@ -17,11 +17,6 @@ module Community
     # Reschedules appointment (only if patient already has one scheduled)
     # rubocop:disable Metrics/AbcSize
     def index
-      if Rails.configuration.x.disabled_reschedule_toggle.present?
-        return redirect_to(home_community_appointments_path,
-                           flash: { alert: I18n.t(:'alerts.patient_disabled_reschedule') })
-      end
-
       @appointment = current_patient.appointments.not_checked_in.current
 
       @days = parse_days

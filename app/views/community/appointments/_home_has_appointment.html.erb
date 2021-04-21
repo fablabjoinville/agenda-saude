@@ -59,21 +59,12 @@
           <div class="col">
             <%= link_to "Reagendar e escolher outro dia, horário ou local",
                         community_appointments_path,
-                        class: "btn btn#{'-outline' if Rails.configuration.x.disabled_reschedule_toggle.present?}-primary btn-block",
+                        class: "btn btn-primary btn-block",
                         data: {
                           cy: "appointmentRescheduleButton",
                         } %>
           </div>
         </div>
-        <% if Rails.configuration.x.disabled_reschedule_toggle.present? -%>
-          <div class="row mt-4">
-            <div class="col">
-              <div class="alert alert-warning">
-                <%= I18n.t(:'alerts.patient_disabled_reschedule') %>
-              </div>
-            </div>
-          </div>
-        <% end -%>
       </li>
     </ul>
   </div>
