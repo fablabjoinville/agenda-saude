@@ -1,0 +1,20 @@
+default: &default
+  show_navbar_background: true
+  city_hall_website: joinville.sc.gov.br
+  city_hall_website_address: https://joinville.sc.gov.br/
+  city_name: Joinville
+  state_name: Santa catarina
+  state_short: SC
+  covid19_hotsite_address: https://www.joinville.sc.gov.br/coronavirus/
+  hotline: 4734815165
+  is_hotline_whatsapp: false
+  hotline_working_hours: Segunda a sexta-feira — 07:00 às 20:00, exceto feriados e pontos facultativos
+
+development:
+  <<: *default
+
+production:
+  <<: *default
+
+test:
+  <<: *default

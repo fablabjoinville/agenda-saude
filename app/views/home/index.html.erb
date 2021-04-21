@@ -1,7 +1,7 @@
 <div class="container">
   <div class="row text-center">
     <div class="col">
-      <h1>Vacinação Joinville Covid-19</h1>
+      <h1>Vacinação <%= Setting[:city_name] %> Covid-19</h1>
     </div>
   </div>
 </div>
@@ -73,45 +73,6 @@
 
 <div class="info-page">
 
-<%# <h2>Outros Locais de Vacinação</h2>
-<p>É possível vacinar-se nas Unidades básicas de saúde, onde não é necessário o agendamento prévio. A disponibilidade das vacinas nas UBS (Unidade Básica de Saúde) se dá: 1º por ordem dos grupos prioritários e 2º pelo estoque disponível na UBS.</p>
-
 <%= render "shared/ubs_list" %>
 
-  <h2>Dúvidas frequentes sobre a vacinação</h2>
-
-  <h4>Quem não pode tomar a vacina</h4>
-  <ul>
-    <li>Menores de 18 anos;</li>
-    <li>Gestantes e Lactantes (mulheres que estão amamentando) só podem tomar com autorização do médico;</li>
-    <li>Pessoas com estado febril;</li>
-    <li>Pessoas que tiveram suspeita ou Covid-19 positivo nos últimos 30 dias;</li>
-    <li>Quem tomou qualquer outra vacina nos últimos 14 dias.</li>
-  </ul>
-  
-  <h4>Quais documentos preciso levar?</h4>
-
-  <%= render "shared/required_documents" %>
-
-  <p>
-    <strong><a href='https://www.joinville.sc.gov.br/vacina-do-coronavirus-em-joinville-perguntas-e-respostas/' target='blank'>
-      Dúvidas sobre a vacinação e mais informações sobre o combate ao coronavírus
-    </a></strong>
-  </p>
-
-  <p>
-    Problemas de acesso ao site? 
-    <strong><a href='https://api.whatsapp.com/send?phone=554734815165' target='blank'>
-      Clique aqui
-    </a></strong>.
-    Atendimento de Segunda a sexta-feira - 07:00–20:00, exceto feriados e pontos facultativos.
-  </p>
-
-  <h2>Manifestar-se</h2>
-
-  <p><a href="https://www.joinville.sc.gov.br/servicos/registrar-manifestacao-a-ouvidoria/">Registrar manifestação</a>
-    para reclamação, sugestão ou elogio sobre estas informações. Para informações adicionais,
-    <a href="https://www.joinville.sc.gov.br/servicos/registrar-pedido-de-informacao/">registrar pedido de
-      informação</a>.
-  </p>
-</div>
+<%= render "shared/required_documents" %>

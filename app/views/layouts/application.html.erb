@@ -12,7 +12,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>Vacinação Covid-19 Joinville</title>
+    <title>Vacinação Covid-19 <%= Settings[:city_name] %></title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
@@ -25,8 +25,8 @@
   </head>
 
   <body>
-    <nav class="navbar navbar-expand-lg navbar-default bg-primary mb-5">
-      <a class="navbar-brand mr-auto" href="http://joinville.sc.gov.br/" target='blank'>
+    <nav class="navbar navbar-expand-lg navbar-default bg-primary<%= Settings[:show_navbar_background] ? " bg-background" : "" %> mb-5">
+      <a class="navbar-brand mr-auto" href="<%= Settings[:city_hall_website_address] %>" target='blank'>
         <%= image_tag "logo.png", class: "navbar__logo" %>
       </a>
       <button class="navbar-toggler p-1" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
@@ -102,16 +102,24 @@
       <div class="row text-center">
         <div class="col">
           <small class="text-muted">
-            <a href="https://www.joinville.sc.gov.br/coronavirus/">
-              Acompanhe as principais informações sobre o combate ao coronavírus em Joinville
-              <span class="d-none d-print-block">em www.joinville.sc.gov.br/coronavirus</span>
+            <a href="<%= Settings[:covid19_hotsite_address] %>">
+              Acompanhe as principais informações sobre o combate ao coronavírus em <%= Settings[:city_name] %>
+              <span class="d-none d-print-block">em <%= Settings[:covid19_hotsite_address] %>"</span>
             </a>
           </small>
         </div>
       </div>
 
       <div class="text-center p-3">
-        <p><b>Ligue/Web Saúde</b>: <a href='https://api.whatsapp.com/send?phone=554734815165', target='blank'>(47) 3481-5165</a> — Segunda a sexta-feira — 07:00 às 20:00, exceto feriados e pontos facultativos</p>
+        <p>
+          <b>Ligue/Web Saúde</b>:
+          <% if Settings[:is_hotline_whatsapp] %>
+            <%= link_to humanize_phone_number(Settings[:hotline]), "https://api.whatsapp.com/send?phone=55#{Settings[:hotline]}", target: 'blank' %>
+          <% else %>
+            <%= link_to humanize_phone_number(Settings[:hotline]), "tel:#{Settings[:hotline]}", target: 'blank' %>
+          <% end %>
+          — <%= Settings[:hotline_working_hours] %>
+        </p>
       </div>
     </footer>
   </body>
