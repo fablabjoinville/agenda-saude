@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_25_161545) do
+ActiveRecord::Schema.define(version: 2021_04_03_182001) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,6 +31,18 @@ ActiveRecord::Schema.define(version: 2021_03_25_161545) do
     t.index ["patient_id"], name: "index_appointments_on_patient_id"
     t.index ["start"], name: "index_appointments_on_start"
     t.index ["ubs_id"], name: "index_appointments_on_ubs_id"
+  end
+
+  create_table "doses", force: :cascade do |t|
+    t.bigint "patient_id", null: false
+    t.bigint "appointment_id", null: false
+    t.bigint "vaccine_id", null: false
+    t.integer "sequence_number", default: 1, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["appointment_id"], name: "index_doses_on_appointment_id"
+    t.index ["patient_id"], name: "index_doses_on_patient_id"
+    t.index ["vaccine_id"], name: "index_doses_on_vaccine_id"
   end
 
   create_table "groups", force: :cascade do |t|
@@ -81,6 +93,9 @@ ActiveRecord::Schema.define(version: 2021_03_25_161545) do
     t.string "place_number"
     t.bigint "last_appointment_id"
     t.string "specific_comorbidity", default: ""
+    t.bigint "neighborhood_id"
+    t.string "street_2"
+    t.string "internal_note"
     t.index ["cpf"], name: "index_patients_on_cpf", unique: true
     t.index ["last_appointment_id"], name: "index_patients_on_last_appointment_id"
     t.index ["main_ubs_id"], name: "index_patients_on_main_ubs_id"
@@ -120,6 +135,14 @@ ActiveRecord::Schema.define(version: 2021_03_25_161545) do
     t.index ["user_id"], name: "index_ubs_on_user_id"
   end
 
+  create_table "ubs_users", force: :cascade do |t|
+    t.bigint "ubs_id", null: false
+    t.bigint "user_id", null: false
+    t.index ["ubs_id", "user_id"], name: "index_ubs_users_on_ubs_id_and_user_id", unique: true
+    t.index ["ubs_id"], name: "index_ubs_users_on_ubs_id"
+    t.index ["user_id"], name: "index_ubs_users_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: ""
     t.string "encrypted_password", default: "", null: false
@@ -129,12 +152,30 @@ ActiveRecord::Schema.define(version: 2021_03_25_161545) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "name", default: "", null: false
+    t.boolean "administrator", default: false, null: false
     t.index ["name"], name: "index_users_on_name", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  create_table "vaccines", force: :cascade do |t|
+    t.string "name"
+    t.string "formal_name"
+    t.integer "second_dose_after_in_days"
+    t.integer "third_dose_after_in_days"
+    t.string "legacy_name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["legacy_name"], name: "index_vaccines_on_legacy_name"
+    t.index ["name"], name: "index_vaccines_on_name"
+  end
+
   add_foreign_key "appointments", "ubs"
+  add_foreign_key "doses", "appointments"
+  add_foreign_key "doses", "patients"
+  add_foreign_key "doses", "vaccines"
   add_foreign_key "patients", "appointments", column: "last_appointment_id"
   add_foreign_key "patients", "ubs", column: "main_ubs_id"
   add_foreign_key "ubs", "users"
+  add_foreign_key "ubs_users", "ubs"
+  add_foreign_key "ubs_users", "users"
 end
