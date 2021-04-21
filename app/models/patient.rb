@@ -2,7 +2,7 @@ class Patient < ApplicationRecord
   MAX_LOGIN_ATTEMPTS = 3
 
   CONDITIONS = {
-    "População em geral com 62 anos ou mais" => ->(patient) do
+    'População em geral com 62 anos ou mais' => lambda do |patient|
       birthday = patient.birthday.to_time
       cutoff = Rails.configuration.x.schedule_up_to_days.days.from_now.end_of_day
       age = ((cutoff - birthday) / 1.year.seconds).floor
@@ -86,10 +86,10 @@ class Patient < ApplicationRecord
     self.main_ubs =
       # samples an active ubs near the patient neighborhood
       Neighborhood.find_by(name: neighborhood)&.active_ubs&.sample ||
-        # samples any active ubs
-        Ubs.active.sample ||
-        # samples any inactive ubs
-        Ubs.all.sample
+      # samples any active ubs
+      Ubs.active.sample ||
+      # samples any inactive ubs
+      Ubs.all.sample
   end
 
   # Until we have a proper way to remember vaccines for patients

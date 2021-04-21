@@ -42,7 +42,8 @@ module Community
 
       @appointment = current_patient.appointments.not_checked_in.current
       if @patient.doses.empty? && @appointment.present? && !@patient.can_schedule?
-        flash.now[:alert] = t('alerts.cannot_update_profile_due_to_appointment_condition', date: l(@appointment.start, format: :human))
+        flash.now[:alert] =
+          t('alerts.cannot_update_profile_due_to_appointment_condition', date: l(@appointment.start, format: :human))
         return render :edit
       end
 
