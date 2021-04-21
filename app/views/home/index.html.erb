@@ -1,7 +1,7 @@
 <div class="container">
   <div class="row text-center">
     <div class="col">
-      <h1>Vacinação <%= Setting[:city_name] %> Covid-19</h1>
+      <h1>Vacinação <%= Settings[:city_name] %> Covid-19</h1>
     </div>
   </div>
 </div>
@@ -73,6 +73,19 @@
 
 <div class="info-page">
 
-<%= render "shared/ubs_list" %>
+  <h2>Dúvidas frequentes sobre a vacinação</h2>
 
-<%= render "shared/required_documents" %>
+  <h4>Quem não pode tomar a vacina</h4>
+  <ul>
+    <li>Menores de 18 anos;</li>
+    <li>Gestantes e Lactantes (mulheres que estão amamentando) só podem tomar com autorização do médico;</li>
+    <li>Pessoas com estado febril;</li>
+    <li>Pessoas que tiveram suspeita ou Covid-19 positivo nos últimos 30 dias;</li>
+    <li>Quem tomou qualquer outra vacina nos últimos 14 dias.</li>
+  </ul>
+
+  <h4>Quais documentos preciso levar?</h4>
+
+  <%= render "shared/required_documents" %>
+  <%= render "shared/city_info" %>
+</div>
