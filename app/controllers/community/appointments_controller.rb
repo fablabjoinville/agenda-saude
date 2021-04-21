@@ -19,7 +19,7 @@ module Community
     # rubocop:disable Metrics/AbcSize
     def index
       @appointment = current_patient.appointments.not_checked_in.current
-      unless @appointment.can_cancel_and_reschedule?
+      if @appointment && !@appointment.can_cancel_and_reschedule?
         return redirect_to(
           home_community_appointments_path,
           flash: { alert: t('alerts.cannot_cancel_or_reschedule', days: Rails.configuration.x.schedule_up_to_days) }
