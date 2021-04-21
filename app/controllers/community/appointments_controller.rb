@@ -3,6 +3,7 @@ module Community
     def home
       return redirect_to(vaccinated_community_appointments_path) if current_patient.vaccinated?
 
+      @doses = current_patient.doses.includes(:vaccine, appointment: [:ubs])
       @appointment = current_patient.appointments.not_checked_in.current
 
       return if @appointment
