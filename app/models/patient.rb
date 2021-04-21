@@ -2,9 +2,14 @@ class Patient < ApplicationRecord
   MAX_LOGIN_ATTEMPTS = 3
 
   CONDITIONS = {
-    'População em geral com 62 anos ou mais' => ->(patient) { patient.age >= 62 }
+    "População em geral com 62 anos ou mais" => ->(patient) do
+      birthday = patient.birthday.to_time
+      cutoff = Rails.configuration.x.schedule_up_to_days.days.from_now.end_of_day
+      age = ((cutoff - birthday) / 1.year.seconds).floor
+      age >= 62
+    end
     # 'Trabalhadores da saúde segundo OFÍCIO Nº 234/2021/CGPNI/DEIDT/SVS/MS' =>
-      # ->(patient) { patient.in_group?('Trabalhador(a) da Saúde') },
+    # ->(patient) { patient.in_group?('Trabalhador(a) da Saúde') },
     # 'Paciente de teste' => ->(patient) { patient.cpf == ENV['ROOT_PATIENT_CPF'] },
     # 'Maiores de 60 anos institucionalizadas' =>
     #   ->(patient) { patient.age >= 60 && patient.in_group?('Institucionalizado(a)') },
@@ -81,16 +86,10 @@ class Patient < ApplicationRecord
     self.main_ubs =
       # samples an active ubs near the patient neighborhood
       Neighborhood.find_by(name: neighborhood)&.active_ubs&.sample ||
-      # samples any active ubs
-      Ubs.active.sample ||
-      # samples any inactive ubs
-      Ubs.all.sample
-  end
-
-  DAYS_IN_YEAR = 1.year / 1.day
-
-  def age
-    ((Time.zone.now.to_date - birthday) / DAYS_IN_YEAR).floor
+        # samples any active ubs
+        Ubs.active.sample ||
+        # samples any inactive ubs
+        Ubs.all.sample
   end
 
   # Until we have a proper way to remember vaccines for patients
