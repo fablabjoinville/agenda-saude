@@ -30,6 +30,7 @@
   <% end -%>
 </p>
 
+
 <div class="mt-4 mb-5">
   <% if @patient.appointments.any? -%>
     <h4>Agendamentos deste paciente</h4>
@@ -69,6 +70,43 @@
           </td>
           <td>
             <%= appointment.active ? "Não" : "Suspenso por #{appointment.suspend_reason}" %>
+          </td>
+        </tr>
+      <% end -%>
+      </tbody>
+    </table>
+  <% else -%>
+    <h4>Paciente sem nenhum agendamento realizado.</h4>
+  <% end -%>
+</div>
+
+<div class="mt-4 mb-5">
+  <% if @patient.doses.any? -%>
+    <h4>Vacinas aplicadas neste paciente:</h4>
+    <table class="table">
+      <thead>
+      <tr>
+        <th scope="col">Data da aplicação</th>
+        <th scope="col">Unidade</th>
+        <th scope="col">Vacina</th>
+        <th scope="col">Dose</th>
+      </tr>
+      </thead>
+      <tbody>
+
+      <% @patient.doses.each do |dose| -%>
+        <tr>
+          <th scope="row">
+            <strong><%= l(dose.created_at, format: :human) %></strong>
+          </th>
+          <td>
+            <%= dose.appointment.ubs.name %>
+          </td>
+          <td>
+            <%= dose.vaccine.name %>
+          </td>
+          <td>
+            <%= dose.sequence_number %><sup>a</sup>
           </td>
         </tr>
       <% end -%>
