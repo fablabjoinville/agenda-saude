@@ -1,3 +1,5 @@
+<%= render "operator/shared/nav" %>
+
 <div class="row">
   <div class="col-12">
     <h3><%= t "appointments.state.#{@appointment.state}" %></h3>
@@ -77,7 +79,7 @@
 <% if @appointment.suspended? -%>
   <div class="row text-center mb-3">
     <div class="col-md-12">
-      <%= form_with model: @appointment, url: activate_operator_appointment_path, method: :patch, local: true do |f| %>
+      <%= form_with model: @appointment, url: activate_operator_ubs_appointment_path(@appointment.ubs), method: :patch, local: true do |f| %>
         <%= f.submit "Reativar agendamento (cancela a suspensão)",
                     class: "btn btn-outline-danger btn-lg",
                     data: {
@@ -89,7 +91,7 @@
 <% elsif @appointment.checked_out? %>
   <p>Atendimento finalizado.</p>
 <% elsif @appointment.checked_in? %>
-  <%= form_for @appointment, url: check_out_operator_appointment_path, local: true do |f| %>
+  <%= form_for @appointment, url: check_out_operator_ubs_appointment_path(@appointment.ubs), local: true do |f| %>
     <div class="row">
       <div class="col text-center mb-2">
         <h3>Qual vacina foi aplicada?</h3>
@@ -126,7 +128,7 @@
   <div class="row text-center">
     <div class="col-md-12">
       <% if @appointment.in_allowed_check_in_window? -%>
-        <%= form_with model: @appointment, url: check_in_operator_appointment_path, method: :patch, local: true do |f| %>
+        <%= form_with model: @appointment, url: check_in_operator_ubs_appointment_path(@appointment.ubs), method: :patch, local: true do |f| %>
           <%= f.submit "Realizar Check-in",
                         class: "btn btn-success btn-block btn-lg",
                         data: {
@@ -142,7 +144,7 @@
 
   <div class="row text-center mt-5">
     <div class="col-md-12">
-      <%= form_with model: @appointment, url: suspend_operator_appointment_path, method: :patch, local: true do |f| %>
+      <%= form_with model: @appointment, url: suspend_operator_ubs_appointment_path(@appointment.ubs), method: :patch, local: true do |f| %>
         <div class="input-group mb-3">
           <%= f.text_field :suspend_reason, required: true, class: "form-control", placeholder: 'Informe o motivo da suspensão' %>
           <div class="input-group-append">
@@ -164,7 +166,7 @@
     <ol>
       <% @other_appointments.each do |appointment| -%>
         <li>
-          <%= link_to l(appointment.start, format: :human), [:operator, appointment] %>
+          <%= link_to l(appointment.start, format: :human), operator_ubs_appointment_path(appointment.ubs, appointment) %>
           (<%= appointment.start.future? ? "em " : "foi a " %><%= distance_of_time_in_words_to_now(appointment.start) %>)
           na unidade <%= appointment.ubs.name %>
           <% if appointment.vaccine_name.present? %>
@@ -192,7 +194,7 @@
 
 <div class="row text-center">
   <div class="col-md-12">
-    <%= link_to "Voltar para agendamentos aguardando check-in", operator_appointments_path, class: "btn-lg",
+    <%= link_to "Voltar para agendamentos aguardando check-in", operator_ubs_appointments_path(@appointment.ubs), class: "btn-lg",
                 data: { cy: "backToCheckInListButton" } %>
   </div>
 </div>

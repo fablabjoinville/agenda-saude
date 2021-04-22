@@ -26,8 +26,6 @@ module AgendaSaude
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.0
 
-    config.x.admin_username = ENV.fetch('ADMIN_USERNAME', SecureRandom.uuid) # in case it isn't set, for safety
-    config.x.admin_password = ENV.fetch('ADMIN_PASSWORD', SecureRandom.uuid)
     config.x.schedule_from_hours = 1 # Patient can't schedule free appointments before 1 hour in the future
     config.x.schedule_up_to_days = 7 # Patient can't schedule free appointments after 7 days in the future
     config.x.late_patient_tolerance_minutes = ENV.fetch('LATE_PATIENT_TOLERANCE_MINUTES', 10).to_i.minutes

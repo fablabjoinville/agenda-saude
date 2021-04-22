@@ -23,20 +23,4 @@ module ApplicationHelper
               data: 'searchListTab'
     end
   end
-
-  # rubocop:disable Metrics/ParameterLists
-  def filter_tabs_links(current_filter:, total_count:, links:, filters:, i18n_scope:, path:)
-    links.map do |key|
-      filter = filters[key]
-      active = filter == current_filter
-      text = t("#{i18n_scope}.state.#{key}")
-      text << " (#{total_count})" if active
-
-      tag.li(class: 'nav-item') do
-        link_to text, path.call(filter: filter), data: { cy: "#{filter}ListTab" },
-                                                 class: "nav-link #{active && :active}"
-      end
-    end
-  end
-  # rubocop:enable Metrics/ParameterLists
 end

@@ -1,3 +1,5 @@
+<%= render "operator/shared/nav" %>
+
 <h2>
   Paciente: <%= @patient.name %>
 </h2>
@@ -25,7 +27,7 @@
 <p>
   <% if @patient.locked? -%>
     Paciente bloqueado.
-    <%= link_to "Desbloquear", unblock_admin_patient_path(id: @patient.id), method: :patch,
+    <%= link_to "Desbloquear", unblock_operator_patient_path(id: @patient.id), method: :patch,
                 class: "btn btn-secondary " %>
   <% end -%>
 </p>
@@ -117,5 +119,5 @@
 </div>
 
 <p>
-  <%= link_to "Voltar", admin_patients_path %>
+  <%= link_to "Voltar", operator_patients_path %>
 </p>

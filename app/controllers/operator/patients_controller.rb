@@ -1,5 +1,6 @@
-module Admin
+module Operator
   class PatientsController < Base
+    before_action :require_administrator!
     before_action :set_patient, only: %i[show unblock]
 
     FILTERS = {
@@ -25,7 +26,7 @@ module Admin
     def unblock
       @patient.record_successful_login!
 
-      redirect_to admin_patients_path, flash: { notice: "Paciente #{@patient.name} foi desbloqueado." }
+      redirect_to operator_patients_path, flash: { notice: "Paciente #{@patient.name} foi desbloqueado." }
     end
 
     protected
@@ -60,6 +61,12 @@ module Admin
 
     def index_params
       params.permit(:page, :search, :filter)
+    end
+
+    def require_administrator!
+      return if current_user.administrator
+
+      redirect_to(operator_path) && false
     end
   end
 end

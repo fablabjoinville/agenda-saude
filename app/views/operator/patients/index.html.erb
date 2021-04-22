@@ -1,8 +1,8 @@
-<h1>Pacientes</h1>
+<%= render "operator/shared/nav" %>
 
 <div class="row mt-4">
   <div class="col-12">
-    <%= form_with url: admin_patients_path, method: :get, local: true do |f| %>
+    <%= form_with url: operator_patients_path, method: :get, local: true do |f| %>
       <div class="input-group input-group-lg">
         <%= f.text_field :search, autofocus: true, minlength: 3, maxlength: 100, class: "form-control",
                          placeholder: "Digite o CPF ou nome do paciente", value: @search,
@@ -16,7 +16,7 @@
 </div>
 
 <ul class="nav nav-tabs mt-5 mb-1">
-  <%= admin_nav_links(@filter, @search, @patients&.total_count) %>
+  <%= patients_nav_links(@filter, @search, @patients&.total_count) %>
 </ul>
 
 <table class="table table-hover">
@@ -31,10 +31,10 @@
   <% @patients.each do |patient| -%>
     <tr data-cy="patient">
       <th scope="row" class="align-middle">
-        <%= link_to patient.cpf, admin_patient_path(id: patient.id) %>
+        <%= link_to patient.cpf, operator_patient_path(id: patient.id) %>
       </th>
       <td>
-        <%= link_to patient.name, admin_patient_path(id: patient.id) %>
+        <%= link_to patient.name, operator_patient_path(id: patient.id) %>
       </td>
       <td>
       </td>

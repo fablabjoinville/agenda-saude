@@ -1,4 +1,4 @@
-<%= render "operator/shared/nav" %>
+<%= render "operator/shared/ubs_nav" %>
 
 <% if @appointments.any? %>
   <table class="table table-hover">
@@ -17,7 +17,7 @@
             <%= l appointment.start, format: :short_hour %>
           </th>
           <td class="align-middle">
-            <%= link_to appointment.patient.name, [:operator, appointment] %>
+            <%= link_to appointment.patient.name, operator_ubs_appointment_path(appointment.ubs, appointment) %>
             <br>
             <small class="badge bg-light text-dark" data-cy="patientCpf"><%= ApplicationHelper.humanize_cpf appointment.patient.cpf %></small>
             <% appointment.patient.doses.each do |dose| -%>
@@ -35,18 +35,18 @@
               when :suspended
             -%>
               <%= link_to "Reativar",
-                          activate_operator_appointment_path(appointment),
+                          activate_operator_ubs_appointment_path(appointment.ubs, appointment),
                           method: :patch,
                           class: "btn btn-block btn-warning",
                           data: { confirm: t(:"appointments.confirmation.activate", name: appointment.patient.name) } %>
             <% when :checked_out -%>
-              <%= link_to "Vacinado", [:operator, appointment], class: "btn btn-block btn-light",
+              <%= link_to "Vacinado", operator_ubs_appointment_path(appointment.ubs, appointment), class: "btn btn-block btn-light",
                           data: { cy: "vaccinatedButton" } %>
             <% when :checked_in -%>
-              <%= link_to "Check-out", [:operator, appointment], class: "btn btn-block btn-success",
+              <%= link_to "Check-out", operator_ubs_appointment_path(appointment.ubs, appointment), class: "btn btn-block btn-success",
                           data: { cy: "checkOutButton" } %>
             <% when :waiting -%>
-              <%= link_to "Check-in", [:operator, appointment], class: "btn btn-block btn-primary",
+              <%= link_to "Check-in", operator_ubs_appointment_path(appointment.ubs, appointment), class: "btn btn-block btn-primary",
                           data: { cy: "checkInButton" } %>
             <% end -%>
           </td>
@@ -63,7 +63,7 @@
     <div class="row">
       <div class="col mt-5">
         <%= link_to 'Exportar agendamentos do dia',
-                    operator_appointments_path(filter: nil, search: nil, per_page: 10_000, format: :xlsx),
+                    operator_ubs_appointments_path(@ubs, filter: nil, search: nil, per_page: 10_000, format: :xlsx),
                     class: 'btn btn-block btn-outline-primary',
                     data: { confirm: "Tem certeza que deseja exportar agendamentos de hoje para planilha do Excel?" } %>
       </div>

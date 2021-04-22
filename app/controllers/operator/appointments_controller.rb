@@ -1,5 +1,7 @@
 module Operator
   class AppointmentsController < Base
+    before_action :set_ubs
+
     FILTERS = {
       search: 'search',
       all: 'all',
@@ -44,13 +46,14 @@ module Operator
     def check_in
       appointment = @ubs.appointments.scheduled.not_checked_in.find(params[:id])
       unless appointment.in_allowed_check_in_window?
-        return redirect_to(operator_appointment_path(appointment),
+        return redirect_to(operator_ubs_appointment_path(appointment.ubs, appointment),
                            flash: { alert: t(:"appointments.messages.not_allowed_window") })
       end
 
       ReceptionService.new(appointment).check_in
 
-      redirect_to operator_appointments_path, flash: { notice: "Check-in realizado para #{appointment.patient.name}." }
+      redirect_to operator_ubs_appointments_path(appointment.ubs),
+                  flash: { notice: "Check-in realizado para #{appointment.patient.name}." }
     end
 
     # Check-out single appointment
@@ -59,12 +62,15 @@ module Operator
       appointment = @ubs.appointments.scheduled.not_checked_out.find(params[:id])
       vaccine_name = appointment.vaccine_name.presence || check_out_params[:appointment].try(:[], :vaccine_name)
 
-      return redirect_to(operator_appointment_path(appointment), flash: { error: 'Selecione vacina.' }) if vaccine_name.blank?
+      if vaccine_name.blank?
+        return redirect_to(operator_ubs_appointment_path(appointment.ubs, appointment),
+                           flash: { error: 'Selecione vacina.' })
+      end
 
       # next appointment
       next_appointment = ReceptionService.new(appointment).check_out(vaccine_name)
 
-      redirect_to operator_appointment_path(appointment),
+      redirect_to operator_ubs_appointment_path(appointment.ubs, appointment),
                   flash: {
                     notice_title: if next_appointment
                                     "#{next_appointment.patient.name} tomou primeira dose e está com segunda dose " \
@@ -83,7 +89,7 @@ module Operator
       appointment = @ubs.appointments.scheduled.not_checked_in.find(params[:id])
       appointment.update!(active: false, suspend_reason: params[:appointment][:suspend_reason])
 
-      redirect_to operator_appointments_path,
+      redirect_to operator_ubs_appointments_path(appointment.ubs),
                   flash: {
                     notice: "Agendamento suspenso para #{appointment.patient.name}"
                   }
@@ -94,7 +100,7 @@ module Operator
       appointment = @ubs.appointments.scheduled.find(params[:id])
       appointment.update!(active: true, suspend_reason: nil)
 
-      redirect_to operator_appointment_path(appointment),
+      redirect_to operator_ubs_appointment_path(appointment.ubs, appointment),
                   flash: {
                     notice: "Agendamento reativado para #{appointment.patient.name}."
                   }
@@ -136,6 +142,10 @@ module Operator
 
     def index_params
       params.permit(:per_page, :page, :search, :filter)
+    end
+
+    def set_ubs
+      @ubs = current_user.ubs.find(params[:ubs_id])
     end
   end
 end
