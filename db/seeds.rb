@@ -19,7 +19,6 @@ mlabs = User.new.tap do |user|
   user.name = 'mlabs'
   user.password = 'dontpanic'
   user.password_confirmation = 'dontpanic'
-  user.administrator = true
   user.save!
 end
 
@@ -72,6 +71,15 @@ Ubs.new.tap do |ubs|
   ubs.slot_interval_minutes = 15
   ubs.active = true
   ubs.save!
+end
+
+User.new.tap do |user|
+  user.name = 'admin'
+  user.password = 'dontpanic'
+  user.password_confirmation = 'dontpanic'
+  user.administrator = true
+  user.ubs = Ubs.all
+  user.save!
 end
 
 [
