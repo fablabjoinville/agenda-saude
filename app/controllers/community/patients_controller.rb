@@ -38,8 +38,15 @@ module Community
 
     def update
       @patient = current_patient
+      @patient.attributes = update_params
 
-      if @patient.update(update_params)
+      if cannot_update_profile?
+        flash.now[:alert] = t('alerts.cannot_update_profile_due_to_appointment_condition')
+        render :edit
+        return
+      end
+
+      if @patient.save
         redirect_to home_community_appointments_path, flash: {
           notice: 'Cadastro atualizado.'
         }
@@ -49,6 +56,11 @@ module Community
     end
 
     protected
+
+    def cannot_update_profile?
+      # TODO: enhance how we deal with first doses [jmonteiro]
+      @patient.doses.empty? && @patient.appointments.not_checked_in.current.present? && !@patient.can_schedule?
+    end
 
     def create_params
       params.require(:patient).permit(*(FIELDS + [:cpf]), group_ids: [])

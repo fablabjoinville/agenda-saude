@@ -36,6 +36,8 @@ module Operator
       @appointment = @ubs.appointments.scheduled.find(params[:id])
 
       @other_appointments = @appointment.patient.appointments.where.not(id: @appointment.id)
+
+      @doses = @appointment.patient.doses.includes(:vaccine, appointment: [:ubs])
     end
 
     # Check-in single appointment

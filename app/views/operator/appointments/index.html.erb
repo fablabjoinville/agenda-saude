@@ -20,6 +20,9 @@
             <%= link_to appointment.patient.name, [:operator, appointment] %>
             <br>
             <small class="badge bg-light text-dark" data-cy="patientCpf"><%= ApplicationHelper.humanize_cpf appointment.patient.cpf %></small>
+            <% appointment.patient.doses.each do |dose| -%>
+              <small class="badge bg-success text-light" data-cy="doseCounter<%= dose.vaccine.id %>-<%= dose.sequence_number %>">Recebeu D<%= dose.sequence_number %> (<%= dose.vaccine.name %>)</small>
+            <% end -%>
           </td>
           <td class="align-middle">
             <small class="text-muted">

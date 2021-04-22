@@ -25,8 +25,6 @@
         activate: Confirma reativar agendamento para %{name}?
         checkout: Confirma vacinação para %{name}?
         checkin: Confirmar que %{name} fez check-in e está pronta(o) a entrar e receber vacina?
-        suspend_all: Confirma ATIVAR TODOS agendamentos futuros?
-        activate_all: Confirma SUSPENDER TODOS agendamentos futuros?
       messages:
         not_allowed_window: Não é possível fazer checkin para outra data
     activerecord:

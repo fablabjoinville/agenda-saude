@@ -68,7 +68,7 @@
       <% end -%>
 
       <% if @appointment.vaccine_name.present? -%>
-        <span class="badge badge-pill badge-success pills-info" data-cy="vaccineNameTag">2<sup>a</sup> dose: <%= @appointment.vaccine_name.humanize.capitalize %></span>
+        <span class="badge badge-pill badge-success pills-info" data-cy="vaccineNameTag">2<sup>a</sup> dose (<%= @appointment.vaccine_name.humanize.capitalize %>)</span>
       <% end %>
     </p>
   </div>
@@ -173,6 +173,20 @@
         </li>
       <% end -%>
     </ol>
+  <% end -%>
+
+  <% if @doses.any? -%>
+    <h4>Vacinas administradas neste paciente:</h4>
+    <ul>
+      <% @doses.each do |dose| -%>
+        <li>
+          <%= dose.sequence_number %><sup>a</sup> dose da
+          <%= dose.vaccine.name %> (<i><%= dose.vaccine.formal_name %></i>) no dia
+          <%= l dose.created_at, format: :human %> na unidade
+          <%= dose.appointment.ubs.name %>
+        </li>
+      <% end -%>
+    </ul>
   <% end -%>
 </div>
 

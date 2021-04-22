@@ -10,6 +10,7 @@ RSpec.describe ReceptionService, type: :service do
   let(:service) { described_class.new(appointment) }
 
   before do
+    Vaccine.find_by(legacy_name: vaccine_name) || create(:vaccine, legacy_name: vaccine_name)
     travel_to time
   end
 

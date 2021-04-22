@@ -1,6 +1,7 @@
 class Appointment < ApplicationRecord
-  belongs_to :ubs
   belongs_to :patient, optional: true
+  belongs_to :ubs
+  has_one :dose, dependent: :restrict_with_exception # For future use [jmonteiro]
 
   scope :today, -> { where(start: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day) }
 
@@ -42,6 +43,12 @@ class Appointment < ApplicationRecord
           .or(Patient.arel_table[:name].matches("%#{text.strip}%"))
       )
   }
+
+  # In the case it's a second dose, patient shouldn't be able to reschedule the appointment.
+  # NOTE: in the future once we have a better way to handle 2nd doses, check against the recommended vaccination window
+  def can_cancel_and_reschedule?
+    patient.doses.empty? || start < Rails.configuration.x.schedule_up_to_days.days.from_now.end_of_day
+  end
 
   def in_allowed_check_in_window?
     start > Time.zone.now.beginning_of_day && start < Time.zone.now.end_of_day

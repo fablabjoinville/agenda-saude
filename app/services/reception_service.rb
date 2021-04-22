@@ -18,8 +18,15 @@ class ReceptionService
   end
 
   def check_out(vaccine_name)
+    vaccine = Vaccine.find_by!(legacy_name: vaccine_name)
+
     Appointment.transaction do
       @appointment.update!(check_out: Time.zone.now, vaccine_name: vaccine_name)
+
+      sequence_number = @appointment.patient.doses.where(vaccine: vaccine).count
+      @appointment.patient.doses.create! appointment: @appointment,
+                                         vaccine: vaccine,
+                                         sequence_number: sequence_number + 1
 
       create_second_dose_appointment(vaccine_name) if @appointment.patient.appointments.active.checked_out.one?
     end

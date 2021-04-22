@@ -2,9 +2,14 @@ class Patient < ApplicationRecord
   MAX_LOGIN_ATTEMPTS = 3
 
   CONDITIONS = {
-    'População em geral com 62 anos ou mais' => ->(patient) { patient.age >= 62 }
+    'População em geral com 62 anos ou mais' => lambda do |patient|
+      birthday = patient.birthday.to_time # rubocop:disable Rails/Date timezone is respected
+      cutoff = Rails.configuration.x.schedule_up_to_days.days.from_now.end_of_day
+      age = ((cutoff - birthday) / 1.year.seconds).floor
+      age >= 62
+    end
     # 'Trabalhadores da saúde segundo OFÍCIO Nº 234/2021/CGPNI/DEIDT/SVS/MS' =>
-      # ->(patient) { patient.in_group?('Trabalhador(a) da Saúde') },
+    # ->(patient) { patient.in_group?('Trabalhador(a) da Saúde') },
     # 'Paciente de teste' => ->(patient) { patient.cpf == ENV['ROOT_PATIENT_CPF'] },
     # 'Maiores de 60 anos institucionalizadas' =>
     #   ->(patient) { patient.age >= 60 && patient.in_group?('Institucionalizado(a)') },
@@ -18,8 +23,10 @@ class Patient < ApplicationRecord
     end
   end
 
-  has_and_belongs_to_many :groups
   belongs_to :main_ubs, class_name: 'Ubs'
+  # belongs_to :neighborhood, optional: true # For future use [jmonteiro]
+  has_and_belongs_to_many :groups
+  has_many :doses, dependent: :destroy # For future use [jmonteiro]
 
   validates :cpf, presence: true, uniqueness: true, cpf_format: true
   validates :name, presence: true
@@ -83,12 +90,6 @@ class Patient < ApplicationRecord
       Ubs.active.sample ||
       # samples any inactive ubs
       Ubs.all.sample
-  end
-
-  DAYS_IN_YEAR = 1.year / 1.day
-
-  def age
-    ((Time.zone.now.to_date - birthday) / DAYS_IN_YEAR).floor
   end
 
   # Until we have a proper way to remember vaccines for patients
