@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_03_182001) do
+ActiveRecord::Schema.define(version: 2021_04_23_145241) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,7 +25,6 @@ ActiveRecord::Schema.define(version: 2021_04_03_182001) do
     t.integer "patient_id"
     t.datetime "check_in"
     t.datetime "check_out"
-    t.boolean "second_dose", default: false
     t.string "suspend_reason"
     t.string "vaccine_name"
     t.index ["patient_id"], name: "index_appointments_on_patient_id"
@@ -72,7 +71,6 @@ ActiveRecord::Schema.define(version: 2021_04_03_182001) do
 
   create_table "patients", force: :cascade do |t|
     t.string "email", default: ""
-    t.datetime "remember_created_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "name", default: "", null: false
@@ -85,19 +83,15 @@ ActiveRecord::Schema.define(version: 2021_04_03_182001) do
     t.string "neighborhood"
     t.string "fake_mothers", default: [], array: true
     t.integer "login_attempts", default: 0
-    t.boolean "bedridden", default: false
     t.bigint "main_ubs_id"
-    t.boolean "chronic"
     t.integer "target_audience"
     t.string "public_place"
     t.string "place_number"
-    t.bigint "last_appointment_id"
     t.string "specific_comorbidity", default: ""
     t.bigint "neighborhood_id"
     t.string "street_2"
     t.string "internal_note"
     t.index ["cpf"], name: "index_patients_on_cpf", unique: true
-    t.index ["last_appointment_id"], name: "index_patients_on_last_appointment_id"
     t.index ["main_ubs_id"], name: "index_patients_on_main_ubs_id"
   end
 
@@ -113,7 +107,7 @@ ActiveRecord::Schema.define(version: 2021_04_03_182001) do
   create_table "ubs", force: :cascade do |t|
     t.string "name"
     t.string "neighborhood"
-    t.bigint "user_id", null: false
+    t.bigint "user_id"
     t.string "shift_start"
     t.string "shift_end"
     t.string "break_start"
@@ -173,7 +167,6 @@ ActiveRecord::Schema.define(version: 2021_04_03_182001) do
   add_foreign_key "doses", "appointments"
   add_foreign_key "doses", "patients"
   add_foreign_key "doses", "vaccines"
-  add_foreign_key "patients", "appointments", column: "last_appointment_id"
   add_foreign_key "patients", "ubs", column: "main_ubs_id"
   add_foreign_key "ubs", "users"
   add_foreign_key "ubs_users", "ubs"
