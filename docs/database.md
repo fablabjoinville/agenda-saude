@@ -6,16 +6,13 @@ Agendamentos, funciona como uma agenda onde vagas podem ser abertas. Agendamento
 
   * `start`: data e horário de início da vaga.
   * `end`: data e horário de fim da vaga.
-  * `active`:
-  * `created_at`:
-  * `updated_at`:
-  * `ubs_id`:
-  * `patient_id`:
-  * `check_in`:
-  * `check_out`:
-  * `second_dose`:
-  * `suspend_reason`:
-  * `vaccine_name`:
+  * `active`: se agendamento está ativo ou suspenso. Pode estar suspenso por problemas com o paciente (por exemplo a idade não condiz com seu documento de identidade), ou pode ser usado para suspender vagas futuras afim de criar uma reserva de vagas para imprevistos.
+  * `ubs_id`: unidade onde este agendamento será feito.
+  * `patient_id`: paciente. Se estiver em branco, é uma vaga disponível para agendamento.
+  * `check_in`: data e horário do check in na unidade. É realizado quando o paciente chega, se apresenta e todos os documentos estão em ordem.
+  * `check_out`: data e horeario de check out na unidade. É realizado quando o paciente recebeu a dose e saiu.
+  * `suspend_reason`: motivo pelo qual esta dose foi suspença (pode não ter motivo).
+  * `vaccine_name`: nome da vacina administrada ou agendada para o futuro, caso seja segunda dose. **A ser removido no futuro.**
 
 ## doses
 
@@ -36,7 +33,7 @@ Grupos do qual o paciente participa.
 
 ## groups_patients
 
-Tabela associativa entre `groups` e `patients`.
+Tabela associativa entre `groups` e `patients`. É como sabemos quantos pacientes estão em quantos grupos.
 
 ## Neighborhoods
 
