@@ -26,7 +26,7 @@
     "cypress": "^6.5.0",
     "webpack-dev-server": "^3.9.0"
   },
-  "description": "**Agenda Saúde** é um projeto de código aberto desenvolvido de forma colaborativa para fornecer um sistema de agendamento de vacinação e exames de COVID-19 para a prefeitura de Joinville.",
+  "description": "**Agenda Saúde** é um projeto de código aberto desenvolvido de forma colaborativa para fornecer um sistema de agendamento de vacinação e exames de COVID-19.",
   "main": "babel.config.js",
   "directories": {
     "lib": "lib"

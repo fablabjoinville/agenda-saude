@@ -15,6 +15,10 @@ module ApplicationHelper
     "#{cpf[0..2]}.#{cpf[3..5]}.#{cpf[6..8]}-#{cpf[9..11]}"
   end
 
+  def humanize_phone_number(phone)
+    phone.to_s.gsub(/(\d{2})(\d{4,5})(\d{4})/, '(\1) \2-\3')
+  end
+
   def search_link(current_search, total_count, path)
     tag.li(class: 'nav-item') do
       link_to "Busca: #{current_search} (#{total_count})",
