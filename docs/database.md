@@ -49,30 +49,27 @@ Tabela associativa entre `ubs` e `neighborhood`, já que unidades de atendimento
 
 Pacientes.
 
-  * `email`:
-  * `remember_created_at`:
+  * `email`: email do paciente.
   * `created_at`:
   * `updated_at`:
-  * `name`:
-  * `cpf`:
-  * `mother_name`:
-  * `birth_date`:
-  * `phone`:
-  * `other_phone`:
-  * `sus`:
-  * `neighborhood`:
-  * `fake_mothers`:
-  * `login_attempts`:
-  * `bedridden`:
+  * `name`: nome do paciente.
+  * `cpf`: número de CPF, usado para login.
+  * `mother_name`: nome da mãe.
+  * `birth_date`: data de nascimento.
+  * `phone`: número telefônico primário.
+  * `other_phone`: número telefônico secundário.
+  * `sus`: número do cartão do SUS.
+  * `neighborhood`: bairro como nome em texto, **a ser substituído pelo neighborhood_id no futuro**.
+  * `fake_mothers`: nomes falsos de mães. Usado para desafiar o usuário no login.
+  * `login_attempts`: tentativas falhas de login. Usado para bloquear acesso após um número de tentativas falhas.
   * `main_ubs_id`:
-  * `chronic`:
   * `target_audience`:
-  * `public_place`:
-  * `place_number`:
+  * `public_place`: endereço residencial.
+  * `place_number`: número residencial.
   * `specific_comorbidity`:
-  * `neighborhood_id`:
-  * `street_2`:
-  * `internal_note`:
+  * `neighborhood_id`:  bairro, ainda não em uso (usar neighborhood, como texto).
+  * `street_2`: complemento residencial, **ainda não em uso**.
+  * `internal_note`: observação interna sobre o usuário, **ainda não em uso**.
 
 ## time_slot_generation_configs
 
@@ -87,7 +84,7 @@ Pacientes.
 
 Unidades de saúde.
 
-  * `name`:
+  * `name`: nome da unidade de saúde.
   * `neighborhood`:
   * `user_id`:
   * `shift_start`:
@@ -114,7 +111,7 @@ Tabela associativa entre `ubs` e `patients`.
 
 ## users
 
-  * `email`:
+  * `email`: email do usuário, **não é usado**.
   * `encrypted_password`:
   * `reset_password_token`:
   * `reset_password_sent_at`:
