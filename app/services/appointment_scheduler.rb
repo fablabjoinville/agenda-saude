@@ -45,7 +45,7 @@ class AppointmentScheduler
 
         # Free up current appointment if it wasn't checkout out (completed)
         unless current_appointment.checked_out?
-          current_appointment.update!(patient: nil, check_in: nil, check_out: nil, second_dose: nil, vaccine_name: nil)
+          current_appointment.update!(patient: nil, check_in: nil, check_out: nil, vaccine_name: nil)
         end
       end
 
@@ -63,7 +63,7 @@ class AppointmentScheduler
     patient.appointments
            .waiting
            .where(id: id)
-           .update_all(patient_id: nil, second_dose: nil, vaccine_name: nil, updated_at: Time.zone.now) # rubocop:disable Rails/SkipsModelValidations
+           .update_all(patient_id: nil, vaccine_name: nil, updated_at: Time.zone.now) # rubocop:disable Rails/SkipsModelValidations
   end
 
   def open_times_per_ubs(from:, to:)
