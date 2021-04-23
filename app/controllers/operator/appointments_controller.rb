@@ -18,7 +18,7 @@ module Operator
                          .includes(:patient)
 
       @appointments = filter(search(appointments))
-                      .order(:start, :id)
+                      .order(:start)
                       .joins(:patient)
                       .order(Patient.arel_table[:name].lower.asc)
                       .page(index_params[:page])
