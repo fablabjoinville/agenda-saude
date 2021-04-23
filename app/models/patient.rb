@@ -42,8 +42,6 @@ class Patient < ApplicationRecord
   # Only set new main_ubs if it is empty or there was a change to the neighborhood
   before_validation :set_main_ubs!, if: proc { |r| r.neighborhood_changed? || r.main_ubs_id.blank? }
 
-  scope :bedridden, -> { where(bedridden: true) }
-
   scope :locked, -> { where(arel_table[:login_attempts].gteq(MAX_LOGIN_ATTEMPTS)) }
 
   scope :search_for, lambda { |text|
