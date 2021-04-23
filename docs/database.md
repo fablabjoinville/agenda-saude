@@ -86,7 +86,7 @@ Unidades de saúde.
 
   * `name`: nome da unidade de saúde.
   * `neighborhood`:
-  * `user_id`:
+  * `user_id`: usuário da unidade, **a ser substituído pela tabela associativa ubs_users**.
   * `shift_start`:
   * `shift_end`:
   * `break_start`:

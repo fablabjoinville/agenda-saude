@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_23_142931) do
+ActiveRecord::Schema.define(version: 2021_04_23_145241) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -71,7 +71,6 @@ ActiveRecord::Schema.define(version: 2021_04_23_142931) do
 
   create_table "patients", force: :cascade do |t|
     t.string "email", default: ""
-    t.datetime "remember_created_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "name", default: "", null: false
@@ -84,9 +83,7 @@ ActiveRecord::Schema.define(version: 2021_04_23_142931) do
     t.string "neighborhood"
     t.string "fake_mothers", default: [], array: true
     t.integer "login_attempts", default: 0
-    t.boolean "bedridden", default: false
     t.bigint "main_ubs_id"
-    t.boolean "chronic"
     t.integer "target_audience"
     t.string "public_place"
     t.string "place_number"
@@ -110,7 +107,7 @@ ActiveRecord::Schema.define(version: 2021_04_23_142931) do
   create_table "ubs", force: :cascade do |t|
     t.string "name"
     t.string "neighborhood"
-    t.bigint "user_id", null: false
+    t.bigint "user_id"
     t.string "shift_start"
     t.string "shift_end"
     t.string "break_start"
