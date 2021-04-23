@@ -1,0 +1,30 @@
+<h1 class="h4">Operadores</h1>
+
+<table class="table table-hover">
+  <thead>
+  <tr>
+    <th scope="col">Nome</th>
+    <th scope="col">Unidades</th>
+    <th scope="col">Admin?</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @users.each do |user| -%>
+    <tr data-cy="patient">
+      <th scope="row" class="align-middle">
+        <%= link_to user.name, admin_user_path(user) %>
+      </th>
+      <td>
+        <%= user.ubs.order(:id).pluck(:name).join(", ") %>
+      </td>
+      <td>
+        <%= "✅" if user.administrator %>
+      </td>
+    </tr>
+  <% end -%>
+  </tbody>
+</table>
+
+<div>
+  <%= paginate @users %>
+</div>

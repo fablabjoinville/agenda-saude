@@ -1,0 +1,22 @@
+<h1 class="h4">Unidades</h1>
+
+<table class="table table-hover">
+  <thead>
+  <tr>
+    <th scope="col">Nome</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @ubs.each do |ubs| -%>
+    <tr data-cy="patient">
+      <th scope="row" class="align-middle">
+        <%= link_to ubs.name, admin_ubs_path(ubs) %>
+      </th>
+    </tr>
+  <% end -%>
+  </tbody>
+</table>
+
+<div>
+  <%= paginate @ubs %>
+</div>

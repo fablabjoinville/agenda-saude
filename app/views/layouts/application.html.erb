@@ -41,16 +41,20 @@
             <button id="operatorDropdownTopMenu" type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <%= current_user.name.truncate(30) %>
             </button>
-            <div class="dropdown-menu" aria-labelledby="operatorDropdownTopMenu">
-              <h6 class="dropdown-header">Unidades:</h6>
-              <% current_user.ubs.order(:name).each do |ubs| -%>
-                <%= link_to ubs.name, operator_ubs_appointments_path(ubs), class: "dropdown-item" %>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="operatorDropdownTopMenu">
+              <% if current_user.administrator -%>
+                <h6 class="dropdown-header">Administração:</h6>
+                <%= link_to "Agendamentos", admin_appointments_path, class: "dropdown-item" %>
+                <%= link_to "Operadores", admin_users_path, class: "dropdown-item" %>
+                <%= link_to "Pacientes", admin_patients_path, class: "dropdown-item" %>
+                <%= link_to "Unidades", admin_ubs_index_path, class: "dropdown-item" %>
               <% end -%>
 
-              <% if current_user.administrator -%>
-                <div class="dropdown-divider"></div>
-                <h6 class="dropdown-header">Administração:</h6>
-                <%= link_to "Pacientes", admin_patients_path, class: "dropdown-item" %>
+              <% if current_user.ubs.any? -%>
+                <h6 class="dropdown-header">Unidades:</h6>
+                <% current_user.ubs.order(:name).each do |ubs| -%>
+                  <%= link_to ubs.name, operator_ubs_appointments_path(ubs), class: "dropdown-item" %>
+                <% end -%>
               <% end -%>
             </div>
           </div>

@@ -1,0 +1,56 @@
+<h1 class="h4">Agendamentos</h1>
+
+<div class="row mt-4">
+  <div class="col-12">
+    <%= form_with url: admin_appointments_path, method: :get, local: true do |f| %>
+      <div class="input-group input-group-lg">
+        <%= f.date_select "date", autofocus: true, with_css_classes: { day: "form-control", month: "form-control", year: "form-control" }, data: { cy: "dateInput" } %>
+        <%= f.select "ubs_id", Ubs.all.pluck(:name, :id), {}, class: "form-control" %>
+        <div class="input-group-append">
+          <%= f.submit "Buscar", class: "btn btn-outline-secondary", data: { cy: "searchSubmit" } %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<table class="table table-hover table-sm">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Horário</th>
+      <th scope="col">Paciente</th>
+      <th scope="col">Check-in</th>
+      <th scope="col">Check-out</th>
+      <th scope="col">Vacina</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @appoitments.each do |appointment| -%>
+      <tr class="<%= appointment.active ? "" : "table-dark" %>">
+        <td>
+          <%= appointment.id %>
+        </td>
+        <th scope="row">
+          <%= l appointment.start, format: :short_hour %>-<%= l appointment.end, format: :short_hour %>
+        </th>
+        <td>
+          <% if appointment.patient.present? -%>
+            <%= link_to appointment.patient.name, admin_patient_path(appointment.patient) %>
+          <% else -%>
+            vago
+          <% end -%>
+        </td>
+        <td>
+          <%= l appointment.check_in, format: :short_date_hour if appointment.check_in.present? %>
+        </td>
+        <td>
+          <%= l appointment.check_out, format: :short_date_hour if appointment.check_out.present? %>
+        </td>
+        <td>
+          <%= appointment.vaccine_name %>
+        </td>
+      </tr>
+    <% end -%>
+  </tbody>
+</table>

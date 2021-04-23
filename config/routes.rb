@@ -32,12 +32,16 @@ Rails.application.routes.draw do
     end
 
     namespace :admin do
+      resources :appointments, only: %i[index show]
       resources :patients, only: %i[index show] do
         member do
           patch :unblock
         end
       end
+      resources :ubs, only: %i[index show]
+      resources :users, only: %i[index show]
     end
+    resources :appointments, only: %i[index]
   end
 
   get 'community', to: redirect('/community/appointments/home')
