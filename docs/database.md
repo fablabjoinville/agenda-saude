@@ -12,7 +12,7 @@ Agendamentos, funciona como uma agenda onde vagas podem ser abertas. Agendamento
   * `check_in`: data e horário do check in na unidade. É realizado quando o paciente chega, se apresenta e todos os documentos estão em ordem.
   * `check_out`: data e horeario de check out na unidade. É realizado quando o paciente recebeu a dose e saiu.
   * `suspend_reason`: motivo pelo qual esta dose foi suspença (pode não ter motivo).
-  * `vaccine_name`: nome da vacina administrada ou agendada para o futuro, caso seja segunda dose. **A ser removido no futuro.**
+  * `vaccine_name`: nome da vacina administrada ou agendada para o futuro, caso seja segunda dose. **A ser removido no futuro, mas por hora ainda usado.**
 
 ## doses
 
@@ -69,7 +69,6 @@ Pacientes.
   * `target_audience`:
   * `public_place`:
   * `place_number`:
-  * `last_appointment_id`:
   * `specific_comorbidity`:
   * `neighborhood_id`:
   * `street_2`:
