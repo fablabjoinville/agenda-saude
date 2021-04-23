@@ -5,7 +5,7 @@ module Admin
     def index
       @ubs = Ubs.find_by(id: index_params[:ubs_id])
       @date = date_from_params params, :date
-      @date ||= Date.today
+      @date ||= Time.zone.today
 
       @appoitments = Appointment
                      .where(ubs_id: index_params[:ubs_id], start: @date.beginning_of_day..@date.end_of_day)

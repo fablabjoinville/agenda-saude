@@ -48,6 +48,7 @@
                 <%= link_to "Operadores", admin_users_path, class: "dropdown-item" %>
                 <%= link_to "Pacientes", admin_patients_path, class: "dropdown-item" %>
                 <%= link_to "Unidades", admin_ubs_index_path, class: "dropdown-item" %>
+                <%= link_to "Vacinas", admin_vaccines_path, class: "dropdown-item" %>
               <% end -%>
 
               <% if current_user.ubs.any? -%>

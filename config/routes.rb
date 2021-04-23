@@ -40,6 +40,7 @@ Rails.application.routes.draw do
       end
       resources :ubs, only: %i[index show]
       resources :users, only: %i[index show]
+      resources :vaccines, only: %i[index show]
     end
     resources :appointments, only: %i[index]
   end
