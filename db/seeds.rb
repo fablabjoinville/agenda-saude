@@ -1,4 +1,3 @@
-# coding: utf-8
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
 #
@@ -42,7 +41,8 @@ end
 
 ubsf_america = Ubs.new.tap do |ubs|
   ubs.name = 'UBSF America'
-  ubs.user = mlabs
+  ubs.user = mlabs # Remove me once we replace user with users [jmonteiro]
+  ubs.users = [mlabs]
   ubs.neighborhoods << america
   ubs.neighborhood = america.name
   ubs.address = 'Rua Magrathea, 42'
@@ -58,7 +58,8 @@ end
 
 Ubs.new.tap do |ubs|
   ubs.name = 'UBSF Gloria'
-  ubs.user = mlabs_two
+  ubs.user = mlabs_two # Remove me once we replace user with users [jmonteiro]
+  ubs.users = [mlabs_two]
   ubs.neighborhoods << gloria
   ubs.neighborhood = gloria.name
   ubs.address = 'Rua dos Bobos, 0'
@@ -70,6 +71,15 @@ Ubs.new.tap do |ubs|
   ubs.slot_interval_minutes = 15
   ubs.active = true
   ubs.save!
+end
+
+User.new.tap do |user|
+  user.name = 'admin'
+  user.password = 'dontpanic'
+  user.password_confirmation = 'dontpanic'
+  user.administrator = true
+  user.ubs = Ubs.all
+  user.save!
 end
 
 [
@@ -86,7 +96,7 @@ end
   'Trabalhador(a) portuário',
   'Trabalhador(a) da construção civil',
   'Pessoa com deficiência permanente grave',
-  'Não me encaixo em nenhum dos grupos listados',
+  'Não me encaixo em nenhum dos grupos listados'
 ].each do |name|
   Group.create!(name: name)
 end
@@ -102,7 +112,7 @@ end
   'Anemia falciforme',
   'Obesidade mórbida (IMC >=40)',
   'Síndrome de down',
-  'Outra(s)',
+  'Outra(s)'
 ].each do |subgroup|
   Group.create!(name: subgroup, parent_group_id: Group.find_by!(name: 'Portador(a) de comorbidade').id)
 end
@@ -111,21 +121,21 @@ end
   'Área da assistência/tratamento',
   'Administrativo e outros setores',
   'Estagiário da área da Saúde',
-  'Atua em Hospital',
+  'Atua em Hospital'
 ].each do |subgroup|
   Group.create!(name: subgroup, parent_group_id: Group.find_by!(name: 'Trabalhador(a) da Saúde').id)
 end
 
 [
   'Professor(a) em sala de aula',
-  'Administrativo e outros setores',
+  'Administrativo e outros setores'
 ].each do |subgroup|
   Group.create!(name: subgroup, parent_group_id: Group.find_by!(name: 'Trabalhador(a) da Educação').id)
 end
 
 [
   'Oficial em atividade de linha de frente',
-  'Oficial em atividade administrativa',
+  'Oficial em atividade administrativa'
 ].each do |subgroup|
   Group.create!(name: subgroup, parent_group_id: Group.find_by!(name: 'Trabalhador(a) das Forças de Seguranças e Salvamento').id)
 end
@@ -179,7 +189,7 @@ end
 
 ## TIME SLOTS / APPOINTMENTS ##
 
-TimeSlotGenerationService.new(create_slot: lambda { |attrs| Appointment.create(attrs) })
+TimeSlotGenerationService.new(create_slot: ->(attrs) { Appointment.create(attrs) })
                          .execute(
                            TimeSlotGenerationService::Options.new(
                              ubs_id: Ubs.first.id,
@@ -192,7 +202,7 @@ TimeSlotGenerationService.new(create_slot: lambda { |attrs| Appointment.create(a
                            )
                          )
 
-TimeSlotGenerationService.new(create_slot: lambda { |attrs| Appointment.create(attrs) })
+TimeSlotGenerationService.new(create_slot: ->(attrs) { Appointment.create(attrs) })
                          .execute(
                            TimeSlotGenerationService::Options.new(
                              ubs_id: Ubs.second.id,

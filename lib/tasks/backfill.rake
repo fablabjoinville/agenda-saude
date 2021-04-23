@@ -21,4 +21,11 @@ namespace :backfill do
       puts
     end
   end
+
+  desc "Backfill users-ubs relationship (idempotent)"
+  task users_ubs: [:environment] do
+    Ubs.all.each do |ubs|
+      ubs.users = [ubs.user]
+    end
+  end
 end
