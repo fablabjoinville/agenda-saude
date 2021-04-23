@@ -8,10 +8,10 @@ module Admin
       @date ||= Date.today
 
       @appoitments = Appointment
-                       .where(ubs_id: index_params[:ubs_id], start: @date.beginning_of_day..@date.end_of_day)
-                       .order(:start, :id)
-                       .page(index_params[:page])
-                       .per(100)
+                     .where(ubs_id: index_params[:ubs_id], start: @date.beginning_of_day..@date.end_of_day)
+                     .order(:start, :id)
+                     .page(index_params[:page])
+                     .per(100)
     end
 
     def show; end
