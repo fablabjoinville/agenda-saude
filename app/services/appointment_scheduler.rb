@@ -71,7 +71,7 @@ class AppointmentScheduler
 
     Appointment.available_doses
                .where(start: rounded_from(from)..to)
-               .order(:start) # in chronological order
+               .order(:start, :id) # in chronological order
                .select(:ubs_id, :start, :end) # only return what we care with
                .distinct # remove duplicates (same as .uniq in pure Ruby)
                .group_by(&:ubs) # transforms it into a Hash grouped by Ubs
@@ -81,7 +81,7 @@ class AppointmentScheduler
   def days_ahead_with_open_slot
     next_available_appointment = Appointment.available_doses
                                             .where(start: earliest_allowed..latest_allowed)
-                                            .order(:start)
+                                            .order(:start, :id)
                                             .pick(:start)
 
     raise NoFreeSlotsAhead unless next_available_appointment
@@ -100,7 +100,7 @@ class AppointmentScheduler
     # Single SQL query to update the first available record it can find
     # it will either return 0 if no rows could be found, or 1 if it was able to schedule an appointment
     appointment = Appointment.available_doses
-                             .order(:start)
+                             .order(:start, :id)
                              .where(start: start)
                              .limit(1)
 

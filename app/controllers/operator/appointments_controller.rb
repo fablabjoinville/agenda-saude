@@ -16,10 +16,9 @@ module Operator
                          .today
                          .scheduled
                          .includes(:patient)
-                         .order(:start)
 
       @appointments = filter(search(appointments))
-                      .order(:start)
+                      .order(:start, :id)
                       .joins(:patient)
                       .order(Patient.arel_table[:name].lower.asc)
                       .page(index_params[:page])
