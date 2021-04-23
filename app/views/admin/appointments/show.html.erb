@@ -3,5 +3,15 @@
 </h1>
 
 <p>
+  <strong>Unidade:</strong> <%= link_to @appointment.ubs.name, admin_ubs_path(@appointment.ubs) %>
+  <br />
+  <strong>Horário:</strong> <%= l @appointment.start, format: :short_date_hour %> até <%= l @appointment.end, format: :short_hour %>
+  <br />
+  <strong>Paciente:</strong> <%= @appointment.patient.present? ? link_to(@appointment.patient.name, admin_patient_path(@appointment.patient)) : "vago" %>
+  <br />
+  <strong>Suspenso?</strong> <%= @appointment.active ? "Não" : "Suspenso por #{@appointment.suspend_reason}" %>
+</p>
+
+<p>
   <%= link_to "Voltar", admin_appointments_path %>
 </p>

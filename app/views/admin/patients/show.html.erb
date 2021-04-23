@@ -13,8 +13,19 @@
     <strong>Nome da mãe:</strong> <%= @patient.mother_name %>
   </div>
 
+
   <div class='col'>
     <strong>Data de Nascimento:</strong> <%= l(@patient.birth_date.to_date) %>
+  </div>
+
+  <div class='col'>
+    <strong>Bairro:</strong> <%= @patient.neighborhood %>
+  </div>
+</div>
+
+<div class='row'>
+  <div class='col'>
+    <strong>Telefones:</strong> <%= [@patient.phone.presence, @patient.other_phone.presence].compact.join(", ") %>
   </div>
 </div>
 
@@ -36,6 +47,7 @@
     <table class="table">
       <thead>
       <tr>
+        <th scope="col">#</th>
         <th scope="col">Data agendada</th>
         <th scope="col">Unidade</th>
         <th scope="col">Check-in</th>
@@ -48,6 +60,9 @@
 
       <% @patient.appointments.each do |appointment| -%>
         <tr>
+          <td>
+            <%= link_to appointment.id, admin_appointment_path(appointment) %>
+          </td>
           <th scope="row">
             <strong><%= l(appointment.start, format: :human) %></strong>
           </th>
