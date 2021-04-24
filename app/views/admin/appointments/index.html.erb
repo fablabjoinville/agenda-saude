@@ -3,11 +3,22 @@
 <div class="row mt-4 mb-3">
   <div class="col-12">
     <%= form_with url: admin_appointments_path, method: :get, local: true do |f| %>
-      <div class="input-group input-group-lg">
-        <%= f.date_select "date", autofocus: true, use_two_digit_numbers: true, selected: @date, with_css_classes: { day: "form-control", month: "form-control", year: "form-control" }, data: { cy: "dateInput" } %>
-        <%= f.select "ubs_id", Ubs.order(:name).pluck(:name, :id), { prompt: "Unidade:", selected: @ubs&.id }, class: "form-control" %>
-        <div class="input-group-append">
-          <%= f.submit "Buscar", class: "btn btn-outline-secondary", data: { cy: "searchSubmit" } %>
+      <div class="form-row">
+        <div class="form-group col-md-5">
+          <label for="">Data</label>
+          <div class="form-row">
+            <%= f.date_select "date", autofocus: true, use_two_digit_numbers: true, selected: @date,
+                              with_css_classes: { day: "form-control day", month: "form-control month", year: "form-control year" },
+                              data: { cy: "dateInput" } %>
+          </div>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="">Unidade</label>
+          <%= f.select "ubs_id", Ubs.order(:name).pluck(:name, :id), { prompt: "Unidade:", selected: @ubs&.id }, class: "form-control" %>
+        </div>
+        <div class="form-group col-md-1">
+          <label for="">&nbsp;</label>
+          <%= f.submit "Buscar", class: "btn btn-primary", data: { cy: "searchSubmit" } %>
         </div>
       </div>
     <% end %>
