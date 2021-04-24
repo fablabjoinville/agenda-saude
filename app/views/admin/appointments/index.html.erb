@@ -33,6 +33,7 @@
     <th scope="col">Paciente</th>
     <th scope="col">Check-in</th>
     <th scope="col">Check-out</th>
+    <th scope="col">Aplicada</th>
     <th scope="col">Vacina</th>
   </tr>
   </thead>
@@ -57,6 +58,9 @@
       </td>
       <td>
         <%= l appointment.check_out, format: :short_date_hour if appointment.check_out.present? %>
+      </td>
+      <td>
+        <%= appointment.dose ? "D#{appointment.dose.sequence_number}" : "" %>
       </td>
       <td>
         <%= appointment.vaccine_name %>
