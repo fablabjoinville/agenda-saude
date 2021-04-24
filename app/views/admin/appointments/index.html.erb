@@ -1,6 +1,6 @@
 <h1 class="h4">Agendamentos</h1>
 
-<div class="row mt-4">
+<div class="row mt-4 mb-3">
   <div class="col-12">
     <%= form_with url: admin_appointments_path, method: :get, local: true do |f| %>
       <div class="input-group input-group-lg">
@@ -14,8 +14,8 @@
   </div>
 </div>
 
-<table class="table table-hover table-sm">
-  <thead>
+<table class="table table-bordered table-hover table-sm">
+  <thead class="thead-dark">
   <tr>
     <th scope="col">#</th>
     <th scope="col">Horário</th>

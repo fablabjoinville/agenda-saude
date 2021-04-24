@@ -5,7 +5,7 @@ module Admin
     def index
       @ubs = Ubs.order(Ubs.arel_table[:name].lower.asc)
                 .page(index_params[:page])
-                .per(25)
+                .per(100)
     end
 
     def show; end

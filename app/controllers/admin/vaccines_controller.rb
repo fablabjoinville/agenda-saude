@@ -5,7 +5,7 @@ module Admin
     def index
       @vaccines = Vaccine.order(:id)
                          .page(index_params[:page])
-                         .per(25)
+                         .per(100)
     end
 
     def show; end

@@ -15,7 +15,7 @@ module Admin
       @patients = filter(search(patients))
                   .order(Patient.arel_table[:name].lower.asc)
                   .page(index_params[:page])
-                  .per(25)
+                  .per(100)
     end
 
     def show; end

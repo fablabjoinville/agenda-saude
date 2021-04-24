@@ -19,13 +19,12 @@
   <%= admin_nav_links(@filter, @search, @patients&.total_count) %>
 </ul>
 
-<table class="table table-hover">
-  <thead>
+<table class="table table-bordered table-hover table-sm">
+  <thead class="thead-dark">
   <tr>
     <th scope="col">#</th>
     <th scope="col">CPF</th>
     <th scope="col">Paciente</th>
-    <th scope="col"></th>
   </tr>
   </thead>
   <tbody>
@@ -39,8 +38,6 @@
       </th>
       <td>
         <%= patient.name %>
-      </td>
-      <td>
       </td>
     </tr>
   <% end -%>
