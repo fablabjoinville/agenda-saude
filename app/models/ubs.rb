@@ -51,10 +51,6 @@ class Ubs < ApplicationRecord
     slot_interval_minutes.minutes
   end
 
-  def bedridden_patients
-    Patient.where(main_ubs: self).bedridden
-  end
-
   def time_of_day(time, date)
     Tod::TimeOfDay.parse(time).on(date).in_time_zone
   end

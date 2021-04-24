@@ -42,8 +42,6 @@ class Patient < ApplicationRecord
   # Only set new main_ubs if it is empty or there was a change to the neighborhood
   before_validation :set_main_ubs!, if: proc { |r| r.neighborhood_changed? || r.main_ubs_id.blank? }
 
-  scope :bedridden, -> { where(bedridden: true) }
-
   scope :locked, -> { where(arel_table[:login_attempts].gteq(MAX_LOGIN_ATTEMPTS)) }
 
   scope :search_for, lambda { |text|
@@ -54,7 +52,6 @@ class Patient < ApplicationRecord
     )
   }
 
-  # TODO: remove `chronic` field from schema
   enum target_audience: { kid: 0, elderly: 1, chronic: 2, disabled: 3, pregnant: 4, postpartum: 5,
                           teacher: 6, over55: 7, without_target: 8 }
 

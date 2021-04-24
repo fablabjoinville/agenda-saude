@@ -101,31 +101,6 @@ executando o robocop e corrigindo qualquer alerta evidenciado:
 bundle exec rubocop
 ```
 
-## Deploy
-
-Apenas pessoas autorizadas podem fazer o deploy. É necessário adicionar o remote da Heroku:
-
-```sh
-git remote set-url origin git@github.com:MakersNetwork/agenda-saude.git
-git remote add heroku https://git.heroku.com/agendamento-covid.git
-```
-
-Deve ficar parecido com o exemplo abaixo:
-
-``` sh
-git remote -v
-heroku https://git.heroku.com/agendamento-covid.git (fetch)
-heroku https://git.heroku.com/agendamento-covid.git (push)
-origin  git@github.com:MakersNetwork/agenda-saude.git (fetch)
-origin  git@github.com:MakersNetwork/agenda-saude.git (push)
-```
-
-Para fazer deploy da aplicação:
-
-```sh
-git push heroku main
-```
-
 ## Contribuindo
 
 Este projeto existe graças a todas as pessoas que contribuem. Fique a vontade para contribuir! Essas aqui são boas [issues](https://github.com/MakersNetwork/agenda-saude/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) para começar! Quer conversar com o time? Estamos no [Discord](https://discord.gg/fcYkv9RvN7).
