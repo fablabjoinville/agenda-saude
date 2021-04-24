@@ -29,9 +29,7 @@
   </div>
 </div>
 
-<br/>
 <hr>
-<br/>
 
 <p>
   <% if @patient.locked? -%>
@@ -42,8 +40,8 @@
 </p>
 
 <div class="mt-4 mb-5">
+  <h4>Agendamentos</h4>
   <% if @patient.appointments.any? -%>
-    <h4>Agendamentos deste paciente</h4>
     <table class="table">
       <thead>
       <tr>
@@ -54,6 +52,7 @@
         <th scope="col">Check-out</th>
         <th scope="col">Vacina</th>
         <th scope="col">Suspenso?</th>
+        <th scope="col">Criou dose #</th>
       </tr>
       </thead>
       <tbody>
@@ -85,31 +84,41 @@
           <td>
             <%= appointment.active ? "Não" : "Suspenso por #{appointment.suspend_reason}" %>
           </td>
+          <td>
+            <% if appointment.dose -%>
+              <%= appointment.dose.id %>
+            <% end -%>
+          </td>
         </tr>
       <% end -%>
       </tbody>
     </table>
   <% else -%>
-    <h4>Paciente sem nenhum agendamento realizado.</h4>
+    <p>Paciente sem nenhum agendamento.</p>
   <% end -%>
 </div>
 
 <div class="mt-4 mb-5">
+  <h4>Doses de vacinas</h4>
   <% if @patient.doses.any? -%>
-    <h4>Vacinas aplicadas neste paciente:</h4>
     <table class="table">
       <thead>
       <tr>
+        <th scope="col">#</th>
         <th scope="col">Data da aplicação</th>
         <th scope="col">Unidade</th>
         <th scope="col">Vacina</th>
         <th scope="col">Dose</th>
+        <th scope="col">Agendamento #</th>
       </tr>
       </thead>
       <tbody>
 
       <% @patient.doses.each do |dose| -%>
         <tr>
+          <td>
+            <%= dose.id %>
+          </td>
           <th scope="row">
             <strong><%= l(dose.created_at, format: :human) %></strong>
           </th>
@@ -122,12 +131,15 @@
           <td>
             <%= dose.sequence_number %><sup>a</sup>
           </td>
+          <td>
+            <%= link_to dose.appointment.id, admin_appointment_path(dose.appointment) %>
+          </td>
         </tr>
       <% end -%>
       </tbody>
     </table>
   <% else -%>
-    <h4>Paciente sem nenhuma vacina aplicada até o momento.</h4>
+    <p>Paciente sem nenhuma vacina.</p>
   <% end -%>
 </div>
 
