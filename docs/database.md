@@ -23,6 +23,7 @@ Doses administradas da vacina em pacientes.
   * `vaccine_id`: Vacina que foi administrada.
   * `sequence_number`: Número da dose (1 para primeira dose, 2 para segunda dose, ...)
   * `created_at`: Data que a dose foi administrada.
+  * `follow_up_appointment_id`: Agendamento do reforço desta dose.
 
 ## groups
 
