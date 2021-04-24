@@ -23,8 +23,7 @@ module Community
         return redirect_to(
           home_community_appointments_path,
           flash: {
-            alert: t('alerts.cannot_cancel_or_reschedule',
-            days: Rails.configuration.x.schedule_up_to_days),
+            alert: t('alerts.cannot_cancel_or_reschedule', days: Rails.configuration.x.schedule_up_to_days),
             cy: 'cannotCancelOrRescheduleText'
           }
         )
@@ -56,8 +55,7 @@ module Community
         return redirect_to(
           home_community_appointments_path,
           flash: {
-            alert: t('alerts.cannot_cancel_or_reschedule',
-            days: Rails.configuration.x.schedule_up_to_days),
+            alert: t('alerts.cannot_cancel_or_reschedule', days: Rails.configuration.x.schedule_up_to_days),
             cy: 'cannotCancelOrRescheduleText'
           }
         )

@@ -144,7 +144,6 @@ describe('patient appointment flow', () => {
         cy.get('[data-cy=cannotCancelOrRescheduleText]').should('exist')
       })
     })
-
   })
 
   context('when patient is already vaccinated', () => {
