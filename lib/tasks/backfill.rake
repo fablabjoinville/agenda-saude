@@ -6,7 +6,8 @@ namespace :backfill do
       puts "For vaccine #{vaccine.name}:"
       Appointment
         .includes(:dose).where(dose: { id: nil })
-        .where.not(check_in: nil, check_out: nil)
+        .where.not(check_in: nil)
+        .where.not(check_out: nil)
         .where(vaccine_name: vaccine_name)
         .order(:check_out)
         .each do |appointment|
