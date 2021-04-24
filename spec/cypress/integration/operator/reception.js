@@ -42,7 +42,7 @@ describe('reception flow', () => {
     const cpf = '71143168011'
 
     beforeEach(() => {
-      cy.appScenario('second_dose_patient', { cpf: cpf });
+      cy.appScenario('second_dose_patient', { cpf: cpf, days_from_now: 0 });
       cy.get('[data-cy=waitingListTab]').click()
       cy.get('[data-cy=searchInput]').type('second dose marvin')
       cy.get('[data-cy=searchSubmit]').click()

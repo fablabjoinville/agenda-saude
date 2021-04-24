@@ -11,7 +11,7 @@ Patient.create!(
 ).tap do |patient|
   ubs = Ubs.first!
 
-  patient.appointments.create!(
+  first_appointment = patient.appointments.create!(
     start: Time.zone.yesterday.at_beginning_of_day,
     end: Time.zone.yesterday.at_beginning_of_day,
     vaccine_name: 'coronavac',
@@ -22,12 +22,20 @@ Patient.create!(
   )
 
   patient.appointments.create!(
-    start: Time.zone.today.end_of_day - 15.minutes,
-    end: Time.zone.today.end_of_day,
+    start: command_options['days_from_now'].days.from_now.end_of_day - 15.minutes,
+    end: command_options['days_from_now'].days.from_now.end_of_day,
     vaccine_name: 'coronavac',
     check_in: nil,
     check_out: nil,
     active: true,
     ubs: ubs
   )
+
+  vaccine = Vaccine.find_by!(legacy_name: 'coronavac')
+  sequence_number = patient.doses.where(vaccine: vaccine).count
+  patient.doses.create! appointment: first_appointment,
+                        vaccine: vaccine,
+                        sequence_number: sequence_number + 1,
+                        created_at: first_appointment.check_out,
+                        updated_at: first_appointment.check_out
 end
