@@ -3,15 +3,23 @@
 <table class="table table-hover">
   <thead>
   <tr>
+    <th scope="col">#</th>
     <th scope="col">Nome</th>
+    <th scope="col">Ativa?</th>
   </tr>
   </thead>
   <tbody>
   <% @ubs.each do |ubs| -%>
     <tr data-cy="patient">
+      <td>
+        <%= link_to ubs.id, admin_ubs_path(ubs) %>
+      </td>
       <th scope="row" class="align-middle">
-        <%= link_to ubs.name, admin_ubs_path(ubs) %>
+        <%= ubs.name %>
       </th>
+      <td>
+        <%= ubs.active ? "✅" : "❌" %>
+      </td>
     </tr>
   <% end -%>
   </tbody>

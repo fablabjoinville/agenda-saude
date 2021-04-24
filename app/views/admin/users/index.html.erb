@@ -3,6 +3,7 @@
 <table class="table table-hover">
   <thead>
   <tr>
+    <th scope="col">#</th>
     <th scope="col">Nome</th>
     <th scope="col">Unidades</th>
     <th scope="col">Admin?</th>
@@ -11,8 +12,11 @@
   <tbody>
   <% @users.each do |user| -%>
     <tr data-cy="patient">
+      <td>
+        <%= link_to user.id, admin_user_path(user) %>
+      </td>
       <th scope="row" class="align-middle">
-        <%= link_to user.name, admin_user_path(user) %>
+        <%= user.name %>
       </th>
       <td>
         <%= user.ubs.order(:id).pluck(:name).join(", ") %>
