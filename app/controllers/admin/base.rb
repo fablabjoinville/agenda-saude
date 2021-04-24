@@ -5,7 +5,7 @@ module Admin
 
     class AdministratorRequired < StandardError; end
 
-    rescue_from AdministratorRequired do |exception|
+    rescue_from AdministratorRequired do |_exception|
       render plain: :forbidden, status: :forbidden
     end
 
