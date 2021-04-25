@@ -33,7 +33,7 @@
     <th scope="col">Paciente</th>
     <th scope="col">C-in</th>
     <th scope="col">C-out</th>
-    <th scope="col">Aplicada</th>
+    <th scope="col">Dose</th>
     <th scope="col">Vacina</th>
   </tr>
   </thead>
@@ -72,12 +72,10 @@
         <% end -%>
       </td>
       <td>
-        <% if appointment.dose -%>
-          <%= "D#{appointment.dose.sequence_number}" %>
-        <% end -%>
+        <%= appointment.estimated_dose_sequence_number %>
       </td>
       <td>
-        <%= appointment.vaccine_name %>
+        <%= appointment.estimated_dose_vaccine&.name %>
       </td>
     </tr>
   <% end -%>

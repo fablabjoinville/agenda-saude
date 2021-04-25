@@ -2,9 +2,9 @@ class Appointment < ApplicationRecord
   belongs_to :patient, optional: true
   belongs_to :ubs
   has_one :dose, dependent: :restrict_with_exception
-  has_one :follow_up_for_dose, class_name: "Dose", foreign_key: :follow_up_appointment_id,
-          dependent: :restrict_with_exception,
-          inverse_of: :follow_up_appointment
+  has_one :follow_up_for_dose, class_name: 'Dose', foreign_key: :follow_up_appointment_id,
+                               dependent: :restrict_with_exception,
+                               inverse_of: :follow_up_appointment
 
   scope :today, -> { where(start: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day) }
 
@@ -32,18 +32,18 @@ class Appointment < ApplicationRecord
   scope :waiting, -> { not_checked_in.not_checked_out }
 
   scope :available_doses, lambda {
-                            active_ubs
-                              .active
-                              .waiting
-                              .not_scheduled
-                          }
+    active_ubs
+      .active
+      .waiting
+      .not_scheduled
+  }
 
   scope :search_for, lambda { |text|
     joins(:patient)
       .where(
         Patient.arel_table[:cpf]
-          .eq(Patient.parse_cpf(text)) # Search for CPF without . and -
-          .or(Patient.arel_table[:name].matches("%#{text.strip}%"))
+               .eq(Patient.parse_cpf(text)) # Search for CPF without . and -
+               .or(Patient.arel_table[:name].matches("%#{text.strip}%"))
       )
   }
 
@@ -88,5 +88,17 @@ class Appointment < ApplicationRecord
     return :checked_in if checked_in?
 
     :waiting
+  end
+
+  # Applied, to be applied, or likely sequence number
+  def estimated_dose_sequence_number
+    return nil unless patient_id
+
+    dose&.sequence_number || follow_up_for_dose&.next_sequence_number || 1
+  end
+
+  # Applied, or to be applied vaccine
+  def estimated_dose_vaccine
+    dose&.vaccine || follow_up_for_dose&.vaccine
   end
 end

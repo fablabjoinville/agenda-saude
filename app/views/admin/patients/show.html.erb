@@ -50,6 +50,7 @@
         <th scope="col">Unidade</th>
         <th scope="col">Check-in</th>
         <th scope="col">Check-out</th>
+        <th scope="col">Dose</th>
         <th scope="col">Vacina</th>
         <th scope="col">Suspenso?</th>
         <th scope="col">Criou dose #</th>
@@ -79,7 +80,10 @@
             <% end -%>
           </td>
           <td>
-            <%= appointment.vaccine_name %>
+            <%= appointment.estimated_dose_sequence_number %>
+          </td>
+          <td>
+            <%= appointment.estimated_dose_vaccine&.name %>
           </td>
           <td>
             <%= appointment.active ? "Não" : "Suspenso por #{appointment.suspend_reason}" %>
