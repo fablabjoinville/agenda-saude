@@ -143,6 +143,13 @@ describe('patient appointment flow', () => {
         cy.get('[data-cy=scheduledAppointmentText]').should('exist')
         cy.get('[data-cy=cannotCancelOrRescheduleText]').should('exist')
       })
+
+      it('can not reschedule second dose before it reaches the permitted day period', () => {
+        cy.get('[data-cy=appointmentRescheduleButton]').click()
+
+        cy.get('[data-cy=scheduledAppointmentText]').should('exist')
+        cy.get('[data-cy=cannotCancelOrRescheduleText]').should('exist')
+      })
     })
   })
 
