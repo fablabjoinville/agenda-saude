@@ -24,19 +24,29 @@ module Community
       @appointment = current_patient.appointments.not_checked_in.current
       raise CannotRescheduleYet if @appointment && !@appointment.can_reschedule?
 
+      # If it's a follow up, keep it in the same UBS
+      ubs_id = @appointment&.follow_up_for_dose ? @appointment.ubs_id : nil
+
       @days = parse_days
       @appointments = scheduler.open_times_per_ubs(from: @days.days.from_now.beginning_of_day,
-                                                   to: @days.days.from_now.end_of_day)
+                                                   to: @days.days.from_now.end_of_day,
+                                                   filter_ubs_id: ubs_id)
     rescue AppointmentScheduler::NoFreeSlotsAhead
       redirect_to home_community_appointments_path, flash: { alert: 'Não há vagas disponíveis para reagendamento.' }
     end
-
     # rubocop:enable Metrics/AbcSize
 
     def create
+      # TODO: reduce repetition between index and this one [jmonteiro]
+      @appointment = current_patient.appointments.not_checked_in.current
+      raise CannotRescheduleYet if @appointment && !@appointment.can_reschedule?
+
+      # If it's a follow up, keep it in the same UBS
+      ubs_id = @appointment&.follow_up_for_dose ? @appointment.ubs_id : create_params[:ubs_id].presence
+
       result, new_appointment = scheduler.schedule(
         patient: current_patient,
-        ubs_id: create_params[:ubs_id].presence,
+        ubs_id: ubs_id,
         from: parse_start.presence
       )
 

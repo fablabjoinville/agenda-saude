@@ -38,15 +38,16 @@ class AppointmentScheduler
 
       new_appointment = patient.appointments.waiting.where.not(id: current_appointment&.id).first!
       if current_appointment
-        # Update new appointment with data from current
-        new_appointment.update!(
-          vaccine_name: current_appointment.vaccine_name
-        )
-
         # Free up current appointment if it wasn't checkout out (completed)
         unless current_appointment.checked_out?
           current_appointment.update!(patient: nil, check_in: nil, check_out: nil, vaccine_name: nil)
         end
+
+        # Using update_all to issue a single SQL query to search and update
+        Dose.where(follow_up_appointment_id: current_appointment.id)
+            .update_all(follow_up_appointment_id: new_appointment.id, updated_at: Time.zone.now) # rubocop:disable Rails/SkipsModelValidations
+
+        new_appointment.update!(vaccine_name: current_appointment.vaccine_name) # TODO: remove me [jmonteiro]
       end
 
       [SUCCESS, new_appointment]
@@ -54,8 +55,11 @@ class AppointmentScheduler
   rescue StandardError => e
     Sentry.capture_exception(e)
 
+    raise e unless Rails.env.production?
+
     [NO_SLOTS]
   end
+
   # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
   # Cancels schedule for an appointment for a given patient, in a SQL efficient way
@@ -66,15 +70,18 @@ class AppointmentScheduler
            .update_all(patient_id: nil, vaccine_name: nil, updated_at: Time.zone.now) # rubocop:disable Rails/SkipsModelValidations
   end
 
-  def open_times_per_ubs(from:, to:)
+  def open_times_per_ubs(from:, to:, filter_ubs_id: nil)
     from = [from, earliest_allowed].compact.max - ROUNDING
 
-    Appointment.available_doses
-               .where(start: rounded_from(from)..to)
-               .order(:start) # in chronological order
-               .select(:ubs_id, :start, :end) # only return what we care with
-               .distinct # remove duplicates (same as .uniq in pure Ruby)
-               .group_by(&:ubs) # transforms it into a Hash grouped by Ubs
+    appointments = Appointment.available_doses
+                              .where(start: rounded_from(from)..to)
+                              .order(:start) # in chronological order
+                              .select(:ubs_id, :start, :end) # only return what we care with
+
+    appointments = appointments.where(ubs_id: filter_ubs_id) if filter_ubs_id
+
+    appointments.distinct # remove duplicates (same as .uniq in pure Ruby)
+                .group_by(&:ubs) # transforms it into a Hash grouped by Ubs
   end
 
   # Returns how many days ahead there are available appointments

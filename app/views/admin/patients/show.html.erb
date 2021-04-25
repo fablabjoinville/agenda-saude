@@ -141,7 +141,7 @@
           </td>
           <td>
             <% if dose.follow_up_appointment -%>
-              <%= link_to dose.follow_up_appointment.id, admin_appointment_path(dose.appointment) %>
+              <%= link_to dose.follow_up_appointment.id, admin_appointment_path(dose.follow_up_appointment) %>
             <% end -%>
           </td>
         </tr>
