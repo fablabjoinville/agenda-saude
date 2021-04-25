@@ -14,7 +14,6 @@ AllCops:
     - './node_modules/**/*'
     - './tmp/**/*'
     - './config/**/*'
-    - './lib/tasks/*.rake'
     - './Guardfile'
     - './Dangerfile'
   NewCops: enable

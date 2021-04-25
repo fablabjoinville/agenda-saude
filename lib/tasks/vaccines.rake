@@ -1,5 +1,5 @@
 namespace :seeding do
-  desc "Create default vaccines"
+  desc 'Create default vaccines'
   task vaccines: :environment do
     [
       { id: 1, name: 'CoronaVac', formal_name: 'Sinovac COVID-19 CoronaVac',

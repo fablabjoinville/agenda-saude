@@ -1,0 +1,89 @@
+<h1 class="h4">Agendamentos</h1>
+
+<div class="row mt-4 mb-3">
+  <div class="col-12">
+    <%= form_with url: admin_appointments_path, method: :get, local: true do |f| %>
+      <div class="form-row">
+        <div class="form-group col-md-5">
+          <label for="">Data</label>
+          <div class="form-row">
+            <%= f.date_select "date", autofocus: true, use_two_digit_numbers: true, selected: @date,
+                              with_css_classes: { day: "form-control day", month: "form-control month", year: "form-control year" },
+                              data: { cy: "dateInput" } %>
+          </div>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="">Unidade</label>
+          <%= f.select "ubs_id", Ubs.order(:name).pluck(:name, :id), { prompt: "Unidade:", selected: @ubs&.id }, class: "form-control" %>
+        </div>
+        <div class="form-group col-md-1">
+          <label for="">&nbsp;</label>
+          <%= f.submit "Buscar", class: "btn btn-primary", data: { cy: "searchSubmit" } %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<table class="table table-bordered table-hover table-sm">
+  <thead class="thead-dark">
+  <tr>
+    <th scope="col">#</th>
+    <th scope="col">Horário</th>
+    <th scope="col">Paciente</th>
+    <th scope="col">C-in</th>
+    <th scope="col">C-out</th>
+    <th scope="col">Aplicada</th>
+    <th scope="col">Vacina</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @appoitments.each do |appointment| -%>
+    <tr class="<%= "table-dark" unless appointment.active %> <%= "table-success" if appointment.checked_out? %>">
+      <td>
+        <%= link_to appointment.id, admin_appointment_path(appointment) %>
+      </td>
+      <th scope="row">
+        <%= l appointment.start, format: :short_hour %>
+      </th>
+      <td>
+        <% if appointment.patient.present? -%>
+          <%= appointment.patient.name %>
+        <% else -%>
+          vago
+        <% end -%>
+      </td>
+      <td>
+        <% if appointment.check_in.present? -%>
+          <% if (@date.beginning_of_day..@date.end_of_day).cover? appointment.check_in -%>
+            <%= l appointment.check_in, format: :short_hour %>
+          <% else -%>
+            <%= l appointment.check_in, format: :short_date_hour %>
+          <% end -%>
+        <% end -%>
+      </td>
+      <td>
+        <% if appointment.check_out.present? -%>
+          <% if (@date.beginning_of_day..@date.end_of_day).cover? appointment.check_out -%>
+            <%= l appointment.check_out, format: :short_hour %>
+          <% else -%>
+            <%= l appointment.check_out, format: :short_date_hour %>
+          <% end -%>
+        <% end -%>
+      </td>
+      <td>
+        <% if appointment.dose -%>
+          <%= "D#{appointment.dose.sequence_number}" %>
+        <% end -%>
+      </td>
+      <td>
+        <%= appointment.vaccine_name %>
+      </td>
+    </tr>
+  <% end -%>
+  </tbody>
+</table>
+
+<div>
+  <%= paginate @appoitments %>
+</div>
