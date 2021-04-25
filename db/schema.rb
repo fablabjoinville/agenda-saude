@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_23_145241) do
+ActiveRecord::Schema.define(version: 2021_04_24_041113) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -39,6 +39,7 @@ ActiveRecord::Schema.define(version: 2021_04_23_145241) do
     t.integer "sequence_number", default: 1, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "follow_up_appointment_id"
     t.index ["appointment_id"], name: "index_doses_on_appointment_id"
     t.index ["patient_id"], name: "index_doses_on_patient_id"
     t.index ["vaccine_id"], name: "index_doses_on_vaccine_id"
@@ -165,6 +166,7 @@ ActiveRecord::Schema.define(version: 2021_04_23_145241) do
 
   add_foreign_key "appointments", "ubs"
   add_foreign_key "doses", "appointments"
+  add_foreign_key "doses", "appointments", column: "follow_up_appointment_id"
   add_foreign_key "doses", "patients"
   add_foreign_key "doses", "vaccines"
   add_foreign_key "patients", "ubs", column: "main_ubs_id"
