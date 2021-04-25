@@ -1,7 +1,10 @@
 class Appointment < ApplicationRecord
   belongs_to :patient, optional: true
   belongs_to :ubs
-  has_one :dose, dependent: :restrict_with_exception # For future use [jmonteiro]
+  has_one :dose, dependent: :restrict_with_exception
+  has_one :follow_up_for_dose, class_name: "Dose", foreign_key: :follow_up_appointment_id,
+          dependent: :restrict_with_exception,
+          inverse_of: :follow_up_appointment
 
   scope :today, -> { where(start: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day) }
 

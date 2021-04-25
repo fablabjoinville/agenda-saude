@@ -25,6 +25,10 @@ pt-BR:
       user: Usuário
       patient: Paciente
   alerts:
+    last_dose_received: |
+      %{name} está imunizado(a).
+    dose_received_with_follow_up: |
+      %{name} tomou a %{sequence_number}a dose e está com a próxima dose agendada para %{date} nesta mesma unidade.
     cannot_cancel_or_reschedule: |
       Você só poderá cancelar ou reagendar seu atendimento (para outra data ou unidade) quando faltarem menos de %{days} dias a data do agendamento. Tente novamente mais próximo à data.
     cannot_update_profile_due_to_appointment_condition: |

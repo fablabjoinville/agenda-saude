@@ -31,14 +31,17 @@ module Operator
         end
       end
     end
+
     # rubocop:enable Metrics/AbcSize
 
     def show
       @appointment = @ubs.appointments.scheduled.find(params[:id])
 
-      @other_appointments = @appointment.patient.appointments.where.not(id: @appointment.id)
+      @other_appointments = @appointment.patient.appointments.where.not(id: @appointment.id).order(:start)
 
-      @doses = @appointment.patient.doses.includes(:vaccine, appointment: [:ubs])
+      @doses = @appointment.patient.doses.includes(:vaccine, appointment: [:ubs]).order(:created_at)
+
+      @vaccines = Vaccine.order(:name)
     end
 
     # Check-in single appointment
@@ -56,32 +59,20 @@ module Operator
     end
 
     # Check-out single appointment
-    # rubocop:disable Metrics/AbcSize
     def check_out
       appointment = @ubs.appointments.scheduled.not_checked_out.find(params[:id])
-      vaccine_name = appointment.vaccine_name.presence || check_out_params[:appointment].try(:[], :vaccine_name)
+      vaccine = Vaccine.find_by id: check_out_params[:vaccine_id]
 
-      if vaccine_name.blank?
+      unless vaccine
         return redirect_to(operator_ubs_appointment_path(appointment.ubs, appointment),
-                           flash: { error: 'Selecione vacina.' })
+                           flash: { error: 'Selecione a vacina aplicada.' })
       end
 
-      # next appointment
-      next_appointment = ReceptionService.new(appointment).check_out(vaccine_name)
+      checked_out = ReceptionService.new(appointment).check_out(vaccine)
 
       redirect_to operator_ubs_appointment_path(appointment.ubs, appointment),
-                  flash: {
-                    notice_title: if next_appointment
-                                    "#{next_appointment.patient.name} tomou primeira dose e está com segunda dose " \
-                                    "agendada para #{I18n.l next_appointment.start, format: :human} na unidade " \
-                                    " #{next_appointment.ubs.name}"
-                                  else
-                                    appointment.patient.vaccinated?
-                                    "#{appointment.patient.name} está imunizada(o) com duas doses."
-                                  end
-                  }
+                  flash: { notice_title: notice_for_checked_out(checked_out, appointment) }
     end
-    # rubocop:enable Metrics/AbcSize
 
     # Suspend single appointment
     def suspend
@@ -136,11 +127,22 @@ module Operator
     end
 
     def check_out_params
-      params.permit(appointment: [:vaccine_name])
+      params.permit(:vaccine_id)
     end
 
     def index_params
       params.permit(:per_page, :page, :search, :filter)
+    end
+
+    def notice_for_checked_out(checked_out, appointment)
+      if checked_out.dose.follow_up_appointment
+        I18n.t('alerts.dose_received_with_follow_up',
+               name: appointment.patient.name,
+               sequence_number: checked_out.dose.sequence_number,
+               date: I18n.l(checked_out.next_appointment.start, format: :human))
+      else
+        I18n.t('alerts.last_dose_received', name: appointment.patient.name)
+      end
     end
 
     def set_ubs

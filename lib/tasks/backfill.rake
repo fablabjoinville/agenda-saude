@@ -1,5 +1,5 @@
 namespace :backfill do
-  desc 'Backfill vaccines (idempotent, can be run as many time as needed)'
+  desc 'Backfill vaccines (idempotent)'
   task vaccines: [:environment, 'seeding:vaccines'] do
     Appointment.distinct(:vaccine_name).pluck(:vaccine_name).compact.each do |vaccine_name|
       vaccine = Vaccine.find_by!(legacy_name: vaccine_name)
@@ -30,7 +30,7 @@ namespace :backfill do
     end
   end
 
-  desc 'Backfill follow ups'
+  desc 'Backfill follow ups (idempotent)'
   task follow_up_appointments: [:environment] do
     puts ActiveRecord::Base.connection.execute(%{
       WITH subquery AS (
