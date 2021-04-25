@@ -31,8 +31,9 @@
     <th scope="col">#</th>
     <th scope="col">Horário</th>
     <th scope="col">Paciente</th>
-    <th scope="col">Check-in</th>
-    <th scope="col">Check-out</th>
+    <th scope="col">C-in</th>
+    <th scope="col">C-out</th>
+    <th scope="col">Aplicada</th>
     <th scope="col">Vacina</th>
   </tr>
   </thead>
@@ -53,10 +54,27 @@
         <% end -%>
       </td>
       <td>
-        <%= l appointment.check_in, format: :short_date_hour if appointment.check_in.present? %>
+        <% if appointment.check_in.present? -%>
+          <% if (@date.beginning_of_day..@date.end_of_day).cover? appointment.check_in -%>
+            <%= l appointment.check_in, format: :short_hour %>
+          <% else -%>
+            <%= l appointment.check_in, format: :short_date_hour %>
+          <% end -%>
+        <% end -%>
       </td>
       <td>
-        <%= l appointment.check_out, format: :short_date_hour if appointment.check_out.present? %>
+        <% if appointment.check_out.present? -%>
+          <% if (@date.beginning_of_day..@date.end_of_day).cover? appointment.check_out -%>
+            <%= l appointment.check_out, format: :short_hour %>
+          <% else -%>
+            <%= l appointment.check_out, format: :short_date_hour %>
+          <% end -%>
+        <% end -%>
+      </td>
+      <td>
+        <% if appointment.dose -%>
+          <%= "D#{appointment.dose.sequence_number}" %>
+        <% end -%>
       </td>
       <td>
         <%= appointment.vaccine_name %>

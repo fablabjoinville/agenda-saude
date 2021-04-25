@@ -48,6 +48,20 @@ describe('patient appointment flow', () => {
       cy.loginAsPatient(cpf)
     })
 
+    context('when patient has a scheduled appointment and tries to update itself to a not permitted patient scenario', () => {
+      it('does not update the patient and shows the not permitted action text', () => {
+        cy.get('[data-cy=appointmentRescheduleButton]').click()
+        cy.get('[data-cy=nextDayButton]').click()
+        cy.get('[data-cy=ubs1Button]').click()
+        cy.get('#ubs1 [data-cy=scheduleTimeButton]:first').click()
+
+        cy.get('[data-cy=patientEditButton]').click()
+        cy.get('#patient_birthday_1i').select('2000')
+        cy.get('[data-cy=patientSubmitButton]').click()
+        cy.get('[data-cy=cannotUpdateProfileDueToAppointmentConditionText]').should('exist')
+      })
+    })
+
     context('when there are doses', () => {
       it('can schedule, reschedule, and cancel', () => {
         cy.get('[data-cy=dosesAvailableText]').should('exist')
@@ -85,32 +99,57 @@ describe('patient appointment flow', () => {
   })
 
   context('when patient is a second dose patient', () => {
-    beforeEach(() => {
-      cy.appScenario('second_dose_patient', {cpf: cpf});
-      cy.visit('/')
+    context('when second dose is tomorrow', () => {
+      beforeEach(() => {
+        cy.appScenario('second_dose_patient', { cpf: cpf, days_from_now: 1 });
+        cy.visit('/')
 
-      cy.loginAsPatient(cpf)
+        cy.loginAsPatient(cpf)
+      })
+
+      it('can cancel and reschedule setting the same vaccine', () => {
+        cy.get('[data-cy=appliedVaccineName]').should('contain', 'Coronavac')
+
+        // Reschedule
+        cy.get('[data-cy=appointmentRescheduleButton]').click()
+        cy.get('[data-cy=nextDayButton]').click()
+        cy.get('[data-cy=ubs1Button]').click()
+        cy.get('#ubs1 [data-cy=scheduleTimeButton]:first').click()
+        cy.get('[data-cy=appliedVaccineName]').should('contain', 'Coronavac')
+
+        // Cancel and re-schedule
+        cy.get('[data-cy=appointmentCancelButton]').click()
+        cy.get('[data-cy=appointmentRescheduleButton]').click()
+        cy.get('[data-cy=nextDayButton]').click()
+        cy.get('[data-cy=ubs1Button]').click()
+        cy.get('#ubs1 [data-cy=scheduleTimeButton]:first').click()
+        cy.get('[data-cy=scheduledAppointmentText]').should('exist')
+
+        cy.get('[data-cy=appliedVaccineName]').should('contain', 'Coronavac')
+      })
     })
 
-    it('can replace same vaccine, and cancel and reschedule', () => {
-      cy.get('[data-cy=appliedVaccineName]').should('contain', 'Coronavac')
+    context('when second dose is far away', () => {
+      beforeEach(() => {
+        cy.appScenario('second_dose_patient', { cpf: cpf, days_from_now: 30 });
+        cy.visit('/')
 
-      // Reschedule button
-      cy.get('[data-cy=appointmentRescheduleButton]').click()
-      cy.get('[data-cy=nextDayButton]').click()
-      cy.get('[data-cy=ubs1Button]').click()
-      cy.get('#ubs1 [data-cy=scheduleTimeButton]:first').click()
-      cy.get('[data-cy=appliedVaccineName]').should('contain', 'Coronavac')
+        cy.loginAsPatient(cpf)
+      })
 
-      // Cancel and re-schedule
-      cy.get('[data-cy=appointmentCancelButton]').click()
-      cy.get('[data-cy=appointmentRescheduleButton]').click()
-      cy.get('[data-cy=nextDayButton]').click()
-      cy.get('[data-cy=ubs1Button]').click()
-      cy.get('#ubs1 [data-cy=scheduleTimeButton]:first').click()
-      cy.get('[data-cy=scheduledAppointmentText]').should('exist')
+      it('can not cancel second dose before it reaches the permitted day period', () => {
+        cy.get('[data-cy=appointmentCancelButton]').click()
 
-      cy.get('[data-cy=appliedVaccineName]').should('contain', 'Coronavac')
+        cy.get('[data-cy=scheduledAppointmentText]').should('exist')
+        cy.get('[data-cy=cannotCancelOrRescheduleText]').should('exist')
+      })
+
+      it('can not reschedule second dose before it reaches the permitted day period', () => {
+        cy.get('[data-cy=appointmentRescheduleButton]').click()
+
+        cy.get('[data-cy=scheduledAppointmentText]').should('exist')
+        cy.get('[data-cy=cannotCancelOrRescheduleText]').should('exist')
+      })
     })
   })
 

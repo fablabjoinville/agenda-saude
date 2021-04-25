@@ -41,6 +41,7 @@ module Community
       @patient.attributes = update_params
 
       if cannot_update_profile?
+        flash.now[:cy] = 'cannotUpdateProfileDueToAppointmentConditionText'
         flash.now[:alert] = t('alerts.cannot_update_profile_due_to_appointment_condition')
         render :edit
         return
