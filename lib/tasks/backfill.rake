@@ -29,4 +29,27 @@ namespace :backfill do
       ubs.users = [ubs.user]
     end
   end
+
+  desc 'Backfill follow ups'
+  task follow_up_appointments: [:environment] do
+    puts ActiveRecord::Base.connection.execute(%{
+      WITH subquery AS (
+        SELECT d.id AS "id", a.id AS "follow_up_appointment_id"
+          FROM doses AS d
+          INNER JOIN vaccines AS v ON
+            v.id = d.vaccine_id
+          INNER JOIN appointments AS a ON
+            a.patient_id = d.patient_id
+            AND a.id != d.appointment_id
+            AND a.vaccine_name = v.legacy_name
+          WHERE
+            d.sequence_number = 1
+            AND d.follow_up_appointment_id IS NULL
+      ) UPDATE doses
+        SET follow_up_appointment_id = subquery.follow_up_appointment_id
+        FROM subquery
+        WHERE
+          doses.id = subquery.id
+    })&.inspect
+  end
 end

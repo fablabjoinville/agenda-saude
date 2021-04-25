@@ -110,6 +110,7 @@
         <th scope="col">Vacina</th>
         <th scope="col">Dose</th>
         <th scope="col">Agendamento #</th>
+        <th scope="col">Reforço #</th>
       </tr>
       </thead>
       <tbody>
@@ -133,6 +134,11 @@
           </td>
           <td>
             <%= link_to dose.appointment.id, admin_appointment_path(dose.appointment) %>
+          </td>
+          <td>
+            <% if dose.follow_up_appointment -%>
+              <%= link_to dose.follow_up_appointment.id, admin_appointment_path(dose.appointment) %>
+            <% end -%>
           </td>
         </tr>
       <% end -%>
