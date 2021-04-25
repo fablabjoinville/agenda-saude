@@ -40,7 +40,7 @@ module Community
       @patient = current_patient
       @patient.attributes = update_params
 
-      if cannot_update_profile?
+      unless can_update_profile?
         flash.now[:cy] = 'cannotUpdateProfileDueToAppointmentConditionText'
         flash.now[:alert] = t('alerts.cannot_update_profile_due_to_appointment_condition')
         render :edit
@@ -58,9 +58,10 @@ module Community
 
     protected
 
-    def cannot_update_profile?
-      # TODO: enhance how we deal with first doses [jmonteiro]
-      @patient.doses.empty? && @patient.appointments.not_checked_in.current.present? && !@patient.can_schedule?
+    # If was already given a dose, allow them to all changes they'd like to
+    # Otherwise check if patient can schedule (checking the conditions)
+    def can_update_profile?
+      @patient.doses.count.positive? || @patient.can_schedule?
     end
 
     def create_params

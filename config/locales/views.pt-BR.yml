@@ -33,7 +33,10 @@ pt-BR:
       Não foi possível atualizar seu cadastro, já que esta alteração irá remover você do grupo que pode receber vacinas.
       Para realizar esta alteração, primeiro cancele seu agendamento atual, para só então atualizar seu cadastro.
     cannot_reschedule_yet: |
-      Ainda falta muito tempo para o reforço da sua vacina. Se você deseja mudar a data, volte aqui a partir de %{datetime} para tentar reagendar sua vacina. Lembre-se que você só pode receber o reforço da vacina na mesma unidade que recebeu a primeira dose, portanto caso hajam vagas poderá escolher outro dia e horário somente na mesma unidade.
+      Ainda falta muito tempo para o reforço da sua vacina. Se você deseja mudar a data, volte aqui a partir de
+      %{datetime} para tentar reagendar sua vacina.
+      Lembre-se que você só pode receber o reforço da vacina na mesma unidade que recebeu a primeira dose,
+      portanto caso hajam vagas poderá escolher outro dia e horário somente na mesma unidade.
   buttons:
     cancel_appointment: Cancelar este agendamento
     reschedule_appointment: Reagendar e escolher outro dia, horário ou local
