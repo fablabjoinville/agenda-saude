@@ -46,23 +46,37 @@
       </li>
       <li class="list-group-item d-print-none">
         <div class="row">
+          <% if @appointment.can_cancel? -%>
+            <div class="col">
+              <%= button_to community_appointment_path(id: @appointment.id), method: :delete,
+                            class: "btn btn-danger btn-block",
+                            data: {
+                              cy: "appointmentCancelButton",
+                              confirm: "Confirma CANCELAR seu agendamento? Você poderá remarcar, porém estará sujeito a disponibilidade de vagas."
+                            } do %>
+                <%= t('buttons.cancel_appointment') %>
+              <% end %>
+            </div>
+          <% end %>
           <div class="col">
-            <%= button_to community_appointment_path(id: @appointment.id), method: :delete,
-                          class: "btn btn-danger btn-block",
+            <% if @appointment.can_reschedule? -%>
+              <%= link_to t('buttons.reschedule_appointment'),
+                          community_appointments_path,
+                          class: "btn btn-primary btn-block",
                           data: {
-                            cy: "appointmentCancelButton",
-                            confirm: "Confirma CANCELAR seu agendamento? Você poderá remarcar, porém estará sujeito a disponibilidade de vagas."
-                          } do %>
-              Cancelar este agendamento
-            <% end %>
-          </div>
-          <div class="col">
-            <%= link_to "Reagendar e escolher outro dia, horário ou local",
-                        community_appointments_path,
-                        class: "btn btn-primary btn-block",
-                        data: {
-                          cy: "appointmentRescheduleButton",
-                        } %>
+                            cy: "appointmentRescheduleButton",
+                          } %>
+            <% else -%>
+              <div class="alert alert-warning" role="alert">
+                <%= t("alerts.cannot_reschedule_yet", datetime: l(@appointment.can_reschedule_after, format: :human)) %>
+              </div>
+              <%= link_to t('buttons.reschedule_appointment'),
+                          '#',
+                          class: "btn btn-primary btn-block disabled",
+                          data: {
+                            cy: "disabledAppointmentRescheduleButton",
+                          } %>
+            <% end -%>
           </div>
         </div>
       </li>

@@ -19,23 +19,13 @@
 <% if @doses.any? -%>
   <div class="container mt-3">
     <div class="card">
-      <h4 class="card-header" data-cy="dosesText">Vacinas administradas:</h4>
+      <h4 class="card-header" data-cy="vaccinatedPatientText">
+        Vacinas recebidas
+      </h4>
       <ul class="list-group list-group-flush">
         <li class="list-group-item">
-          Você já recebeu as seguintes vacinas:
           <div class="row">
-            <div class="col">
-              <ul>
-                <% @doses.each do |dose| -%>
-                  <li>
-                    <%= dose.sequence_number %><sup>a</sup> dose da
-                    <%= dose.vaccine.name %> (<i><%= dose.vaccine.formal_name %></i>) no dia
-                    <%= l dose.created_at, format: :human %> na unidade
-                    <%= dose.appointment.ubs.name %>
-                  </li>
-                <% end -%>
-              </ul>
-            </div>
+            <%= render "community/doses/doses", doses: @doses %>
           </div>
         </li>
       </ul>

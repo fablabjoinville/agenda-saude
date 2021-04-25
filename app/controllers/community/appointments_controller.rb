@@ -1,5 +1,8 @@
 module Community
   class AppointmentsController < Base
+    class CannotCancel < StandardError; end
+    class CannotRescheduleYet < StandardError; end
+
     def home
       return redirect_to(vaccinated_community_appointments_path) if current_patient.vaccinated?
 
@@ -19,15 +22,7 @@ module Community
     # rubocop:disable Metrics/AbcSize
     def index
       @appointment = current_patient.appointments.not_checked_in.current
-      if @appointment && !@appointment.can_cancel_and_reschedule?
-        return redirect_to(
-          home_community_appointments_path,
-          flash: {
-            alert: t('alerts.cannot_cancel_or_reschedule', days: Rails.configuration.x.schedule_up_to_days),
-            cy: 'cannotCancelOrRescheduleText'
-          }
-        )
-      end
+      raise CannotRescheduleYet if @appointment && !@appointment.can_reschedule?
 
       @days = parse_days
       @appointments = scheduler.open_times_per_ubs(from: @days.days.from_now.beginning_of_day,
@@ -51,15 +46,7 @@ module Community
 
     def destroy
       @appointment = current_patient.appointments.waiting.find(params[:id])
-      unless @appointment.can_cancel_and_reschedule?
-        return redirect_to(
-          home_community_appointments_path,
-          flash: {
-            alert: t('alerts.cannot_cancel_or_reschedule', days: Rails.configuration.x.schedule_up_to_days),
-            cy: 'cannotCancelOrRescheduleText'
-          }
-        )
-      end
+      raise CannotCancel unless @appointment.can_cancel?
 
       scheduler.cancel_schedule(patient: current_patient, id: @appointment.id)
 
@@ -69,9 +56,8 @@ module Community
     def vaccinated
       return redirect_to(home_community_appointments_path) unless current_patient.vaccinated?
 
-      appointments = current_patient.appointments.active.checked_out.order(:check_out).limit(2).all
-      @first_dose_appointment = appointments.first
-      @second_dose_appointment = appointments.last
+      @patient = current_patient
+      @doses = current_patient.doses.order(:sequence_number)
     end
 
     private

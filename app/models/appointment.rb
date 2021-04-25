@@ -47,10 +47,23 @@ class Appointment < ApplicationRecord
       )
   }
 
-  # In the case it's a second dose, patient shouldn't be able to reschedule the appointment.
-  # NOTE: in the future once we have a better way to handle 2nd doses, check against the recommended vaccination window
-  def can_cancel_and_reschedule?
-    patient.doses.empty? || start < Rails.configuration.x.schedule_up_to_days.days.from_now.end_of_day
+  # Appointments can't be canceled if they are follow ups, only reschedule
+  def can_cancel?
+    !follow_up_for_dose
+  end
+
+  # For follow ups, can only be rescheduled close to the date.
+  def can_reschedule?
+    return true unless follow_up_for_dose
+
+    Time.zone.now > can_reschedule_after
+  end
+
+  # Patients can only reschedule after a certain cutoff, in this case being "schedule_up_to_days" related with when they
+  # should get the vaccine.
+  def can_reschedule_after
+    follow_up_for_dose.created_at + follow_up_for_dose.follow_up_in_days.days -
+      Rails.configuration.x.schedule_up_to_days.days
   end
 
   def in_allowed_check_in_window?

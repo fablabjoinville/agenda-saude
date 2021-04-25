@@ -94,13 +94,9 @@ class Patient < ApplicationRecord
     appointments.active.checked_out.count.positive?
   end
 
-  # Until we have a proper way to remember vaccines for patients
-  def got_second_dose?
-    appointments.active.checked_out.count >= 2
-  end
-
   def vaccinated?
-    got_second_dose?
+    # If there are any doses and the last one doesn't have a follow up date, it means user is vaccinated
+    doses.any? && !doses.order(sequence_number: :desc).first!.follow_up_in_days
   end
 
   def allowed?

@@ -26,10 +26,12 @@
   </div>
 </div>
 
-<% if appointment.vaccine_name.present? %>
+<% if appointment.follow_up_for_dose %>
   <div class="row">
     <div class="col" data-cy="appliedVaccineName">
-      <strong>Vacina:</strong> <%= appointment.vaccine_name.capitalize %>
+      <strong>Vacina:</strong>
+      <%= appointment.follow_up_for_dose.vaccine.name %>
+      (<i><%= appointment.follow_up_for_dose.vaccine.formal_name %></i>)
     </div>
   </div>
 <% end %>
