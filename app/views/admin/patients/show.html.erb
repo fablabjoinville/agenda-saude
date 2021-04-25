@@ -57,7 +57,7 @@
       </thead>
       <tbody>
 
-      <% @patient.appointments.each do |appointment| -%>
+      <% @patient.appointments.order(:start).each do |appointment| -%>
         <tr>
           <td>
             <%= link_to appointment.id, admin_appointment_path(appointment) %>
@@ -114,7 +114,7 @@
       </thead>
       <tbody>
 
-      <% @patient.doses.each do |dose| -%>
+      <% @patient.doses.order(:created_at).each do |dose| -%>
         <tr>
           <td>
             <%= dose.id %>
