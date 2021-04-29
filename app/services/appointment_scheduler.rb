@@ -64,14 +64,12 @@ class AppointmentScheduler
       patient.appointments
              .waiting
              .where(id: id)
-             .update_all(patient_id: nil, vaccine_name: nil, active: false, updated_at: Time.zone.now)
+             .update_all(patient_id: nil, vaccine_name: nil, active: false, updated_at: Time.zone.now) # rubocop:disable Rails/SkipsModelValidations
     else
       patient.appointments
              .waiting
              .where(id: id)
-             .update_all(
-               patient_id: nil, vaccine_name: nil, updated_at: Time.zone.now
-              ) # rubocop:disable Rails/SkipsModelValidations
+             .update_all(patient_id: nil, vaccine_name: nil, updated_at: Time.zone.now) # rubocop:disable Rails/SkipsModelValidations
     end
   end
 
