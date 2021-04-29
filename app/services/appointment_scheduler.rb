@@ -60,10 +60,17 @@ class AppointmentScheduler
 
   # Cancels schedule for an appointment for a given patient, in a SQL efficient way
   def cancel_schedule(patient:, id:)
-    patient.appointments
-           .waiting
-           .where(id: id)
-           .update_all(patient_id: nil, vaccine_name: nil, updated_at: Time.zone.now) # rubocop:disable Rails/SkipsModelValidations
+    if patient.doses.exists?
+      patient.appointments
+            .waiting
+            .where(id: id)
+            .update_all(patient_id: nil, vaccine_name: nil, active: false, updated_at: Time.zone.now)
+    else
+      patient.appointments
+            .waiting
+            .where(id: id)
+            .update_all(patient_id: nil, vaccine_name: nil, updated_at: Time.zone.now) # rubocop:disable Rails/SkipsModelValidations
+    end
   end
 
   def open_times_per_ubs(from:, to:)
