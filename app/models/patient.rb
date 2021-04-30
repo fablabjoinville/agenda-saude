@@ -2,11 +2,11 @@ class Patient < ApplicationRecord
   MAX_LOGIN_ATTEMPTS = 3
 
   CONDITIONS = {
-    'População em geral com 62 anos ou mais' => lambda do |patient|
+    'População em geral com 60 anos ou mais' => lambda do |patient|
       birthday = patient.birthday.to_time # rubocop:disable Rails/Date timezone is respected
       cutoff = Time.zone.now
       age = ((cutoff - birthday) / 1.year.seconds).floor
-      age >= 62
+      age >= 60
     end
     # 'Trabalhadores da saúde segundo OFÍCIO Nº 234/2021/CGPNI/DEIDT/SVS/MS' =>
     # ->(patient) { patient.in_group?('Trabalhador(a) da Saúde') },
