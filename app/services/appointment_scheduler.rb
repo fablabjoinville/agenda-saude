@@ -70,10 +70,8 @@ class AppointmentScheduler
     return appointment.update!(attributes) unless dose
 
     # For follow up we need to suspend the appointment and update the dose follow up appointment
-    appointment.update!(attributes.merge(
-                          active: false,
-                          suspend_reason: I18n.t('suspend_reasons.follow_up_canceled_by_user')
-                        ))
+    appointment.update!(attributes.merge(active: false,
+                                         suspend_reason: I18n.t('suspend_reasons.follow_up_canceled_by_user')))
     dose.update! follow_up_appointment: new_appointment
   end
 
