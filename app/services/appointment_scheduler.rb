@@ -22,7 +22,7 @@ class AppointmentScheduler
   # Looks for appointments, and tries to schedule one. If it can't, it will return +NO_SLOTS+.
   # In case it can, it will also cancel the patient's current schedule for an existing appointment, and in the end it
   # returns +SUCCESS+ and the newly scheduled appointment.
-  # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+  # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Metrics/CyclomaticComplexity
   def schedule(patient:, ubs_id:, from:)
     return [CONDITIONS_UNMET] unless patient.can_schedule?
 
@@ -38,10 +38,16 @@ class AppointmentScheduler
 
       new_appointment = patient.appointments.waiting.where.not(id: current_appointment&.id).first!
       if current_appointment
-        # Free up current appointment if it wasn't checkout out (completed)
-        unless current_appointment.checked_out?
-          current_appointment.update!(patient: nil, check_in: nil, check_out: nil, vaccine_name: nil)
+        current_appointment.attributes = { patient: nil, check_in: nil, check_out: nil, vaccine_name: nil }
+
+        # If it's a follow up, suspend appointment to prevent it from being used for 1st dose
+        if current_appointment.follow_up_for_dose.present?
+          current_appointment.attributes = {
+            active: false,
+            suspend_reason: "Reforço reagendado pelo paciente (#{new_appointment.id})"
+          }
         end
+        current_appointment.save!
 
         # Using update_all to issue a single SQL query to search and update
         Dose.where(follow_up_appointment_id: current_appointment.id)
@@ -59,8 +65,7 @@ class AppointmentScheduler
 
     [NO_SLOTS]
   end
-
-  # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
+  # rubocop:enable Metrics/MethodLength, Metrics/AbcSize, Metrics/CyclomaticComplexity
 
   # Cancels schedule for an appointment for a given patient, in a SQL efficient way
   def cancel_schedule(patient:, id:)

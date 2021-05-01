@@ -19,7 +19,7 @@ class Patient < ApplicationRecord
   has_many :appointments, dependent: :destroy do
     # Returns the last available active appointment
     def current
-      order(:start).active.includes(:ubs).last
+      order(:start).active.not_checked_out.includes(:ubs).last
     end
   end
 

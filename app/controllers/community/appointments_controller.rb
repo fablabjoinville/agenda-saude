@@ -1,6 +1,7 @@
 module Community
   class AppointmentsController < Base
     class CannotCancel < StandardError; end
+
     class CannotRescheduleYet < StandardError; end
 
     def home
@@ -19,10 +20,8 @@ module Community
     end
 
     # Reschedules appointment (only if patient already has one scheduled)
-    # rubocop:disable Metrics/AbcSize
     def index
-      @appointment = current_patient.appointments.not_checked_in.current
-      raise CannotRescheduleYet if @appointment && !@appointment.can_reschedule?
+      @appointment = appointment_that_can_reschedule
 
       # If it's a follow up, keep it in the same UBS
       ubs_id = @appointment&.follow_up_for_dose ? @appointment.ubs_id : nil
@@ -34,12 +33,9 @@ module Community
     rescue AppointmentScheduler::NoFreeSlotsAhead
       redirect_to home_community_appointments_path, flash: { alert: 'Não há vagas disponíveis para reagendamento.' }
     end
-    # rubocop:enable Metrics/AbcSize
 
     def create
-      # TODO: reduce repetition between index and this one [jmonteiro]
-      @appointment = current_patient.appointments.not_checked_in.current
-      raise CannotRescheduleYet if @appointment && !@appointment.can_reschedule?
+      @appointment = appointment_that_can_reschedule
 
       # If it's a follow up, keep it in the same UBS
       ubs_id = @appointment&.follow_up_for_dose ? @appointment.ubs_id : create_params[:ubs_id].presence
@@ -55,8 +51,7 @@ module Community
     end
 
     def destroy
-      @appointment = current_patient.appointments.waiting.find(params[:id])
-      raise CannotCancel unless @appointment.can_cancel?
+      @appointment = appointment_that_can_cancel
 
       scheduler.cancel_schedule(patient: current_patient, id: @appointment.id)
 
@@ -71,6 +66,20 @@ module Community
     end
 
     private
+
+    def appointment_that_can_reschedule
+      appointment = current_patient.appointments.not_checked_in.current
+      raise CannotRescheduleYet if appointment && !appointment.can_reschedule?
+
+      appointment
+    end
+
+    def appointment_that_can_cancel
+      appointment = current_patient.appointments.waiting.find(params[:id])
+      raise CannotCancel unless appointment.can_cancel?
+
+      appointment
+    end
 
     def from
       Rails.configuration.x.schedule_from_hours.hours.from_now

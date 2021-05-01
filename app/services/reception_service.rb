@@ -32,6 +32,7 @@ class ReceptionService
 
   private
 
+  # rubocop:disable Metrics/AbcSize
   def create_follow_up_appointment!(dose)
     return nil unless dose.follow_up_in_days
 
@@ -52,6 +53,7 @@ class ReceptionService
       a.save!
     end
   end
+  # rubocop:enable Metrics/AbcSize
 
   def new_dose(vaccine)
     appointment.build_dose patient_id: appointment.patient_id,
