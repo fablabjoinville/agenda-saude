@@ -104,14 +104,14 @@ class Appointment < ApplicationRecord
   end
 
   # Applied, to be applied, or likely sequence number
-  def estimated_dose_sequence_number
+  def dose_sequence_number
     return nil unless patient_id
 
     dose&.sequence_number || follow_up_for_dose&.next_sequence_number || 1
   end
 
   # Applied, or to be applied vaccine
-  def estimated_dose_vaccine
+  def dose_vaccine
     dose&.vaccine || follow_up_for_dose&.vaccine
   end
 end

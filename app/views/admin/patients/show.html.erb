@@ -80,10 +80,10 @@
             <% end -%>
           </td>
           <td>
-            <%= appointment.estimated_dose_sequence_number %>
+            <%= appointment.dose_sequence_number %>
           </td>
           <td>
-            <%= appointment.estimated_dose_vaccine&.name %>
+            <%= appointment.dose_vaccine&.name %>
           </td>
           <td>
             <%= appointment.active ? "Não" : "Suspenso por #{appointment.suspend_reason}" %>
