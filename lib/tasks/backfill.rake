@@ -32,6 +32,15 @@ namespace :backfill do
 
   desc 'Backfill follow ups (idempotent)'
   task follow_up_appointments: [:environment] do
+    puts "Cleaning column:"
+    puts ActiveRecord::Base.connection.execute(%(
+      UPDATE doses
+      SET follow_up_appointment_id = NULL
+      WHERE
+        follow_up_appointment_id != NULL
+    ))&.inspect
+
+    puts "Populating column:"
     puts ActiveRecord::Base.connection.execute(%{
       WITH subquery AS (
         SELECT d.id AS "id", a.id AS "follow_up_appointment_id"
@@ -44,7 +53,6 @@ namespace :backfill do
             AND a.vaccine_name = v.legacy_name
           WHERE
             d.sequence_number = 1
-            AND d.follow_up_appointment_id IS NULL
       ) UPDATE doses
         SET follow_up_appointment_id = subquery.follow_up_appointment_id
         FROM subquery
