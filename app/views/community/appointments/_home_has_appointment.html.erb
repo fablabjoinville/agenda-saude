@@ -69,7 +69,7 @@
         <% else -%>
           <div class="row">
             <div class="col">
-                <div class="alert alert-warning" role="alert">
+                <div class="alert alert-warning" role="alert" data-cy="cannotCancelAndRescheduleText">
                   <%= t("alerts.cannot_reschedule_yet", datetime: l(@appointment.can_change_after, format: :human)) %>
                 </div>
             </div>
