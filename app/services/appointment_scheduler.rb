@@ -38,22 +38,16 @@ class AppointmentScheduler
 
       new_appointment = patient.appointments.waiting.where.not(id: current_appointment&.id).first!
       if current_appointment
-        current_appointment.attributes = { patient: nil, check_in: nil, check_out: nil, vaccine_name: nil }
+        vaccine_name = current_appointment.vaccine_name
+        cancel_schedule(appointment: current_appointment, new_appointment: new_appointment)
+        new_appointment.update!(vaccine_name: vaccine_name) # TODO: remove me [jmonteiro]
+      end
 
-        # If it's a follow up, suspend appointment to prevent it from being used for 1st dose
-        if current_appointment.follow_up_for_dose.present?
-          current_appointment.attributes = {
-            active: false,
-            suspend_reason: "Reforço reagendado pelo paciente (#{new_appointment.id})"
-          }
-        end
-        current_appointment.save!
-
-        # Using update_all to issue a single SQL query to search and update
-        Dose.where(follow_up_appointment_id: current_appointment.id)
-            .update_all(follow_up_appointment_id: new_appointment.id, updated_at: Time.zone.now) # rubocop:disable Rails/SkipsModelValidations
-
-        new_appointment.update!(vaccine_name: current_appointment.vaccine_name) # TODO: remove me [jmonteiro]
+      # In case patient canceled a follow up in the past and is trying to reschedule it
+      dose = patient.doses.where(follow_up_appointment: nil).first
+      if dose
+        dose.update! follow_up_appointment: new_appointment
+        new_appointment.update!(vaccine_name: dose.vaccine.legacy_name) # TODO: remove me [jmonteiro]
       end
 
       [SUCCESS, new_appointment]
@@ -68,11 +62,19 @@ class AppointmentScheduler
   # rubocop:enable Metrics/MethodLength, Metrics/AbcSize, Metrics/CyclomaticComplexity
 
   # Cancels schedule for an appointment for a given patient, in a SQL efficient way
-  def cancel_schedule(patient:, id:)
-    patient.appointments
-           .waiting
-           .where(id: id)
-           .update_all(patient_id: nil, vaccine_name: nil, updated_at: Time.zone.now) # rubocop:disable Rails/SkipsModelValidations
+  def cancel_schedule(appointment:, new_appointment: nil)
+    attributes = { patient: nil, vaccine_name: nil }
+
+    dose = appointment.follow_up_for_dose
+
+    return appointment.update!(attributes) unless dose
+
+    # For follow up we need to suspend the appointment and update the dose follow up appointment
+    appointment.update!(attributes.merge(
+                          active: false,
+                          suspend_reason: I18n.t('suspend_reasons.follow_up_canceled_by_user')
+                        ))
+    dose.update! follow_up_appointment: new_appointment
   end
 
   def open_times_per_ubs(from:, to:, filter_ubs_id: nil)

@@ -30,6 +30,11 @@ class ReceptionService
     end
   end
 
+  def check_in_and_out(vaccine)
+    check_in
+    check_out(vaccine)
+  end
+
   private
 
   # rubocop:disable Metrics/AbcSize

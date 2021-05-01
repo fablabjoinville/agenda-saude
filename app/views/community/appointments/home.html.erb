@@ -1,5 +1,11 @@
 <% if @appointment.present? %>
-  <%= render "home_has_appointment" %>
+  <% if @appointment.checked_in? && !@appointment.checked_out?-%>
+    <%= render "home_ongoing_reception" %>
+
+  <% else -%>
+    <%= render "home_has_appointment" %>
+
+  <% end -%>
 
 <% else %>
   <div class="row">

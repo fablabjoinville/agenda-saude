@@ -10,7 +10,7 @@ describe('patient appointment flow', () => {
 
     it('can see conditions unmet text and can not schedule appointment', () => {
       cy.visit('/')
-      
+
       cy.get('[data-cy=conditionsUnmetText]').should('exist')
       cy.get('[data-cy=appointmentRescheduleButton]').should('not.exist')
     })
@@ -94,7 +94,7 @@ describe('patient appointment flow', () => {
 
       it('can see no appointments available text', () => {
         cy.get('[data-cy=noAppointmentsAvailableText]').should('exist')
-      })      
+      })
     })
   })
 

@@ -10,24 +10,14 @@ Patient.create!(
   groups: [Group.find_by!(name: 'Trabalhador(a) da Saúde')]
 ).tap do |patient|
   ubs = Ubs.first!
+  vaccine = Vaccine.first!
 
-  patient.appointments.create!(
+  first_appointment = patient.appointments.create!(
     start: Time.zone.yesterday.at_beginning_of_day,
     end: Time.zone.yesterday.at_beginning_of_day,
-    vaccine_name: 'coronavac',
-    check_in: Time.zone.yesterday.at_beginning_of_day,
-    check_out: Time.zone.yesterday.at_beginning_of_day,
-    active: true,
     ubs: ubs
   )
 
-  patient.appointments.create!(
-    start: Time.zone.today.at_beginning_of_day,
-    end: Time.zone.today.at_beginning_of_day,
-    vaccine_name: 'coronavac',
-    check_in: Time.zone.today.at_beginning_of_day,
-    check_out: Time.zone.today.at_beginning_of_day,
-    active: true,
-    ubs: ubs
-  )
+  result = ReceptionService.new(first_appointment).check_in_and_out(vaccine)
+  ReceptionService.new(result.next_appointment).check_in_and_out(vaccine)
 end

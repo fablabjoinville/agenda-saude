@@ -1,14 +1,12 @@
 module Community
   class AppointmentsController < Base
-    class CannotCancel < StandardError; end
-
-    class CannotRescheduleYet < StandardError; end
+    class CannotCancelAndReschedule < StandardError; end
 
     def home
       return redirect_to(vaccinated_community_appointments_path) if current_patient.vaccinated?
 
       @doses = current_patient.doses.includes(:vaccine, appointment: [:ubs])
-      @appointment = current_patient.appointments.not_checked_in.current
+      @appointment = current_patient.appointments.current
 
       return if @appointment
 
@@ -21,10 +19,11 @@ module Community
 
     # Reschedules appointment (only if patient already has one scheduled)
     def index
-      @appointment = appointment_that_can_reschedule
+      appointment_can_cancel_and_reschedule
 
-      # If it's a follow up, keep it in the same UBS
-      ubs_id = @appointment&.follow_up_for_dose ? @appointment.ubs_id : nil
+      # If patient already had a dose, keep it in the same UBS.
+      # This is an optimized query, hence a little odd using +pick+s.
+      ubs_id = Appointment.where(id: current_patient.doses.pick(:appointment_id)).pick(:ubs_id)
 
       @days = parse_days
       @appointments = scheduler.open_times_per_ubs(from: @days.days.from_now.beginning_of_day,
@@ -35,10 +34,10 @@ module Community
     end
 
     def create
-      @appointment = appointment_that_can_reschedule
+      appointment_can_cancel_and_reschedule
 
-      # If it's a follow up, keep it in the same UBS
-      ubs_id = @appointment&.follow_up_for_dose ? @appointment.ubs_id : create_params[:ubs_id].presence
+      # If patient already had a dose, keep it in the same UBS
+      ubs_id = current_patient.doses.first&.appointment&.ubs_id
 
       result, new_appointment = scheduler.schedule(
         patient: current_patient,
@@ -50,10 +49,11 @@ module Community
                   flash: message_for(result, appointment: new_appointment, desired_start: parse_start)
     end
 
+    # NOTE: we are ignoring params[:id] in here
     def destroy
-      @appointment = appointment_that_can_cancel
+      @appointment = appointment_can_cancel_and_reschedule
 
-      scheduler.cancel_schedule(patient: current_patient, id: @appointment.id)
+      scheduler.cancel_schedule(appointment: @appointment)
 
       redirect_to home_community_appointments_path
     end
@@ -67,16 +67,9 @@ module Community
 
     private
 
-    def appointment_that_can_reschedule
+    def appointment_can_cancel_and_reschedule
       appointment = current_patient.appointments.not_checked_in.current
-      raise CannotRescheduleYet if appointment && !appointment.can_reschedule?
-
-      appointment
-    end
-
-    def appointment_that_can_cancel
-      appointment = current_patient.appointments.waiting.find(params[:id])
-      raise CannotCancel unless appointment.can_cancel?
+      raise CannotCancelAndReschedule if appointment && !appointment.can_cancel_and_reschedule?
 
       appointment
     end
