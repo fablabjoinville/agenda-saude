@@ -76,7 +76,8 @@
 
 <h3>Grupos prioritários que pertence</h3>
 
-<p>É necessário <strong>comprovar com documento oficial</strong> no momento da aplicação da vacina. Escolha ao menos uma das opções abaixo.</p>
+<p>É necessário <strong>comprovar com documento oficial</strong> no momento da aplicação da vacina. Escolha ao menos uma
+  das opções abaixo.</p>
 
 <div class="form-row">
   <div class="form-group col-md-12">
@@ -88,10 +89,12 @@
 
 <h3>Comorbidades que possui</h3>
 
-<p>É necessário <strong>comprovar com documento médico oficial</strong> no momento da aplicação da vacinação. Escolha ao menos uma das opções abaixo.</p>
+<p>É necessário <strong>comprovar com documento médico oficial</strong> no momento da aplicação da vacinação. Escolha ao
+  menos uma das opções abaixo.</p>
 
 <p>
-  Se a sua comorbidade não está listada aqui ela não faz parte do grupo prioritário listado no Programa Nacional de Imunização (PNI), definido pelo Ministério da Saúde.
+  Se a sua comorbidade não está listada aqui ela não faz parte do grupo prioritário listado no Programa Nacional de
+  Imunização (PNI), definido pelo Ministério da Saúde.
 </p>
 
 <div class="form-row">
@@ -171,13 +174,22 @@
 
 <script type="text/javascript">
   $(function () {
-    $('[data-group-parent]').on('change', function() {
+    $('[data-group-parent]').on('change', function () {
       groupToggle($(this))
-    }).each(function() {
+    }).each(function () {
       groupToggle($(this))
     })
 
-    requireAtLeastOneCheckbox($('[data-group-context-priority] :checkbox[required]'));
-    requireAtLeastOneCheckbox($('[data-group-context-comorbidity] :checkbox[required]'));
+    let selectors = [
+      '[data-group-context-priority] :checkbox',
+      '[data-group-context-comorbidity] :checkbox'
+    ];
+    selectors.forEach(function (selector) {
+      $(selector).on('change', function () {
+        requireToggle($(selector))
+      }).each(function () {
+        requireToggle($(selector))
+      })
+    })
   })
 </script>

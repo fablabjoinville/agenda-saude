@@ -14,12 +14,7 @@ function groupToggle(parent) {
 }
 
 // Turns 'required' on and off in order to make sure at least one in the group is checked.
-function requireAtLeastOneCheckbox(requiredCheckboxes) {
-  requiredCheckboxes.on('change', function(){
-    if(requiredCheckboxes.is(':checked')) {
-      requiredCheckboxes.removeAttr('required');
-    } else {
-      requiredCheckboxes.attr('required', 'required');
-    }
-  });
+function requireToggle(requiredCheckboxes) {
+  console.log(`required is ${!requiredCheckboxes.is(':checked')}`)
+  requiredCheckboxes.prop('required', !requiredCheckboxes.is(':checked'))
 }
