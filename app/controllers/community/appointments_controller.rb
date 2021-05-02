@@ -37,7 +37,7 @@ module Community
       appointment_can_cancel_and_reschedule
 
       # If patient already had a dose, keep it in the same UBS
-      ubs_id = current_patient.doses.first&.appointment&.ubs_id
+      ubs_id = current_patient.doses.first&.appointment&.ubs_id || create_params[:ubs_id].presence
 
       result, new_appointment = scheduler.schedule(
         patient: current_patient,
