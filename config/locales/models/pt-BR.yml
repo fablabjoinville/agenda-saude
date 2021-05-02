@@ -50,5 +50,3 @@
                   invalid: inválido
                 neighborhood:
                   blank: em branco
-                main_ubs:
-                  required: obrigatório

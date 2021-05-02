@@ -1,6 +1,6 @@
 namespace :backfill do
   desc 'Backfill vaccines (idempotent)'
-  task vaccines: [:environment, 'seeding:vaccines'] do
+  task vaccines: [:environment] do
     Appointment.distinct(:vaccine_name).pluck(:vaccine_name).compact.each do |vaccine_name|
       vaccine = Vaccine.find_by!(legacy_name: vaccine_name)
       puts "For vaccine #{vaccine.name}:"

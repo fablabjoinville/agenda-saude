@@ -12,9 +12,7 @@ module Community
       phone
       place_number
       public_place
-      specific_comorbidity
       sus
-      target_audience
     ].freeze
 
     def new
@@ -26,7 +24,11 @@ module Community
 
       if @patient.save
         session[:patient_id] = @patient.id
-        redirect_to home_community_appointments_path
+        redirect_to home_community_appointments_path,
+                    flash: {
+                      notice_title: t('alerts.successful_patient_creation_title'),
+                      notice: t('alerts.successful_patient_creation_message')
+                    }
       else
         render :new
       end
