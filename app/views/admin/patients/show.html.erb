@@ -29,8 +29,6 @@
   </div>
 </div>
 
-<hr>
-
 <p>
   <% if @patient.locked? -%>
     Paciente bloqueado.
@@ -38,6 +36,36 @@
                 class: "btn btn-secondary " %>
   <% end -%>
 </p>
+
+<hr>
+
+<div class="mt-4 mb-5">
+  <h4>Grupos que pertence</h4>
+  <% if @patient.groups.any? -%>
+    <table class="table">
+      <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Grupo</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @patient.groups.admin_order.each do |group| -%>
+        <tr>
+          <td>
+            <%= group.id %>
+          </td>
+          <td>
+            <%= group.name_with_parent %>
+          </td>
+        </tr>
+      <% end -%>
+      </tbody>
+    </table>
+  <% else -%>
+    <p>Não preencheu nenhum grupo.</p>
+  <% end -%>
+</div>
 
 <div class="mt-4 mb-5">
   <h4>Agendamentos</h4>

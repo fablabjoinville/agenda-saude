@@ -33,6 +33,8 @@ Rails.application.routes.draw do
 
     namespace :admin do
       resources :appointments, only: %i[index show]
+      resources :groups
+      resources :neighborhoods, only: %i[index show]
       resources :patients, only: %i[index show] do
         member do
           patch :unblock

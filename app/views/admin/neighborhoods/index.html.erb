@@ -1,0 +1,26 @@
+<h1 class="h4">Bairros</h1>
+
+<table class="table table-bordered table-hover table-sm">
+  <thead class="thead-dark">
+  <tr>
+    <th scope="col">#</th>
+    <th scope="col">Bairro</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @neighborhoods.each do |neighborhood| -%>
+    <tr data-cy="patient">
+      <td>
+        <%= link_to neighborhood.id, admin_neighborhood_path(neighborhood) %>
+      </td>
+      <th scope="row">
+        <%= neighborhood.name %>
+      </th>
+    </tr>
+  <% end -%>
+  </tbody>
+</table>
+
+<div>
+  <%= paginate @neighborhoods %>
+</div>

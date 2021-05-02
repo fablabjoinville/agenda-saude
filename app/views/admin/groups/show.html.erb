@@ -1,0 +1,28 @@
+<%= link_to "Editar", edit_admin_group_path(@group), class: 'btn btn-primary float-right' %>
+<h1 class="h4">
+  Grupo: <%= @group.name_with_parent %>
+</h1>
+
+<% if @group.parent_group -%>
+  <div class="mt-4 mb-5">
+    <p>
+      Pertence ao grupo:
+      <%= link_to @group.parent_group.name, admin_group_path(@group.parent_group) %>
+    </p>
+  </div>
+<% end -%>
+
+<% if @group.children.any? -%>
+  <div class="mt-4 mb-5">
+    <h4>Grupos filhos</h4>
+    <ul>
+      <% @group.children.order(:position).each do |group| -%>
+        <li><%= link_to group.name, admin_group_path(group) %></li>
+      <% end -%>
+    </ul>
+  </div>
+<% end -%>
+
+<p>
+  <%= link_to "Voltar", admin_groups_path %>
+</p>

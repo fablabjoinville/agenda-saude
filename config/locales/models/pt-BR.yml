@@ -29,8 +29,6 @@
         not_allowed_window: Não é possível fazer checkin para outra data
     activerecord:
         errors:
-          messages:
-            record_invalid: "Validation failed: %{errors}"
           models:
             patient:
               attributes:

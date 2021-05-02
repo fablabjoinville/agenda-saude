@@ -20,10 +20,22 @@ pt-BR:
         public_place: Endereço
         sus: Número do cartão SUS
         groups: Grupos que faz parte
+      group:
+        name: Nome
+        parent_group: Grupo pai
+        active: Ativo
+        context: Contexto
+        position: Posição
 
     models:
-      user: Usuário
+      appointment: Agendamento
+      dose: Dose administrada
+      group: Grupo
+      neighborhood: Bairro
       patient: Paciente
+      ubs: Unidade
+      user: Usuário
+      vaccine: Vacina
   alerts:
     last_dose_received: |
       %{name} está imunizado(a).
