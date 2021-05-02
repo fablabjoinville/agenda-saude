@@ -5,6 +5,7 @@
         checked: patient.groups.map(&:id).map(&:to_i).include?(b.value.to_i),
         class: "form-check-input",
         data: { 'group-parent' => b.value },
+        required: true # disabled via JS in case one is set
       ) + b.text
     end %>
   </div>
