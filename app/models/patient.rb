@@ -52,9 +52,6 @@ class Patient < ApplicationRecord
     )
   }
 
-  enum target_audience: { kid: 0, elderly: 1, chronic: 2, disabled: 3, pregnant: 4, postpartum: 5,
-                          teacher: 6, over55: 7, without_target: 8 }
-
   # Receives CPF, sanitizing everything different from a digit
   def cpf=(string)
     self[:cpf] = Patient.parse_cpf(string)

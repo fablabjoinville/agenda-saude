@@ -12,9 +12,7 @@ module Community
       phone
       place_number
       public_place
-      specific_comorbidity
       sus
-      target_audience
     ].freeze
 
     def new
