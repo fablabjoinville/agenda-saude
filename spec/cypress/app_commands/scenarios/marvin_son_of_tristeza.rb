@@ -7,5 +7,5 @@ Patient.create!(
   public_place: 'Rua das Flores',
   place_number: '1',
   neighborhood: 'Glória',
-  groups: [Group.find_by!(name: 'Trabalhador(a) da Saúde')]
+  groups: [Group.find_by!(name: 'Trabalhador(a) da Saúde'), Group.find_by!(name: 'Anemia falciforme')]
 )
