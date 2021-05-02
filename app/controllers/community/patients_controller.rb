@@ -60,10 +60,12 @@ module Community
 
     protected
 
-    # If was already given a dose, allow them to all changes they'd like to
+    # If doesn't have a current appointment, was already given a dose, allow them to all changes they'd like to
     # Otherwise check if patient can schedule (checking the conditions)
     def can_update_profile?
-      @patient.doses.count.positive? || @patient.can_schedule?
+      !@patient.appointments.current || # if there's no appointment, allow
+        @patient.doses.count.positive? || # if there's already a dose, allow
+        @patient.can_schedule? # if it's the user 1st dose and there's an appointment, check if they can still schedule
     end
 
     def create_params
