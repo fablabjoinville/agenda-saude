@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_24_041113) do
+ActiveRecord::Schema.define(version: 2021_05_02_004318) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -48,7 +48,13 @@ ActiveRecord::Schema.define(version: 2021_04_24_041113) do
   create_table "groups", force: :cascade do |t|
     t.string "name"
     t.bigint "parent_group_id"
+    t.integer "context", default: 0, null: false
+    t.integer "position", default: 0, null: false
+    t.boolean "active", default: true, null: false
+    t.index ["active"], name: "index_groups_on_active"
+    t.index ["context"], name: "index_groups_on_context"
     t.index ["parent_group_id"], name: "index_groups_on_parent_group_id"
+    t.index ["position"], name: "index_groups_on_position"
   end
 
   create_table "groups_patients", id: false, force: :cascade do |t|
