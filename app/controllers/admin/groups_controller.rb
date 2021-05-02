@@ -34,11 +34,6 @@ module Admin
       end
     end
 
-    def destroy
-      @group.destroy!
-      redirect_to admin_groups_path
-    end
-
     private
 
     def index_params
