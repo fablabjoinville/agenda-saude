@@ -22,15 +22,13 @@
   <div class="card">
     <h5 class="card-header">Grupos que podem se cadastrar:</h5>
     <div class="card-body">
-      <i class="fa fa-circle" aria-hidden="true" style="color: skyblue"></i> População com 60 anos ou mais <br/> <br/>
-      <i class="fa fa-circle" aria-hidden="true" style="color: skyblue"></i> Trabalhadores da Saúde de qualquer idade
+      <i class="fa fa-circle" aria-hidden="true" style="color: skyblue"></i> População em geral com 18 anos ou mais
     </div>
   </div>
   <div class="card">
     <h5 class="card-header">Grupos que podem agendar:</h5>
     <div class="card-body">
       <% Patient::CONDITIONS.each do |name, _| %>
-        <br/>
         <i class="fa fa-check-circle" aria-hidden="true" style="color: green"></i> <%= name %>
         <br/>
       <% end %>
