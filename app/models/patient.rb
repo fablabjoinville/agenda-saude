@@ -23,7 +23,6 @@ class Patient < ApplicationRecord
     end
   end
 
-  belongs_to :main_ubs, class_name: 'Ubs'
   # belongs_to :neighborhood, optional: true # For future use [jmonteiro]
   has_and_belongs_to_many :groups
   has_many :doses, dependent: :destroy # For future use [jmonteiro]
@@ -38,9 +37,6 @@ class Patient < ApplicationRecord
   validates :public_place, presence: true
 
   validate :valid_birth_date
-
-  # Only set new main_ubs if it is empty or there was a change to the neighborhood
-  before_validation :set_main_ubs!, if: proc { |r| r.neighborhood_changed? || r.main_ubs_id.blank? }
 
   scope :locked, -> { where(arel_table[:login_attempts].gteq(MAX_LOGIN_ATTEMPTS)) }
 
@@ -74,16 +70,6 @@ class Patient < ApplicationRecord
 
   def in_group?(name)
     groups.map(&:name).include?(name)
-  end
-
-  def set_main_ubs!
-    self.main_ubs =
-      # samples an active ubs near the patient neighborhood
-      Neighborhood.find_by(name: neighborhood)&.active_ubs&.sample ||
-      # samples any active ubs
-      Ubs.active.sample ||
-      # samples any inactive ubs
-      Ubs.all.sample
   end
 
   # Until we have a proper way to remember vaccines for patients

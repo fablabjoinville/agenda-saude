@@ -6,7 +6,7 @@ require 'rails_helper'
 RSpec.describe AppointmentScheduler, type: :service, use_transactional_tests: false do
   let(:earliest_allowed) { Time.iso8601('2020-01-01T00:00:00-03:00') }
   let(:latest_allowed) { Time.iso8601('2020-01-07T00:00:00-03:00') }
-  let(:patient) { create(:patient, cpf: '29468604004', main_ubs: ubs) }
+  let(:patient) { create(:patient, cpf: '29468604004') }
   let(:start_time) { Time.iso8601('2020-01-01T12:00:00-03:00') }
   let(:time) { Time.iso8601('2020-01-01T10:00:00-03:00') }
   let!(:ubs) { create(:ubs, active: true) }
