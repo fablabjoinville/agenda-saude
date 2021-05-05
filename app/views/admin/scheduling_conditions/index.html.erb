@@ -6,23 +6,23 @@
   <tr>
     <th scope="col">#</th>
     <th scope="col">Nome</th>
-    <th scope="col">Ativo a partir de</th>
     <th scope="col">Idade mínima</th>
     <th scope="col">Idade máxima</th>
     <th scope="col">Grupos</th>
+    <th scope="col">Válido a partir de</th>
+    <th scope="col">Ativo?</th>
   </tr>
   </thead>
   <tbody>
   <% @scheduling_conditions.each do |scheduling_condition| -%>
-    <tr data-cy="group" class="<%= "table-dark" unless scheduling_condition.active %>">
+    <tr data-cy="group"
+        class="<%= "table-dark" unless scheduling_condition.active %> <%= "table-success" if scheduling_condition.enabled? %>"
+    >
       <td>
         <%= link_to scheduling_condition.id, admin_scheduling_condition_path(scheduling_condition) %>
       </td>
       <th scope="row">
         <%= scheduling_condition.name %>
-      </th>
-      <th scope="row">
-        <%= l scheduling_condition.start_at, format: :short_date_hour %>
       </th>
       <th>
         <%= scheduling_condition.min_age %>
@@ -32,6 +32,12 @@
       </th>
       <th>
         <%= scheduling_condition.groups.count %>
+      </th>
+      <th scope="row">
+        <%= l scheduling_condition.start_at, format: :short_date_hour %>
+      </th>
+      <th>
+        <%= scheduling_condition.active ? "✅" : "❌" %>
       </th>
     </tr>
   <% end -%>

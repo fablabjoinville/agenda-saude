@@ -1,7 +1,45 @@
+<%= link_to "Remover", admin_scheduling_condition_path(@scheduling_condition), method: :delete,
+            class: 'btn btn-danger float-right ml-2',
+            data: { confirm: "Tem certeza?" } %>
 <%= link_to "Editar", edit_admin_scheduling_condition_path(@scheduling_condition), class: 'btn btn-primary float-right' %>
 <h1 class="h4">
   Condição de agendamento: <%= @scheduling_condition.name %>
 </h1>
+
+<p>
+  <strong>Ativo:</strong>
+  <%= @scheduling_condition.active ? "Sim" : "Não" %>
+</p>
+
+<p>
+  <strong>Válido a partir de:</strong>
+  <%= l @scheduling_condition.start_at, format: :short_date_hour %>
+</p>
+
+<ul>
+  <% if @scheduling_condition.min_age.present? -%>
+    <li>
+      <strong>Idade mínima:</strong>
+      <%= @scheduling_condition.min_age %>
+    </li>
+  <% end -%>
+  <% if @scheduling_condition.max_age.present? -%>
+    <li>
+      <strong>Idade máxima:</strong>
+      <%= @scheduling_condition.max_age %>
+    </li>
+  <% end -%>
+  <% if @scheduling_condition.groups.any? -%>
+    <li>
+      <strong>Grupos:</strong>
+      <ul>
+        <% @scheduling_condition.groups.admin_order.each do |group| -%>
+          <li><%= group.name_with_parent %></li>
+        <% end -%>
+      </ul>
+    </li>
+  <% end -%>
+</ul>
 
 <p>
   <%= link_to "Voltar", admin_scheduling_conditions_path %>

@@ -9,7 +9,7 @@ module Admin
     end
 
     def new
-      @scheduling_condition = SchedulingCondition.new
+      @scheduling_condition = SchedulingCondition.new active: true
     end
 
     def create
