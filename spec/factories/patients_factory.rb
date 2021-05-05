@@ -8,7 +8,6 @@ FactoryBot.define do
     neighborhood { 'Centro' }
     public_place { 'Rua das Flores' }
     place_number { '1' }
-    main_ubs { create(:ubs) }
 
     # other_phone { '(47) 99999-9999' }
     # email { 'paciente@example.org' }

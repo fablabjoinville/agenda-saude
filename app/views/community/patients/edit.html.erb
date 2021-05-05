@@ -3,5 +3,13 @@
 
   <%= form_for @patient, url: community_patient_path, method: :patch do |f| -%>
     <%= render "form", f: f, patient: @patient %>
+
+    <div class="form-row">
+      <div class="form-group col-md-12">
+        <%= f.submit "Atualizar",
+                     class: "btn btn-primary btn-block pull-right",
+                     data: { cy: "patientSubmitButton" } %>
+      </div>
+    </div>
   <% end -%>
 </div>

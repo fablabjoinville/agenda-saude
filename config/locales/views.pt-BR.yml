@@ -25,6 +25,8 @@ pt-BR:
       user: Usuário
       patient: Paciente
   alerts:
+    successful_patient_creation_title: Seu cadastro foi realizado com sucesso, mas isso não garante seu agendamento
+    successful_patient_creation_message: O agendamento não é automático, fique atento e prossiga para realizar um agendamento.
     cannot_cancel_or_reschedule: |
       Você só poderá cancelar ou reagendar seu atendimento (para outra data ou unidade) quando faltarem menos de %{days} dias a data do agendamento. Tente novamente mais próximo à data.
     cannot_update_profile_due_to_appointment_condition: |
