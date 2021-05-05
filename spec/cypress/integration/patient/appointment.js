@@ -10,7 +10,7 @@ describe('patient appointment flow', () => {
 
     it('can see conditions unmet text and can not schedule appointment', () => {
       cy.visit('/')
-      
+
       cy.get('[data-cy=conditionsUnmetText]').should('exist')
       cy.get('[data-cy=appointmentRescheduleButton]').should('not.exist')
     })
@@ -94,28 +94,28 @@ describe('patient appointment flow', () => {
 
       it('can see no appointments available text', () => {
         cy.get('[data-cy=noAppointmentsAvailableText]').should('exist')
-      })      
+      })
     })
   })
 
   context('when patient is a second dose patient', () => {
     context('when second dose is tomorrow', () => {
       beforeEach(() => {
-        cy.appScenario('second_dose_patient', { cpf: cpf, days_from_now: 1 });
+        cy.appScenario('second_dose_patient', { cpf: cpf, vaccine: 'CoronaVac', days_ago: 28 });
         cy.visit('/')
 
         cy.loginAsPatient(cpf)
       })
 
       it('can cancel and reschedule setting the same vaccine', () => {
-        cy.get('[data-cy=appliedVaccineName]').should('contain', 'Coronavac')
+        cy.get('[data-cy=appliedVaccineName]').should('contain', 'CoronaVac')
 
         // Reschedule
         cy.get('[data-cy=appointmentRescheduleButton]').click()
         cy.get('[data-cy=nextDayButton]').click()
         cy.get('[data-cy=ubs1Button]').click()
         cy.get('#ubs1 [data-cy=scheduleTimeButton]:first').click()
-        cy.get('[data-cy=appliedVaccineName]').should('contain', 'Coronavac')
+        cy.get('[data-cy=appliedVaccineName]').should('contain', 'CoronaVac')
 
         // Cancel and re-schedule
         cy.get('[data-cy=appointmentCancelButton]').click()
@@ -125,30 +125,20 @@ describe('patient appointment flow', () => {
         cy.get('#ubs1 [data-cy=scheduleTimeButton]:first').click()
         cy.get('[data-cy=scheduledAppointmentText]').should('exist')
 
-        cy.get('[data-cy=appliedVaccineName]').should('contain', 'Coronavac')
+        cy.get('[data-cy=appliedVaccineName]').should('contain', 'CoronaVac')
       })
     })
 
     context('when second dose is far away', () => {
       beforeEach(() => {
-        cy.appScenario('second_dose_patient', { cpf: cpf, days_from_now: 30 });
+        cy.appScenario('second_dose_patient', { cpf: cpf, vaccine: 'CoronaVac', days_ago: 0 });
         cy.visit('/')
 
         cy.loginAsPatient(cpf)
       })
 
-      it('can not cancel second dose before it reaches the permitted day period', () => {
-        cy.get('[data-cy=appointmentCancelButton]').click()
-
-        cy.get('[data-cy=scheduledAppointmentText]').should('exist')
-        cy.get('[data-cy=cannotCancelOrRescheduleText]').should('exist')
-      })
-
-      it('can not reschedule second dose before it reaches the permitted day period', () => {
-        cy.get('[data-cy=appointmentRescheduleButton]').click()
-
-        cy.get('[data-cy=scheduledAppointmentText]').should('exist')
-        cy.get('[data-cy=cannotCancelOrRescheduleText]').should('exist')
+      it('can not cancel and reschedule second dose before it reaches the permitted day period', () => {
+        cy.get('[data-cy=cannotCancelAndRescheduleText]').should('exist')
       })
     })
   })

@@ -2,24 +2,36 @@ class Patient < ApplicationRecord
   MAX_LOGIN_ATTEMPTS = 3
 
   CONDITIONS = {
-    'População em geral com 60 anos ou mais' => lambda do |patient|
+    'População em geral com 60 anos ou mais' =>
+    lambda do |patient|
       birthday = patient.birthday.to_time # rubocop:disable Rails/Date timezone is respected
       cutoff = Time.zone.now
       age = ((cutoff - birthday) / 1.year.seconds).floor
       age >= 60
     end
-    # 'Trabalhadores da saúde segundo OFÍCIO Nº 234/2021/CGPNI/DEIDT/SVS/MS' =>
-    # ->(patient) { patient.in_group?('Trabalhador(a) da Saúde') },
-    # 'Paciente de teste' => ->(patient) { patient.cpf == ENV['ROOT_PATIENT_CPF'] },
-    # 'Maiores de 60 anos institucionalizadas' =>
-    #   ->(patient) { patient.age >= 60 && patient.in_group?('Institucionalizado(a)') },
-    # 'População Indígena' => ->(patient) { patient.in_group?('Indígena') },
+    # 'População com 18 anos ou mais com uma das seguintes comorbidades: ' \
+    # 'Imunossuprimidos, Doenças cardiovasculares ou Hipertensão' =>
+    # lambda do |patient|
+    #   birthday = patient.birthday.to_time # rubocop:disable Rails/Date timezone is respected
+    #   cutoff = Time.zone.now
+    #   age = ((cutoff - birthday) / 1.year.seconds).floor
+    #
+    #   # Notes:
+    #   # - Não incluir nenhum com active=false
+    #   # - Pegar IDs de production para ter certeza
+    #   # - Quando aditionar um grupo com vários filhos, incluir todos os filhos
+    #   # - Quando quiser só adicionar uma subcondição espeçifica, só adicione o item (sem incluir o ID do grupo pai)
+    #   group_ids = [38, 68, 69, 70, 39, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 42, 88, 89, 90, 91]
+    #
+    #   # age check && check if there's an intersection between arrays
+    #   age >= 18 && (group_ids & patient.group_ids).any?
+    # end
   }.freeze
 
   has_many :appointments, dependent: :destroy do
     # Returns the last available active appointment
     def current
-      order(:start).active.includes(:ubs).last
+      order(:start).active.not_checked_out.includes(:ubs).last
     end
   end
 
@@ -68,22 +80,14 @@ class Patient < ApplicationRecord
       .any?
   end
 
-  def in_group?(name)
-    groups.map(&:name).include?(name)
-  end
-
   # Until we have a proper way to remember vaccines for patients
   def got_first_dose?
     appointments.active.checked_out.count.positive?
   end
 
-  # Until we have a proper way to remember vaccines for patients
-  def got_second_dose?
-    appointments.active.checked_out.count >= 2
-  end
-
   def vaccinated?
-    got_second_dose?
+    # If there are any doses and the last one doesn't have a follow up date, it means user is vaccinated
+    doses.any? && !doses.order(sequence_number: :desc).first!.follow_up_in_days
   end
 
   def allowed?

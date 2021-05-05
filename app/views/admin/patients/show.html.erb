@@ -29,8 +29,6 @@
   </div>
 </div>
 
-<hr>
-
 <p>
   <% if @patient.locked? -%>
     Paciente bloqueado.
@@ -38,6 +36,36 @@
                 class: "btn btn-secondary " %>
   <% end -%>
 </p>
+
+<hr>
+
+<div class="mt-4 mb-5">
+  <h4>Grupos que pertence</h4>
+  <% if @patient.groups.any? -%>
+    <table class="table">
+      <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Grupo</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @patient.groups.admin_order.each do |group| -%>
+        <tr>
+          <td>
+            <%= group.id %>
+          </td>
+          <td>
+            <%= group.name_with_parent %>
+          </td>
+        </tr>
+      <% end -%>
+      </tbody>
+    </table>
+  <% else -%>
+    <p>Não preencheu nenhum grupo.</p>
+  <% end -%>
+</div>
 
 <div class="mt-4 mb-5">
   <h4>Agendamentos</h4>
@@ -50,6 +78,7 @@
         <th scope="col">Unidade</th>
         <th scope="col">Check-in</th>
         <th scope="col">Check-out</th>
+        <th scope="col">Dose</th>
         <th scope="col">Vacina</th>
         <th scope="col">Suspenso?</th>
         <th scope="col">Criou dose #</th>
@@ -79,7 +108,10 @@
             <% end -%>
           </td>
           <td>
-            <%= appointment.vaccine_name %>
+            <%= appointment.dose_sequence_number %>
+          </td>
+          <td>
+            <%= appointment.dose_vaccine&.name %>
           </td>
           <td>
             <%= appointment.active ? "Não" : "Suspenso por #{appointment.suspend_reason}" %>
@@ -110,6 +142,7 @@
         <th scope="col">Vacina</th>
         <th scope="col">Dose</th>
         <th scope="col">Agendamento #</th>
+        <th scope="col">Reforço #</th>
       </tr>
       </thead>
       <tbody>
@@ -133,6 +166,11 @@
           </td>
           <td>
             <%= link_to dose.appointment.id, admin_appointment_path(dose.appointment) %>
+          </td>
+          <td>
+            <% if dose.follow_up_appointment -%>
+              <%= link_to dose.follow_up_appointment.id, admin_appointment_path(dose.follow_up_appointment) %>
+            <% end -%>
           </td>
         </tr>
       <% end -%>

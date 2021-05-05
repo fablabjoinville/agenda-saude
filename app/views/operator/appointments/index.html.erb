@@ -20,8 +20,15 @@
             <%= link_to appointment.patient.name, operator_ubs_appointment_path(appointment.ubs, appointment) %>
             <br>
             <small class="badge bg-light text-dark" data-cy="patientCpf"><%= ApplicationHelper.humanize_cpf appointment.patient.cpf %></small>
-            <% appointment.patient.doses.each do |dose| -%>
-              <small class="badge bg-success text-light" data-cy="doseCounter<%= dose.vaccine.id %>-<%= dose.sequence_number %>">Recebeu D<%= dose.sequence_number %> (<%= dose.vaccine.name %>)</small>
+            <% if appointment.follow_up_for_dose -%>
+              <small class="badge bg-success text-light">
+                <%= appointment.follow_up_for_dose.next_sequence_number %><sup>a</sup> dose
+                <%= appointment.follow_up_for_dose.vaccine.name %>
+              </small>
+            <% else -%>
+              <small class="badge bg-info text-light">
+                1<sup>a</sup> dose
+              </small>
             <% end -%>
           </td>
           <td class="align-middle">

@@ -1,50 +1,68 @@
 class ReceptionService
-  CORONAVAC = 'coronavac'.freeze
-  ASTRAZENECA = 'astra_zeneca'.freeze
+  class MismatchVaccine < StandardError; end
 
-  VACCINES = [CORONAVAC, ASTRAZENECA].freeze
+  class MissingVaccine < StandardError; end
 
-  VACCINES_SECOND_DOSE_INTERVAL = {
-    CORONAVAC => 4.weeks,
-    ASTRAZENECA => 13.weeks
-  }.freeze
+  attr_reader :appointment
 
   def initialize(appointment)
     @appointment = appointment
   end
 
   def check_in
-    @appointment.update!(check_in: Time.zone.now)
+    appointment.update!(check_in: Time.zone.now)
   end
 
-  def check_out(vaccine_name)
-    vaccine = Vaccine.find_by!(legacy_name: vaccine_name)
+  def check_out(vaccine)
+    raise MissingVaccine unless vaccine.is_a?(Vaccine)
+    raise MismatchVaccine if appointment.follow_up_for_dose && vaccine != appointment.follow_up_for_dose.vaccine
 
     Appointment.transaction do
-      @appointment.update!(check_out: Time.zone.now, vaccine_name: vaccine_name)
+      dose = new_dose(vaccine)
+      # TODO: remove legacy_name [jmonteiro]
+      appointment.update!(check_out: Time.zone.now, vaccine_name: vaccine.legacy_name)
 
-      sequence_number = @appointment.patient.doses.where(vaccine: vaccine).count
-      @appointment.patient.doses.create! appointment: @appointment,
-                                         vaccine: vaccine,
-                                         sequence_number: sequence_number + 1
+      next_appointment = create_follow_up_appointment!(dose)
+      dose.follow_up_appointment = next_appointment
+      dose.save!
 
-      create_second_dose_appointment(vaccine_name) if @appointment.patient.appointments.active.checked_out.one?
+      OpenStruct.new dose: dose, next_appointment: next_appointment
     end
+  end
+
+  def check_in_and_out(vaccine)
+    check_in
+    check_out(vaccine)
   end
 
   private
 
-  def create_second_dose_appointment(vaccine_name)
-    next_appointment_start = @appointment.start + VACCINES_SECOND_DOSE_INTERVAL[vaccine_name]
-    next_appointment_end = next_appointment_start + @appointment.ubs.slot_interval_minutes.minutes
+  # rubocop:disable Metrics/AbcSize
+  def create_follow_up_appointment!(dose)
+    return nil unless dose.follow_up_in_days
 
-    Appointment.create!(
-      start: next_appointment_start,
-      end: next_appointment_end,
-      patient_id: @appointment.patient.id,
-      active: true,
-      vaccine_name: vaccine_name,
-      ubs: @appointment.ubs
-    )
+    start = appointment.start + dose.follow_up_in_days.days
+
+    appointment.ubs.appointments.find_or_initialize_by(
+      start: start,
+      end: start + appointment.ubs.slot_interval_minutes.minutes,
+      patient_id: nil,
+      check_in: nil,
+      check_out: nil
+    ).tap do |a|
+      a.attributes = {
+        patient_id: appointment.patient_id,
+        active: true,
+        vaccine_name: dose.vaccine.legacy_name # TODO: remove legacy_name [jmonteiro]
+      }
+      a.save!
+    end
+  end
+  # rubocop:enable Metrics/AbcSize
+
+  def new_dose(vaccine)
+    appointment.build_dose patient_id: appointment.patient_id,
+                           vaccine: vaccine,
+                           sequence_number: (appointment.follow_up_for_dose&.sequence_number || 0) + 1
   end
 end

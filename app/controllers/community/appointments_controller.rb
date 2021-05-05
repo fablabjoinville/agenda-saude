@@ -1,10 +1,12 @@
 module Community
   class AppointmentsController < Base
+    class CannotCancelAndReschedule < StandardError; end
+
     def home
       return redirect_to(vaccinated_community_appointments_path) if current_patient.vaccinated?
 
       @doses = current_patient.doses.includes(:vaccine, appointment: [:ubs])
-      @appointment = current_patient.appointments.not_checked_in.current
+      @appointment = current_patient.appointments.current
 
       return if @appointment
 
@@ -16,32 +18,30 @@ module Community
     end
 
     # Reschedules appointment (only if patient already has one scheduled)
-    # rubocop:disable Metrics/AbcSize
     def index
-      @appointment = current_patient.appointments.not_checked_in.current
-      if @appointment && !@appointment.can_cancel_and_reschedule?
-        return redirect_to(
-          home_community_appointments_path,
-          flash: {
-            alert: t('alerts.cannot_cancel_or_reschedule', days: Rails.configuration.x.schedule_up_to_days),
-            cy: 'cannotCancelOrRescheduleText'
-          }
-        )
-      end
+      appointment_can_cancel_and_reschedule
+
+      # If patient already had a dose, keep it in the same UBS.
+      # This is an optimized query, hence a little odd using +pick+s.
+      ubs_id = Appointment.where(id: current_patient.doses.pick(:appointment_id)).pick(:ubs_id)
 
       @days = parse_days
       @appointments = scheduler.open_times_per_ubs(from: @days.days.from_now.beginning_of_day,
-                                                   to: @days.days.from_now.end_of_day)
+                                                   to: @days.days.from_now.end_of_day,
+                                                   filter_ubs_id: ubs_id)
     rescue AppointmentScheduler::NoFreeSlotsAhead
       redirect_to home_community_appointments_path, flash: { alert: 'Não há vagas disponíveis para reagendamento.' }
     end
 
-    # rubocop:enable Metrics/AbcSize
-
     def create
+      appointment_can_cancel_and_reschedule
+
+      # If patient already had a dose, keep it in the same UBS
+      ubs_id = current_patient.doses.first&.appointment&.ubs_id || create_params[:ubs_id].presence
+
       result, new_appointment = scheduler.schedule(
         patient: current_patient,
-        ubs_id: create_params[:ubs_id].presence,
+        ubs_id: ubs_id,
         from: parse_start.presence
       )
 
@@ -49,19 +49,11 @@ module Community
                   flash: message_for(result, appointment: new_appointment, desired_start: parse_start)
     end
 
+    # NOTE: we are ignoring params[:id] in here
     def destroy
-      @appointment = current_patient.appointments.waiting.find(params[:id])
-      unless @appointment.can_cancel_and_reschedule?
-        return redirect_to(
-          home_community_appointments_path,
-          flash: {
-            alert: t('alerts.cannot_cancel_or_reschedule', days: Rails.configuration.x.schedule_up_to_days),
-            cy: 'cannotCancelOrRescheduleText'
-          }
-        )
-      end
+      @appointment = appointment_can_cancel_and_reschedule
 
-      scheduler.cancel_schedule(patient: current_patient, id: @appointment.id)
+      scheduler.cancel_schedule(appointment: @appointment)
 
       redirect_to home_community_appointments_path
     end
@@ -69,12 +61,18 @@ module Community
     def vaccinated
       return redirect_to(home_community_appointments_path) unless current_patient.vaccinated?
 
-      appointments = current_patient.appointments.active.checked_out.order(:check_out).limit(2).all
-      @first_dose_appointment = appointments.first
-      @second_dose_appointment = appointments.last
+      @patient = current_patient
+      @doses = current_patient.doses.order(:sequence_number)
     end
 
     private
+
+    def appointment_can_cancel_and_reschedule
+      appointment = current_patient.appointments.not_checked_in.current
+      raise CannotCancelAndReschedule if appointment && !appointment.can_cancel_and_reschedule?
+
+      appointment
+    end
 
     def from
       Rails.configuration.x.schedule_from_hours.hours.from_now

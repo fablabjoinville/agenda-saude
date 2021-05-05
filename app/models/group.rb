@@ -8,4 +8,11 @@ class Group < ApplicationRecord
 
   scope :root, -> { where(parent_group_id: nil) }
   scope :active, -> { where(active: true) }
+  scope :admin_order, -> { order(active: :desc, context: :asc, parent_group_id: :desc, position: :asc) }
+
+  def name_with_parent
+    return name unless parent_group
+
+    "#{parent_group.name}: #{name}"
+  end
 end

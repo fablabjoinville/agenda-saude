@@ -23,6 +23,7 @@ Doses administradas da vacina em pacientes.
   * `vaccine_id`: Vacina que foi administrada.
   * `sequence_number`: Número da dose (1 para primeira dose, 2 para segunda dose, ...)
   * `created_at`: Data que a dose foi administrada.
+  * `follow_up_appointment_id`: Agendamento do reforço desta dose.
 
 ## groups
 
@@ -30,6 +31,9 @@ Grupos do qual o paciente participa.
 
   * `name`: Nome do grupo. Exemplo: "Trabalhadores de Saúde".
   * `parent_group_id`: Se este elemento é "filho" de algum outro grupo. Por exemplo, "Enfermeiros" ser um filho de "Trabalhadores de Saúde".
+  * `position`: Posição na lista.
+  * `context`: Contexto, sendo 0 para grupos Prioritarios e 1 para Comorbidades.
+  * `active`: Se grupo está ativo ou não (neste caso não aparece mais).
 
 ## groups_patients
 

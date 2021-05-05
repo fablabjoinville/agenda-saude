@@ -14,7 +14,7 @@
     <div class="form-row" hidden="true" data-group-child="<%= b.value %>">
       <div class="form-group col-md-8">
         <div class="form-check">
-          <%= f.collection_check_boxes :group_ids, b.object.children, :id, :name do |s| %>
+          <%= f.collection_check_boxes :group_ids, b.object.children.active.order(:position), :id, :name do |s| %>
             <div class="row">
               <%= s.label { s.check_box(checked: patient.groups.map(&:id).map(&:to_i).include?(s.value.to_i), class: "form-check-input") + s.text } %>
             </div>
