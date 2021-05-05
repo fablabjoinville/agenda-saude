@@ -1,7 +1,8 @@
 FactoryBot.define do
   factory :scheduling_condition do
-    name { "MyString" }
-    start_at { "2021-05-04 21:52:21" }
-    active { false }
+    name { 'População em geral de maior' }
+    start_at { 1.minute.ago }
+    min_age { 18 }
+    active { true }
   end
 end

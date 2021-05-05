@@ -14,7 +14,11 @@ class SchedulingCondition < ApplicationRecord
   scope :enabled, -> { where(active: true).where('start_at < NOW()') }
 
   def enabled?
-    active && start_at < Time.zone.now
+    active? && start_at < Time.zone.now
+  end
+
+  def active?
+    active
   end
 
   def allowed?(patient)
