@@ -113,7 +113,7 @@ class Patient < ApplicationRecord
   end
 
   def age
-    @age ||= ((Time.zone.now - birthday.to_time) / 1.year.seconds).floor
+    @age ||= ((Time.zone.now - birthday.to_time) / 1.year.seconds).floor # rubocop:disable Rails/Date
   end
 
   def self.parse_cpf(cpf)

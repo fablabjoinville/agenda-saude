@@ -1,5 +1,3 @@
-# rubocop:disable Layout/LineLength
-
 [
   { id: 1, name: 'CoronaVac', formal_name: 'Sinovac COVID-19 CoronaVac',
     second_dose_after_in_days: 4 * 7, legacy_name: 'coronavac' },
@@ -114,8 +112,8 @@ end
 
 SchedulingCondition.find_or_initialize_by(id: 0).tap do |scheduling_condition|
   scheduling_condition.attributes = {
-    name: "População em geral com 60 anos ou mais",
-    start_at: Date.parse("2021-01-01"),
+    name: 'População em geral com 60 anos ou mais',
+    start_at: Date.parse('2021-01-01'),
     active: true,
     min_age: 60
   }

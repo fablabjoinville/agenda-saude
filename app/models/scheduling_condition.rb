@@ -9,16 +9,6 @@ class SchedulingCondition < ApplicationRecord
 
   def allowed?(patient)
     allowed_min_age?(patient) && allowed_max_age?(patient) && allowed_groups?(patient)
-
-    # Notes:
-    # - Não incluir nenhum com active=false
-    # - Pegar IDs de production para ter certeza
-    # - Quando aditionar um grupo com vários filhos, incluir todos os filhos
-    # - Quando quiser só adicionar uma subcondição espeçifica, só adicione o item (sem incluir o ID do grupo pai)
-    group_ids = [38, 68, 69, 70, 39, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 42, 88, 89, 90, 91]
-
-    # age check && check if there's an intersection between arrays
-    age >= 18 && (group_ids & patient.group_ids).any?
   end
 
   def allowed_min_age?(patient)
