@@ -1,0 +1,88 @@
+<%= form_for [:admin, @scheduling_condition] do |f| %>
+  <% if @scheduling_condition.errors.any? -%>
+    <div id="error_explanation">
+      <h2><%= "#{pluralize(@scheduling_condition.errors.count, "error")} prohibited this org from being saved:" %></h2>
+      <ul>
+        <% @scheduling_condition.errors.full_messages.each do |message| -%>
+          <li><%= message %></li>
+        <% end -%>
+      </ul>
+    </div>
+  <% end -%>
+
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <%= f.label :name %>
+      <%= f.text_field :name, required: true, class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-7 datetime">
+      <%= f.label :start_at %>
+      <div class="clear"></div>
+      <%= f.datetime_select :start_at,
+                            {
+                              start_year: Date.current.year.to_i - 5,
+                              end_year: Date.current.year.to_i + 5,
+                              use_two_digit_numbers: true,
+                              with_css_classes: {
+                                day: "form-control day",
+                                month: "form-control month",
+                                year: "form-control year",
+                                hour: "form-control hour",
+                                minute: "form-control minute"
+                              }
+                            },
+                            required: true,
+                            class: "form-control" %>
+    </div>
+
+    <div class="form-group col-md-2">
+      <%= f.label :min_age %>
+      <%= f.number_field :min_age, class: "form-control" %>
+    </div>
+
+    <div class="form-group col-md-2">
+      <%= f.label :max_age %>
+      <%= f.number_field :max_age, class: "form-control" %>
+    </div>
+
+    <div class="form-group col-md-1">
+      <%= f.label :active %>
+      <%= f.check_box :active, class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="form-row mt-4">
+    <div class="form-group col-md-6">
+      <h3>Grupos prioritários</h3>
+
+      <div class="form-row">
+        <div class="form-group col-md-12">
+          <div class="form-check" data-group-context-priority="">
+            <%= render partial: 'group_boxes', locals: { group: Group.priority, f: f } %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group col-md-6">
+      <h3>Comorbidades</h3>
+
+      <div class="form-row">
+        <div class="form-group col-md-12">
+          <div class="form-check" data-group-context-comorbidity="">
+            <%= render partial: 'group_boxes', locals: { group: Group.comorbidity, f: f } %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <%= f.submit class: 'form-control btn-primary' %>
+    </div>
+  </div>
+<% end %>

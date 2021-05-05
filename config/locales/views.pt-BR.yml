@@ -26,9 +26,18 @@ pt-BR:
         active: Ativo
         context: Contexto
         position: Posição
+      scheduling_condition:
+        name: Nome
+        start_at: A partir de
+        min_age: Idade mínima
+        max_age: Idade máxima
+        groups: Grupos
+
+        active: Ativo
 
     models:
       appointment: Agendamento
+      scheduling_condition: Condição de agendamento
       dose: Dose administrada
       group: Grupo
       neighborhood: Bairro

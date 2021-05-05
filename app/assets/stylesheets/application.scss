@@ -42,6 +42,32 @@ $blue: #005293;
   width: 30%;
 }
 
+.datetime {
+  .day {
+    width: 15%;
+  }
+
+  .month {
+    width: 15%;
+  }
+
+  .year {
+    width: 30%;
+  }
+
+  .hour {
+    width: 10%
+  }
+
+  .minute {
+    width: 10%;
+  }
+
+  .day, .month, .year, .hour, .minute {
+    display: inline-block;
+  }
+}
+
 .form-check {
   margin-left: 3%;
 }

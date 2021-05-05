@@ -34,8 +34,8 @@
     </div>
 
     <p class="mt-2">
-      <% @appointment.patient.conditions.each do |group| %>
-        <span class="badge badge-pill badge-primary pills-groups"><%= group %></span>
+      <% @appointment.patient.conditions.each do |condition| %>
+        <span class="badge badge-pill badge-primary pills-groups"><%= condition.name %></span>
       <% end %>
     </p>
 

@@ -31,10 +31,10 @@
   <div class="card">
     <h5 class="card-header">Grupos que podem agendar:</h5>
     <div class="card-body">
-      <% Patient::CONDITIONS.each do |name, _| %>
+      <% SchedulingCondition.enabled.pluck(:name).each do |name| -%>
         <i class="fa fa-check-circle" aria-hidden="true" style="color: green"></i> <%= name %>
         <br/>
-      <% end %>
+      <% end -%>
     </div>
   </div>
 </div>

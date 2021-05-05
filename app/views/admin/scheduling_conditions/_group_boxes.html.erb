@@ -4,14 +4,13 @@
       b.check_box(
         checked: f.object.group_ids.include?(b.value.to_i),
         class: "form-check-input",
-        data: { 'group-parent' => b.value },
-        required: true # disabled via JS in case one is set
+        data: { 'group-parent' => b.value }
       ) + b.text
     end %>
   </div>
 
   <% if b.object.children.active.order(:position).any? %>
-    <div class="form-row" hidden="true" data-group-child="<%= b.value %>">
+    <div class="form-row" data-group-child="<%= b.value %>">
       <div class="form-group col-md-8">
         <div class="form-check">
           <%= f.collection_check_boxes :group_ids, b.object.children.active.order(:position), :id, :name do |s| %>
@@ -19,8 +18,7 @@
               <%= s.label do
                 s.check_box(
                   checked: f.object.group_ids.include?(s.value.to_i),
-                  class: "form-check-input",
-                  required: true # disabled via JS in case one is set
+                  class: "form-check-input"
                 ) + s.text
               end %>
             </div>

@@ -1,33 +1,6 @@
 class Patient < ApplicationRecord
   MAX_LOGIN_ATTEMPTS = 3
 
-  CONDITIONS = {
-    'População em geral com 60 anos ou mais' =>
-    lambda do |patient|
-      birthday = patient.birthday.to_time # rubocop:disable Rails/Date timezone is respected
-      cutoff = Time.zone.now
-      age = ((cutoff - birthday) / 1.year.seconds).floor
-      age >= 60
-    end
-    # 'População com 18 anos ou mais com uma das seguintes comorbidades: ' \
-    # 'Imunossuprimidos, Doenças cardiovasculares ou Hipertensão' =>
-    # lambda do |patient|
-    #   birthday = patient.birthday.to_time # rubocop:disable Rails/Date timezone is respected
-    #   cutoff = Time.zone.now
-    #   age = ((cutoff - birthday) / 1.year.seconds).floor
-    #
-    #   # Notes:
-    #   # - Não incluir nenhum com active=false
-    #   # - Pegar IDs de production para ter certeza
-    #   # - Quando aditionar um grupo com vários filhos, incluir todos os filhos
-    #   # - Quando quiser só adicionar uma subcondição espeçifica, só adicione o item (sem incluir o ID do grupo pai)
-    #   group_ids = [38, 68, 69, 70, 39, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 42, 88, 89, 90, 91]
-    #
-    #   # age check && check if there's an intersection between arrays
-    #   age >= 18 && (group_ids & patient.group_ids).any?
-    # end
-  }.freeze
-
   has_many :appointments, dependent: :destroy do
     # Returns the last available active appointment
     def current
@@ -65,12 +38,15 @@ class Patient < ApplicationRecord
     self[:cpf] = Patient.parse_cpf(string)
   end
 
+  # List all conditions allowed for patient
   def conditions
-    CONDITIONS.select { |_, f| f.call(self) }.map { |c, _| c }
+    SchedulingCondition.enabled.select { |condition| condition.allowed? self }
   end
 
+  # Find if any conditions match
   def can_schedule?
-    conditions.any?
+    # Using +#find+ to stop on first matched condition
+    SchedulingCondition.enabled.find { |condition| condition.allowed? self }
   end
 
   def future_appointments?
@@ -134,6 +110,10 @@ class Patient < ApplicationRecord
 
   def remaining_login_attempts
     MAX_LOGIN_ATTEMPTS - login_attempts
+  end
+
+  def age
+    @age ||= ((Time.zone.now - birthday.to_time) / 1.year.seconds).floor
   end
 
   def self.parse_cpf(cpf)

@@ -1,0 +1,43 @@
+<%= link_to "Criar condição para agendamento", new_admin_scheduling_condition_path, class: 'btn btn-primary float-right' %>
+<h1 class="h4">Condições para Agendamento</h1>
+
+<table class="table table-bordered table-hover table-sm mt-5">
+  <thead class="thead-dark">
+  <tr>
+    <th scope="col">#</th>
+    <th scope="col">Nome</th>
+    <th scope="col">Ativo a partir de</th>
+    <th scope="col">Idade mínima</th>
+    <th scope="col">Idade máxima</th>
+    <th scope="col">Grupos</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @scheduling_conditions.each do |scheduling_condition| -%>
+    <tr data-cy="group" class="<%= "table-dark" unless scheduling_condition.active %>">
+      <td>
+        <%= link_to scheduling_condition.id, admin_scheduling_condition_path(scheduling_condition) %>
+      </td>
+      <th scope="row">
+        <%= scheduling_condition.name %>
+      </th>
+      <th scope="row">
+        <%= l scheduling_condition.start_at, format: :short_date_hour %>
+      </th>
+      <th>
+        <%= scheduling_condition.min_age %>
+      </th>
+      <th>
+        <%= scheduling_condition.max_age %>
+      </th>
+      <th>
+        <%= scheduling_condition.groups.count %>
+      </th>
+    </tr>
+  <% end -%>
+  </tbody>
+</table>
+
+<div>
+  <%= paginate @scheduling_conditions %>
+</div>
