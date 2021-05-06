@@ -68,7 +68,7 @@ module Community
     private
 
     def appointment_can_cancel_and_reschedule
-      appointment = current_patient.appointments.not_checked_in.current
+      appointment = current_patient.appointments.not_checked_out.current
       raise CannotCancelAndReschedule if appointment && !appointment.can_cancel_and_reschedule?
 
       appointment

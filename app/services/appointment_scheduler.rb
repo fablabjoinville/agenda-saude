@@ -63,7 +63,7 @@ class AppointmentScheduler
 
   # Cancels schedule for an appointment for a given patient, in a SQL efficient way
   def cancel_schedule(appointment:, new_appointment: nil)
-    attributes = { patient: nil, vaccine_name: nil }
+    attributes = { patient: nil, vaccine_name: nil, check_in: nil }
 
     dose = appointment.follow_up_for_dose
 
