@@ -70,7 +70,7 @@ Para instalar as bibliotecas e configurar o banco de dados execute:
 
 ```sh
 bundle install
-bin/rails db:setup db:seeds:development
+bin/rails db:setup db:seed:development
 ```
 
 E acesse no ambiente local [http://localhost:3000](http://localhost:3000):
