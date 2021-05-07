@@ -1,8 +1,8 @@
 [
   {
     name: 'Pessoas com comorbidade maiores de 18 anos',
-    start_at: 1.week.ago.beginning_of_day,
-    end_at: 12.months.from_now.end_of_day,
+    start_at: Date.parse('2020-01-01'),
+    end_at: 1.year.from_now,
     min_age: 18,
     can_register: true,
     can_schedule: false,
@@ -10,8 +10,8 @@
   },
   {
     name: 'Trabalhadores da Educação maiores de 18 anos',
-    start_at: 1.week.ago.beginning_of_day,
-    end_at: 12.months.from_now.end_of_day,
+    start_at: Date.parse('2020-01-01'),
+    end_at: 1.year.from_now,
     min_age: 18,
     can_register: true,
     can_schedule: false,
@@ -19,8 +19,8 @@
   },
   {
     name: 'Trabalhadores da Saúde maiores de 18 anos',
-    start_at: 1.week.ago.beginning_of_day,
-    end_at: 12.months.from_now.end_of_day,
+    start_at: Date.parse('2020-01-01'),
+    end_at: 1.year.from_now,
     min_age: 18,
     can_register: true,
     can_schedule: false,
@@ -28,8 +28,8 @@
   },
   {
     name: 'População em geral com 60 anos ou mais',
-    start_at: 1.week.ago.beginning_of_day,
-    end_at: 12.months.from_now.end_of_day,
+    start_at: Date.parse('2020-01-01'),
+    end_at: 1.year.from_now,
     min_age: 60,
     can_register: true,
     can_schedule: true,
