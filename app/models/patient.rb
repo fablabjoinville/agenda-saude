@@ -40,7 +40,7 @@ class Patient < ApplicationRecord
 
   # List all conditions allowed for patient
   def conditions
-    Condition.active.select { |condition| condition.allowed? self }
+    Condition.active.can_schedule.select { |condition| condition.allowed? self }
   end
 
   # Find if any conditions match

@@ -32,18 +32,21 @@
 <div class="card mt-3">
   <h5 class="card-header">Grupos que podem agendar:</h5>
   <ul class="list-group list-group-flush">
-    <% @can_schedule_conditions.each do |condition| -%>
+    <% @can_schedule_conditions.each do |hash| -%>
       <li class="list-group-item">
         <h5 class="card-title">
-          <i class="fa fa-check-circle color-green" aria-hidden="true"></i> <%= condition.name %>
+          <i class="fa fa-check-circle <%= hash[:doses_count].positive? ? 'color-green' : 'color-goldenrod' %>" aria-hidden="true"></i> <%= hash[:name] %>
         </h5>
-        <p class="card-text small">
-          <% if condition.all_ubs? -%>
-            Disponível em todas unidades.
+        <h6 class="card-subtitle mb-2">
+          <% if hash[:doses_count].positive? -%>
+            Até <%= hash[:doses_count] %> doses disponívels
           <% else -%>
-            Disponível em:
-            <%= condition.ubs.order(:name).map(&:name).join(", ") %>
+            Nenhuma dose disponível no momento, tente novamente mais tarde
           <% end -%>
+        </h6>
+        <p class="card-text small text-muted">
+          Disponível nas unidades:
+          <%= hash[:ubs_names] %>
         </p>
       </li>
     <% end -%>

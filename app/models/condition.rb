@@ -41,8 +41,4 @@ class Condition < ApplicationRecord
     group_ids.empty? ||
       (group_ids & patient.group_ids).any?
   end
-
-  def all_ubs?
-    ubs.count == Ubs.count
-  end
 end

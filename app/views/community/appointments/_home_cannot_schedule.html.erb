@@ -5,16 +5,6 @@
 </div>
 
 <p data-cy="conditionsUnmetText">
-  Você não faz parte de grupo que pode receber dose.
-  Mediante disponibilidade de doses, atualmente os seguintes grupos estão sendo vacinados:
-</p>
-<ul>
-  <% Condition.active.pluck(:name).each do |name| -%>
-    <li>
-      <i class="fa fa-check-circle" aria-hidden="true" style="color: green"></i> <%= name %>
-    </li>
-  <% end -%>
-</ul>
-<p>
-  Fique atento a página inicial deste site e a veículos oficiais de imprensa para saber quando você poderá agendar sua vacina.
+  Você não faz parte de nenhum grupo que possa receber doses de vacina.
+  Fique atento à página inicial deste site e a veículos oficiais de imprensa para saber quando você poderá agendar sua vacina.
 </p>

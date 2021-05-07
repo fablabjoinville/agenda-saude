@@ -14,6 +14,7 @@ module Community
 
       @appointments_count = Appointment.available_doses
                                        .where(start: from..to)
+                                       .where(ubs_id: allowed_ubs_ids)
                                        .count
     end
 
@@ -25,6 +26,9 @@ module Community
       # This is an optimized query, hence a little odd using +pick+s.
       ubs_id = Appointment.where(id: current_patient.doses.pick(:appointment_id)).pick(:ubs_id)
 
+      # Otherwise limit to where they can schedule
+      ubs_id = allowed_ubs_ids if ubs_id.blank?
+
       @days = parse_days
       @appointments = scheduler.open_times_per_ubs(from: @days.days.from_now.beginning_of_day,
                                                    to: @days.days.from_now.end_of_day,
@@ -33,11 +37,15 @@ module Community
       redirect_to home_community_appointments_path, flash: { alert: 'Não há vagas disponíveis para reagendamento.' }
     end
 
+    # rubocop:disable Metrics/AbcSize
     def create
       appointment_can_cancel_and_reschedule
 
       # If patient already had a dose, keep it in the same UBS
-      ubs_id = current_patient.doses.first&.appointment&.ubs_id || create_params[:ubs_id].presence
+      ubs_id = current_patient.doses.first&.appointment&.ubs_id
+
+      # Intersection between allowed and requested, will return nil (which is fine) if forbidden
+      ubs_id = (allowed_ubs_ids & [create_params[:ubs_id]]).first if ubs_id.blank? && create_params[:ubs_id]
 
       result, new_appointment = scheduler.schedule(
         patient: current_patient,
@@ -48,6 +56,7 @@ module Community
       redirect_to home_community_appointments_path,
                   flash: message_for(result, appointment: new_appointment, desired_start: parse_start)
     end
+    # rubocop:enable Metrics/AbcSize
 
     # NOTE: we are ignoring params[:id] in here
     def destroy
@@ -131,6 +140,10 @@ module Community
       create_params[:start].present? && create_params[:start]&.to_time
     rescue ArgumentError
       nil
+    end
+
+    def allowed_ubs_ids
+      current_patient.conditions.flat_map(&:ubs_ids).uniq
     end
 
     # rubocop:enable Rails/Date
