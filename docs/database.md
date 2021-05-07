@@ -39,7 +39,7 @@ Grupos do qual o paciente participa.
 
 Tabela associativa entre `groups` e `patients`. É como sabemos quantos pacientes estão em quantos grupos.
 
-## Neighborhoods
+## neighborhoods
 
 Bairros da cidade.
 
@@ -49,7 +49,7 @@ Bairros da cidade.
 
 Tabela associativa entre `ubs` e `neighborhood`, já que unidades de atendimento podem atender múltiplos bairros da cidade.
 
-## `patients`
+## patients
 
 Pacientes.
 
