@@ -16,13 +16,13 @@
     </div>
 
     <% if @appointment.state == :suspended %>
-      <i class="fa fa-times-circle icons" aria-hidden="true" style="color: red"></i>
+      <i class="fa fa-times-circle icons color-red" aria-hidden="true"></i>
     <% elsif @appointment.state == :checked_out %>
-      <i class="fa fa-check-circle icons" aria-hidden="true" style="color: green"></i>
+      <i class="fa fa-check-circle icons color-green" aria-hidden="true"></i>
     <% elsif @appointment.state == :checked_in %>
-      <i class="fa fa-user-circle icons" aria-hidden="true" style="color: green"></i>
+      <i class="fa fa-user-circle icons color-green" aria-hidden="true"></i>
     <% elsif @appointment.state == :checked_in %>
-      <i class="fa fa-hourglass-half" aria-hidden="true" style="color: blue"></i>
+      <i class="fa fa-hourglass-half color-blue" aria-hidden="true"></i>
     <% end %>
 
     <div class="text-muted">
