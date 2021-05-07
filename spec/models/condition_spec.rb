@@ -3,10 +3,6 @@ require 'rails_helper'
 RSpec.describe Condition, type: :model do
   subject { build(:condition) }
 
-  it 'is enabled' do
-    expect(subject).to be_enabled
-  end
-
   it 'is active' do
     expect(subject).to be_active
   end
