@@ -19,7 +19,7 @@ class HomeController < ApplicationController
       }
     end
 
-    @appointments_any = @can_schedule_conditions.pluck(:doses_count).inject(:+).positive?
+    @appointments_any = @can_schedule_conditions.pluck(:doses_count).inject(:+)&.positive?
   end
   # rubocop:enable Metrics/AbcSize
 end
