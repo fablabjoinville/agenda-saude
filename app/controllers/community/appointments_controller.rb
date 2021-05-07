@@ -13,8 +13,7 @@ module Community
       return unless current_patient.can_schedule?
 
       @appointments_count = Appointment.available_doses
-                                       .where(start: from..to)
-                                       .where(ubs_id: allowed_ubs_ids)
+                                       .where(start: from..to, ubs_id: allowed_ubs_ids)
                                        .count
     end
 

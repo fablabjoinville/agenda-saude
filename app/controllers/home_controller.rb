@@ -13,7 +13,9 @@ class HomeController < ApplicationController
       {
         name: c.name,
         ubs_names: c.ubs_ids.count == ubs_count ? 'todas unidades' : c.ubs.order(:name).pluck(:name).join(', '),
-        doses_count: Appointment.available_doses.where(ubs_id: c.ubs_ids).where(start: from..to).count
+        doses_count: Appointment.available_doses
+                                .where(start: from..to, ubs_id: c.ubs_ids)
+                                .count
       }
     end
 
