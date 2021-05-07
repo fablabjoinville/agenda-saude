@@ -75,15 +75,6 @@ Pacientes.
   * `street_2`: complemento residencial, **ainda não em uso**.
   * `internal_note`: observação interna sobre o usuário, **ainda não em uso**.
 
-## time_slot_generation_configs
-
-  * `content`:
-
-## time_slot_generator_executions
-
-  * `status`:
-  * `details`:
-
 ## ubs
 
 Unidades de saúde.
