@@ -35,6 +35,7 @@ pt-BR:
         groups: Grupos
         can_register: Pode cadastrar
         can_schedule: Pode agendar
+        ubs: Unidades
 
     models:
       appointment: Agendamento

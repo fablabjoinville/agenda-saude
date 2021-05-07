@@ -9,8 +9,9 @@ class Condition < ApplicationRecord
   validates :min_age, :max_age, :groups,
             presence: {
               if: proc { |c| c.min_age.blank? && c.max_age.blank? && group_ids.empty? },
-              message: 'deve ser escolhida se nenhuma outra o for.'
+              message: 'deve ser escolhida se nenhuma outra o for'
             }
+  validates :ubs, presence: true
 
   scope :start_at_past, -> { where('start_at <= NOW()') }
   scope :end_at_future, -> { where('NOW() < end_at') }
