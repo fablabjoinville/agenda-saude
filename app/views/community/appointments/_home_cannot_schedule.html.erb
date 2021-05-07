@@ -1,6 +1,6 @@
 <div class="alert alert-warning" role="alert">
   <strong>Atenção</strong>: A lista de grupos prioritários e comorbidades foi atualizada em <strong>5 de Maio de 2021</strong>.
-  Caso você tenha feito seu cadastro antes desta data, 
+  Caso você tenha feito seu cadastro antes desta data,
   <%= link_to "Clique aqui", edit_community_patient_path, class: "btn btn-light" %> e atualize seu cadastro.
 </div>
 
@@ -9,7 +9,7 @@
   Mediante disponibilidade de doses, atualmente os seguintes grupos estão sendo vacinados:
 </p>
 <ul>
-  <% SchedulingCondition.enabled.pluck(:name).each do |name| -%>
+  <% Condition.active.pluck(:name).each do |name| -%>
     <li>
       <i class="fa fa-check-circle" aria-hidden="true" style="color: green"></i> <%= name %>
     </li>

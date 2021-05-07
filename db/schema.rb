@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_05_005357) do
+ActiveRecord::Schema.define(version: 2021_05_05_005358) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,6 +30,38 @@ ActiveRecord::Schema.define(version: 2021_05_05_005357) do
     t.index ["patient_id"], name: "index_appointments_on_patient_id"
     t.index ["start"], name: "index_appointments_on_start"
     t.index ["ubs_id"], name: "index_appointments_on_ubs_id"
+  end
+
+  create_table "conditions", force: :cascade do |t|
+    t.string "name"
+    t.datetime "start_at", null: false
+    t.datetime "end_at", null: false
+    t.integer "min_age"
+    t.integer "max_age"
+    t.boolean "can_register", default: false, null: false
+    t.boolean "can_schedule", default: false, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["end_at"], name: "index_conditions_on_end_at"
+    t.index ["start_at"], name: "index_conditions_on_start_at"
+  end
+
+  create_table "conditions_groups", force: :cascade do |t|
+    t.bigint "group_id", null: false
+    t.bigint "condition_id", null: false
+    t.index ["condition_id", "group_id"], name: "index_conditions_groups_on_scg_id"
+    t.index ["condition_id"], name: "index_conditions_groups_on_condition_id"
+    t.index ["group_id", "condition_id"], name: "index_conditions_groups_on_gsc_id"
+    t.index ["group_id"], name: "index_conditions_groups_on_group_id"
+  end
+
+  create_table "conditions_ubs", force: :cascade do |t|
+    t.bigint "ubs_id", null: false
+    t.bigint "condition_id", null: false
+    t.index ["condition_id", "ubs_id"], name: "index_conditions_ubs_on_cgu_id"
+    t.index ["condition_id"], name: "index_conditions_ubs_on_condition_id"
+    t.index ["ubs_id", "condition_id"], name: "index_conditions_ubs_on_usc_id"
+    t.index ["ubs_id"], name: "index_conditions_ubs_on_ubs_id"
   end
 
   create_table "doses", force: :cascade do |t|
@@ -62,15 +94,6 @@ ActiveRecord::Schema.define(version: 2021_05_05_005357) do
     t.bigint "group_id", null: false
     t.index ["group_id", "patient_id"], name: "index_groups_patients_on_group_id_and_patient_id"
     t.index ["patient_id", "group_id"], name: "index_groups_patients_on_patient_id_and_group_id"
-  end
-
-  create_table "groups_scheduling_conditions", force: :cascade do |t|
-    t.bigint "group_id", null: false
-    t.bigint "scheduling_condition_id", null: false
-    t.index ["group_id", "scheduling_condition_id"], name: "index_groups_scheduling_conditions_on_gsc_id"
-    t.index ["group_id"], name: "index_groups_scheduling_conditions_on_group_id"
-    t.index ["scheduling_condition_id", "group_id"], name: "index_groups_scheduling_conditions_on_scg_id"
-    t.index ["scheduling_condition_id"], name: "index_groups_scheduling_conditions_on_scheduling_condition_id"
   end
 
   create_table "neighborhoods", force: :cascade do |t|
@@ -109,18 +132,6 @@ ActiveRecord::Schema.define(version: 2021_05_05_005357) do
     t.string "internal_note"
     t.index ["cpf"], name: "index_patients_on_cpf", unique: true
     t.index ["main_ubs_id"], name: "index_patients_on_main_ubs_id"
-  end
-
-  create_table "scheduling_conditions", force: :cascade do |t|
-    t.string "name"
-    t.datetime "start_at", null: false
-    t.boolean "active", default: false, null: false
-    t.integer "min_age"
-    t.integer "max_age"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["active"], name: "index_scheduling_conditions_on_active"
-    t.index ["start_at"], name: "index_scheduling_conditions_on_start_at"
   end
 
   create_table "time_slot_generation_configs", primary_key: "ubs_id", id: :serial, force: :cascade do |t|
@@ -192,12 +203,14 @@ ActiveRecord::Schema.define(version: 2021_05_05_005357) do
   end
 
   add_foreign_key "appointments", "ubs"
+  add_foreign_key "conditions_groups", "conditions"
+  add_foreign_key "conditions_groups", "groups"
+  add_foreign_key "conditions_ubs", "conditions"
+  add_foreign_key "conditions_ubs", "ubs"
   add_foreign_key "doses", "appointments"
   add_foreign_key "doses", "appointments", column: "follow_up_appointment_id"
   add_foreign_key "doses", "patients"
   add_foreign_key "doses", "vaccines"
-  add_foreign_key "groups_scheduling_conditions", "groups"
-  add_foreign_key "groups_scheduling_conditions", "scheduling_conditions"
   add_foreign_key "patients", "ubs", column: "main_ubs_id"
   add_foreign_key "ubs", "users"
   add_foreign_key "ubs_users", "ubs"

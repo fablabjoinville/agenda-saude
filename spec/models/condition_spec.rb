@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-RSpec.describe SchedulingCondition, type: :model do
-  subject { build(:scheduling_condition) }
+RSpec.describe Condition, type: :model do
+  subject { build(:condition) }
 
   it 'is enabled' do
     expect(subject).to be_enabled
@@ -12,7 +12,7 @@ RSpec.describe SchedulingCondition, type: :model do
   end
 
   describe 'condition for 18 or older' do
-    subject { build(:scheduling_condition, min_age: 18) }
+    subject { build(:condition, min_age: 18) }
 
     it 'allows a patient' do
       patient = double
@@ -31,7 +31,7 @@ RSpec.describe SchedulingCondition, type: :model do
 
   describe 'condition for a group' do
     let(:group) { create(:group) }
-    subject { build(:scheduling_condition, min_age: nil, group_ids: [group.id]) }
+    subject { build(:condition, min_age: nil, group_ids: [group.id]) }
 
     it 'allows a patient' do
       patient = double

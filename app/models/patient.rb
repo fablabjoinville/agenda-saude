@@ -40,13 +40,12 @@ class Patient < ApplicationRecord
 
   # List all conditions allowed for patient
   def conditions
-    SchedulingCondition.enabled.select { |condition| condition.allowed? self }
+    Condition.active.select { |condition| condition.allowed? self }
   end
 
   # Find if any conditions match
   def can_schedule?
-    # Using +#find+ to stop on first matched condition
-    SchedulingCondition.enabled.find { |condition| condition.allowed? self }
+    conditions.any?
   end
 
   def future_appointments?

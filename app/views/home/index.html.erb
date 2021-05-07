@@ -10,36 +10,48 @@
   <h5 class="card-header text-center">
     Status do agendamento: &nbsp;
     <% if @appointments_any %>
-      <i class="fa fa-check-circle" aria-hidden="true" style="color: green"></i>
+      <i class="fa fa-check-circle color-green" aria-hidden="true"></i>
       Disponível
     <% else %>
-      <i class="fa fa-circle" aria-hidden="true" style="color: red"></i> Aguardando novas doses
+      <i class="fa fa-circle color-red" aria-hidden="true"></i> Aguardando novas doses
     <% end %>
   </h5>
 </div>
 
-<div class="card-group mt-3">
-  <div class="card">
-    <h5 class="card-header">Grupos que podem se cadastrar:</h5>
-    <div class="card-body">
-      <i class="fa fa-circle" aria-hidden="true" style="color: skyblue"></i> Pessoas com comorbidade maiores de 18 anos<br />
-      <i class="fa fa-circle" aria-hidden="true" style="color: skyblue"></i> Trabalhadores da Educação maiores de 18 anos<br />
-      <i class="fa fa-circle" aria-hidden="true" style="color: skyblue"></i> Trabalhadores da Saúde maiores de 18 anos<br />
-      <i class="fa fa-circle" aria-hidden="true" style="color: skyblue"></i> População com 60 anos ou mais<br/>
-    </div>
-  </div>
-  <div class="card">
-    <h5 class="card-header">Grupos que podem agendar:</h5>
-    <div class="card-body">
-      <% SchedulingCondition.enabled.pluck(:name).each do |name| -%>
-        <i class="fa fa-check-circle" aria-hidden="true" style="color: green"></i> <%= name %>
-        <br/>
-      <% end -%>
-    </div>
-  </div>
+<div class="card mt-3">
+  <h5 class="card-header">Grupos que podem se cadastrar:</h5>
+  <ul class="list-group list-group-flush">
+    <% @can_register_condition_names.each do |name| -%>
+      <li class="list-group-item">
+        <i class="fa fa-circle color-skyblue" aria-hidden="true"></i> <%= name %>
+      </li>
+    <% end -%>
+  </ul>
 </div>
 
 <div class="card mt-3">
+  <h5 class="card-header">Grupos que podem agendar:</h5>
+  <ul class="list-group list-group-flush">
+    <% @can_schedule_conditions.each do |condition| -%>
+      <li class="list-group-item">
+        <h5 class="card-title">
+          <i class="fa fa-check-circle color-green" aria-hidden="true"></i> <%= condition.name %>
+        </h5>
+        <p class="card-text small">
+          <% if condition.all_ubs? -%>
+            Disponível em todas unidades.
+          <% else -%>
+            Disponível em:
+            <%= condition.ubs.order(:name).map(&:name).join(", ") %>
+          <% end -%>
+        </p>
+      </li>
+    <% end -%>
+  </ul>
+</div>
+
+<div class="card mt-3">
+  <h5 class="card-header">Cadastro e agendamento</h5>
   <div class="card-body">
     <%= form_for :patient, url: community_session_path, method: :post do |f| %>
       <div class="form-row">

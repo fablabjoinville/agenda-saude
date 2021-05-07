@@ -109,13 +109,3 @@ end
     group.save!
   end
 end
-
-SchedulingCondition.find_or_initialize_by(id: 0).tap do |scheduling_condition|
-  scheduling_condition.attributes = {
-    name: 'População em geral com 60 anos ou mais',
-    start_at: Date.parse('2021-01-01'),
-    active: true,
-    min_age: 60
-  }
-  scheduling_condition.save!
-end

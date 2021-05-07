@@ -1,5 +1,6 @@
-class SchedulingCondition < ApplicationRecord
+class Condition < ApplicationRecord
   has_and_belongs_to_many :groups
+  has_and_belongs_to_many :ubs
 
   validates :name, :start_at, presence: true
   validates :min_age, :max_age,
@@ -11,14 +12,15 @@ class SchedulingCondition < ApplicationRecord
               message: 'deve ser escolhida se nenhuma outra o for.'
             }
 
-  scope :enabled, -> { where(active: true).where('start_at < NOW()') }
+  scope :start_at_past, -> { where('start_at <= NOW()') }
+  scope :end_at_future, -> { where('NOW() < end_at') }
 
-  def enabled?
-    active? && start_at < Time.zone.now
-  end
+  scope :active, -> { start_at_past.end_at_future }
+  scope :can_register, -> { where(can_register: true) }
+  scope :can_schedule, -> { where(can_schedule: true) }
 
   def active?
-    active
+    start_at <= Time.zone.now && Time.zone.now < end_at
   end
 
   def allowed?(patient)
@@ -38,5 +40,9 @@ class SchedulingCondition < ApplicationRecord
   def allowed_groups?(patient)
     group_ids.empty? ||
       (group_ids & patient.group_ids).any?
+  end
+
+  def all_ubs?
+    ubs.count == Ubs.count
   end
 end
