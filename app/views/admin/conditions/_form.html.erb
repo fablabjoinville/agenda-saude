@@ -1,14 +1,5 @@
 <%= form_for [:admin, @condition] do |f| %>
-  <% if @condition.errors.any? -%>
-    <div id="error_explanation">
-      <h2><%= "#{pluralize(@condition.errors.count, "error")} prohibited this org from being saved:" %></h2>
-      <ul>
-        <% @condition.errors.full_messages.each do |message| -%>
-          <li><%= message %></li>
-        <% end -%>
-      </ul>
-    </div>
-  <% end -%>
+  <%= error_messages_for(f.object) %>
 
   <div class="form-row">
     <div class="form-group col-md-12">

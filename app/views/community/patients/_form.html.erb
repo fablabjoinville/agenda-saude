@@ -1,14 +1,4 @@
-<%# Temp way to present errors until we have something better %>
-<% if patient.errors.any? -%>
-  <div class="alert alert-danger">
-    <p>Não foi possível gravar:</p>
-    <ul>
-      <% patient.errors.full_messages.select { |m| m.is_a?(String) }.each do |msg| %>
-        <%= content_tag :li, msg, id: "error_#{msg}" %>
-      <% end %>
-    </ul>
-  </div>
-<% end -%>
+<%= error_messages_for(f.object) %>
 
 <p>
   As informações coletadas são de uso único e exclusivo do sistema de agendamento da vacina, afim de atestar a

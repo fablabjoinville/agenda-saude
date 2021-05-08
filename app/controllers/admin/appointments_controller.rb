@@ -24,17 +24,12 @@ module Admin
       params.permit(:page, :ubs_id, :date)
     end
 
-    def set_appointment
-      @appointment = Appointment.find(params[:id])
+    def appointments_bulk_params
+      params.require(:appointments_bulk).permit(:from, :to, :ubs_ids)
     end
 
-    # TODO: move elsewhere [jmonteiro]
-    def date_from_params(params, date_key)
-      date_keys = params.keys.select { |k| k.to_s.match?(date_key.to_s) }.sort
-      return nil if date_keys.empty?
-
-      date_array = params.values_at(*date_keys).map(&:to_i)
-      Date.civil(*date_array)
+    def set_appointment
+      @appointment = Appointment.find(params[:id])
     end
   end
 end

@@ -33,6 +33,7 @@ Rails.application.routes.draw do
 
     namespace :admin do
       resources :appointments, only: %i[index show]
+      resources :appointments_bulks, only: %i[new create]
       resources :groups, only: %i[index new create show edit update]
       resources :neighborhoods, only: %i[index show]
       resources :patients, only: %i[index show] do
@@ -41,7 +42,7 @@ Rails.application.routes.draw do
         end
       end
       resources :conditions
-      resources :ubs, only: %i[index show]
+      resources :ubs
       resources :users, only: %i[index show]
       resources :vaccines, only: %i[index show]
     end

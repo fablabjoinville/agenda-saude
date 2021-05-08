@@ -42,6 +42,24 @@ $blue: #005293;
   width: 30%;
 }
 
+.date {
+  .day {
+    width: 30%;
+  }
+
+  .month {
+    width: 30%;
+  }
+
+  .year {
+    width: 30%;
+  }
+
+  .day, .month, .year {
+    display: inline-block;
+  }
+}
+
 .datetime {
   .day {
     width: 15%;

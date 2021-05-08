@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_07_185022) do
+ActiveRecord::Schema.define(version: 2021_05_08_032156) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -149,12 +149,16 @@ ActiveRecord::Schema.define(version: 2021_05_07_185022) do
     t.string "address", default: ""
     t.string "cnes"
     t.boolean "active", default: false
-    t.boolean "open_saturday", default: false
-    t.string "saturday_shift_start", default: "9:00"
-    t.string "saturday_break_start", default: "12:30"
-    t.string "saturday_break_end", default: "13:30"
-    t.string "saturday_shift_end", default: "17:00"
+    t.string "saturday_shift_start"
+    t.string "saturday_break_start"
+    t.string "saturday_break_end"
+    t.string "saturday_shift_end"
     t.integer "appointments_per_time_slot", default: 1
+    t.string "sunday_shift_start"
+    t.string "sunday_break_start"
+    t.string "sunday_break_end"
+    t.string "sunday_shift_end"
+    t.bigint "neighborhood_id"
     t.index ["cnes"], name: "index_ubs_on_cnes", unique: true
     t.index ["user_id"], name: "index_ubs_on_user_id"
   end

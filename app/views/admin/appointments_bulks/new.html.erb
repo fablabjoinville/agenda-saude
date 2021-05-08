@@ -1,0 +1,127 @@
+<h1 class="h4">
+  Criar agendamentos em massa
+</h1>
+
+<div class="mt-4 mb-5">
+  <%= form_with model: [:admin, @appointments_bulk], local: true do |f| %>
+    <%= error_messages_for(f.object) %>
+
+    <h5>Datas</h5>
+
+    <div class="form-row">
+      <div class="form-group col-md-6 date">
+        <%= f.label :from %>
+        <div class="clear"></div>
+        <%= f.date_select :from,
+                          {
+                            start_year: Date.current.year.to_i - 5,
+                            end_year: Date.current.year.to_i + 5,
+                            use_two_digit_numbers: true,
+                            with_css_classes: {
+                              day: "form-control day",
+                              month: "form-control month",
+                              year: "form-control year",
+                            }
+                          },
+                          required: true,
+                          class: "form-control" %>
+      </div>
+      <div class="form-group col-md-6 date">
+        <%= f.label :to %>
+        <div class="clear"></div>
+        <%= f.date_select :to,
+                          {
+                            start_year: Date.current.year.to_i - 5,
+                            end_year: Date.current.year.to_i + 5,
+                            use_two_digit_numbers: true,
+                            with_css_classes: {
+                              day: "form-control day",
+                              month: "form-control month",
+                              year: "form-control year",
+                            }
+                          },
+                          required: true,
+                          class: "form-control" %>
+      </div>
+    </div>
+
+    <small id="fromHelp" class="form-text text-muted">
+      Nota: o sistema não tem conhecimento sobre feriados e datas festivas, e os tratará como dias úteis.
+    </small>
+
+    <div class="row mt-4">
+      <div class="col-8">
+        <h5>Unidades</h5>
+      </div>
+
+      <div class="col-2">
+        <a href="javascript: $('[name=\'appointments_bulk[ubs_ids][]\']').prop('checked', true)"
+           class="btn btn-secondary btn-block">
+          Todas
+        </a>
+      </div>
+
+      <div class="col-2">
+        <a href="javascript: $('[name=\'appointments_bulk[ubs_ids][]\']').prop('checked', false)"
+           class="btn btn-secondary btn-block">
+          Nenhuma
+        </a>
+      </div>
+    </div>
+
+    <p>
+      Vagas serão geradas conforme as configurações de cada unidade selecionada.
+    </p>
+
+    <div class="form-row mt-4 ml-3">
+      <%= f.collection_check_boxes :ubs_ids, Ubs.order(:name), :id, :name do |b| %>
+        <div class="form-group col-md-3 pr-4">
+          <%= b.label class: "small" do
+            safe_join([
+                        b.check_box(
+                          checked: f.object.ubs_ids.include?(b.value.to_s),
+                          class: "form-check-input"
+                        ),
+                        tag.strong(b.text),
+                        " ",
+                        link_to("(Editar)", edit_admin_ubs_path(b.object)),
+                        tag.br,
+                        "Domingo: #{human_shifts(b.object, weekday: 0)}",
+                        tag.br,
+                        "2a-6a: #{human_shifts(b.object)}",
+                        tag.br,
+                        "Sábado: #{human_shifts(b.object, weekday:6)} ",
+                        tag.br,
+                        "#{t("activerecord.attributes.ubs.appointments_per_time_slot")}: #{b.object.appointments_per_time_slot}",
+                        tag.br,
+                        "#{t("activerecord.attributes.ubs.slot_interval_minutes")}: #{b.object.slot_interval_minutes}"
+                      ])
+          end %>
+        </div>
+      <% end %>
+    </div>
+
+    <h5>Atributos</h5>
+
+    <div class="form-row">
+      <div class="form-group col-md-12">
+        <%= f.label :active %>
+        <div class="clear"></div>
+        <%= f.check_box :active %>
+        <small id="activeHelp" class="form-text text-muted">
+          Agendamentos podem ser criados ativos ou inativos.
+        </small>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group col-md-12">
+        <%= f.submit class: 'form-control btn-primary' %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<p>
+  <%= link_to "Cancelar e voltar", admin_appointments_path %>
+</p>

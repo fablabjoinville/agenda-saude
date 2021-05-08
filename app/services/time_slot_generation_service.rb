@@ -1,106 +1,59 @@
 class TimeSlotGenerationService
-  class Options < OpenStruct
-    OPTIONS = [
-      # ID of the UBS for which the time slots should be generated
-      # type: Int
-      :ubs_id,
+  attr_reader :ubs
 
-      # Date from which time slots should be generated
-      # type: DateTime
-      :start_date,
+  def call(ubs:, from:, to:, default_attributes: {})
+    @ubs = ubs
 
-      # Final date for which time slots should be generated
-      # type: DateTime
-      :end_date,
-
-      # Operating weekdays. Sunday = 0
-      # type: [Int]
-      # example: [*1..5] # Monday to Friday
-      :weekdays,
-
-      # Dates for which time slots should not be generated
-      # type: [Date]
-      :excluded_dates,
-
-      # Time windows to generate slots for
-      # type: [Hash]
-      # example: [{ start_time: '10:00', end_time: '12:00', slots: 10 }]
-      :windows,
-
-      # The duration each time slot should take in minutes
-      # type: Int
-      :slot_interval_minutes
-    ].freeze
-
-    def initialize(options)
-      raise 'Time slot generation options must be a hash' unless options.is_a?(Hash)
-
-      raise 'Missing or extra time slot generation options' unless options.symbolize_keys.keys.sort == OPTIONS.sort
-
-      super(options)
-    end
-  end
-
-  # create_slot:
-  #   A function receiving a hash with generated time slot attributes
-  def initialize(create_slot:)
-    @create_slot = create_slot
-  end
-
-  def execute(options)
-    (options.start_date.at_beginning_of_day..options.end_date.at_end_of_day)
-      .lazy.each do |date|
-      next if date_should_be_excluded?(date, options)
-
-      options.windows.each do |window|
-        generate_time_slots_for_time_window(date, window, options)
+    (from..to).map do |date|
+      ubs.time_windows(date.wday).map do |window|
+        create_appointments_for_day(
+          day: date.to_time, # rubocop:disable Rails/Date
+          hours_range: window[0].to_i..window[1].to_i,
+          default_attributes: default_attributes
+        )
       end
     end
   end
 
   private
 
-  def date_should_be_excluded?(date, options)
-    options.weekdays.exclude?(date.wday) || date.in?(options.excluded_dates)
-  end
-
-  def generate_time_slots_for_time_window(date, window, options)
-    window_range = build_time_window(window)
-
-    appointment_duration = options.slot_interval_minutes.minutes
-
+  # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+  def create_appointments_for_day(day:, hours_range:, default_attributes:)
     report = {}
+    to_be_created = []
 
-    window_range.step(appointment_duration).lazy.each do |time|
-      appointment_start = date + time
-      appointment_end = appointment_start + appointment_duration
+    hours_range.step(ubs.slot_interval_minutes.minutes).lazy.each do |time|
+      appointment_start = day + time
+      appointment_end = appointment_start + ubs.slot_interval_minutes.minutes
 
-      next if appointment_end > date + window_range.end
+      next if appointment_end > day + hours_range.end
 
-      taken_slots_count = Appointment.where(start: appointment_start, ubs_id: options.ubs_id).count
-      new_slots_count = window[:slots] - taken_slots_count
+      taken_slots_count = Appointment.where(start: appointment_start, ubs_id: ubs.id).count
+      new_slots_count = ubs.appointments_per_time_slot - taken_slots_count
+
+      attributes = {
+        ubs_id: ubs.id,
+        start: appointment_start,
+        end: appointment_end,
+        active: true,
+        created_at: Time.zone.now,
+        updated_at: Time.zone.now
+      }.with_indifferent_access.merge(default_attributes.with_indifferent_access)
+
+      to_be_created << Array.new(new_slots_count, attributes)
 
       report[appointment_start.to_s] = { taken_slots_count: taken_slots_count, new_slots_count: new_slots_count }
-
-      new_slots_count.times do
-        @create_slot.call({
-          ubs_id: options.ubs_id,
-          start: appointment_start,
-          end: appointment_end,
-          active: true,
-          patient_id: nil
-        }.with_indifferent_access)
-      end
     end
 
-    pp report unless Rails.env.test?
+    create!(to_be_created)
+
+    report
   end
+  # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
-  def build_time_window(window)
-    window_start = string_to_duration(window[:start_time])
-    window_end = string_to_duration(window[:end_time])
-
-    window_start..window_end
+  def create!(array_of_attributes)
+    array_of_attributes.flatten!
+    Appointment.insert_all!(array_of_attributes) if array_of_attributes.any? # rubocop:disable Rails/SkipsModelValidations
   end
 
   def string_to_duration(hour_min_string)
