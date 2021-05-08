@@ -22,7 +22,7 @@ gloria = Neighborhood.new.tap do |neighborhood|
   neighborhood.save!
 end
 
-ubsf_america = Ubs.new.tap do |ubs|
+Ubs.new.tap do |ubs|
   ubs.name = 'UBSF America'
   ubs.user = mlabs # Remove me once we replace user with users [jmonteiro]
   ubs.users = [mlabs]

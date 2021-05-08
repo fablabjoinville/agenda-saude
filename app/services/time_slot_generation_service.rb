@@ -1,74 +1,55 @@
 class TimeSlotGenerationService
   class Options < OpenStruct
-    Names = [
-      #
+    OPTIONS = [
       # ID of the UBS for which the time slots should be generated
-      #
       # type: Int
-      #
       :ubs_id,
-      #
+
       # Date from which time slots should be generated
-      #
       # type: DateTime
-      #
       :start_date,
-      #
+
       # Final date for which time slots should be generated
-      #
       # type: DateTime
-      #
       :end_date,
-      #
+
       # Operating weekdays. Sunday = 0
-      #
       # type: [Int]
       # example: [*1..5] # Monday to Friday
-      #
       :weekdays,
-      #
+
       # Dates for which time slots should not be generated
-      #
       # type: [Date]
-      #
       :excluded_dates,
-      #
+
       # Time windows to generate slots for
-      #
       # type: [Hash]
-      # example: { start_time: '10:00', end_time: '12:00', slots: 10 }
-      #
+      # example: [{ start_time: '10:00', end_time: '12:00', slots: 10 }]
       :windows,
-      #
+
       # The duration each time slot should take in minutes
-      #
       # type: Int
-      #
-      :slot_interval_minutes,
-    ]
+      :slot_interval_minutes
+    ].freeze
 
     def initialize(options)
-      raise "Time slot generation options must be a hash" \
-        unless options.is_a?(Hash)
+      raise 'Time slot generation options must be a hash' unless options.is_a?(Hash)
 
-      raise "Missing or extra time slot generation options" \
-        unless options.symbolize_keys.keys.sort == Names.sort
+      raise 'Missing or extra time slot generation options' unless options.symbolize_keys.keys.sort == OPTIONS.sort
 
       super(options)
     end
   end
-  #
+
   # create_slot:
   #   A function receiving a hash with generated time slot attributes
-  #
   def initialize(create_slot:)
     @create_slot = create_slot
   end
 
   def execute(options)
-    date_range = build_date_range(options)
-
-    date_range.lazy.each do |date|
+    (options.start_date.at_beginning_of_day..options.end_date.at_end_of_day)
+      .lazy.each do |date|
       next if date_should_be_excluded?(date, options)
 
       options.windows.each do |window|
@@ -81,10 +62,6 @@ class TimeSlotGenerationService
 
   def date_should_be_excluded?(date, options)
     options.weekdays.exclude?(date.wday) || date.in?(options.excluded_dates)
-  end
-
-  def build_date_range(options)
-    options.start_date.at_beginning_of_day..options.end_date.at_end_of_day
   end
 
   def generate_time_slots_for_time_window(date, window, options)
@@ -106,7 +83,7 @@ class TimeSlotGenerationService
       report[appointment_start.to_s] = { taken_slots_count: taken_slots_count, new_slots_count: new_slots_count }
 
       new_slots_count.times do
-        @create_slot.({
+        @create_slot.call({
           ubs_id: options.ubs_id,
           start: appointment_start,
           end: appointment_end,
