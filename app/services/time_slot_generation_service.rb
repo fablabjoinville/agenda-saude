@@ -40,7 +40,7 @@ class TimeSlotGenerationService
         updated_at: Time.zone.now
       }.with_indifferent_access.merge(default_attributes.with_indifferent_access)
 
-      to_be_created << Array.new(new_slots_count, attributes)
+      to_be_created << Array.new([0, new_slots_count].max, attributes)
 
       report[appointment_start] = { taken: taken_slots_count, created: new_slots_count }
     end
