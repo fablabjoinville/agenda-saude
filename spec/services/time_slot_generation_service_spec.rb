@@ -99,4 +99,15 @@ RSpec.describe TimeSlotGenerationService, type: :service do
       ]
     )
   end
+
+  it 'generates for only a single day' do
+    quantity_to_create = ubs.appointments_per_time_slot *
+                         (
+                           2 + # 11:00, 11:20. 11:40 is excluded because it closes at 11:50
+                             3 # 13:00, 13:20, 13:40
+                         )
+    expect do
+      subject.call(ubs: ubs, from: Date.new(2021, 1, 5), to: Date.new(2021, 1, 5)) # Tuesday
+    end.to change { Appointment.count }.by(quantity_to_create)
+  end
 end
