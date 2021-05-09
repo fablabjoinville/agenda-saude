@@ -262,6 +262,7 @@ GEM
     rb-fsevent (0.10.4)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
+    redis (4.2.5)
     reek (6.0.3)
       kwalify (~> 0.7.0)
       parser (~> 3.0.0)
@@ -412,6 +413,7 @@ DEPENDENCIES
   rails (~> 6.1, < 6.2)
   rails_autoscale_agent
   rails_best_practices
+  redis
   reek
   rspec
   rspec-rails
