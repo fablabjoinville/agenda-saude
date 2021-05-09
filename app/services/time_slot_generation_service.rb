@@ -7,7 +7,7 @@ class TimeSlotGenerationService
     (from..to).map do |date|
       ubs.time_windows(date.wday).map do |window|
         create_appointments_for_day(
-          day: date.to_time, # rubocop:disable Rails/Date
+          day: Time.zone.parse("#{date} 00:00:00"),
           hours_range: window[0].to_i..window[1].to_i,
           default_attributes: default_attributes
         )

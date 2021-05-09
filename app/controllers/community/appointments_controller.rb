@@ -134,9 +134,8 @@ module Community
       ].min
     end
 
-    # rubocop:disable Rails/Date (as we're generating the string it with timezone)
     def parse_start
-      create_params[:start].present? && create_params[:start]&.to_time
+      create_params[:start].present? && Time.zone.parse(create_params[:start])
     rescue ArgumentError
       nil
     end
@@ -144,8 +143,6 @@ module Community
     def allowed_ubs_ids
       current_patient.conditions.flat_map(&:ubs_ids).uniq
     end
-
-    # rubocop:enable Rails/Date
 
     def create_params
       params.require(:appointment).permit(:ubs_id, :start)
