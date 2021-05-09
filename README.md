@@ -108,7 +108,7 @@ Este projeto existe graças a todas as pessoas que contribuem. Fique a vontade p
 
 Deseja contribuir financeiramente? Acesse nosso [Open Collective](https://opencollective.com/makersnetwork). Nossos financiadores:
 
-[![Financial Contributors - Individuals](https://opencollective.com/makersnetwork/individuals.svg?width=890)](https://opencollective.com/makersnetwork)
+[![Financial Contributors - Individuals](https://opencollective.com/makersnetwork/individuals.svg?width=891)](https://opencollective.com/makersnetwork)
 
 ## Time
 
@@ -116,7 +116,7 @@ Esse projeto existe graças ao esforço e dedicação dessas pessoas:
 
 **desenvolvimento**
 
-[![Code Contribotors](https://opencollective.com/makersnetwork/contributors.svg?width=890&button=false)](https://github.com/makersnetwork/agenda-saude/graphs/contributors)
+[![Code Contribotors](https://opencollective.com/makersnetwork/contributors.svg?width=891&button=false)](https://github.com/makersnetwork/agenda-saude/graphs/contributors)
 
 **design**
 
