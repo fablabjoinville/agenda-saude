@@ -22,10 +22,6 @@ class HomeController < ApplicationController
   end
 
   def schedule_conditions
-    from = Rails.configuration.x.schedule_from_hours.hours.from_now
-    to = Rails.configuration.x.schedule_up_to_days.days.from_now.end_of_day
-    ubs_count = Ubs.count
-
     Condition.active.can_schedule.order(:name).includes(:ubs).map do |c|
       {
         name: c.name,
@@ -35,5 +31,17 @@ class HomeController < ApplicationController
                                 .count
       }
     end
+  end
+
+  def ubs_count
+    @ubs_count ||= Ubs.count
+  end
+
+  def from
+    @from ||= Rails.configuration.x.schedule_from_hours.hours.from_now
+  end
+
+  def to
+    @to ||= Rails.configuration.x.schedule_up_to_days.days.from_now.end_of_day
   end
 end
