@@ -24,7 +24,6 @@ end
 
 ubsf_america = Ubs.new.tap do |ubs|
   ubs.name = 'UBSF America'
-  ubs.user = mlabs # Remove me once we replace user with users [jmonteiro]
   ubs.users = [mlabs]
   ubs.neighborhoods << america
   ubs.neighborhood = america.name
@@ -41,7 +40,6 @@ end
 
 Ubs.new.tap do |ubs|
   ubs.name = 'UBSF Gloria'
-  ubs.user = mlabs_two # Remove me once we replace user with users [jmonteiro]
   ubs.users = [mlabs_two]
   ubs.neighborhoods << gloria
   ubs.neighborhood = gloria.name
