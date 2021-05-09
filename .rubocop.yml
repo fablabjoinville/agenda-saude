@@ -14,11 +14,10 @@ AllCops:
     - './node_modules/**/*'
     - './tmp/**/*'
     - './config/**/*'
-    - './lib/tasks/*.rake'
     - './Guardfile'
     - './Dangerfile'
   NewCops: enable
-  TargetRubyVersion: 2.7.2
+  TargetRubyVersion: 3.0.1
 
 Documentation:
   Enabled: false
@@ -40,6 +39,11 @@ Metrics/BlockLength:
     - './lib/**/*.rake'
     - './spec/**/*'
     - './db/migrate/**'
+    - './config/routes.rb'
+
+Style/FormatStringToken:
+  Exclude:
+    - './config/routes.rb'
 
 Metrics/ClassLength:
   Max: 200

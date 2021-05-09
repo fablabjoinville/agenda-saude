@@ -3,9 +3,10 @@ $enable-responsive-font-sizes: true;
 $blue: #005293;
 
 .navbar {
-  &.bg-primary {
+  &.bg-background {
     background: #005293 url(image-path('background_menu.png')) center bottom repeat-x;
   }
+
   &__logo {
     width: auto;
     height: auto;

@@ -1,7 +1,7 @@
 <div class="container">
   <div class="row text-center">
     <div class="col">
-      <h1>Vacinação Joinville Covid-19</h1>
+      <h1>Vacinação Covid-19 <%= Settings[:city_name] %></h1>
     </div>
   </div>
 </div>
@@ -22,15 +22,16 @@
   <div class="card">
     <h5 class="card-header">Grupos que podem se cadastrar:</h5>
     <div class="card-body">
-      <i class="fa fa-circle" aria-hidden="true" style="color: skyblue"></i> População com 60 anos ou mais <br/> <br/>
-      <i class="fa fa-circle" aria-hidden="true" style="color: skyblue"></i> Trabalhadores da Saúde de qualquer idade
+      <i class="fa fa-circle" aria-hidden="true" style="color: skyblue"></i> Pessoas com comorbidade maiores de 18 anos<br />
+      <i class="fa fa-circle" aria-hidden="true" style="color: skyblue"></i> Trabalhadores da Educação maiores de 18 anos<br />
+      <i class="fa fa-circle" aria-hidden="true" style="color: skyblue"></i> Trabalhadores da Saúde maiores de 18 anos<br />
+      <i class="fa fa-circle" aria-hidden="true" style="color: skyblue"></i> População com 60 anos ou mais<br/>
     </div>
   </div>
   <div class="card">
     <h5 class="card-header">Grupos que podem agendar:</h5>
     <div class="card-body">
       <% Patient::CONDITIONS.each do |name, _| %>
-        <br/>
         <i class="fa fa-check-circle" aria-hidden="true" style="color: green"></i> <%= name %>
         <br/>
       <% end %>
@@ -73,92 +74,18 @@
 
 <div class="info-page">
 
-<%# <h2>Outros Locais de Vacinação</h2>
-<p>É possível vacinar-se nas Unidades básicas de saúde, onde não é necessário o agendamento prévio. A disponibilidade das vacinas nas UBS (Unidade Básica de Saúde) se dá: 1º por ordem dos grupos prioritários e 2º pelo estoque disponível na UBS.</p>
-
-<%= render "shared/ubs_list" %>
-
   <h2>Dúvidas frequentes sobre a vacinação</h2>
-
-  <p>
-    <a href='https://www.joinville.sc.gov.br/vacina-do-coronavirus-em-joinville-perguntas-e-respostas/' target='blank'>
-      Consulte aqui
-    </a>
-    perguntas e respostas referente à aplicação da vacina contra o coronavírus.
-  </p>
-
-  <p>
-    Confira o que pode e o que não pode em Joinville com base nas medidas para combater a pandemia de Covid-19
-    <a href='https://www.joinville.sc.gov.br/medidas-vigentes-de-enfrentamento-do-coronavirus-em-joinville/' , target='blank'>
-      clicando aqui</a>.
-  </p>
 
   <h4>Quem não pode tomar a vacina</h4>
   <ul>
     <li>Menores de 18 anos;</li>
-    <li>Gestantes e Lactantes (mulheres que estão amamentando);</li>
     <li>Pessoas com estado febril;</li>
-    <li>Pessoas que tiveram suspeita ou COVID-19 positivo nos últimos 30 dias;</li>
-    <li>Quem tomou qualquer outro tipo de vacina nos últimos 15 dias.</li>
+    <li>Pessoas que tiveram suspeita ou Covid-19 positivo nos últimos 30 dias;</li>
+    <li>Quem tomou qualquer outra vacina nos últimos 14 dias.</li>
   </ul>
 
-  <h4>Recebendo a vacina</h4>
+  <h4>Quais documentos preciso levar?</h4>
 
   <%= render "shared/required_documents" %>
-
-  <p>
-    Mais informações sobre a vacinação contra a Covid-19 no Município de Joinville estão disponíveis na página
-    <a href='https://www.joinville.sc.gov.br/coronavirus/' target='blank'>
-      Coronavírus em Joinville</a>.
-  </p>
-
-  <p>
-    <b>Ligue/Web Saúde</b>:
-    <a href='https://api.whatsapp.com/send?phone=554734815165' target='blank'>
-      (47) 3481-5165
-    </a> - Segunda a sexta-feira - 07:00–20:00, exceto feriados e pontos facultativos.
-  </p>
-
-  <h4>
-    Como funcionará a vacinação na Central de Imunização do Centreventos?
-  </h4>
-
-  <div class="row text-center mt-5 mb-5">
-    <div class="col">
-      <%= image_tag "fluxo_vacinacao.png", class: 'comm-img' %>
-    </div>
-  </div>
-
-  <h4>Qual o horário de atendimento?</h4>
-  <ul>
-    <li>Central de Imunização (Centreventos): Segunda a Sexta-feira - 07:30–16:30.</li>
-    <%# <li>Todas as Unidades Básicas de Saúde:  Segunda a sexta-feira - 07:00–20:00.</li> %>
-  </ul>
-
-  <h4>Quanto custa?</h4>
-  <p>Este serviço é gratuito.</p>
-
-  <h4>Quanto tempo leva?</h4>
-  <p>
-    O atendimento completo a partir da recepção no local até a imunização leva
-    <strong>aproximadamente 40 minutos</strong>.
-  </p>
-
-  <h2>Sobre estas informações</h2>
-  <h4>Unidade(s) responsável(is)</h4>
-  <ul>
-    <li><a href="https://www.joinville.sc.gov.br/institucional/ses/">Secretaria da Saúde – SES</a></li>
-  </ul>
-  <h4>Atos regulamentadores</h4>
-  <ul>
-    <li><a href="http://www.sc.gov.br/images//Informe_Tcnico_SINOVAC_2.pdf" target="_blank">Informe técnico Secretaria
-      Estadual de Saúde</a></li>
-  </ul>
-
-  <h2>Manifestar-se</h2>
-  <p><a href="https://www.joinville.sc.gov.br/servicos/registrar-manifestacao-a-ouvidoria/">Registrar manifestação</a>
-    para reclamação, sugestão ou elogio sobre estas informações. Para informações adicionais,
-    <a href="https://www.joinville.sc.gov.br/servicos/registrar-pedido-de-informacao/">registrar pedido de
-      informação</a>.
-  </p>
+  <%= render "shared/city_info" %>
 </div>

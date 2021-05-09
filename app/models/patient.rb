@@ -2,24 +2,32 @@ class Patient < ApplicationRecord
   MAX_LOGIN_ATTEMPTS = 3
 
   CONDITIONS = {
-    'População em geral com 68 anos ou mais' => ->(patient) { patient.age >= 68 }
-    # 'Trabalhador(a) da Saúde que possua vínculo ativo em alguma unidade registrada no CNES' =>
-    #   ->(patient) { patient.in_group?('Trabalhador(a) da Saúde') },
-    # 'Paciente de teste' => ->(patient) { patient.cpf == ENV['ROOT_PATIENT_CPF'] },
-    # 'Maiores de 60 anos institucionalizadas' =>
-    #   ->(patient) { patient.age >= 60 && patient.in_group?('Institucionalizado(a)') },
-    # 'População Indígena' => ->(patient) { patient.in_group?('Indígena') },
+    # 'População em geral com 60 anos ou mais' =>
+    # lambda do |patient|
+    #   birthday = patient.birthday.to_time # rubocop:disable Rails/Date timezone is respected
+    #   cutoff = Time.zone.now
+    #   age = ((cutoff - birthday) / 1.year.seconds).floor
+    #   age >= 60
+    # end
+    'Trabalhadores da saúde segundo OFÍCIO Nº 234/2021/CGPNI/DEIDT/SVS/MS' =>
+    lambda do |patient|
+      group_ids = [23, 46, 47, 55, 57]
+
+      # age check && check if there's an intersection between arrays
+      (group_ids & patient.group_ids).any?
+    end
   }.freeze
 
   has_many :appointments, dependent: :destroy do
     # Returns the last available active appointment
     def current
-      order(:start).active.includes(:ubs).last
+      order(:start).active.not_checked_out.includes(:ubs).last
     end
   end
 
+  # belongs_to :neighborhood, optional: true # For future use [jmonteiro]
   has_and_belongs_to_many :groups
-  belongs_to :main_ubs, class_name: 'Ubs'
+  has_many :doses, dependent: :destroy # For future use [jmonteiro]
 
   validates :cpf, presence: true, uniqueness: true, cpf_format: true
   validates :name, presence: true
@@ -32,16 +40,15 @@ class Patient < ApplicationRecord
 
   validate :valid_birth_date
 
-  # Only set new main_ubs if it is empty or there was a change to the neighborhood
-  before_validation :set_main_ubs!, if: proc { |r| r.neighborhood_changed? || r.main_ubs_id.blank? }
-
-  scope :bedridden, -> { where(bedridden: true) }
-
   scope :locked, -> { where(arel_table[:login_attempts].gteq(MAX_LOGIN_ATTEMPTS)) }
 
-  # TODO: remove `chronic` field from schema
-  enum target_audience: { kid: 0, elderly: 1, chronic: 2, disabled: 3, pregnant: 4, postpartum: 5,
-                          teacher: 6, over55: 7, without_target: 8 }
+  scope :search_for, lambda { |text|
+    where(
+      Patient.arel_table[:cpf]
+             .eq(Patient.parse_cpf(text)) # Search for CPF without . and -
+             .or(Patient.arel_table[:name].matches("%#{text.strip}%"))
+    )
+  }
 
   # Receives CPF, sanitizing everything different from a digit
   def cpf=(string)
@@ -63,38 +70,14 @@ class Patient < ApplicationRecord
       .any?
   end
 
-  def in_group?(name)
-    groups.map(&:name).include?(name)
-  end
-
-  def set_main_ubs!
-    self.main_ubs =
-      # samples an active ubs near the patient neighborhood
-      Neighborhood.find_by(name: neighborhood)&.active_ubs&.sample ||
-      # samples any active ubs
-      Ubs.active.sample ||
-      # samples any inactive ubs
-      Ubs.all.sample
-  end
-
-  DAYS_IN_YEAR = 1.year / 1.day
-
-  def age
-    ((Time.zone.now.to_date - birthday) / DAYS_IN_YEAR).floor
-  end
-
   # Until we have a proper way to remember vaccines for patients
   def got_first_dose?
     appointments.active.checked_out.count.positive?
   end
 
-  # Until we have a proper way to remember vaccines for patients
-  def got_second_dose?
-    appointments.active.checked_out.count >= 2
-  end
-
   def vaccinated?
-    got_second_dose?
+    # If there are any doses and the last one doesn't have a follow up date, it means user is vaccinated
+    doses.any? && !doses.order(sequence_number: :desc).first!.follow_up_in_days
   end
 
   def allowed?

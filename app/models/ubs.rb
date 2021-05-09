@@ -1,6 +1,4 @@
 class Ubs < ApplicationRecord
-  include TimeSlot
-
   validate :times_must_be_ordered
   validates :slot_interval_minutes, inclusion: 1...120
   validates :appointments_per_time_slot, numericality: { greater_than: 0 }
@@ -8,12 +6,17 @@ class Ubs < ApplicationRecord
   belongs_to :user
   has_many :appointments, dependent: :destroy
   has_and_belongs_to_many :neighborhoods
+  has_and_belongs_to_many :users # For future use [jmonteiro]
   has_one :time_slot_generation_config, dependent: :delete
 
   scope :active, -> { where(active: true) }
 
   def identifier
-    "#{name} — #{address}"
+    "#{name} — #{full_address}"
+  end
+
+  def full_address
+    "#{address} (#{neighborhood})"
   end
 
   def shift_start_date(date = Date.today)
@@ -52,8 +55,8 @@ class Ubs < ApplicationRecord
     slot_interval_minutes.minutes
   end
 
-  def bedridden_patients
-    Patient.where(main_ubs: self).bedridden
+  def time_of_day(time, date)
+    Tod::TimeOfDay.parse(time).on(date).in_time_zone
   end
 
   private

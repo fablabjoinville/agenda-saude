@@ -29,12 +29,10 @@ describe('reception flow', () => {
       cy.get('[data-cy=vaccineRadioButton]').first().check()
       cy.get('[data-cy=checkOutConfirmationButton]').click()
 
-      cy.get('[data-cy=vaccineNameTag]').should('contain', 'Astra zeneca')
-
       cy.get('[data-cy=backToCheckInListButton]').click()
       cy.get('[data-cy=operatorLogoutButton]').click()
       cy.loginAsPatient(cpf)
-      cy.get('[data-cy=appliedVaccineName]').should('contain', 'Astra_zeneca')
+      cy.get('[data-cy=appliedVaccineName]').should('contain', 'AstraZeneca')
     })
   })
 
@@ -42,7 +40,7 @@ describe('reception flow', () => {
     const cpf = '71143168011'
 
     beforeEach(() => {
-      cy.appScenario('second_dose_patient', { cpf: cpf });
+      cy.appScenario('second_dose_patient', { cpf: cpf, vaccine: 'CoronaVac', days_ago: 28 });
       cy.get('[data-cy=waitingListTab]').click()
       cy.get('[data-cy=searchInput]').type('second dose marvin')
       cy.get('[data-cy=searchSubmit]').click()
@@ -59,7 +57,7 @@ describe('reception flow', () => {
       cy.get('[data-cy=secondDoseVaccineText]').should('exist')
       cy.get('[data-cy=checkOutConfirmationButton]').click()
 
-      cy.get('[data-cy=vaccineNameTag]').should('contain', 'Coronavac') // same as first dose
+      cy.get('[data-cy=vaccineNameTag]').should('contain', 'CoronaVac') // same as first dose
 
       cy.get('[data-cy=backToCheckInListButton]').click()
       cy.get('[data-cy=operatorLogoutButton]').click()

@@ -1,9 +1,12 @@
 version: "2"
 
+# https://docs.codeclimate.com/docs/advanced-configuration
 checks:
   method-count:
     enabled: false # use rubocop's
   method-lines:
+    enabled: false # use rubocop's
+  similar-code:
     enabled: false # use rubocop's
   method-complexity:
     config:

@@ -1,0 +1,31 @@
+<% doses.each do |dose| -%>
+  <div class="col">
+    <div class="row">
+      <div class="col">
+        <h4>
+          <%= dose.sequence_number %><sup>a</sup> dose
+        </h4>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <strong>Data:</strong> <%= l dose.created_at, format: :human %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <strong>Vacina:</strong> <%= dose.vaccine.name %> (<i><%= dose.vaccine.formal_name %></i>)
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <strong>Unidade:</strong> <%= dose.appointment.ubs.name %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <strong>Endereço:</strong> <%= dose.appointment.ubs.full_address %>
+      </div>
+    </div>
+  </div>
+<% end -%>

@@ -1,6 +1,10 @@
 class Appointment < ApplicationRecord
-  belongs_to :ubs
   belongs_to :patient, optional: true
+  belongs_to :ubs
+  has_one :dose, dependent: :restrict_with_exception
+  has_one :follow_up_for_dose, class_name: 'Dose', foreign_key: :follow_up_appointment_id,
+                               dependent: :restrict_with_exception,
+                               inverse_of: :follow_up_appointment
 
   scope :today, -> { where(start: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day) }
 
@@ -28,20 +32,34 @@ class Appointment < ApplicationRecord
   scope :waiting, -> { not_checked_in.not_checked_out }
 
   scope :available_doses, lambda {
-                            active_ubs
-                              .active
-                              .waiting
-                              .not_scheduled
-                          }
+    active_ubs
+      .active
+      .waiting
+      .not_scheduled
+  }
 
   scope :search_for, lambda { |text|
     joins(:patient)
       .where(
         Patient.arel_table[:cpf]
-          .eq(Patient.parse_cpf(text)) # Search for CPF without . and -
-          .or(Patient.arel_table[:name].matches("%#{text.strip}%"))
+               .eq(Patient.parse_cpf(text)) # Search for CPF without . and -
+               .or(Patient.arel_table[:name].matches("%#{text.strip}%"))
       )
   }
+
+  # For follow ups, can only be canceled or rescheduled close to the date.
+  def can_cancel_and_reschedule?
+    return true unless follow_up_for_dose
+
+    Time.zone.now > can_change_after
+  end
+
+  # Patients can only cancel or reschedule after a certain cutoff, in this case being "schedule_up_to_days" related with
+  # when they should get the vaccine.
+  def can_change_after
+    follow_up_for_dose.created_at + follow_up_for_dose.follow_up_in_days.days -
+      Rails.configuration.x.schedule_up_to_days.days
+  end
 
   def in_allowed_check_in_window?
     start > Time.zone.now.beginning_of_day && start < Time.zone.now.end_of_day
@@ -78,5 +96,17 @@ class Appointment < ApplicationRecord
     return :checked_in if checked_in?
 
     :waiting
+  end
+
+  # Applied, to be applied, or likely sequence number
+  def dose_sequence_number
+    return nil unless patient_id
+
+    dose&.sequence_number || follow_up_for_dose&.next_sequence_number || 1
+  end
+
+  # Applied, or to be applied vaccine
+  def dose_vaccine
+    dose&.vaccine || follow_up_for_dose&.vaccine
   end
 end

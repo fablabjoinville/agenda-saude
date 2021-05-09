@@ -8,7 +8,7 @@
 ![Open Collective backers and sponsors](https://img.shields.io/opencollective/all/makersnetwork)
 
 **Agenda Saúde** é um projeto de código aberto desenvolvido de forma colaborativa para fornecer
-um sistema de [agendamento de vacinação e exames](https://vacinajoinville.com.br/) de COVID-19 para a prefeitura de Joinville.
+um sistema de [agendamento de vacinação e exames](https://vacinajoinville.com.br/) de COVID-19 para a prefeituras, foi criado inicialmente para atender a prefeitura da cidade de Joinville-SC.
 O sistema pode ser usado livremente, respeitando a [licença de uso](https://github.com/MakersNetwork/agenda-saude/blob/main/LICENSE), para gerenciar a fila de vacinação em outras cidades.
 
 Quer saber como implantar na sua cidade? Veja nosso [fórum](https://github.com/MakersNetwork/agenda-saude/discussions/250). Tire qualquer [dúvida](https://github.com/MakersNetwork/agenda-saude/discussions) sobre o projeto. [Sugira](https://github.com/MakersNetwork/agenda-saude/issues) melhorias. Fique a vontade para [contribuir](#contribuindo)!
@@ -26,7 +26,7 @@ Quer saber como implantar na sua cidade? Veja nosso [fórum](https://github.com/
 Este projeto usa o framework de desenvolvimento Web Ruby on Rails e possui as seguintes
 dependências:
 
-- Ruby `>= 2.7.2
+- Ruby `>= 3.0.1
 - Node `>= 13.2.0`
 - PostgreSQL `== 12.1`
 - Install Docker ([documentação](https://docs.docker.com/install/overview/))
@@ -70,7 +70,7 @@ Para instalar as bibliotecas e configurar o banco de dados execute:
 
 ```sh
 bundle install
-bin/rails db:setup
+bin/rails db:setup db:seeds:development
 ```
 
 E acesse no ambiente local [http://localhost:3000](http://localhost:3000):
@@ -99,31 +99,6 @@ executando o robocop e corrigindo qualquer alerta evidenciado:
 
 ```sh
 bundle exec rubocop
-```
-
-## Deploy
-
-Apenas pessoas autorizadas podem fazer o deploy. É necessário adicionar o remote da Heroku:
-
-```sh
-git remote set-url origin git@github.com:MakersNetwork/agenda-saude.git
-git remote add heroku https://git.heroku.com/agendamento-covid.git
-```
-
-Deve ficar parecido com o exemplo abaixo:
-
-``` sh
-git remote -v
-heroku https://git.heroku.com/agendamento-covid.git (fetch)
-heroku https://git.heroku.com/agendamento-covid.git (push)
-origin  git@github.com:MakersNetwork/agenda-saude.git (fetch)
-origin  git@github.com:MakersNetwork/agenda-saude.git (push)
-```
-
-Para fazer deploy da aplicação:
-
-```sh
-git push heroku main
 ```
 
 ## Contribuindo

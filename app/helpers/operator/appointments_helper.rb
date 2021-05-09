@@ -2,33 +2,27 @@ module Operator
   module AppointmentsHelper
     LINKS = %i[all waiting checked_in checked_out].freeze
 
-    def operator_nav_links(current_filter, current_search, total_count)
-      filter_tabs_links(current_filter, total_count).tap do |links|
-        links << search_link(current_search, total_count) if current_search.present?
-      end.join.html_safe # rubocop:disable Rails/OutputSafety
-    end
-
-    def filter_tabs_links(current_filter, total_count)
-      LINKS.map do |key|
+    def operator_nav_links(ubs, current_filter, current_search, total_count)
+      links = LINKS.map do |key|
         filter = Operator::AppointmentsController::FILTERS[key]
         active = filter == current_filter
         text = t("appointments.state.#{key}")
         text << " (#{total_count})" if active
 
         tag.li(class: 'nav-item') do
-          link_to text, operator_appointments_path(filter: filter), data: { cy: "#{filter}ListTab" },
-                                                                    class: "nav-link #{active && :active}"
+          link_to text,
+                  operator_ubs_appointments_path(ubs, filter: filter),
+                  data: { cy: "#{filter}ListTab" },
+                  class: "nav-link #{active && :active}"
         end
       end
-    end
 
-    def search_link(current_search, total_count)
-      tag.li(class: 'nav-item') do
-        link_to "Busca: #{current_search} (#{total_count})",
-                operator_appointments_path(search: current_search),
-                class: 'nav-link active',
-                data: 'searchListTab'
+      if current_search.present?
+        links << search_link(current_search, total_count,
+                             operator_ubs_appointments_path(ubs, search: current_search))
       end
+
+      links.join.html_safe # rubocop:disable Rails/OutputSafety
     end
   end
 end

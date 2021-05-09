@@ -20,19 +20,46 @@ pt-BR:
         public_place: Endereço
         sus: Número do cartão SUS
         groups: Grupos que faz parte
+      group:
+        name: Nome
+        parent_group: Grupo pai
+        active: Ativo
+        context: Contexto
+        position: Posição
 
     models:
-      user: Usuário
+      appointment: Agendamento
+      dose: Dose administrada
+      group: Grupo
+      neighborhood: Bairro
       patient: Paciente
+      ubs: Unidade
+      user: Usuário
+      vaccine: Vacina
+  alerts:
+    last_dose_received: |
+      %{name} está imunizado(a).
+    dose_received_with_follow_up: |
+      %{name} tomou a %{sequence_number}a dose e está com a próxima dose agendada para %{date} nesta mesma unidade.
+    successful_patient_creation_title: Seu cadastro foi realizado com sucesso, mas isso não garante seu agendamento
+    successful_patient_creation_message: O agendamento não é automático, fique atento e prossiga para realizar um agendamento.
+    cannot_cancel_or_reschedule: |
+      Você só poderá cancelar ou reagendar seu atendimento (para outra data ou unidade) quando faltarem menos de %{days} dias a data do agendamento. Tente novamente mais próximo à data.
+    cannot_update_profile_due_to_appointment_condition: |
+      Não foi possível atualizar seu cadastro, já que esta alteração irá remover você do grupo que pode receber vacinas.
+      Para realizar esta alteração, primeiro cancele seu agendamento atual, para só então atualizar seu cadastro.
+    cannot_reschedule_yet: |
+      Ainda falta muito tempo para o reforço da sua vacina. Se você deseja cancelar ou mudar a data, volte aqui a partir
+      de %{datetime} e tente novamente.
+      Lembre-se que você só pode receber o reforço da vacina na mesma unidade que recebeu a primeira dose,
+      portanto caso hajam vagas poderá escolher outro dia e horário somente na mesma unidade.
+  buttons:
+    cancel_appointment: Cancelar este agendamento
+    reschedule_appointment: Reagendar e escolher outro dia, horário ou local
+  suspend_reasons:
+    follow_up_canceled_by_user: "Reforço cancelado pelo usuário"
   errors:
     messages:
       not_saved:
         one: 'Não foi possível salvar %{resource}: 1 erro'
         other: 'Não foi possível salvar %{resource}: %{count} erros.'
-
-  alerts:
-    patient_disabled_reschedule: >
-      Devido a alta demanda, o reagendamento está temporariamente desativado. Se você não poder comparecer no horário,
-      dia e local estabelecidos, tente reagendar novamente mais tarde, ou cancele seu agendamento e tente agende
-      novamente mais tarde ou quando mais doses forem disponibilizadas.
-

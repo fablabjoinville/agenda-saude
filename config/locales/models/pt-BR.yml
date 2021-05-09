@@ -9,6 +9,10 @@
     teacher: Professor
     over55: Entre 55 anos e 59 anos
     without_target: Nenhum
+    patients:
+      state:
+        all: "Todos" # used as a filter on Admin's Patient's index
+        locked: "Bloqueado"
     appointments:
       state:
         all: "Agendamentos para hoje" # used as a filter on Operator's Appointment's index
@@ -21,14 +25,10 @@
         activate: Confirma reativar agendamento para %{name}?
         checkout: Confirma vacinação para %{name}?
         checkin: Confirmar que %{name} fez check-in e está pronta(o) a entrar e receber vacina?
-        suspend_all: Confirma ATIVAR TODOS agendamentos futuros?
-        activate_all: Confirma SUSPENDER TODOS agendamentos futuros?
       messages:
         not_allowed_window: Não é possível fazer checkin para outra data
     activerecord:
         errors:
-          messages:
-            record_invalid: "Validation failed: %{errors}"
           models:
             patient:
               attributes:
@@ -48,5 +48,3 @@
                   invalid: inválido
                 neighborhood:
                   blank: em branco
-                main_ubs:
-                  required: obrigatório
