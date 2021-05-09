@@ -10,6 +10,8 @@
 **Agenda Saúde** é um projeto de código aberto desenvolvido de forma colaborativa para fornecer
 um sistema de [agendamento de vacinação e exames](https://vacinajoinville.com.br/) de COVID-19 para a prefeituras. Atualmente está em uso pela secretaria de saúde da prefeitura de Joinville/SC. O sistema pode ser usado livremente, respeitando a [licença de uso](https://github.com/MakersNetwork/agenda-saude/blob/main/LICENSE), para gerenciar a fila de vacinação em outras cidades.
 
+Conheça detalhes do projeto na nossa [página institucional](https://agendasaude.joinville.br).
+
 Quer saber como implantar na sua cidade? Veja nosso [fórum](https://github.com/MakersNetwork/agenda-saude/discussions/250). Tire qualquer [dúvida](https://github.com/MakersNetwork/agenda-saude/discussions) sobre o projeto. [Sugira](https://github.com/MakersNetwork/agenda-saude/issues) melhorias. Fique a vontade para [contribuir](#contribuindo)!
 
 - [Dependências](#dependencias)
@@ -106,7 +108,7 @@ Este projeto existe graças a todas as pessoas que contribuem. Fique a vontade p
 
 ### Contribuição Financeira
 
-Deseja contribuir financeiramente? Acesse nosso [Open Collective](https://opencollective.com/makersnetwork). Nossos financiadores:
+Deseja contribuir financeiramente? Acesse nossa [página institucional](https://agendasaude.joinville.br). Caso sua contribuição seja menor que 500 reais, use o nosso [Open Collective](https://opencollective.com/makersnetwork). Nossos financiadores:
 
 [![Financial Contributors - Individuals](https://opencollective.com/makersnetwork/individuals.svg?width=891)](https://opencollective.com/makersnetwork)
 
