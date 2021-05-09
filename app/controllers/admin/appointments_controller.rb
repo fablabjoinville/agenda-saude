@@ -24,10 +24,6 @@ module Admin
       params.permit(:page, :ubs_id, :date)
     end
 
-    def appointments_bulk_params
-      params.require(:appointments_bulk).permit(:from, :to, :ubs_ids)
-    end
-
     def set_appointment
       @appointment = Appointment.find(params[:id])
     end
