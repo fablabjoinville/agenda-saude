@@ -34,7 +34,13 @@
 </div>
 
 <% if @ubs -%>
-  <table class="table table-bordered table-hover table-sm">
+  <div class="row">
+    <div class="col">
+      <strong>Dia da semana:</strong> <%= t "calendar.weekdays.#{@date.wday}" %>
+    </div>
+  </div>
+
+  <table class="table table-bordered table-hover table-sm mt-4">
     <thead class="thead-dark">
     <tr>
       <th scope="col">#</th>

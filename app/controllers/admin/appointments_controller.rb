@@ -8,7 +8,7 @@ module Admin
       @date ||= Time.zone.today
 
       @appoitments = Appointment
-                     .includes(:dose)
+                     .includes(dose: :vaccine)
                      .includes(:patient)
                      .where(ubs_id: index_params[:ubs_id], start: @date.beginning_of_day..@date.end_of_day)
                      .order(:start, :id)
