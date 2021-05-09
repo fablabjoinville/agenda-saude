@@ -1,4 +1,5 @@
-require "active_support/core_ext/integer/time"
+require 'active_support/core_ext/integer/time'
+require 'redis_provider'
 
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
@@ -22,7 +23,7 @@ Rails.application.configure do
 
     # config.cache_store = :memory_store
     config.cache_store = :redis_cache_store, {
-      url: ENV[ENV["REDIS_PROVIDER"]],
+      url: RedisProvider.redis_url,
       pool_size: 5,
       pool_timeout: 5
     }
