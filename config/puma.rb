@@ -41,6 +41,7 @@ plugin :tmp_restart
 # https://devcenter.heroku.com/articles/deploying-rails-applications-with-the-puma-web-server#on-worker-boot
 on_worker_boot do
   ActiveRecord::Base.establish_connection
+  $redis = Redis.new(url: ENV[ENV["REDIS_PROVIDER"]], ssl_params: { verify_mode: OpenSSL::SSL::VERIFY_NONE })
 end
 
 require 'barnes'
@@ -48,6 +49,7 @@ require 'barnes'
 # https://devcenter.heroku.com/articles/language-runtime-metrics-ruby#getting-started
 before_fork do
   Barnes.start # Must have enabled worker mode for this to block to be called
+
 end
 
 lowlevel_error_handler do |ex, env|
