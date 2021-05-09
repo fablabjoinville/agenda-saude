@@ -42,7 +42,7 @@ class TimeSlotGenerationService
 
       to_be_created << Array.new(new_slots_count, attributes)
 
-      report[appointment_start.to_s] = { taken_slots_count: taken_slots_count, new_slots_count: new_slots_count }
+      report[appointment_start] = { taken: taken_slots_count, created: new_slots_count }
     end
 
     create!(to_be_created)

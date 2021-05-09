@@ -8,7 +8,7 @@ module Admin
     def create
       @appointments_bulk = AppointmentsBulk.new appointments_bulk_params
 
-      flash.now[:notice] = 'Criado' if @appointments_bulk.save
+      flash.now[:notice] = 'Agendamentos criados.' if @appointments_bulk.save
 
       render :new
     end

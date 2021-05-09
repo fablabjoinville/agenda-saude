@@ -24,11 +24,14 @@ class AppointmentsBulk
   def save
     return false unless valid?
 
-    Ubs.where(id: ubs_ids).all.find_each do |ubs|
-      TimeSlotGenerationService.new.call(ubs: ubs, from: from, to: to,
-                                         default_attributes: {
-                                           active: active
-                                         })
+    Ubs.where(id: ubs_ids).map do |ubs|
+      service.call(
+        ubs: ubs,
+        from: from, to: to,
+        default_attributes: {
+          active: active
+        }
+      )
     end
 
     true
@@ -36,5 +39,9 @@ class AppointmentsBulk
 
   def ubs
     Ubs.where(id: ubs_ids)
+  end
+
+  def service
+    @service ||= TimeSlotGenerationService.new
   end
 end

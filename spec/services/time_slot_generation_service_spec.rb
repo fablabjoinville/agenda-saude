@@ -63,4 +63,40 @@ RSpec.describe TimeSlotGenerationService, type: :service do
         3 # 08:00, 08:20, 08:40
     )
   end
+
+  it 'generates a last run report' do
+    last_run_report = subject.call(ubs: ubs, from: from, to: to)
+
+    expect(last_run_report).to eq(
+      [
+        [],
+        [{ Time.zone.local(2021, 1, 4, 11, 0) => { created: 3, taken: 0 },
+           Time.zone.local(2021, 1, 4, 11, 20) => { created: 3, taken: 0 } },
+         { Time.zone.local(2021, 1, 4, 13, 0) => { created: 3, taken: 0 },
+           Time.zone.local(2021, 1, 4, 13, 20) => { created: 3, taken: 0 },
+           Time.zone.local(2021, 1, 4, 13, 40) => { created: 3, taken: 0 } }],
+        [{ Time.zone.local(2021, 1, 5, 11, 0) => { created: 3, taken: 0 },
+           Time.zone.local(2021, 1, 5, 11, 20) => { created: 3, taken: 0 } },
+         { Time.zone.local(2021, 1, 5, 13, 0) => { created: 3, taken: 0 },
+           Time.zone.local(2021, 1, 5, 13, 20) => { created: 3, taken: 0 },
+           Time.zone.local(2021, 1, 5, 13, 40) => { created: 3, taken: 0 } }],
+        [{ Time.zone.local(2021, 1, 6, 11, 0) => { created: 3, taken: 0 },
+           Time.zone.local(2021, 1, 6, 11, 20) => { created: 3, taken: 0 } },
+         { Time.zone.local(2021, 1, 6, 13, 0) => { created: 3, taken: 0 },
+           Time.zone.local(2021, 1, 6, 13, 20) => { created: 3, taken: 0 },
+           Time.zone.local(2021, 1, 6, 13, 40) => { created: 3, taken: 0 } }],
+        [{ Time.zone.local(2021, 1, 7, 11, 0) => { created: 3, taken: 0 },
+           Time.zone.local(2021, 1, 7, 11, 20) => { created: 3, taken: 0 } },
+         { Time.zone.local(2021, 1, 7, 13, 0) => { created: 3, taken: 0 },
+           Time.zone.local(2021, 1, 7, 13, 20) => { created: 3, taken: 0 },
+           Time.zone.local(2021, 1, 7, 13, 40) => { created: 3, taken: 0 } }],
+        [{ Time.zone.local(2021, 1, 8, 11, 0) => { created: 3, taken: 0 },
+           Time.zone.local(2021, 1, 8, 11, 20) => { created: 3, taken: 0 } },
+         { Time.zone.local(2021, 1, 8, 13, 0) => { created: 3, taken: 0 },
+           Time.zone.local(2021, 1, 8, 13, 20) => { created: 3, taken: 0 },
+           Time.zone.local(2021, 1, 8, 13, 40) => { created: 3, taken: 0 } }],
+        []
+      ]
+    )
+  end
 end
