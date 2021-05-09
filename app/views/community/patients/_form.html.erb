@@ -37,7 +37,7 @@
 
   <div class="form-group col-md-4">
     <%= f.label :birthday %>
-    <div class="form-row">
+    <div class="form-row date">
       <%= f.date_select :birthday,
                         {
                           start_year: (Date.current.year.to_i) - 17, # min age
