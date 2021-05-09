@@ -20,9 +20,7 @@
     <% elsif @appointment.state == :checked_out %>
       <i class="fa fa-check-circle icons color-green" aria-hidden="true"></i>
     <% elsif @appointment.state == :checked_in %>
-      <i class="fa fa-user-circle icons color-green" aria-hidden="true"></i>
-    <% elsif @appointment.state == :checked_in %>
-      <i class="fa fa-hourglass-half color-blue" aria-hidden="true"></i>
+      <i class="fa fa-play-circle icons color-green" aria-hidden="true"></i>
     <% end %>
 
     <div class="text-muted">
