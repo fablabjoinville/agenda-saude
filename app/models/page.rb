@@ -10,6 +10,6 @@ class Page < ApplicationRecord
   scope :admin_order, -> { order(:context, :path) }
 
   def html
-    Kramdown::Document.new(body).to_html.html_safe
+    Kramdown::Document.new(body).to_html.html_safe # rubocop:disable Rails/OutputSafety
   end
 end

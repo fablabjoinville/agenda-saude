@@ -4,8 +4,8 @@ module Admin
 
     def index
       @pages = Page.admin_order
-                     .page(index_params[:page])
-                     .per(100)
+                   .page(index_params[:page])
+                   .per(100)
     end
 
     def new

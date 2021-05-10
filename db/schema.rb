@@ -116,7 +116,7 @@ ActiveRecord::Schema.define(version: 2021_05_10_142917) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["context"], name: "index_pages_on_context"
-    t.index ["path"], name: "index_pages_on_path"
+    t.index ["path"], name: "index_pages_on_path", unique: true
   end
 
   create_table "patients", force: :cascade do |t|
