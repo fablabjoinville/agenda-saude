@@ -46,6 +46,8 @@ module Admin
     end
 
     def page_params
+      return params.require(:page).permit(:body) if @page&.embedded?
+
       params.require(:page).permit(:path, :title, :body)
     end
 
