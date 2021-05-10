@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_05_005358) do
+ActiveRecord::Schema.define(version: 2021_05_10_142917) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -106,6 +106,17 @@ ActiveRecord::Schema.define(version: 2021_05_05_005358) do
     t.bigint "neighborhood_id", null: false
     t.index ["neighborhood_id", "ubs_id"], name: "index_neighborhoods_ubs_on_neighborhood_id_and_ubs_id"
     t.index ["ubs_id", "neighborhood_id"], name: "index_neighborhoods_ubs_on_ubs_id_and_neighborhood_id"
+  end
+
+  create_table "pages", force: :cascade do |t|
+    t.string "path", null: false
+    t.string "title", null: false
+    t.text "body", null: false
+    t.integer "context", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["context"], name: "index_pages_on_context"
+    t.index ["path"], name: "index_pages_on_path"
   end
 
   create_table "patients", force: :cascade do |t|

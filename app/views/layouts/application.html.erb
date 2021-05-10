@@ -22,6 +22,7 @@
     <%= javascript_include_tag 'application' %>
     <%= stylesheet_link_tag 'application', "https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;700;800&display=swap", media: 'all', 'data-turbolinks-track' => true %>
     <%= favicon_link_tag %>
+    <%= yield :head %>
   </head>
 
   <body>
@@ -49,6 +50,7 @@
                 <%= link_to "Grupos", admin_groups_path, class: "dropdown-item" %>
                 <%= link_to "Operadores", admin_users_path, class: "dropdown-item" %>
                 <%= link_to "Pacientes", admin_patients_path, class: "dropdown-item" %>
+                <%= link_to "Páginas", admin_pages_path, class: "dropdown-item" %>
                 <%= link_to "Unidades", admin_ubs_index_path, class: "dropdown-item" %>
                 <%= link_to "Vacinas", admin_vaccines_path, class: "dropdown-item" %>
               <% end -%>

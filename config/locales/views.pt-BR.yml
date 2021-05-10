@@ -26,6 +26,11 @@ pt-BR:
         active: Ativo
         context: Contexto
         position: Posição
+      page:
+        path: Caminho
+        title: Título
+        body: Corpo
+        context: Contexto
 
     models:
       appointment: Agendamento
@@ -36,6 +41,7 @@ pt-BR:
       ubs: Unidade
       user: Usuário
       vaccine: Vacina
+      page: Página
   alerts:
     last_dose_received: |
       %{name} está imunizado(a).

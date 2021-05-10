@@ -9,6 +9,8 @@ class HomeController < ApplicationController
     @appointments_any = Appointment.available_doses
                                    .where(start: from..to)
                                    .any? # TODO: change it to count after we have caching
+
+    @home = Page.find_by!(path: :home).html
   end
   # rubocop:enable Metrics/AbcSize
 end
