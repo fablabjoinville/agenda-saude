@@ -16,13 +16,11 @@
     </div>
 
     <% if @appointment.state == :suspended %>
-      <i class="fa fa-times-circle icons" aria-hidden="true" style="color: red"></i>
+      <i class="fa fa-times-circle icons color-red" aria-hidden="true"></i>
     <% elsif @appointment.state == :checked_out %>
-      <i class="fa fa-check-circle icons" aria-hidden="true" style="color: green"></i>
+      <i class="fa fa-check-circle icons color-green" aria-hidden="true"></i>
     <% elsif @appointment.state == :checked_in %>
-      <i class="fa fa-user-circle icons" aria-hidden="true" style="color: green"></i>
-    <% elsif @appointment.state == :checked_in %>
-      <i class="fa fa-hourglass-half" aria-hidden="true" style="color: blue"></i>
+      <i class="fa fa-play-circle icons color-green" aria-hidden="true"></i>
     <% end %>
 
     <div class="text-muted">
@@ -34,8 +32,8 @@
     </div>
 
     <p class="mt-2">
-      <% @appointment.patient.conditions.each do |group| %>
-        <span class="badge badge-pill badge-primary pills-groups"><%= group %></span>
+      <% @appointment.patient.conditions.each do |condition| %>
+        <span class="badge badge-pill badge-primary pills-groups"><%= condition.name %></span>
       <% end %>
     </p>
 

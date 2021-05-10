@@ -31,9 +31,20 @@ pt-BR:
         title: Título
         body: Corpo
         context: Contexto
+      condition:
+        name: Nome
+        start_at: A partir de
+        end_at: Até
+        min_age: Idade mínima
+        max_age: Idade máxima
+        groups: Grupos
+        can_register: Pode cadastrar
+        can_schedule: Pode agendar
+        ubs: Unidades
 
     models:
       appointment: Agendamento
+      condition: Condição de agendamento
       dose: Dose administrada
       group: Grupo
       neighborhood: Bairro

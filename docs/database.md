@@ -39,7 +39,7 @@ Grupos do qual o paciente participa.
 
 Tabela associativa entre `groups` e `patients`. É como sabemos quantos pacientes estão em quantos grupos.
 
-## Neighborhoods
+## neighborhoods
 
 Bairros da cidade.
 
@@ -49,7 +49,7 @@ Bairros da cidade.
 
 Tabela associativa entre `ubs` e `neighborhood`, já que unidades de atendimento podem atender múltiplos bairros da cidade.
 
-## `patients`
+## patients
 
 Pacientes.
 
@@ -74,15 +74,6 @@ Pacientes.
   * `neighborhood_id`:  bairro, ainda não em uso (usar neighborhood, como texto).
   * `street_2`: complemento residencial, **ainda não em uso**.
   * `internal_note`: observação interna sobre o usuário, **ainda não em uso**.
-
-## time_slot_generation_configs
-
-  * `content`:
-
-## time_slot_generator_executions
-
-  * `status`:
-  * `details`:
 
 ## ubs
 

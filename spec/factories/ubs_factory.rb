@@ -3,7 +3,6 @@ FactoryBot.define do
     name { 'UBS Norte' }
     neighborhood { 'Centro' }
     neighborhoods { [] }
-    user
     shift_start { '08:00' }
     shift_end { '18:00' }
     break_start { '12:00' }

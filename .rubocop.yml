@@ -27,6 +27,8 @@ Style/AsciiComments:
 
 Layout/LineLength:
   Max: 130
+  Exclude:
+    - './db/seeds.rb'
 
 Metrics/AbcSize:
   Max: 20

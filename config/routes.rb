@@ -41,6 +41,7 @@ Rails.application.routes.draw do
           patch :unblock
         end
       end
+      resources :conditions
       resources :ubs, only: %i[index show]
       resources :users, only: %i[index show]
       resources :vaccines, only: %i[index show]
