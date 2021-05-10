@@ -26,6 +26,11 @@ pt-BR:
         active: Ativo
         context: Contexto
         position: Posição
+      page:
+        path: Caminho
+        title: Título
+        body: Corpo
+        context: Contexto
       condition:
         name: Nome
         start_at: A partir de
@@ -68,6 +73,7 @@ pt-BR:
       ubs: Unidade
       user: Usuário
       vaccine: Vacina
+      page: Página
   activemodel:
     attributes:
       appointments_bulk:

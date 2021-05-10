@@ -13,6 +13,8 @@ class HomeController < ApplicationController
     end
 
     @appointments_any = @can_schedule_conditions.pluck(:doses_count).inject(:+)&.positive?
+
+    @home_page = Page.find_by!(path: :home)
   end
 
   protected

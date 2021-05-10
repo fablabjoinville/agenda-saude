@@ -16,6 +16,7 @@ gem 'devise'
 gem 'font-awesome-sass'
 gem 'jquery-rails'
 gem 'kaminari'
+gem 'kramdown'
 gem 'newrelic_rpm'
 gem 'puma' # Use Puma as the app server
 gem 'rails_autoscale_agent'

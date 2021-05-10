@@ -36,6 +36,7 @@ Rails.application.routes.draw do
       resources :appointments_bulks, only: %i[new create]
       resources :groups, only: %i[index new create show edit update]
       resources :neighborhoods, only: %i[index show]
+      resources :pages
       resources :patients, only: %i[index show] do
         member do
           patch :unblock
@@ -48,6 +49,8 @@ Rails.application.routes.draw do
     end
     resources :appointments, only: %i[index]
   end
+
+  resources :pages, only: :show, path: '/p'
 
   get 'community', to: redirect('/community/appointments/home')
   get 'operator', to: redirect('/operator/ubs')
