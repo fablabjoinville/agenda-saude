@@ -10,6 +10,7 @@ gem 'bootsnap', require: false
 gem 'bootstrap'
 gem 'caxlsx'
 gem 'caxlsx_rails'
+gem 'connection_pool'
 gem 'cpf_cnpj'
 gem 'devise'
 gem 'font-awesome-sass'
@@ -18,6 +19,7 @@ gem 'kaminari'
 gem 'newrelic_rpm'
 gem 'puma' # Use Puma as the app server
 gem 'rails_autoscale_agent'
+gem 'redis'
 gem 'sass-rails' # Use SCSS for stylesheets
 gem 'sentry-rails'
 gem 'sentry-ruby'
