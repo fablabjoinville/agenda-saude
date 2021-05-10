@@ -10,7 +10,7 @@ class HomeController < ApplicationController
                                    .where(start: from..to)
                                    .any? # TODO: change it to count after we have caching
 
-    @home = Page.find_by!(path: :home).html
+    @home_page = Page.find_by!(path: :home)
   end
   # rubocop:enable Metrics/AbcSize
 end

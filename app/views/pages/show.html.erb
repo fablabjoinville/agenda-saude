@@ -1,1 +1,3 @@
-<%= @html %>
+<% cache @page do -%>
+  <%= @page.html %>
+<% end -%>
