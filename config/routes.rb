@@ -48,7 +48,7 @@ Rails.application.routes.draw do
     resources :appointments, only: %i[index]
   end
 
-  get '/p/:path', to: 'pages#show'
+  resources :pages, only: :show, path: '/p'
 
   get 'community', to: redirect('/community/appointments/home')
   get 'operator', to: redirect('/operator/ubs')

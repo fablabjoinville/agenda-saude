@@ -6,6 +6,12 @@
   Página: <%= @page.title %>
 </h1>
 
+<% if @page.user_created? -%>
+  <p>
+    <%= link_to page_url(id: @page.path), page_path(id: @page.path) %>
+  </p>
+<% end -%>
+
 <hr>
 
 <%= @page.html %>
