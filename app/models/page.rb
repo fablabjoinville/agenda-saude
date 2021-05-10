@@ -5,7 +5,7 @@ class Page < ApplicationRecord
   }
 
   validates :path, :title, :body, :context, presence: true
-  validates :path, uniqueness: true
+  validates :path, uniqueness: true, format: { with: /\A[A-Za-z0-9_-]+\z/ }
 
   scope :admin_order, -> { order(:context, :path) }
 
