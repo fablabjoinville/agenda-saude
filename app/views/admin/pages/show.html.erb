@@ -1,3 +1,6 @@
+<% if @page.user_created? -%>
+  <%= link_to "Remover", admin_page_path(@page), method: :delete, class: 'btn btn-danger float-right ml-2', data: { confirm: 'Tem certeza?' } %>
+<% end -%>
 <%= link_to "Editar", edit_admin_page_path(@page), class: 'btn btn-primary float-right' %>
 <h1 class="h4">
   Página: <%= @page.title %>
