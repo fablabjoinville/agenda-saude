@@ -17,40 +17,13 @@
         <%= render @appointment %>
       </li>
       <li class="list-group-item">
-        <div class="row">
+        <div class="row mb-3">
           <div class="col">
             <strong>Imprima ou salve uma imagem esta página no seu celular para se lembrar do agendamento.</strong>
           </div>
         </div>
 
-        <p>Para receber a vacina contra a Covid-19, seguir as instruções abaixo:</p>
-
-        <%= render "shared/required_documents" %>
-
-        <p class="mt-4">
-          Caso você tenha alguma comorbidade, será necessário apresentar ao menos um dos documentos abaixo para comprovar-la:
-          <ul>
-            <li>Atestado médico ou relatório médico com a indicação da condição da pessoa;</li>
-            <li>Prescrição médica ou exames ou receitas que deixem claro a condição da pessoa;</li>
-            <li>Receita de medicamentos não controlados com validade de 1 ano, que deixem claro a condição da pessoa.</li>
-          </ul>
-        </p>
-
-        <p>
-          Lembre-se que você <strong>não poderá</strong> receber a vacina caso seja:
-        </p>
-
-        <ul>
-          <li>Menor de 18 anos;</li>
-          <li>Esteja em estado febril;</li>
-          <li>Tenha suspeita ou Covid-19 positivo nos últimos 30 dias;</li>
-          <li>Tenha tomado qualquer outra vacina nos últimos 14 dias.</li>
-        </ul>
-
-        <p>
-          Se você tiver uma das condições acima, solicitamos que cancele seu agendamento e reagendando-o no
-          futuro quando sair da condição temporária.
-        </p>
+        <%= embedded_page :patient_scheduled -%>
       </li>
       <li class="list-group-item d-print-none">
         <% if @appointment.can_cancel_and_reschedule? -%>

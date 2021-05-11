@@ -12,7 +12,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>Vacinação Covid-19 <%= Settings[:city_name] %></title>
+    <title><%= @page ? @page.title : "Vacinação Covid-19 #{Settings[:city_name]}" %></title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
@@ -130,27 +130,8 @@
       <div class="container p-5"></div>
       <hr>
 
-      <div class="row text-center">
-        <div class="col">
-          <small class="text-muted">
-            <a href="<%= Settings[:covid19_hotsite_address] %>">
-              Acompanhe as principais informações sobre o combate ao coronavírus em <%= Settings[:city_name] %>
-              <span class="d-none d-print-block">em <%= Settings[:covid19_hotsite_address] %>"</span>
-            </a>
-          </small>
-        </div>
-      </div>
-
       <div class="text-center p-3">
-        <p>
-          <b>Ligue/Web Saúde</b>:
-          <% if Settings[:is_hotline_whatsapp] %>
-            <%= link_to humanize_phone_number(Settings[:hotline]), "https://api.whatsapp.com/send?phone=55#{Settings[:hotline]}", target: 'blank' %>
-          <% else %>
-            <%= link_to humanize_phone_number(Settings[:hotline]), "tel:#{Settings[:hotline]}", target: 'blank' %>
-          <% end %>
-          — <%= Settings[:hotline_working_hours] %>
-        </p>
+        <%= embedded_page :footer %>
       </div>
     </footer>
   </body>
