@@ -41,6 +41,9 @@ plugin :tmp_restart
 # https://devcenter.heroku.com/articles/deploying-rails-applications-with-the-puma-web-server#on-worker-boot
 on_worker_boot do
   ActiveRecord::Base.establish_connection
+
+  require 'redis_provider'
+  RedisProvider.redis
 end
 
 require 'barnes'

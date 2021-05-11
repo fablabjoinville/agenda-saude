@@ -30,16 +30,48 @@ $blue: #005293;
   height: auto;
 }
 
-.day {
-  width: 25%;
+.date {
+  .day {
+    width: 30%;
+  }
+
+  .month {
+    width: 30%;
+  }
+
+  .year {
+    width: 30%;
+  }
+
+  .day, .month, .year {
+    display: inline-block;
+  }
 }
 
-.month {
-  width: 45%;
-}
+.datetime {
+  .day {
+    width: 15%;
+  }
 
-.year {
-  width: 30%;
+  .month {
+    width: 15%;
+  }
+
+  .year {
+    width: 20%;
+  }
+
+  .hour {
+    width: 15%
+  }
+
+  .minute {
+    width: 15%;
+  }
+
+  .day, .month, .year, .hour, .minute {
+    display: inline-block;
+  }
 }
 
 .form-check {
@@ -84,4 +116,24 @@ h1, h2, h3, h4, h5 {
     padding-top: 2%;
     font-weight: bold;
   }
+}
+
+.color-green {
+  color: #218838;
+}
+
+.color-red {
+  color: #721c24;
+}
+
+.color-blue {
+  color: #005293;
+}
+
+.color-skyblue {
+  color: #17a2b8;
+}
+
+.color-goldenrod {
+  color: #856404;
 }

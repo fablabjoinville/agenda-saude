@@ -33,19 +33,24 @@ Rails.application.routes.draw do
 
     namespace :admin do
       resources :appointments, only: %i[index show]
+      resources :appointments_bulks, only: %i[new create]
       resources :groups, only: %i[index new create show edit update]
       resources :neighborhoods, only: %i[index show]
+      resources :pages
       resources :patients, only: %i[index show] do
         member do
           patch :unblock
         end
       end
-      resources :ubs, only: %i[index show]
+      resources :conditions
+      resources :ubs
       resources :users, only: %i[index show]
       resources :vaccines, only: %i[index show]
     end
     resources :appointments, only: %i[index]
   end
+
+  resources :pages, only: :show, path: '/p'
 
   get 'community', to: redirect('/community/appointments/home')
   get 'operator', to: redirect('/operator/ubs')

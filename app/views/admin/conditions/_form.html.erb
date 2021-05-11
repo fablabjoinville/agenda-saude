@@ -1,0 +1,145 @@
+<%= form_for [:admin, @condition] do |f| %>
+  <%= error_messages_for(f.object) %>
+
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <%= f.label :name %>
+      <%= f.text_field :name, required: true, class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-2">
+      <%= f.label :can_register %>
+      <%= f.check_box :can_register, class: "form-control" %>
+    </div>
+
+    <div class="form-group col-md-2">
+      <%= f.label :can_schedule %>
+      <%= f.check_box :can_schedule, class: "form-control" %>
+    </div>
+  </div>
+
+  <h5>Data de validade</h5>
+
+  <div class="form-row">
+    <div class="form-group col-md-6 datetime">
+      <%= f.label :start_at %>
+      <div class="clear"></div>
+      <%= f.datetime_select :start_at,
+                            {
+                              start_year: Date.current.year.to_i - 5,
+                              end_year: Date.current.year.to_i + 5,
+                              use_two_digit_numbers: true,
+                              with_css_classes: {
+                                day: "form-control day",
+                                month: "form-control month",
+                                year: "form-control year",
+                                hour: "form-control hour",
+                                minute: "form-control minute"
+                              }
+                            },
+                            required: true,
+                            class: "form-control" %>
+    </div>
+    <div class="form-group col-md-6 datetime">
+      <%= f.label :end_at %>
+      <div class="clear"></div>
+      <%= f.datetime_select :end_at,
+                            {
+                              start_year: Date.current.year.to_i - 5,
+                              end_year: Date.current.year.to_i + 5,
+                              use_two_digit_numbers: true,
+                              with_css_classes: {
+                                day: "form-control day",
+                                month: "form-control month",
+                                year: "form-control year",
+                                hour: "form-control hour",
+                                minute: "form-control minute"
+                              }
+                            },
+                            required: true,
+                            class: "form-control" %>
+    </div>
+  </div>
+
+  <h5>
+    Condições de agendamento
+  </h5>
+  <div class="form-row">
+    <div class="form-group col-md-3">
+      <%= f.label :min_age %>
+      <%= f.number_field :min_age, class: "form-control" %>
+    </div>
+
+    <div class="form-group col-md-3">
+      <%= f.label :max_age %>
+      <%= f.number_field :max_age, class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="form-row mt-3">
+    <div class="form-group col-md-6">
+      <h6>Grupos prioritários</h6>
+
+      <div class="form-row">
+        <div class="form-group col-md-12 pr-4">
+          <div class="form-check" data-group-context-priority="">
+            <%= render partial: 'group_boxes', locals: { group: Group.priority, f: f } %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group col-md-6">
+      <h6>Comorbidades</h6>
+
+      <div class="form-row">
+        <div class="form-group col-md-12">
+          <div class="form-check" data-group-context-comorbidity="">
+            <%= render partial: 'group_boxes', locals: { group: Group.comorbidity, f: f } %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-8">
+      <h5>Unidades onde é aplicada</h5>
+    </div>
+
+    <div class="col-2">
+      <a href="javascript: $('[name=\'condition[ubs_ids][]\']').prop('checked', true)"
+         class="btn btn-secondary btn-block">
+        Todas
+      </a>
+    </div>
+
+    <div class="col-2">
+      <a href="javascript: $('[name=\'condition[ubs_ids][]\']').prop('checked', false)"
+         class="btn btn-secondary btn-block">
+        Nenhuma
+      </a>
+    </div>
+  </div>
+
+  <div class="form-row mt-4 ml-3">
+    <%= f.collection_check_boxes :ubs_ids, Ubs.order(:name), :id, :name do |b| %>
+      <div class="form-group col-md-3 pr-4">
+        <%= b.label class: "small" do
+          b.check_box(
+            checked: f.object.ubs_ids.include?(b.value.to_i),
+            class: "form-check-input"
+          ) + b.text
+        end %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <%= f.submit class: 'form-control btn-primary' %>
+    </div>
+  </div>
+<% end %>

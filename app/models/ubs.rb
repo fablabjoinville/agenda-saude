@@ -1,13 +1,28 @@
 class Ubs < ApplicationRecord
-  validate :times_must_be_ordered
   validates :slot_interval_minutes, inclusion: 1...120
   validates :appointments_per_time_slot, numericality: { greater_than: 0 }
 
-  belongs_to :user
-  has_many :appointments, dependent: :destroy
+  validates :shift_start, time_of_day: true,
+                          presence: { if: proc { |u| u.shift_end.present? || u.break_start.present? } }
+  validates :shift_end, time_of_day: true, presence: { if: proc { |u| u.shift_start.present? } }
+  validates :break_start, time_of_day: true, presence: { if: proc { |u| u.break_end.present? } }
+  validates :break_end, time_of_day: true, presence: { if: proc { |u| u.break_start.present? } }
+
+  validates :saturday_shift_start, time_of_day: true,
+                                   presence: { if: proc { |u| u.saturday_shift_end.present? || u.saturday_break_start.present? } }
+  validates :saturday_shift_end, time_of_day: true, presence: { if: proc { |u| u.saturday_shift_start.present? } }
+  validates :saturday_break_start, time_of_day: true, presence: { if: proc { |u| u.saturday_break_end.present? } }
+  validates :saturday_break_end, time_of_day: true, presence: { if: proc { |u| u.saturday_break_start.present? } }
+
+  validates :sunday_shift_start, time_of_day: true,
+                                 presence: { if: proc { |u| u.sunday_shift_end.present? || u.sunday_break_start.present? } }
+  validates :sunday_shift_end, time_of_day: true, presence: { if: proc { |u| u.sunday_shift_start.present? } }
+  validates :sunday_break_start, time_of_day: true, presence: { if: proc { |u| u.sunday_break_end.present? } }
+  validates :sunday_break_end, time_of_day: true, presence: { if: proc { |u| u.sunday_break_start.present? } }
+
   has_and_belongs_to_many :neighborhoods
-  has_and_belongs_to_many :users # For future use [jmonteiro]
-  has_one :time_slot_generation_config, dependent: :delete
+  has_and_belongs_to_many :users
+  has_many :appointments, dependent: :destroy
 
   scope :active, -> { where(active: true) }
 
@@ -19,97 +34,44 @@ class Ubs < ApplicationRecord
     "#{address} (#{neighborhood})"
   end
 
-  def shift_start_date(date = Date.today)
-    time_of_day(shift_start, date)
+  def time_windows(weekday)
+    case weekday.to_i
+    when 0
+      sunday_time_windows
+    when 6
+      saturday_time_windows
+    else
+      workday_time_windows
+    end
   end
 
-  def shift_end_date(date = Date.today)
-    time_of_day(shift_end, date)
+  def sunday_time_windows
+    return [] if sunday_shift_start.blank?
+
+    return [[Tod::TimeOfDay.parse(sunday_shift_start), Tod::TimeOfDay.parse(sunday_shift_end)]] if sunday_break_start.blank?
+
+    [[Tod::TimeOfDay.parse(sunday_shift_start), Tod::TimeOfDay.parse(sunday_break_start)],
+     [Tod::TimeOfDay.parse(sunday_break_end), Tod::TimeOfDay.parse(sunday_shift_end)]]
   end
 
-  def break_start_date(date = Date.today)
-    time_of_day(break_start, date)
+  def workday_time_windows
+    return [] if shift_start.blank?
+
+    return [[Tod::TimeOfDay.parse(shift_start), Tod::TimeOfDay.parse(shift_end)]] if break_start.blank?
+
+    [[Tod::TimeOfDay.parse(shift_start), Tod::TimeOfDay.parse(break_start)],
+     [Tod::TimeOfDay.parse(break_end), Tod::TimeOfDay.parse(shift_end)]]
   end
 
-  def break_end_date(date = Date.today)
-    time_of_day(break_end, date)
-  end
+  def saturday_time_windows
+    return [] if saturday_shift_start.blank?
 
-  def shift_start_saturday(date = Date.today)
-    time_of_day(saturday_shift_start, date)
-  end
-
-  def break_start_saturday(date = Date.today)
-    time_of_day(saturday_break_start, date)
-  end
-
-  def break_end_saturday(date = Date.today)
-    time_of_day(saturday_break_end, date)
-  end
-
-  def shift_end_saturday(date = Date.today)
-    time_of_day(saturday_shift_end, date)
-  end
-
-  def slot_interval
-    slot_interval_minutes.minutes
-  end
-
-  def time_of_day(time, date)
-    Tod::TimeOfDay.parse(time).on(date).in_time_zone
-  end
-
-  private
-
-  def morning_shift(day)
-    shift_start_date(day).to_i...break_start_date(day).to_i
-  end
-
-  def afternoon_shift(day)
-    break_end_date(day).to_i...shift_end_date(day).to_i
-  end
-
-  def morning_saturday(day)
-    shift_start_saturday(day).to_i...break_start_saturday(day).to_i
-  end
-
-  def afternoon_saturday(day)
-    break_end_saturday(day).to_i...shift_end_saturday(day).to_i
-  end
-
-  def times_must_be_ordered
-    if shift_start_date > shift_end_date
-      errors.add(:shift_start, "não pode ser depois do final do expediente")
+    if saturday_break_start.blank?
+      return [[Tod::TimeOfDay.parse(saturday_shift_start),
+               Tod::TimeOfDay.parse(saturday_shift_end)]]
     end
 
-    if break_start_date > break_end_date
-      errors.add(:break_start, "não pode ser depois do final da pausa")
-    end
-
-    if shift_start_date > break_start_date
-      errors.add(:shift_start, "não pode ser depois do início da pausa")
-    end
-
-    if break_end_date > shift_end_date
-      errors.add(:break_end, "não pode ser depois do final do expediente")
-    end
-
-
-    if shift_start_saturday > shift_end_saturday
-      errors.add(:saturday_shift_start, "não pode ser depois do final do expediente")
-    end
-
-    if break_start_saturday > break_end_saturday
-      errors.add(:saturday_break_start, "não pode ser depois do final da pausa")
-    end
-
-    if shift_start_saturday > break_start_saturday
-      errors.add(:saturday_shift_start, "não pode ser depois do início da pausa")
-    end
-
-    if break_end_saturday > shift_end_saturday
-      errors.add(:saturday_break_end, "não pode ser depois do final do expediente")
-    end
-
+    [[Tod::TimeOfDay.parse(saturday_shift_start), Tod::TimeOfDay.parse(saturday_break_start)],
+     [Tod::TimeOfDay.parse(saturday_break_end), Tod::TimeOfDay.parse(saturday_shift_end)]]
   end
 end

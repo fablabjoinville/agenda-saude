@@ -1,23 +1,6 @@
 class Patient < ApplicationRecord
   MAX_LOGIN_ATTEMPTS = 3
 
-  CONDITIONS = {
-    # 'População em geral com 60 anos ou mais' =>
-    # lambda do |patient|
-    #   birthday = patient.birthday.to_time # rubocop:disable Rails/Date timezone is respected
-    #   cutoff = Time.zone.now
-    #   age = ((cutoff - birthday) / 1.year.seconds).floor
-    #   age >= 60
-    # end
-    'Trabalhadores da saúde segundo OFÍCIO Nº 234/2021/CGPNI/DEIDT/SVS/MS' =>
-    lambda do |patient|
-      group_ids = [23, 46, 47, 55, 57]
-
-      # age check && check if there's an intersection between arrays
-      (group_ids & patient.group_ids).any?
-    end
-  }.freeze
-
   has_many :appointments, dependent: :destroy do
     # Returns the last available active appointment
     def current
@@ -55,10 +38,12 @@ class Patient < ApplicationRecord
     self[:cpf] = Patient.parse_cpf(string)
   end
 
+  # List all conditions allowed for patient
   def conditions
-    CONDITIONS.select { |_, f| f.call(self) }.map { |c, _| c }
+    Condition.active.can_schedule.select { |condition| condition.allowed? self }
   end
 
+  # Find if any conditions match
   def can_schedule?
     conditions.any?
   end
@@ -124,6 +109,10 @@ class Patient < ApplicationRecord
 
   def remaining_login_attempts
     MAX_LOGIN_ATTEMPTS - login_attempts
+  end
+
+  def age
+    @age ||= ((Time.zone.now - Time.zone.parse("#{birthday} 00:00:00")) / 1.year.seconds).floor
   end
 
   def self.parse_cpf(cpf)

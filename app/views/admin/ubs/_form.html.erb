@@ -1,0 +1,129 @@
+<%= form_for [:admin, @ubs] do |f| %>
+  <%= error_messages_for(f.object) %>
+
+  <div class="form-row">
+    <div class="form-group col-md-9">
+      <%= f.label :name %>
+      <%= f.text_field :name, required: true, class: "form-control" %>
+    </div>
+
+    <div class="form-group col-md-2">
+      <%= f.label :cnes, class: 'small' %>
+      <%= f.text_field :cnes, require: true, class: "form-control" %>
+    </div>
+
+    <div class="form-group col-md-1">
+      <%= f.label :active %>
+      <%= f.check_box :active, class: "form-control" %>
+    </div>
+  </div>
+
+  <h5>Horários de funcionamento</h5>
+
+  <p>Deixe em branco caso não seja aberto neste dia. Caso não tenha pausa de almoço, deixe os horários em branco.</p>
+
+  <div class="form-row">
+    <div class="form-group col-md-3">
+      <%= f.label :shift_start, class: 'small' %>
+      <%= f.text_field :shift_start, class: "form-control" %>
+    </div>
+
+    <div class="form-group col-md-3">
+      <%= f.label :break_start, class: 'small' %>
+      <%= f.text_field :break_start, class: "form-control" %>
+    </div>
+
+    <div class="form-group col-md-3">
+      <%= f.label :break_end, class: 'small' %>
+      <%= f.text_field :break_end, class: "form-control" %>
+    </div>
+
+    <div class="form-group col-md-3">
+      <%= f.label :shift_end, class: 'small', class: 'small' %>
+      <%= f.text_field :shift_end, class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-3">
+      <%= f.label :saturday_shift_start, class: 'small' %>
+      <%= f.text_field :saturday_shift_start, class: "form-control" %>
+    </div>
+
+    <div class="form-group col-md-3">
+      <%= f.label :saturday_break_start, class: 'small' %>
+      <%= f.text_field :saturday_break_start, class: "form-control" %>
+    </div>
+
+    <div class="form-group col-md-3">
+      <%= f.label :saturday_break_end, class: 'small' %>
+      <%= f.text_field :saturday_break_end, class: "form-control" %>
+    </div>
+
+    <div class="form-group col-md-3">
+      <%= f.label :saturday_shift_end, class: 'small' %>
+      <%= f.text_field :saturday_shift_end, class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-3">
+      <%= f.label :sunday_shift_start, class: 'small' %>
+      <%= f.text_field :sunday_shift_start, class: "form-control" %>
+    </div>
+
+    <div class="form-group col-md-3">
+      <%= f.label :sunday_break_start, class: 'small' %>
+      <%= f.text_field :sunday_break_start, class: "form-control" %>
+    </div>
+
+    <div class="form-group col-md-3">
+      <%= f.label :sunday_break_end, class: 'small' %>
+      <%= f.text_field :sunday_break_end, class: "form-control" %>
+    </div>
+
+    <div class="form-group col-md-3">
+      <%= f.label :sunday_shift_end, class: 'small' %>
+      <%= f.text_field :sunday_shift_end, class: "form-control" %>
+    </div>
+  </div>
+
+  <h5>Vacinação</h5>
+
+  <div class="form-row">
+    <div class="form-group col-md-3">
+      <%= f.label :slot_interval_minutes, class: 'small' %>
+      <%= f.select :slot_interval_minutes, 1..120, {}, class: "form-control" %>
+    </div>
+
+    <div class="form-group col-md-3">
+      <%= f.label :appointments_per_time_slot, class: 'small' %>
+      <%= f.select :appointments_per_time_slot, 1..200, {}, class: "form-control" %>
+    </div>
+  </div>
+
+  <h5>Endereço</h5>
+
+  <div class="form-row">
+    <div class="form-group col-md-8">
+      <%= f.label :address, class: 'small' %>
+      <%= f.text_field :address, require: true, class: "form-control" %>
+    </div>
+
+    <div class="form-group col-md-2">
+      <%= f.label :neighborhood, class: 'small' %>
+      <%= f.text_field :neighborhood, require: true, class: "form-control" %>
+    </div>
+
+    <div class="form-group col-md-2">
+      <%= f.label :phone, class: 'small' %>
+      <%= f.text_field :phone, require: true, class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <%= f.submit class: 'form-control btn-primary' %>
+    </div>
+  </div>
+<% end %>

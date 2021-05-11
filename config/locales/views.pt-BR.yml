@@ -26,9 +26,46 @@ pt-BR:
         active: Ativo
         context: Contexto
         position: Posição
+      page:
+        path: Caminho
+        title: Título
+        body: Corpo
+        context: Contexto
+      condition:
+        name: Nome
+        start_at: A partir de
+        end_at: Até
+        min_age: Idade mínima
+        max_age: Idade máxima
+        groups: Grupos
+        can_register: Pode cadastrar
+        can_schedule: Pode agendar
+        ubs: Unidades
+      ubs:
+        name: Nome
+        cnes: CNES
+        active: Ativo
+        shift_start: Horário de abertura
+        shift_end: Horário de encerramento
+        break_start: Início da pausa de almoço
+        break_end: Fim da pausa de almoço
+        saturday_shift_start: Horário de abertura de Sábado
+        saturday_shift_end: Horário de encerramento de Sábado
+        saturday_break_start: Início da pausa de almoço de Sábado
+        saturday_break_end: Fim da pausa de almoço de Sábado
+        sunday_shift_start: Horário de abertura de Domingo
+        sunday_shift_end: Horário de encerramento de Domingo
+        sunday_break_start: Início da pausa de almoço de Domingo
+        sunday_break_end: Fim da pausa de almoço de Domingo
+        slot_interval_minutes: Duração de cada atendimento (min)
+        appointments_per_time_slot: Atendimentos em paralelo
+        address: Endereço
+        neighborhood: Bairro
+        phone: Telefone
 
     models:
       appointment: Agendamento
+      condition: Condição de agendamento
       dose: Dose administrada
       group: Grupo
       neighborhood: Bairro
@@ -36,6 +73,16 @@ pt-BR:
       ubs: Unidade
       user: Usuário
       vaccine: Vacina
+      page: Página
+  activemodel:
+    attributes:
+      appointments_bulk:
+        from: De
+        to: Até
+        ubs_ids: Unidades
+        active: Ativo
+    models:
+      appointments_bulk: Agendamentos em massa
   alerts:
     last_dose_received: |
       %{name} está imunizado(a).
@@ -63,3 +110,12 @@ pt-BR:
       not_saved:
         one: 'Não foi possível salvar %{resource}: 1 erro'
         other: 'Não foi possível salvar %{resource}: %{count} erros.'
+  calendar:
+    weekdays:
+      "0": Domingo
+      "1": Segunda-feira
+      "2": Terça-feira
+      "3": Quarta-feira
+      "4": Quinta-feira
+      "5": Sexta-feira
+      "6": Sábado

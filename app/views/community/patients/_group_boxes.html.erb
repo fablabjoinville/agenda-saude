@@ -2,7 +2,7 @@
   <div class="row">
     <%= b.label do
       b.check_box(
-        checked: patient.groups.map(&:id).map(&:to_i).include?(b.value.to_i),
+        checked: f.object.group_ids.include?(b.value.to_i),
         class: "form-check-input",
         data: { 'group-parent' => b.value },
         required: true # disabled via JS in case one is set
@@ -16,7 +16,13 @@
         <div class="form-check">
           <%= f.collection_check_boxes :group_ids, b.object.children.active.order(:position), :id, :name do |s| %>
             <div class="row">
-              <%= s.label { s.check_box(checked: patient.groups.map(&:id).map(&:to_i).include?(s.value.to_i), class: "form-check-input") + s.text } %>
+              <%= s.label do
+                s.check_box(
+                  checked: f.object.group_ids.include?(s.value.to_i),
+                  class: "form-check-input",
+                  required: true # disabled via JS in case one is set
+                ) + s.text
+              end %>
             </div>
           <% end %>
         </div>

@@ -21,19 +21,21 @@ describe('patient appointment flow', () => {
         cy.visit('/')
       })
 
-      it('can see and cancel own appointment, but can not re-schedule', () => {
+      it('cannot reschedule', () => {
         cy.get('[data-cy=scheduledAppointmentText]').should('exist')
 
         // Can not re-schedule
         cy.get('[data-cy=appointmentRescheduleButton]').click()
         cy.get('[data-cy=nextDayButton]').click()
-        cy.get('[data-cy=ubs1Button]').click()
-        cy.get('#ubs1 [data-cy=scheduleTimeButton]:first').click()
-        cy.get('[data-cy=appointmentSchedulerConditionsUnmetAlertText]').should('exist')
+        cy.get('[data-cy=ubs1Button]').should('not.exist')
+      })
+
+      it('can cancel', () => {
+        cy.get('[data-cy=scheduledAppointmentText]').should('exist')
 
         // Cancel
         cy.get('[data-cy=appointmentCancelButton]').click()
-        cy.visit('/')
+        // cy.visit('/')
         cy.get('[data-cy=scheduledAppointmentText]').should('not.exist')
         cy.get('[data-cy=conditionsUnmetText]').should('exist')
         cy.get('[data-cy=appointmentRescheduleButton]').should('not.exist')

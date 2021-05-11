@@ -1,0 +1,66 @@
+<%= link_to "Remover", admin_condition_path(@condition), method: :delete,
+            class: 'btn btn-danger float-right ml-2',
+            data: { confirm: "Tem certeza?" } %>
+<%= link_to "Editar", edit_admin_condition_path(@condition), class: 'btn btn-primary float-right' %>
+<h1 class="h4">
+  Condição de agendamento: <%= @condition.name %>
+</h1>
+
+<p>
+  <strong>Data de validade:</strong>
+  De
+  <%= l @condition.start_at, format: :short_date_hour %>
+  até
+  <%= l @condition.end_at, format: :short_date_hour %>
+</p>
+
+<p>
+  <strong>Pode cadastrar?</strong>
+  <%= @condition.can_register ? "Sim" : "Não" %>
+</p>
+
+<p>
+  <strong>Pode agendar?</strong>
+  <%= @condition.can_schedule ? "Sim" : "Não" %>
+</p>
+
+<h5>Condições</h5>
+
+<ul>
+  <% if @condition.min_age.present? -%>
+    <li>
+      <strong>Idade mínima:</strong>
+      <%= @condition.min_age %>
+    </li>
+  <% end -%>
+  <% if @condition.max_age.present? -%>
+    <li>
+      <strong>Idade máxima:</strong>
+      <%= @condition.max_age %>
+    </li>
+  <% end -%>
+  <% if @condition.groups.any? -%>
+    <li>
+      <strong>Grupos:</strong>
+      <ul>
+        <% @condition.groups.admin_order.each do |group| -%>
+          <li><%= group.name_with_parent %></li>
+        <% end -%>
+      </ul>
+    </li>
+  <% end -%>
+</ul>
+
+<h5>Unidades</h5>
+
+<ul>
+  <% @condition.ubs.each do |ubs| -%>
+    <li>
+      <%= link_to ubs.name, admin_ubs_path(ubs) %>
+    </li>
+  <% end -%>
+</ul>
+
+<p>
+  <%= link_to "Voltar", admin_conditions_path %>
+</p>
