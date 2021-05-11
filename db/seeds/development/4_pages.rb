@@ -35,6 +35,12 @@
     title: 'Informação exibidas ao paciente que não pode agendar a vacina',
     body: "<div class=\"alert alert-warning\" role=\"alert\">\r\n  <strong>Atenção</strong>: A lista de grupos prioritários e comorbidades foi atualizada em <strong>5 de Maio de 2021</strong>.\r\n  Caso você tenha feito seu cadastro antes desta data,\r\n\t<a href=\"/community/patient/edit\" class=\"btn btn-light\">CLIQUE AQUI</a> e atualize seu cadastro.\r\n</div>\r\n\r\nVocê não faz parte de nenhum grupo que possa receber doses de vacina. Fique atento à página inicial deste site e à imprensa oficial para saber quando você poderá agendar sua vacina.\r\n\r\n",
     context: 'embedded'
+  },
+  {
+    path: 'footer',
+    title: 'Rodapé de todas páginas',
+    body: "[Acompanhe as principais informações sobre o combate ao coronavírus em Joinville.](https://www.joinville.sc.gov.br/coronavirus/)\r\n\r\nLigue/Web Saúde: [(47) 3481-5165](tel:4734815165) ([WhatsApp](https://api.whatsapp.com/send?phone=554734815165)) — Segunda a sexta-feira — 07:00 às 20:00, exceto feriados e pontos facultativos",
+    context: 'embedded'
   }
 ].each do |h|
   Page.find_or_initialize_by(path: h[:path]).tap do |page|
