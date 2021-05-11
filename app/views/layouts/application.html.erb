@@ -12,7 +12,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>Vacinação Covid-19 <%= Settings[:city_name] %></title>
+    <title><%= @page ? @page.title : "Vacinação Covid-19 #{Settings[:city_name]}" %></title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
