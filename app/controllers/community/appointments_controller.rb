@@ -44,7 +44,7 @@ module Community
       ubs_id = current_patient.doses.first&.appointment&.ubs_id
 
       # Intersection between allowed and requested, will return nil (which is fine) if forbidden
-      ubs_id = (allowed_ubs_ids & [create_params[:ubs_id]]).first if ubs_id.blank? && create_params[:ubs_id]
+      ubs_id = (allowed_ubs_ids & [create_params[:ubs_id].to_i]).first if ubs_id.blank? && create_params[:ubs_id]
 
       result, new_appointment = scheduler.schedule(
         patient: current_patient,
