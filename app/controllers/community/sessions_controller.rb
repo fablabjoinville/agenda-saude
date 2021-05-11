@@ -1,8 +1,8 @@
 module Community
   class SessionsController < Base
-    before_action -> { redirect_to root_path, alert: 'CPF inválido' }, unless: -> { CPF.valid?(session_params[:cpf]) }
-
     skip_before_action :authenticate!, only: %i[create destroy]
+
+    before_action -> { redirect_to root_path, alert: 'CPF inválido' }, unless: -> { CPF.valid?(session_params[:cpf]) }, only: %i[create]
 
     def create
       @patient = Patient.find_by(cpf: parse_cpf)
