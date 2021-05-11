@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_05_005358) do
+ActiveRecord::Schema.define(version: 2021_05_10_142917) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -108,6 +108,17 @@ ActiveRecord::Schema.define(version: 2021_05_05_005358) do
     t.index ["ubs_id", "neighborhood_id"], name: "index_neighborhoods_ubs_on_ubs_id_and_neighborhood_id"
   end
 
+  create_table "pages", force: :cascade do |t|
+    t.string "path", null: false
+    t.string "title", null: false
+    t.text "body", null: false
+    t.integer "context", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["context"], name: "index_pages_on_context"
+    t.index ["path"], name: "index_pages_on_path", unique: true
+  end
+
   create_table "patients", force: :cascade do |t|
     t.string "email", default: ""
     t.datetime "created_at", precision: 6, null: false
@@ -134,15 +145,6 @@ ActiveRecord::Schema.define(version: 2021_05_05_005358) do
     t.index ["main_ubs_id"], name: "index_patients_on_main_ubs_id"
   end
 
-  create_table "time_slot_generation_configs", primary_key: "ubs_id", id: :serial, force: :cascade do |t|
-    t.text "content"
-  end
-
-  create_table "time_slot_generator_executions", primary_key: "date", id: :date, force: :cascade do |t|
-    t.text "status"
-    t.text "details"
-  end
-
   create_table "ubs", force: :cascade do |t|
     t.string "name"
     t.string "neighborhood"
@@ -164,6 +166,11 @@ ActiveRecord::Schema.define(version: 2021_05_05_005358) do
     t.string "saturday_break_end", default: "13:30"
     t.string "saturday_shift_end", default: "17:00"
     t.integer "appointments_per_time_slot", default: 1
+    t.string "sunday_shift_start"
+    t.string "sunday_break_start"
+    t.string "sunday_break_end"
+    t.string "sunday_shift_end"
+    t.bigint "neighborhood_id"
     t.index ["cnes"], name: "index_ubs_on_cnes", unique: true
     t.index ["user_id"], name: "index_ubs_on_user_id"
   end
