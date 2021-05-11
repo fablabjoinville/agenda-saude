@@ -1,5 +1,3 @@
-# rubocop:disable Layout/LineLength
-
 [
   { id: 1, name: 'CoronaVac', formal_name: 'Sinovac COVID-19 CoronaVac',
     second_dose_after_in_days: 4 * 7, legacy_name: 'coronavac' },

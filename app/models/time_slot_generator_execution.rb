@@ -1,2 +1,0 @@
-class TimeSlotGeneratorExecution < ApplicationRecord
-end
