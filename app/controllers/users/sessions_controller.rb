@@ -1,4 +1,6 @@
 # frozen_string_literal: true
 
-class Users::SessionsController < Devise::SessionsController
+module Users
+  class SessionsController < Devise::SessionsController
+  end
 end
