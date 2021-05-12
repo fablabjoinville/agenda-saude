@@ -1,6 +1,18 @@
-<h1 class="h4">
-  Vacina: <%= @vaccine.name %>
-</h1>
+<div class="row">
+  <div class="col-8">
+    <h1 class="h4">
+      Vacina: <%= @vaccine.name %>
+    </h1>
+  </div>
+
+  <div class="col-2">
+    <%= link_to "Editar", edit_admin_vaccine_path(@vaccine), class: 'btn btn-primary btn-block' %>
+  </div>
+
+  <div class="col-2">
+    <%= link_to "Remover", admin_vaccine_path(@vaccine), method: :delete, class: 'btn btn-danger btn-block', data: { confirm: "Tem certeza?" } %>
+  </div>
+</div>
 
 <p>
   <%= link_to "Voltar", admin_vaccines_path %>

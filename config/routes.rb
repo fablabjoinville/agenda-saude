@@ -45,7 +45,7 @@ Rails.application.routes.draw do
       resources :conditions
       resources :ubs
       resources :users, only: %i[index show]
-      resources :vaccines, only: %i[index show]
+      resources :vaccines
     end
     resources :appointments, only: %i[index]
   end
