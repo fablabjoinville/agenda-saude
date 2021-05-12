@@ -1,24 +1,26 @@
 module Admin
   class AppointmentsController < Base
     before_action :set_appointment, only: %i[show]
+    skip_before_action :require_administrator!, only: %i[index show]
 
     # rubocop:disable Metrics/AbcSize
     def index
-      @per_page = index_params[:per_page].presence&.to_i || 100
-      @ubs = Ubs.find_by(id: index_params[:ubs_id])
+      @ubs_index = current_user.admin? ? Ubs.order(:name) : current_user.ubs.order(:name)
+      @ubs = @ubs_index.one? ? @ubs_index.first : @ubs_index.find_by(id: index_params[:ubs_id])
       @date = date_from_params params, :date
       @date ||= Time.zone.today
       @vaccines = Vaccine.all
 
-      @appoitments = Appointment
-                     .includes(dose: :vaccine)
-                     .includes(:follow_up_for_dose)
-                     .includes(:patient)
-                     .where(ubs_id: index_params[:ubs_id], start: @date.beginning_of_day..@date.end_of_day)
-                     .order(:start, :id)
-                     .page(index_params[:page])
-                     .per(@per_page)
+      @appointments = Appointment
+                      .includes(dose: :vaccine)
+                      .includes(:follow_up_for_dose)
+                      .includes(:patient)
+                      .where(ubs: @ubs, start: @date.beginning_of_day..@date.end_of_day)
+                      .order(:start, :id)
+                      .page(index_params[:page])
+                      .per(10_000)
     end
+
     # rubocop:enable Metrics/AbcSize
 
     def show; end

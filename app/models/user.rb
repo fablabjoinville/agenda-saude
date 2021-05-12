@@ -4,6 +4,10 @@ class User < ApplicationRecord
 
   has_and_belongs_to_many :ubs
 
+  def admin?
+    administrator
+  end
+
   def email_required?
     false
   end
