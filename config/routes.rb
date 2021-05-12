@@ -35,7 +35,7 @@ Rails.application.routes.draw do
       resources :appointments, only: %i[index show]
       resources :appointments_bulks, only: %i[new create]
       resources :groups, only: %i[index new create show edit update]
-      resources :neighborhoods, only: %i[index show]
+      resources :neighborhoods
       resources :pages
       resources :patients, only: %i[index show] do
         member do
