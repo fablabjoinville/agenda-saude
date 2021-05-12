@@ -4,6 +4,7 @@ pt-BR:
       user:
         name: Nome
         password: Senha
+        password_confirmation: Confirmação da senha
         remember_me: Lembre-se de mim
       patient:
         birth_date: Data de nascimento
@@ -41,6 +42,14 @@ pt-BR:
         can_register: Pode cadastrar
         can_schedule: Pode agendar
         ubs: Unidades
+      vaccine:
+        name: Nome
+        legacy_name: Código de legado
+        formal_name: Nome formal completo da vacina
+        second_dose_after_in_days: Segunda dose após (em dias)
+        third_dose_after_in_days: Terceira dose após (em dias)
+      neighborhood:
+        name: Nome
       ubs:
         name: Nome
         cnes: CNES

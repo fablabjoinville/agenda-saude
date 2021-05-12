@@ -1,5 +1,6 @@
 class Group < ApplicationRecord
   has_and_belongs_to_many :patients
+  has_and_belongs_to_many :conditions
 
   enum context: { priority: 0, comorbidity: 1 }
 
@@ -14,5 +15,9 @@ class Group < ApplicationRecord
     return name unless parent_group
 
     "#{parent_group.name}: #{name}"
+  end
+
+  def used?
+    patients.any? || conditions.any?
   end
 end

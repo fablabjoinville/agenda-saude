@@ -1,7 +1,14 @@
-<%= link_to "Criar grupo", new_admin_group_path, class: 'btn btn-primary float-right' %>
-<h1 class="h4">Grupos</h1>
+<div class="row">
+  <div class="col-10">
+    <h1 class="h4">Grupos</h1>
+  </div>
 
-<table class="table table-bordered table-hover table-sm mt-5">
+  <div class="col-2">
+    <%= link_to "Criar grupo", new_admin_group_path, class: 'btn btn-primary btn-block' %>
+  </div>
+</div>
+
+<table class="table table-bordered table-hover table-sm mt-3">
   <thead class="thead-dark">
   <tr>
     <th scope="col">#</th>
