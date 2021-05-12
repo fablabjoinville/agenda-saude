@@ -4,6 +4,7 @@ pt-BR:
       user:
         name: Nome
         password: Senha
+        password_confirmation: Confirmação da senha
         remember_me: Lembre-se de mim
       patient:
         birth_date: Data de nascimento

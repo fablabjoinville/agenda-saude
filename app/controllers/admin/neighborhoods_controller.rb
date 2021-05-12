@@ -8,7 +8,6 @@ module Admin
                                    .per(100)
     end
 
-
     def new
       @neighborhood = Neighborhood.new
     end

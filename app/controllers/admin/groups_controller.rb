@@ -1,6 +1,6 @@
 module Admin
   class GroupsController < Base
-    before_action :set_group, only: %i[show edit update]
+    before_action :set_group, only: %i[show edit update destroy]
 
     def index
       @groups = Group.admin_order
@@ -32,6 +32,11 @@ module Admin
       else
         render :edit
       end
+    end
+
+    def destroy
+      @group.destroy! unless @group.used?
+      redirect_to admin_groups_path
     end
 
     private
