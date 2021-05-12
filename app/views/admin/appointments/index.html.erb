@@ -12,7 +12,7 @@
   <div class="col-12">
     <%= form_with url: admin_appointments_path, method: :get, local: true do |f| %>
       <div class="form-row">
-        <div class="form-group col-md-5">
+        <div class="form-group col-md-3">
           <label for="">Data</label>
           <div class="form-row date">
             <%= f.date_select "date", autofocus: true, use_two_digit_numbers: true, selected: @date,
@@ -20,9 +20,13 @@
                               data: { cy: "dateInput" } %>
           </div>
         </div>
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-7">
           <label for="">Unidade</label>
           <%= f.select "ubs_id", Ubs.order(:name).pluck(:name, :id), { prompt: "Unidade:", selected: @ubs&.id }, class: "form-control" %>
+        </div>
+        <div class="form-group col-md-1">
+          <label for="">Por página</label>
+          <%= f.select "per_page", [100, 1_000, 10_000], { selected: @per_page }, class: "form-control" %>
         </div>
         <div class="form-group col-md-1">
           <label for="">&nbsp;</label>
@@ -35,8 +39,15 @@
 
 <% if @ubs -%>
   <div class="row">
-    <div class="col">
+    <div class="col-3">
       <strong>Dia da semana:</strong> <%= t "calendar.weekdays.#{@date.wday}" %>
+    </div>
+    <div class="col-2">
+      <strong>Unidade ativa:</strong> <%= @ubs.active ? "Sim" : "Desativada" %>
+    </div>
+    <div class="col-7">
+      <strong>Horários de atendimento neste dia:</strong>
+      <%= @ubs.time_windows(@date.wday).join(", ") %>
     </div>
   </div>
 
@@ -96,8 +107,50 @@
     <% end -%>
     </tbody>
   </table>
-<% end -%>
 
-<div>
-  <%= paginate @appoitments %>
-</div>
+  <h5 class="mt-4">Nesta página:</h5>
+
+  <table class="table mt-4">
+    <tbody>
+    <tr>
+      <th scope="row">
+        Agendamentos vagos:
+      </th>
+      <td>
+        <%= @appoitments.select { |a| a.patient.blank? }.count %>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        Agendamentos para primeira dose:
+      </th>
+      <td>
+        <%= @appoitments.select { |a| a.patient.present? && a.follow_up_for_dose.blank? }.count %>
+      </td>
+    </tr>
+    <% @vaccines.each do |vaccine| -%>
+      <tr>
+        <th scope="row">
+          Agendamentos p/ reforço <%= vaccine.name %>:
+        </th>
+        <td>
+          <%= @appoitments.select { |a| a.follow_up_for_dose&.vaccine == vaccine }.count %>
+        </td>
+      </tr>
+    <% end -%>
+    <tr class="table-dark">
+      <th scope="row">
+        Total:
+      </th>
+      <td>
+        <%= @appoitments.count %>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <div>
+    <%= paginate @appoitments %>
+  </div>
+
+<% end -%>
