@@ -107,49 +107,50 @@
     <% end -%>
     </tbody>
   </table>
-<% end -%>
 
-<h5 class="mt-4">Nesta página:</h5>
+  <h5 class="mt-4">Nesta página:</h5>
 
-<table class="table mt-4">
-  <tbody>
-  <tr>
-    <th scope="row">
-      Agendamentos vagos:
-    </th>
-    <td>
-      <%= @appoitments.select { |a| a.patient.blank? }.count %>
-    </td>
-  </tr>
-  <tr>
-    <th scope="row">
-      Agendamentos para primeira dose:
-    </th>
-    <td>
-      <%= @appoitments.select { |a| a.patient.present? && a.follow_up_for_dose.blank? }.count %>
-    </td>
-  </tr>
-  <% @vaccines.each do |vaccine| -%>
+  <table class="table mt-4">
+    <tbody>
     <tr>
       <th scope="row">
-        Agendamentos p/ reforço <%= vaccine.name %>:
+        Agendamentos vagos:
       </th>
       <td>
-        <%= @appoitments.select { |a| a.follow_up_for_dose&.vaccine == vaccine }.count %>
+        <%= @appoitments.select { |a| a.patient.blank? }.count %>
       </td>
     </tr>
-  <% end -%>
-  <tr class="table-dark">
-    <th scope="row">
-      Total:
-    </th>
-    <td>
-      <%= @appoitments.count %>
-    </td>
-  </tr>
-  </tbody>
-</table>
+    <tr>
+      <th scope="row">
+        Agendamentos para primeira dose:
+      </th>
+      <td>
+        <%= @appoitments.select { |a| a.patient.present? && a.follow_up_for_dose.blank? }.count %>
+      </td>
+    </tr>
+    <% @vaccines.each do |vaccine| -%>
+      <tr>
+        <th scope="row">
+          Agendamentos p/ reforço <%= vaccine.name %>:
+        </th>
+        <td>
+          <%= @appoitments.select { |a| a.follow_up_for_dose&.vaccine == vaccine }.count %>
+        </td>
+      </tr>
+    <% end -%>
+    <tr class="table-dark">
+      <th scope="row">
+        Total:
+      </th>
+      <td>
+        <%= @appoitments.count %>
+      </td>
+    </tr>
+    </tbody>
+  </table>
 
-<div>
-  <%= paginate @appoitments %>
-</div>
+  <div>
+    <%= paginate @appoitments %>
+  </div>
+
+<% end -%>
