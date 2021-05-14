@@ -1,4 +1,4 @@
-UbsCreatorService.new(ubs_data_basedir: ENV.fetch('UBS_DATA_BASEDIR', 'scripts/data/joinville')).call
+UbsCreatorService.new(ubs_data_basedir: ENV.fetch('UBS_DATA_BASEDIR', 'scripts/data/joinville')).call unless Rails.env.test?
 
 # WARNING: MUDAR SENHA EM PRODUCAO
 User.find_or_initialize_by(name: 'admin').tap do |user|
