@@ -12,6 +12,7 @@ module Community
       phone
       place_number
       public_place
+      street_2
       sus
     ].freeze
 
