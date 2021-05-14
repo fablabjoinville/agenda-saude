@@ -1,0 +1,16 @@
+<%= form_for [:admin, @neighborhood] do |f| %>
+  <%= error_messages_for(f.object) %>
+
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <%= f.label :name %>
+      <%= f.text_field :name, required: true, class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <%= f.submit class: 'form-control btn-primary' %>
+    </div>
+  </div>
+<% end %>

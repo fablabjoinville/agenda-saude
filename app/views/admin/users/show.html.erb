@@ -1,0 +1,22 @@
+<h1 class="h4">
+</h1>
+
+<div class="row">
+  <div class="col-8">
+    <h1 class="h4">
+      Operador: <%= @user.name %>
+    </h1>
+  </div>
+
+  <div class="col-2">
+    <%= link_to "Editar", edit_admin_user_path(@user), class: 'btn btn-primary btn-block' %>
+  </div>
+
+  <div class="col-2">
+    <%= link_to "Remover", admin_user_path(@user), method: :delete, class: 'btn btn-danger btn-block', data: { confirm: "Tem certeza?" } %>
+  </div>
+</div>
+
+<p>
+  <%= link_to "Voltar", admin_users_path %>
+</p>

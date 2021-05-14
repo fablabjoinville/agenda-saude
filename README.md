@@ -8,8 +8,9 @@
 ![Open Collective backers and sponsors](https://img.shields.io/opencollective/all/makersnetwork)
 
 **Agenda Saúde** é um projeto de código aberto desenvolvido de forma colaborativa para fornecer
-um sistema de [agendamento de vacinação e exames](https://vacinajoinville.com.br/) de COVID-19 para a prefeitura de Joinville.
-O sistema pode ser usado livremente, respeitando a [licença de uso](https://github.com/MakersNetwork/agenda-saude/blob/main/LICENSE), para gerenciar a fila de vacinação em outras cidades.
+um sistema de [agendamento de vacinação e exames](https://vacinajoinville.com.br/) de COVID-19 para a prefeituras. Atualmente está em uso pela secretaria de saúde da prefeitura de Joinville/SC. O sistema pode ser usado livremente, respeitando a [licença de uso](https://github.com/MakersNetwork/agenda-saude/blob/main/LICENSE), para gerenciar a fila de vacinação em outras cidades.
+
+Conheça detalhes do projeto na nossa [página institucional](https://agendasaude.joinville.br).
 
 Quer saber como implantar na sua cidade? Veja nosso [fórum](https://github.com/MakersNetwork/agenda-saude/discussions/250). Tire qualquer [dúvida](https://github.com/MakersNetwork/agenda-saude/discussions) sobre o projeto. [Sugira](https://github.com/MakersNetwork/agenda-saude/issues) melhorias. Fique a vontade para [contribuir](#contribuindo)!
 
@@ -26,7 +27,7 @@ Quer saber como implantar na sua cidade? Veja nosso [fórum](https://github.com/
 Este projeto usa o framework de desenvolvimento Web Ruby on Rails e possui as seguintes
 dependências:
 
-- Ruby `>= 2.7.2
+- Ruby `>= 3.0.1`
 - Node `>= 13.2.0`
 - PostgreSQL `== 12.1`
 - Install Docker ([documentação](https://docs.docker.com/install/overview/))
@@ -70,7 +71,7 @@ Para instalar as bibliotecas e configurar o banco de dados execute:
 
 ```sh
 bundle install
-bin/rails db:setup
+bin/rails db:setup db:seed:development
 ```
 
 E acesse no ambiente local [http://localhost:3000](http://localhost:3000):
@@ -101,40 +102,15 @@ executando o robocop e corrigindo qualquer alerta evidenciado:
 bundle exec rubocop
 ```
 
-## Deploy
-
-Apenas pessoas autorizadas podem fazer o deploy. É necessário adicionar o remote da Heroku:
-
-```sh
-git remote set-url origin git@github.com:MakersNetwork/agenda-saude.git
-git remote add heroku https://git.heroku.com/agendamento-covid.git
-```
-
-Deve ficar parecido com o exemplo abaixo:
-
-``` sh
-git remote -v
-heroku https://git.heroku.com/agendamento-covid.git (fetch)
-heroku https://git.heroku.com/agendamento-covid.git (push)
-origin  git@github.com:MakersNetwork/agenda-saude.git (fetch)
-origin  git@github.com:MakersNetwork/agenda-saude.git (push)
-```
-
-Para fazer deploy da aplicação:
-
-```sh
-git push heroku main
-```
-
 ## Contribuindo
 
 Este projeto existe graças a todas as pessoas que contribuem. Fique a vontade para contribuir! Essas aqui são boas [issues](https://github.com/MakersNetwork/agenda-saude/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) para começar! Quer conversar com o time? Estamos no [Discord](https://discord.gg/fcYkv9RvN7).
 
 ### Contribuição Financeira
 
-Deseja contribuir financeiramente? Acesse nosso [Open Collective](https://opencollective.com/makersnetwork). Nossos financiadores:
+Deseja contribuir financeiramente? Acesse nossa [página institucional](https://agendasaude.joinville.br). Caso sua contribuição seja menor que 500 reais, use o nosso [Open Collective](https://opencollective.com/makersnetwork). Nossos financiadores:
 
-[![Financial Contributors - Individuals](https://opencollective.com/makersnetwork/individuals.svg?width=890)](https://opencollective.com/makersnetwork)
+[![Financial Contributors - Individuals](https://opencollective.com/makersnetwork/individuals.svg?width=891)](https://opencollective.com/makersnetwork)
 
 ## Time
 
@@ -142,7 +118,7 @@ Esse projeto existe graças ao esforço e dedicação dessas pessoas:
 
 **desenvolvimento**
 
-[![Code Contribotors](https://opencollective.com/makersnetwork/contributors.svg?width=890&button=false)](https://github.com/makersnetwork/agenda-saude/graphs/contributors)
+[![Code Contribotors](https://opencollective.com/makersnetwork/contributors.svg?width=891&button=false)](https://github.com/makersnetwork/agenda-saude/graphs/contributors)
 
 **design**
 

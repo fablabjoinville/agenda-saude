@@ -6,7 +6,7 @@ describe('operator appointments list', () => {
 
     cy.loginAsUbs(name, password)
 
-    cy.visit('/operator/appointments')
+    cy.visit('/operator')
   })
 
   context('when has patients scheduled to today', () => {
@@ -19,7 +19,7 @@ describe('operator appointments list', () => {
     beforeEach(() => {
       cy.appScenario('no_patients_scheduled')
 
-      cy.visit('/operator/appointments')
+      cy.visit('/operator')
     })
 
     it('show no appointments text', () => {

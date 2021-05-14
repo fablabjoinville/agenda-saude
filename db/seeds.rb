@@ -1,232 +1,111 @@
-# coding: utf-8
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
-
-mlabs = User.new.tap do |user|
-  user.name = 'mlabs'
-  user.password = 'dontpanic'
-  user.password_confirmation = 'dontpanic'
-  user.save!
-end
-
-mlabs_two = User.new.tap do |user|
-  user.name = 'mlabs_two'
-  user.password = 'dontpanic'
-  user.password_confirmation = 'dontpanic'
-  user.save!
-end
-
-america = Neighborhood.new.tap do |neighborhood|
-  neighborhood.name = 'América'
-  neighborhood.save!
-end
-
-gloria = Neighborhood.new.tap do |neighborhood|
-  neighborhood.name = 'Glória'
-  neighborhood.save!
-end
-
-ubsf_america = Ubs.new.tap do |ubs|
-  ubs.name = 'UBSF America'
-  ubs.user = mlabs
-  ubs.neighborhoods << america
-  ubs.neighborhood = america.name
-  ubs.address = 'Rua Magrathea, 42'
-  ubs.phone = '(47) 3443-3443'
-  ubs.shift_start = '9:00'
-  ubs.break_start = '12:30'
-  ubs.break_end = '13:30'
-  ubs.shift_end = '17:00'
-  ubs.slot_interval_minutes = 20
-  ubs.active = true
-  ubs.save!
-end
-
-Ubs.new.tap do |ubs|
-  ubs.name = 'UBSF Gloria'
-  ubs.user = mlabs_two
-  ubs.neighborhoods << gloria
-  ubs.neighborhood = gloria.name
-  ubs.address = 'Rua dos Bobos, 0'
-  ubs.phone = '(47) 3443-3455'
-  ubs.shift_start = '9:00'
-  ubs.break_start = '12:30'
-  ubs.break_end = '13:30'
-  ubs.shift_end = '17:00'
-  ubs.slot_interval_minutes = 15
-  ubs.active = true
-  ubs.save!
+[
+  { id: 1, name: 'CoronaVac', formal_name: 'Sinovac COVID-19 CoronaVac',
+    second_dose_after_in_days: 4 * 7, legacy_name: 'coronavac' },
+  { id: 2, name: 'AstraZeneca', formal_name: 'Oxford–AstraZeneca COVID-19 ChAdOx1 (AZD1222)',
+    second_dose_after_in_days: 13 * 7, legacy_name: 'astra_zeneca' }
+].each do |h|
+  Vaccine.find_or_initialize_by(id: h[:id]).tap { |r| r.update!(h) }
 end
 
 [
-  'Trabalhador(a) da Saúde',
-  'Trabalhador(a) da Educação',
-  'Trabalhador(a) das Forças de Seguranças e Salvamento',
-  'Forças Armadas',
-  'Portador(a) de comorbidade',
-  'Trabalhador(a) de transporte coletivo rodoviário de passageiros urbano e de longoprazo',
-  'Trabalhador(a) de transporte metroviário e ferroviário',
-  'Trabalhador(a) do transporte aéreo',
-  'Trabalhador(a) do transporte aquaviário',
-  'Caminhoneiro(a)',
-  'Trabalhador(a) portuário',
-  'Trabalhador(a) da construção civil',
-  'Pessoa com deficiência permanente grave',
-  'Não me encaixo em nenhum dos grupos listados',
-].each do |name|
-  Group.create!(name: name)
-end
-
-[
-  'Diabetes mellitus',
-  'Pneumopatias graves',
-  'Hipertensão ',
-  'Doenças cardiovasculares',
-  'Doença cerebrovascular',
-  'Doença renal crônica',
-  'Imunossuprimidos',
-  'Anemia falciforme',
-  'Obesidade mórbida (IMC >=40)',
-  'Síndrome de down',
-  'Outra(s)',
-].each do |subgroup|
-  Group.create!(name: subgroup, parent_group_id: Group.find_by!(name: 'Portador(a) de comorbidade').id)
-end
-
-[
-  'Área da assistência/tratamento',
-  'Administrativo e outros setores',
-  'Estagiário da área da Saúde',
-  'Atua em Hospital',
-].each do |subgroup|
-  Group.create!(name: subgroup, parent_group_id: Group.find_by!(name: 'Trabalhador(a) da Saúde').id)
-end
-
-[
-  'Professor(a) em sala de aula',
-  'Administrativo e outros setores',
-].each do |subgroup|
-  Group.create!(name: subgroup, parent_group_id: Group.find_by!(name: 'Trabalhador(a) da Educação').id)
-end
-
-[
-  'Oficial em atividade de linha de frente',
-  'Oficial em atividade administrativa',
-].each do |subgroup|
-  Group.create!(name: subgroup, parent_group_id: Group.find_by!(name: 'Trabalhador(a) das Forças de Seguranças e Salvamento').id)
-end
-
-## SECOND DOSE PATIENTS ##
-
-begin_date = 0.days.from_now.to_date.in_time_zone
-today = Time.zone.now.at_beginning_of_day
-second_appointment_start = today + 7.hours + 40.minutes
-second_appointment_end = today + 8.hours
-
-end_of_day_minutes = [600, 620, 640, 660, 680, 700]
-
-%w[
-  65622137543
-  41759484733
-  88949973677
-  53847313118
-  00455327106
-  57984523606
-  94831933201
-  59711354063
-  56105631430
-  25532025126
-].each_with_index do |cpf, i|
-  patient = Patient.create!(
-    name: "marvin#{i}",
-    cpf: cpf,
-    mother_name: 'Tristeza',
-    birth_date: '1920-01-31',
-    phone: '(47) 91234-5678',
-    public_place: 'Rua das Flores',
-    place_number: '1',
-    neighborhood: 'América',
-    groups: [Group.find_by!(name: 'Trabalhador(a) da Saúde')]
-  )
-
-  time_multiplier = end_of_day_minutes.sample.minutes
-
-  Appointment.create!(
-    start: second_appointment_start - 4.weeks + time_multiplier,
-    end: second_appointment_end - 4.weeks + time_multiplier,
-    patient_id: patient.id,
-    active: true,
-    check_in: second_appointment_start - 4.weeks + time_multiplier,
-    check_out: second_appointment_start - 4.weeks + 10.minutes + time_multiplier,
-    vaccine_name: ReceptionService::ASTRAZENECA,
-    ubs: ubsf_america
-  )
-end
-
-## TIME SLOTS / APPOINTMENTS ##
-
-TimeSlotGenerationService.new(create_slot: lambda { |attrs| Appointment.create(attrs) })
-                         .execute(
-                           TimeSlotGenerationService::Options.new(
-                             ubs_id: Ubs.first.id,
-                             start_date: 15.minutes.from_now.to_datetime,
-                             end_date: 4.days.from_now.to_datetime,
-                             weekdays: [*0..6],
-                             excluded_dates: [],
-                             windows: [{ start_time: '7:00', end_time: '23:59', slots: 2 }],
-                             slot_interval_minutes: 30
-                           )
-                         )
-
-TimeSlotGenerationService.new(create_slot: lambda { |attrs| Appointment.create(attrs) })
-                         .execute(
-                           TimeSlotGenerationService::Options.new(
-                             ubs_id: Ubs.second.id,
-                             start_date: 15.minutes.from_now.to_datetime,
-                             end_date: 4.days.from_now.to_datetime,
-                             weekdays: [*0..6],
-                             excluded_dates: [],
-                             windows: [{ start_time: '12:00', end_time: '19:00', slots: 2 }],
-                             slot_interval_minutes: 20
-                           )
-                         )
-
-## FIRST DOSE PATIENTS ##
-
-today_range = begin_date.beginning_of_day..begin_date.end_of_day
-
-%w[
-  82920382640
-  41869202309
-  82194769668
-  24834517136
-  71097596877
-  29344755574
-  95975258790
-  45963347149
-  89452953136
-  45445585654
-].each_with_index do |cpf, i|
-  patient = Patient.create!(
-    name: "marvin#{i + 10}",
-    cpf: cpf,
-    mother_name: 'Tristeza',
-    birth_date: '1920-06-24',
-    phone: '(47) 91234-5678',
-    public_place: 'Rua das Flores',
-    place_number: '1',
-    neighborhood: 'América',
-    groups: [Group.find_by!(name: 'Trabalhador(a) da Saúde')]
-  )
-
-  today_range = begin_date.beginning_of_day..begin_date.end_of_day
-  appointment = Appointment.where(patient_id: nil, start: today_range).order(:start).last
-  appointment.update!(patient_id: patient.id)
-
-  patient.save!
+  { id: 23, name: 'Trabalhador(a) da Saúde', parent_group_id: nil, context: 'priority', position: 1 },
+  { id: 24, name: 'Trabalhador(a) da Educação', parent_group_id: nil, context: 'priority', position: 2, active: false },
+  { id: 25, name: 'Trabalhador(a) das Forças de Seguranças e Salvamento', parent_group_id: nil, context: 'priority', position: 10 },
+  { id: 26, name: 'Forças Armadas', parent_group_id: nil, context: 'priority', position: 4 },
+  { id: 27, name: 'Portador(a) de comorbidade', parent_group_id: nil, context: 'priority', position: 0, active: false },
+  { id: 28, name: 'Trabalhador(a) de transporte coletivo rodoviário de passageiros urbano e de longoprazo', parent_group_id: nil, context: 'priority', position: 5 },
+  { id: 29, name: 'Trabalhador(a) de transporte metroviário e ferroviário', parent_group_id: nil, context: 'priority', position: 6 },
+  { id: 30, name: 'Trabalhador(a) do transporte aéreo', parent_group_id: nil, context: 'priority', position: 7 },
+  { id: 31, name: 'Trabalhador(a) do transporte aquaviário', parent_group_id: nil, context: 'priority', position: 8 },
+  { id: 32, name: 'Caminhoneiro(a)', parent_group_id: nil, context: 'priority', position: 9 },
+  { id: 33, name: 'Trabalhador(a) portuário', parent_group_id: nil, context: 'priority', position: 10 },
+  { id: 34, name: 'Trabalhador(a) da construção civil', parent_group_id: nil, context: 'priority', position: 11 },
+  { id: 35, name: 'Pessoa com deficiência', parent_group_id: nil, context: 'priority', position: 3 },
+  { id: 36, name: 'Diabetes mellitus', parent_group_id: nil, context: 'comorbidity', position: 1 },
+  { id: 37, name: 'Pneumopatias crônicas graves', parent_group_id: nil, context: 'comorbidity', position: 2 },
+  { id: 38, name: 'Hipertensão', parent_group_id: nil, context: 'comorbidity', position: 3 },
+  { id: 39, name: 'Doenças cardiovasculares (do coração)', parent_group_id: nil, context: 'comorbidity', position: 5 },
+  { id: 40, name: 'Doença cerebrovascular', parent_group_id: nil, context: 'comorbidity', position: 6 },
+  { id: 41, name: 'Doença renal crônica', parent_group_id: nil, context: 'comorbidity', position: 2 },
+  { id: 42, name: 'Imunossuprimidos', parent_group_id: nil, context: 'comorbidity', position: 7 },
+  { id: 43, name: 'Anemia falciforme', parent_group_id: nil, context: 'comorbidity', position: 12 },
+  { id: 44, name: 'Obesidade mórbida (IMC >=40)', parent_group_id: nil, context: 'comorbidity', position: 13 },
+  { id: 45, name: 'Síndrome de down', parent_group_id: nil, context: 'comorbidity', position: 2 },
+  { id: 46, name: 'Área da assistência/tratamento', parent_group_id: 23, context: 'priority', position: 0 },
+  { id: 47, name: 'Administrativo e outros setores', parent_group_id: 23, context: 'priority', position: 0 },
+  { id: 48, name: 'Professor(a) em sala de aula', parent_group_id: 24, context: 'priority', position: 0, active: false },
+  { id: 49, name: 'Administrativo e outros setores', parent_group_id: 24, context: 'priority', position: 0, active: false },
+  { id: 50, name: 'Oficial em atividade de linha de frente', parent_group_id: 25, context: 'priority', position: 0, active: false },
+  { id: 51, name: 'Oficial em atividade administrativa', parent_group_id: 25, context: 'priority', position: 0, active: false },
+  { id: 52, name: 'Outra(s)', parent_group_id: 27, context: 'priority', position: 0, active: false },
+  { id: 53, name: 'Pessoa com 60 anos ou mais', parent_group_id: nil, context: 'priority', position: 0, active: false },
+  { id: 55, name: 'Estagiário da área da Saúde', parent_group_id: 23, context: 'priority', position: 0 },
+  { id: 57, name: 'Atua em Hospital', parent_group_id: 23, context: 'priority', position: 0 },
+  { id: 58, name: 'Pessoa com 90 anos ou mais', parent_group_id: nil, context: 'priority', position: 0, active: false },
+  { id: 60, name: 'Trabalhadores do sistema funerário', parent_group_id: nil, context: 'priority', position: 13 },
+  { id: 61, name: 'Trabalhador da Indústria em Geral', parent_group_id: nil, context: 'priority', position: 14 },
+  { id: 62, name: 'Doença Pulmonar Obstrutiva Crônica', parent_group_id: 37, context: 'comorbidity', position: 0 },
+  { id: 63, name: 'Fibrose Cística', parent_group_id: 37, context: 'comorbidity', position: 1 },
+  { id: 64, name: 'Fibroses Pulmonares', parent_group_id: 37, context: 'comorbidity', position: 2 },
+  { id: 65, name: 'Pneumoconioses', parent_group_id: 37, context: 'comorbidity', position: 3 },
+  { id: 66, name: 'Displasia Broncopulmonar', parent_group_id: 37, context: 'comorbidity', position: 4 },
+  { id: 67, name: 'Asma Grave (uso recorrente de corticoides sistêmicos, internação prévia por crise asmática)', parent_group_id: 37, context: 'comorbidity', position: 5 },
+  { id: 68, name: 'Hipertensão Arterial Resistente (HAR)', parent_group_id: 38, context: 'comorbidity', position: 0, active: false },
+  { id: 69, name: 'Hipertensão Arterial estágio 3', parent_group_id: 38, context: 'comorbidity', position: 1, active: false },
+  { id: 70, name: 'Hipertensão Arterial estágios 1 e 2 com LOA e/ou comorbidade', parent_group_id: 38, context: 'comorbidity', position: 2, active: false },
+  { id: 71, name: 'Insuficiência Cardíaca', parent_group_id: 39, context: 'comorbidity', position: 0 },
+  { id: 72, name: 'Cor-pulmonale e Hipertensão Pulmonar', parent_group_id: 39, context: 'comorbidity', position: 1 },
+  { id: 73, name: 'Cardiopatia Hipertensiva', parent_group_id: 39, context: 'comorbidity', position: 2 },
+  { id: 74, name: 'Síndromes Coronarianas', parent_group_id: 39, context: 'comorbidity', position: 3 },
+  { id: 75, name: 'Valvopatias', parent_group_id: 39, context: 'comorbidity', position: 4 },
+  { id: 76, name: 'Miocardites e Pericardiopatias', parent_group_id: 39, context: 'comorbidity', position: 5 },
+  { id: 77, name: 'Doenças da Aorta, dos grandes vasos e fístulas arteriovenosas', parent_group_id: 39, context: 'comorbidity', position: 6 },
+  { id: 78, name: 'Arritmias Cardíacas', parent_group_id: 39, context: 'comorbidity', position: 7 },
+  { id: 79, name: 'Cardiopatia Congênita no adulto', parent_group_id: 39, context: 'comorbidity', position: 8 },
+  { id: 80, name: 'Próteses valvares e Dispositivos cardíacos implantados', parent_group_id: 39, context: 'comorbidity', position: 9 },
+  { id: 81, name: 'Acidente Vascular Cerebral Isquêmico (AVC)', parent_group_id: 40, context: 'comorbidity', position: 0 },
+  { id: 82, name: 'Acidente Vascular Cerebral Hemorrágico', parent_group_id: 40, context: 'comorbidity', position: 1 },
+  { id: 83, name: 'Ataque Isquêmico Transitório', parent_group_id: 40, context: 'comorbidity', position: 2 },
+  { id: 84, name: 'Demência Vascular', parent_group_id: 40, context: 'comorbidity', position: 3 },
+  { id: 85, name: 'Doença renal crônica em terapia de substituição renal (diálise)', parent_group_id: 41, context: 'comorbidity', position: 0 },
+  { id: 86, name: 'Em estágio 3 ou mais (taxa de filtração glomerular < 60ml/min/1,73 m2)', parent_group_id: 41, context: 'comorbidity', position: 1 },
+  { id: 87, name: 'Síndrome Nefrótica', parent_group_id: 41, context: 'comorbidity', position: 2 },
+  { id: 88, name: 'Transplantados de órgãos sólidos ou de medula óssea', parent_group_id: 42, context: 'comorbidity', position: 0, active: false },
+  { id: 89, name: 'Pessoas vivendo com HIV e CD4 < 350 células/mm³', parent_group_id: 42, context: 'comorbidity', position: 1 },
+  { id: 90, name: 'Doenças reumáticas imunomediadas sistêmicas em atividade e em uso de dose de prednisona equivalente >10mg/dia ou recebendo pulsoterapia com corticóide e/ou ciclofosfamida', parent_group_id: 42, context: 'comorbidity', position: 2, active: true },
+  { id: 91, name: 'Demais indivíduos em uso de imunossupressores ou com imunodeficiências primárias', parent_group_id: 42, context: 'comorbidity', position: 3 },
+  { id: 92, name: 'Gestantes e puérperas com comorbidades', parent_group_id: 1001, context: 'priority', position: 4 },
+  { id: 93, name: 'Gestantes e puérperas sem comorbidades', parent_group_id: 1001, context: 'priority', position: 4 },
+  { id: 94, name: 'Pessoas com deficiências permanentes cadastradas no Programa de Benefício de Prestação Continuada (BPC)', parent_group_id: nil, context: 'comorbidity', position: 5, active: false },
+  { id: 95, name: 'Cirrose hepática - (Child-Pugh A, B ou C)', parent_group_id: nil, context: 'comorbidity', position: 11 },
+  { id: 998, name: 'Não me encaixo em nenhum dos grupos listados', parent_group_id: nil, context: 'priority', position: 0 },
+  { id: 999, name: 'Não possuo nenhuma das comorbidades ou a que tenho, não está na lista', parent_group_id: nil, context: 'comorbidity', position: 0 },
+  { id: 1000, name: 'Transplantado de órgão sólido ou medula óssea', parent_group_id: nil, context: 'priority', position: 1 },
+  { id: 1001, name: 'Gestantes e Puérperas (até 45 dias pós parto)', parent_group_id: nil, context: 'priority', position: 4 },
+  { id: 1002, name: 'Recebe Benefício de Prestação Continuada (BPC)', parent_group_id: 35, context: 'priority', position: 1 },
+  { id: 1003, name: 'Que não tem cadastro e não recebe Benefício de Prestação Continuada (BPC)', parent_group_id: 35, context: 'priority', position: 2 },
+  { id: 1004, name: 'Pessoa com deficiência NÃO cadastrada no Benefício de Prestação Continuada (BPC)', parent_group_id: nil, context: 'priority', position: 4, active: false },
+  { id: 1005, name: 'Hemoglobinopatias Graves', parent_group_id: nil, context: 'comorbidity', position: 20 },
+  { id: 1006, name: 'Trabalhador (a) da Educação que atua no atendimento presencial em unidades escolares', parent_group_id: nil, context: 'priority', position: 3 },
+  { id: 1007, name: 'Educação Infantil (professores e auxiliares) - Presencial', parent_group_id: 1006, context: 'priority', position: 0 },
+  { id: 1008, name: 'Educação Especial - Presencial', parent_group_id: 1006, context: 'priority', position: 2 },
+  { id: 1009, name: 'Equipe técnica, administrativa e pedagógica que atua em unidades escolares (gestão, limpeza, alimentação, orientadores de convivência) - Presencial', parent_group_id: 1006, context: 'priority', position: 0 },
+  { id: 1010, name: 'Ensino Fundamental (professor, segundo professor, auxiliares, intérpretes de Libras) - Presencial', parent_group_id: 1006, context: 'priority', position: 0 },
+  { id: 1011, name: 'Ensino Médio (professor, segundo professor, auxiliares, intérpretes de Libras) - Presencial', parent_group_id: 1006, context: 'priority', position: 0 },
+  { id: 1012, name: 'Ensino Superior - Remoto', parent_group_id: 1015, context: 'priority', position: 0 },
+  { id: 1013, name: 'Ensino Técnico', parent_group_id: 1006, context: 'priority', position: 0 },
+  { id: 1014, name: 'Ensino de artes e cultura', parent_group_id: 1006, context: 'priority', position: 0 },
+  { id: 1015, name: 'Trabalhador (a) da Educação que atua em atividade remota', parent_group_id: nil, context: 'priority', position: 2 },
+  { id: 1016, name: 'Educação Infantil (professores e auxiliares) - Remoto', parent_group_id: 1015, context: 'priority', position: 0 },
+  { id: 1017, name: 'Educação Especial - Remoto', parent_group_id: 1015, context: 'priority', position: 0 },
+  { id: 1018, name: 'Equipe técnica, administrativa e pedagógica que atua em unidades escolares (gestão, limpeza, alimentação, orientadores de convivência) - Remoto', parent_group_id: 1015, context: 'priority', position: 0 },
+  { id: 1019, name: 'Ensino Fundamental (professor, segundo professor, auxiliares, intérpretes de Libras) - Remoto', parent_group_id: 1015, context: 'priority', position: 0 },
+  { id: 1020, name: 'Ensino Médio (professor, segundo professor, auxiliares, intérpretes de Libras) - Remoto', parent_group_id: 1015, context: 'priority', position: 0 },
+  { id: 1021, name: 'Ensino Superior - Presencial', parent_group_id: 1006, context: 'priority', position: 0 },
+  { id: 1022, name: 'Profissionais que atuam em atividade remota, EAD ou similares', parent_group_id: 1015, context: 'priority', position: 0 }
+].each do |h|
+  Group.find_or_initialize_by(id: h[:id]).tap do |group|
+    group.attributes = { parent_group_id: nil, context: 'priority', active: true }.merge(h)
+    group.save!
+  end
 end

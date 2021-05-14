@@ -12,9 +12,7 @@ module Community
       phone
       place_number
       public_place
-      specific_comorbidity
       sus
-      target_audience
     ].freeze
 
     def new
@@ -26,7 +24,11 @@ module Community
 
       if @patient.save
         session[:patient_id] = @patient.id
-        redirect_to home_community_appointments_path
+        redirect_to home_community_appointments_path,
+                    flash: {
+                      notice_title: t('alerts.successful_patient_creation_title'),
+                      notice: t('alerts.successful_patient_creation_message')
+                    }
       else
         render :new
       end
@@ -38,8 +40,16 @@ module Community
 
     def update
       @patient = current_patient
+      @patient.attributes = update_params
 
-      if @patient.update(update_params)
+      unless can_update_profile?
+        flash.now[:cy] = 'cannotUpdateProfileDueToAppointmentConditionText'
+        flash.now[:alert] = t('alerts.cannot_update_profile_due_to_appointment_condition')
+        render :edit
+        return
+      end
+
+      if @patient.save
         redirect_to home_community_appointments_path, flash: {
           notice: 'Cadastro atualizado.'
         }
@@ -49,6 +59,14 @@ module Community
     end
 
     protected
+
+    # If doesn't have a current appointment, was already given a dose, allow them to all changes they'd like to
+    # Otherwise check if patient can schedule (checking the conditions)
+    def can_update_profile?
+      !@patient.appointments.current || # if there's no appointment, allow
+        @patient.doses.count.positive? || # if there's already a dose, allow
+        @patient.can_schedule? # if it's the user 1st dose and there's an appointment, check if they can still schedule
+    end
 
     def create_params
       params.require(:patient).permit(*(FIELDS + [:cpf]), group_ids: [])

@@ -1,0 +1,150 @@
+<div class="row">
+  <div class="col-9">
+    <h1 class="h4">Agendamentos</h1>
+  </div>
+
+  <div class="col-3">
+    <%= link_to("Criar agendamentos em massa", new_admin_appointments_bulk_path, class: 'btn btn-primary btn-block') if current_user.admin? %>
+  </div>
+</div>
+
+<div class="row mt-3">
+  <div class="col-12">
+    <%= form_with url: admin_appointments_path, method: :get, local: true do |f| %>
+      <div class="form-row">
+        <div class="form-group col-md-3">
+          <label for="">Data</label>
+          <div class="form-row date">
+            <%= f.date_select "date", autofocus: true, use_two_digit_numbers: true, selected: @date,
+                              with_css_classes: { day: "form-control day", month: "form-control month", year: "form-control year" },
+                              data: { cy: "dateInput" } %>
+          </div>
+        </div>
+        <div class="form-group col-md-8">
+          <label for="">Unidade</label>
+          <%= f.select "ubs_id", @ubs_index.pluck(:name, :id), { prompt: "Unidade:", selected: @ubs&.id }, class: "form-control" %>
+        </div>
+        <div class="form-group col-md-1">
+          <label for="">&nbsp;</label>
+          <%= f.submit "Buscar", class: "btn btn-primary", data: { cy: "searchSubmit" } %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<% if @appointments.any? -%>
+  <div class="row mt-4">
+    <div class="col-3">
+      <strong>Dia da semana:</strong> <%= t "calendar.weekdays.#{@date.wday}" %>
+    </div>
+    <div class="col-2">
+      <strong>Unidade ativa:</strong> <%= @ubs.active ? "Sim" : "Desativada" %>
+    </div>
+    <div class="col-7">
+      <strong>Horários neste dia da semana:</strong>
+      <%= @ubs.time_windows(@date.wday).join(", ") %>
+    </div>
+  </div>
+
+  <table class="table mt-4">
+    <tbody>
+    <tr>
+      <th scope="row">
+        Agendamentos vagos:
+      </th>
+      <td>
+        <%= @appointments.select { |a| a.patient.blank? }.count %>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        Agendamentos p/ primeira dose:
+      </th>
+      <td>
+        <%= @appointments.select { |a| a.patient.present? && a.follow_up_for_dose.blank? }.count %>
+      </td>
+    </tr>
+    <% @vaccines.each do |vaccine| -%>
+      <tr>
+        <th scope="row">
+          Agendamentos p/ reforço <%= vaccine.name %>:
+        </th>
+        <td>
+          <%= @appointments.select { |a| a.follow_up_for_dose&.vaccine == vaccine }.count %>
+        </td>
+      </tr>
+    <% end -%>
+    <tr class="table-dark">
+      <th scope="row">
+        Total:
+      </th>
+      <td>
+        <%= @appointments.count %>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <table class="table table-bordered table-hover table-sm mt-4">
+    <thead class="thead-dark">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Horário</th>
+      <th scope="col">Paciente</th>
+      <th scope="col">C-in</th>
+      <th scope="col">C-out</th>
+      <th scope="col">Dose</th>
+      <th scope="col">Vacina</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @appointments.each do |appointment| -%>
+      <tr class="<%= "table-dark" unless appointment.active %> <%= "table-success" if appointment.checked_out? %>">
+        <td>
+          <%= link_to appointment.id, admin_appointment_path(appointment) %>
+        </td>
+        <th scope="row">
+          <%= l appointment.start, format: :short_hour %>
+        </th>
+        <td>
+          <% if appointment.patient.present? -%>
+            <%= appointment.patient.name %>
+          <% else -%>
+            vago
+          <% end -%>
+        </td>
+        <td>
+          <% if appointment.check_in.present? -%>
+            <% if (@date.beginning_of_day..@date.end_of_day).cover? appointment.check_in -%>
+              <%= l appointment.check_in, format: :short_hour %>
+            <% else -%>
+              <%= l appointment.check_in, format: :short_date_hour %>
+            <% end -%>
+          <% end -%>
+        </td>
+        <td>
+          <% if appointment.check_out.present? -%>
+            <% if (@date.beginning_of_day..@date.end_of_day).cover? appointment.check_out -%>
+              <%= l appointment.check_out, format: :short_hour %>
+            <% else -%>
+              <%= l appointment.check_out, format: :short_date_hour %>
+            <% end -%>
+          <% end -%>
+        </td>
+        <td>
+          <%= appointment.dose_sequence_number %>
+        </td>
+        <td>
+          <%= appointment.dose_vaccine&.name %>
+        </td>
+      </tr>
+    <% end -%>
+    </tbody>
+  </table>
+
+  <div>
+    <%= paginate @appointments %>
+  </div>
+
+<% end -%>

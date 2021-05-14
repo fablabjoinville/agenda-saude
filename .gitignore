@@ -53,3 +53,4 @@ dump-*.sql*
 spec/cypress/screenshots/
 spec/cypress/videos/
 coverage
+/.env*.local

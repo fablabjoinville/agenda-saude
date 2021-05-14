@@ -1,6 +1,7 @@
 module Community
   class SessionsController < Base
     skip_before_action :authenticate!, only: %i[create destroy]
+    before_action :validate_cpf_input, only: %i[create]
 
     def create
       @patient = Patient.find_by(cpf: parse_cpf)
@@ -25,6 +26,10 @@ module Community
     end
 
     protected
+
+    def validate_cpf_input
+      redirect_to root_path, alert: 'CPF inválido' unless CPF.valid?(session_params[:cpf])
+    end
 
     def parse_cpf
       Patient.parse_cpf session_params[:cpf]

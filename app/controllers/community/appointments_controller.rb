@@ -1,51 +1,67 @@
 module Community
   class AppointmentsController < Base
+    class CannotCancelAndReschedule < StandardError; end
+
     def home
       return redirect_to(vaccinated_community_appointments_path) if current_patient.vaccinated?
 
-      @appointment = current_patient.appointments.not_checked_in.current
+      @doses = current_patient.doses.includes(:vaccine, appointment: [:ubs])
+      @appointment = current_patient.appointments.current
 
       return if @appointment
 
       return unless current_patient.can_schedule?
 
       @appointments_count = Appointment.available_doses
-                                       .where(start: from..to)
+                                       .where(start: from..to, ubs_id: allowed_ubs_ids)
                                        .count
     end
 
     # Reschedules appointment (only if patient already has one scheduled)
-    # rubocop:disable Metrics/AbcSize
     def index
-      if Rails.configuration.x.disabled_reschedule_toggle.present?
-        return redirect_to(home_community_appointments_path,
-                           flash: { alert: I18n.t(:'alerts.patient_disabled_reschedule') })
-      end
+      appointment_can_cancel_and_reschedule
 
-      @appointment = current_patient.appointments.not_checked_in.current
+      # If patient already had a dose, keep it in the same UBS.
+      # This is an optimized query, hence a little odd using +pick+s.
+      ubs_id = Appointment.where(id: current_patient.doses.pick(:appointment_id)).pick(:ubs_id)
+
+      # Otherwise limit to where they can schedule
+      ubs_id = allowed_ubs_ids if ubs_id.blank?
 
       @days = parse_days
       @appointments = scheduler.open_times_per_ubs(from: @days.days.from_now.beginning_of_day,
-                                                   to: @days.days.from_now.end_of_day)
+                                                   to: @days.days.from_now.end_of_day,
+                                                   filter_ubs_id: ubs_id)
     rescue AppointmentScheduler::NoFreeSlotsAhead
       redirect_to home_community_appointments_path, flash: { alert: 'Não há vagas disponíveis para reagendamento.' }
     end
 
-    # rubocop:enable Metrics/AbcSize
-
+    # rubocop:disable Metrics/AbcSize
     def create
+      appointment_can_cancel_and_reschedule
+
+      # If patient already had a dose, keep it in the same UBS
+      ubs_id = current_patient.doses.first&.appointment&.ubs_id
+
+      # Intersection between allowed and requested, will return nil (which is fine) if forbidden
+      ubs_id = (allowed_ubs_ids & [create_params[:ubs_id].to_i]).first if ubs_id.blank? && create_params[:ubs_id]
+
       result, new_appointment = scheduler.schedule(
         patient: current_patient,
-        ubs_id: create_params[:ubs_id].presence,
+        ubs_id: ubs_id,
         from: parse_start.presence
       )
 
       redirect_to home_community_appointments_path,
                   flash: message_for(result, appointment: new_appointment, desired_start: parse_start)
     end
+    # rubocop:enable Metrics/AbcSize
 
+    # NOTE: we are ignoring params[:id] in here
     def destroy
-      scheduler.cancel_schedule(patient: current_patient, id: params[:id])
+      @appointment = appointment_can_cancel_and_reschedule
+
+      scheduler.cancel_schedule(appointment: @appointment)
 
       redirect_to home_community_appointments_path
     end
@@ -53,12 +69,18 @@ module Community
     def vaccinated
       return redirect_to(home_community_appointments_path) unless current_patient.vaccinated?
 
-      appointments = current_patient.appointments.active.checked_out.order(:check_out).limit(2).all
-      @first_dose_appointment = appointments.first
-      @second_dose_appointment = appointments.last
+      @patient = current_patient
+      @doses = current_patient.doses.order(:sequence_number)
     end
 
     private
+
+    def appointment_can_cancel_and_reschedule
+      appointment = current_patient.appointments.not_checked_out.current
+      raise CannotCancelAndReschedule if appointment && !appointment.can_cancel_and_reschedule?
+
+      appointment
+    end
 
     def from
       Rails.configuration.x.schedule_from_hours.hours.from_now
@@ -112,14 +134,15 @@ module Community
       ].min
     end
 
-    # rubocop:disable Rails/Date (as we're generating the string it with timezone)
     def parse_start
-      create_params[:start].present? && create_params[:start]&.to_time
+      create_params[:start].present? && Time.zone.parse(create_params[:start])
     rescue ArgumentError
       nil
     end
 
-    # rubocop:enable Rails/Date
+    def allowed_ubs_ids
+      current_patient.conditions.flat_map(&:ubs_ids).uniq
+    end
 
     def create_params
       params.require(:appointment).permit(:ubs_id, :start)

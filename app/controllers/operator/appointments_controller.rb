@@ -1,5 +1,7 @@
 module Operator
   class AppointmentsController < Base
+    before_action :set_ubs
+
     FILTERS = {
       search: 'search',
       all: 'all',
@@ -14,7 +16,6 @@ module Operator
                          .today
                          .scheduled
                          .includes(:patient)
-                         .order(:start)
 
       @appointments = filter(search(appointments))
                       .order(:start)
@@ -30,58 +31,55 @@ module Operator
         end
       end
     end
+
     # rubocop:enable Metrics/AbcSize
 
     def show
       @appointment = @ubs.appointments.scheduled.find(params[:id])
 
-      @other_appointments = @appointment.patient.appointments.where.not(id: @appointment.id)
+      @other_appointments = @appointment.patient.appointments.where.not(id: @appointment.id).order(:start)
+
+      @doses = @appointment.patient.doses.includes(:vaccine, appointment: [:ubs]).order(:created_at)
+
+      @vaccines = Vaccine.order(:name)
     end
 
     # Check-in single appointment
     def check_in
       appointment = @ubs.appointments.scheduled.not_checked_in.find(params[:id])
       unless appointment.in_allowed_check_in_window?
-        return redirect_to(operator_appointment_path(appointment),
+        return redirect_to(operator_ubs_appointment_path(appointment.ubs, appointment),
                            flash: { alert: t(:"appointments.messages.not_allowed_window") })
       end
 
       ReceptionService.new(appointment).check_in
 
-      redirect_to operator_appointments_path, flash: { notice: "Check-in realizado para #{appointment.patient.name}." }
+      redirect_to operator_ubs_appointments_path(appointment.ubs),
+                  flash: { notice: "Check-in realizado para #{appointment.patient.name}." }
     end
 
     # Check-out single appointment
-    # rubocop:disable Metrics/AbcSize
     def check_out
       appointment = @ubs.appointments.scheduled.not_checked_out.find(params[:id])
-      vaccine_name = appointment.vaccine_name.presence || check_out_params[:appointment].try(:[], :vaccine_name)
+      vaccine = Vaccine.find_by id: check_out_params[:vaccine_id]
 
-      return redirect_to(operator_appointment_path(appointment), flash: { error: 'Selecione vacina.' }) if vaccine_name.blank?
+      unless vaccine
+        return redirect_to(operator_ubs_appointment_path(appointment.ubs, appointment),
+                           flash: { error: 'Selecione a vacina aplicada.' })
+      end
 
-      # next appointment
-      next_appointment = ReceptionService.new(appointment).check_out(vaccine_name)
+      checked_out = ReceptionService.new(appointment).check_out(vaccine)
 
-      redirect_to operator_appointment_path(appointment),
-                  flash: {
-                    notice_title: if next_appointment
-                                    "#{next_appointment.patient.name} tomou primeira dose e está com segunda dose " \
-                                    "agendada para #{I18n.l next_appointment.start, format: :human} na unidade " \
-                                    " #{next_appointment.ubs.name}"
-                                  else
-                                    appointment.patient.vaccinated?
-                                    "#{appointment.patient.name} está imunizada(o) com duas doses."
-                                  end
-                  }
+      redirect_to operator_ubs_appointment_path(appointment.ubs, appointment),
+                  flash: { notice_title: notice_for_checked_out(checked_out, appointment) }
     end
-    # rubocop:enable Metrics/AbcSize
 
     # Suspend single appointment
     def suspend
       appointment = @ubs.appointments.scheduled.not_checked_in.find(params[:id])
       appointment.update!(active: false, suspend_reason: params[:appointment][:suspend_reason])
 
-      redirect_to operator_appointments_path,
+      redirect_to operator_ubs_appointments_path(appointment.ubs),
                   flash: {
                     notice: "Agendamento suspenso para #{appointment.patient.name}"
                   }
@@ -92,34 +90,10 @@ module Operator
       appointment = @ubs.appointments.scheduled.find(params[:id])
       appointment.update!(active: true, suspend_reason: nil)
 
-      redirect_to operator_appointment_path(appointment),
+      redirect_to operator_ubs_appointment_path(appointment.ubs, appointment),
                   flash: {
                     notice: "Agendamento reativado para #{appointment.patient.name}."
                   }
-    end
-
-    # Suspends all future appointments
-    def suspend_future
-      @ubs.appointments
-          .not_checked_in
-          .not_checked_out
-          .active
-          .future
-          .update_all(active: false) # rubocop:disable Rails/SkipsModelValidations
-
-      redirect_to operator_appointments_path
-    end
-
-    # Reactivate all future appointments
-    def activate_future
-      @ubs.appointments
-          .not_checked_in
-          .not_checked_out
-          .suspended
-          .future
-          .update_all(active: true) # rubocop:disable Rails/SkipsModelValidations
-
-      redirect_to operator_appointments_path
     end
 
     private
@@ -153,11 +127,26 @@ module Operator
     end
 
     def check_out_params
-      params.permit(appointment: [:vaccine_name])
+      params.permit(:vaccine_id)
     end
 
     def index_params
       params.permit(:per_page, :page, :search, :filter)
+    end
+
+    def notice_for_checked_out(checked_out, appointment)
+      if checked_out.dose.follow_up_appointment
+        I18n.t('alerts.dose_received_with_follow_up',
+               name: appointment.patient.name,
+               sequence_number: checked_out.dose.sequence_number,
+               date: I18n.l(checked_out.next_appointment.start, format: :human))
+      else
+        I18n.t('alerts.last_dose_received', name: appointment.patient.name)
+      end
+    end
+
+    def set_ubs
+      @ubs = current_user.ubs.find(params[:ubs_id])
     end
   end
 end

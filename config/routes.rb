@@ -14,39 +14,46 @@ Rails.application.routes.draw do
   devise_for :users, controllers: { sessions: 'users/sessions' }
   devise_scope :user do
     namespace :operator do
-      resources :appointments, only: %i[index show] do
-        member do
-          patch :check_in
-          patch :check_out
-          patch :suspend
-          patch :activate
-        end
-
-        collection do
-          patch :suspend_future
-          patch :activate_future
-        end
-      end
-
-      resources :ubs, only: [:show] do
+      resources :ubs, only: %i[index show] do
         member do
           patch :activate
           patch :suspend
         end
+
+        resources :appointments, only: %i[index show] do
+          member do
+            patch :check_in
+            patch :check_out
+            patch :suspend
+            patch :activate
+          end
+        end
       end
     end
+
+    namespace :admin do
+      resources :appointments, only: %i[index show]
+      resources :appointments_bulks, only: %i[new create]
+      resources :groups
+      resources :neighborhoods
+      resources :pages
+      resources :patients, only: %i[index show] do
+        member do
+          patch :unblock
+        end
+      end
+      resources :conditions
+      resources :ubs
+      resources :users
+      resources :vaccines
+    end
+    resources :appointments, only: %i[index]
   end
 
-  namespace :admin do
-    resources :patients, only: %i[index show] do
-      member do
-        patch :unblock
-      end
-    end
-  end
+  resources :pages, only: :show, path: '/p'
 
   get 'community', to: redirect('/community/appointments/home')
-  get 'operator', to: redirect('/operator/appointments')
+  get 'operator', to: redirect('/operator/ubs')
   get 'admin', to: redirect('/admin/patients')
   root 'home#index'
 end

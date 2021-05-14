@@ -1,7 +1,7 @@
 <div class="container">
   <div class="row text-center">
     <div class="col">
-      <h1>Vacinação Joinville Covid-19</h1>
+      <h1>Vacinação Covid-19 <%= Settings[:city_name] %></h1>
     </div>
   </div>
 </div>
@@ -10,35 +10,51 @@
   <h5 class="card-header text-center">
     Status do agendamento: &nbsp;
     <% if @appointments_any %>
-      <i class="fa fa-check-circle" aria-hidden="true" style="color: green"></i>
+      <i class="fa fa-check-circle color-green" aria-hidden="true"></i>
       Disponível
     <% else %>
-      <i class="fa fa-circle" aria-hidden="true" style="color: red"></i> Aguardando novas doses
+      <i class="fa fa-circle color-red" aria-hidden="true"></i> Aguardando novas doses
     <% end %>
   </h5>
 </div>
 
-<div class="card-group mt-3">
-  <div class="card">
-    <h5 class="card-header">Grupos que podem se cadastrar:</h5>
-    <div class="card-body">
-      <i class="fa fa-circle" aria-hidden="true" style="color: skyblue"></i> População com 60 anos ou mais <br/> <br/>
-      <i class="fa fa-circle" aria-hidden="true" style="color: skyblue"></i> Trabalhadores da Saúde de qualquer idade
-    </div>
-  </div>
-  <div class="card">
-    <h5 class="card-header">Grupos que podem agendar:</h5>
-    <div class="card-body">
-      <% Patient::CONDITIONS.each do |name, _| %>
-        <br/>
-        <i class="fa fa-check-circle" aria-hidden="true" style="color: green"></i> <%= name %>
-        <br/>
-      <% end %>
-    </div>
-  </div>
+<div class="card mt-3">
+  <h5 class="card-header">Prioridade de cadastro:</h5>
+  <ul class="list-group list-group-flush">
+    <% @can_register_condition_names.each do |name| -%>
+      <li class="list-group-item">
+        <i class="fa fa-circle color-skyblue" aria-hidden="true"></i> <%= name %>
+      </li>
+    <% end -%>
+  </ul>
 </div>
 
 <div class="card mt-3">
+  <h5 class="card-header">Grupos que podem agendar:</h5>
+  <ul class="list-group list-group-flush">
+    <% @can_schedule_conditions.each do |hash| -%>
+      <li class="list-group-item">
+        <h5 class="card-title">
+          <i class="fa fa-check-circle <%= hash[:doses_count].positive? ? 'color-green' : 'color-goldenrod' %>" aria-hidden="true"></i> <%= hash[:name] %>
+        </h5>
+        <h6 class="card-subtitle mb-2">
+          <% if hash[:doses_count].positive? -%>
+            Até <%= hash[:doses_count] %> doses disponívels
+          <% else -%>
+            Nenhuma dose disponível no momento, tente novamente mais tarde
+          <% end -%>
+        </h6>
+        <p class="card-text small text-muted">
+          Disponível nas unidades:
+          <%= hash[:ubs_names] %>
+        </p>
+      </li>
+    <% end -%>
+  </ul>
+</div>
+
+<div class="card mt-3">
+  <h5 class="card-header">Cadastro e agendamento</h5>
   <div class="card-body">
     <%= form_for :patient, url: community_session_path, method: :post do |f| %>
       <div class="form-row">
@@ -48,13 +64,12 @@
               <div class="input-group-text">CPF</div>
             </div>
             <%= f.text_field :cpf,
-                             autofocus: true,
                              minlength: 11, maxlength: 14,
                              required: true,
                              class: "form-control form-control-lg",
                              aria: { describedby: 'cpfHelpInLine' },
                              placeholder: '000.000.000-00',
-                             data: { cy: "cpfInputField" } %>
+                             data: { cy: "cpfInputField", sel: "cpf" } %>
             <div class="input-group-append">
               <%= f.submit "Acessar",
                            class: "btn btn-primary",
@@ -72,46 +87,5 @@
 </div>
 
 <div class="info-page">
-
-<%# <h2>Outros Locais de Vacinação</h2>
-<p>É possível vacinar-se nas Unidades básicas de saúde, onde não é necessário o agendamento prévio. A disponibilidade das vacinas nas UBS (Unidade Básica de Saúde) se dá: 1º por ordem dos grupos prioritários e 2º pelo estoque disponível na UBS.</p>
-
-<%= render "shared/ubs_list" %>
-
-  <h2>Dúvidas frequentes sobre a vacinação</h2>
-
-  <h4>Quem não pode tomar a vacina</h4>
-  <ul>
-    <li>Menores de 18 anos;</li>
-    <li>Gestantes e Lactantes (mulheres que estão amamentando) só podem tomar com autorização do médico;</li>
-    <li>Pessoas com estado febril;</li>
-    <li>Pessoas que tiveram suspeita ou Covid-19 positivo nos últimos 30 dias;</li>
-    <li>Quem tomou qualquer outra vacina nos últimos 14 dias.</li>
-  </ul>
-  
-  <h4>Quais documentos preciso levar?</h4>
-
-  <%= render "shared/required_documents" %>
-
-  <p>
-    <strong><a href='https://www.joinville.sc.gov.br/vacina-do-coronavirus-em-joinville-perguntas-e-respostas/' target='blank'>
-      Dúvidas sobre a vacinação e mais informações sobre o combate ao coronavírus
-    </a></strong>
-  </p>
-
-  <p>
-    Problemas de acesso ao site? 
-    <strong><a href='https://api.whatsapp.com/send?phone=554734815165' target='blank'>
-      Clique aqui
-    </a></strong>.
-    Atendimento de Segunda a sexta-feira - 07:00–20:00, exceto feriados e pontos facultativos.
-  </p>
-
-  <h2>Manifestar-se</h2>
-
-  <p><a href="https://www.joinville.sc.gov.br/servicos/registrar-manifestacao-a-ouvidoria/">Registrar manifestação</a>
-    para reclamação, sugestão ou elogio sobre estas informações. Para informações adicionais,
-    <a href="https://www.joinville.sc.gov.br/servicos/registrar-pedido-de-informacao/">registrar pedido de
-      informação</a>.
-  </p>
+  <%= embedded_page :home %>
 </div>

@@ -1,1 +1,1 @@
-system 'rails db:seed'
+system 'rails db:seed db:seed:development backfill:vaccines'

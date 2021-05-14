@@ -1,14 +1,8 @@
-<p data-cy="conditionsUnmetText">
-  Você não faz parte de grupo que pode receber dose.
-  Mediante disponibilidade de doses, atualmente os seguintes grupos estão sendo vacinados:
-</p>
-<ul>
-  <% Patient::CONDITIONS.each do |name, _| -%>
-    <li>
-      <i class="fa fa-check-circle" aria-hidden="true" style="color: green"></i> <%= name %>
-    </li>
-  <% end -%>
-</ul>
-<p>
-  Fique atento a página inicial deste site e a veículos oficiais de imprensa para saber quando você poderá agendar sua vacina.
-</p>
+<div class="jumbotron" data-cy="conditionsUnmetText">
+  <h1 class="display-6">
+    Você ainda não pode agendar
+  </h1>
+  <hr class="my-4">
+
+  <%= embedded_page :patient_cannot_schedule %>
+</div>

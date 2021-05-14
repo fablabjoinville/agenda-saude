@@ -1,4 +1,5 @@
-require "active_support/core_ext/integer/time"
+require 'active_support/core_ext/integer/time'
+require 'redis_provider'
 
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
@@ -56,7 +57,11 @@ Rails.application.configure do
   config.log_tags = [ :request_id ]
 
   # Use a different cache store in production.
-  # config.cache_store = :mem_cache_store
+  config.cache_store = :redis_cache_store, {
+    url: RedisProvider.redis_url,
+    pool_size: 5,
+    pool_timeout: 5
+  }
 
   # Use a real queuing backend for Active Job (and separate queues per environment).
   # config.active_job.queue_adapter     = :resque

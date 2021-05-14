@@ -1,0 +1,53 @@
+<div class="row">
+  <div class="col-8">
+    <h1 class="h4">
+      Grupo: <%= @group.name_with_parent %>
+    </h1>
+  </div>
+
+  <div class="col-2">
+    <%= link_to "Editar", edit_admin_group_path(@group), class: 'btn btn-primary btn-block' %>
+  </div>
+
+  <div class="col-2">
+    <%= link_to "Remover", admin_group_path(@group), method: :delete,
+                class: 'btn btn-danger btn-block',
+                data: { confirm: "Tem certeza?" } %>
+  </div>
+</div>
+
+<% if @group.parent_group -%>
+  <div class="mt-4 mb-5">
+    <p>
+      Pertence ao grupo:
+      <%= link_to @group.parent_group.name, admin_group_path(@group.parent_group) %>
+    </p>
+  </div>
+<% end -%>
+
+<% if @group.children.any? -%>
+  <div class="mt-4 mb-5">
+    <h4>Grupos filhos</h4>
+    <ul>
+      <% @group.children.order(:position).each do |group| -%>
+        <li><%= link_to group.name, admin_group_path(group) %></li>
+      <% end -%>
+    </ul>
+  </div>
+<% end -%>
+
+<hr>
+
+<p>
+  <strong>Pacientes neste grupo:</strong>
+  <%= @group.patients.count %>
+</p>
+
+<p>
+  <strong>Condições neste grupo:</strong>
+  <%= @group.conditions.count %>
+</p>
+
+<p>
+  <%= link_to "Voltar", admin_groups_path %>
+</p>

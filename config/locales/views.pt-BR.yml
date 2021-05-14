@@ -4,6 +4,7 @@ pt-BR:
       user:
         name: Nome
         password: Senha
+        password_confirmation: Confirmação da senha
         remember_me: Lembre-se de mim
       patient:
         birth_date: Data de nascimento
@@ -20,19 +21,110 @@ pt-BR:
         public_place: Endereço
         sus: Número do cartão SUS
         groups: Grupos que faz parte
+      group:
+        name: Nome
+        parent_group: Grupo pai
+        active: Ativo
+        context: Contexto
+        position: Posição
+      page:
+        path: Caminho
+        title: Título
+        body: Corpo
+        context: Contexto
+      condition:
+        name: Nome
+        start_at: A partir de
+        end_at: Até
+        min_age: Idade mínima
+        max_age: Idade máxima
+        groups: Grupos
+        can_register: Pode cadastrar
+        can_schedule: Pode agendar
+        ubs: Unidades
+      vaccine:
+        name: Nome
+        legacy_name: Código de legado
+        formal_name: Nome formal completo da vacina
+        second_dose_after_in_days: Segunda dose após (em dias)
+        third_dose_after_in_days: Terceira dose após (em dias)
+      neighborhood:
+        name: Nome
+      ubs:
+        name: Nome
+        cnes: CNES
+        active: Ativo
+        shift_start: Horário de abertura
+        shift_end: Horário de encerramento
+        break_start: Início da pausa de almoço
+        break_end: Fim da pausa de almoço
+        saturday_shift_start: Horário de abertura de Sábado
+        saturday_shift_end: Horário de encerramento de Sábado
+        saturday_break_start: Início da pausa de almoço de Sábado
+        saturday_break_end: Fim da pausa de almoço de Sábado
+        sunday_shift_start: Horário de abertura de Domingo
+        sunday_shift_end: Horário de encerramento de Domingo
+        sunday_break_start: Início da pausa de almoço de Domingo
+        sunday_break_end: Fim da pausa de almoço de Domingo
+        slot_interval_minutes: Duração de cada atendimento (min)
+        appointments_per_time_slot: Atendimentos em paralelo
+        address: Endereço
+        neighborhood: Bairro
+        phone: Telefone
 
     models:
-      user: Usuário
+      appointment: Agendamento
+      condition: Condição de agendamento
+      dose: Dose administrada
+      group: Grupo
+      neighborhood: Bairro
       patient: Paciente
+      ubs: Unidade
+      user: Usuário
+      vaccine: Vacina
+      page: Página
+  activemodel:
+    attributes:
+      appointments_bulk:
+        from: De
+        to: Até
+        ubs_ids: Unidades
+        active: Ativo
+    models:
+      appointments_bulk: Agendamentos em massa
+  alerts:
+    last_dose_received: |
+      %{name} está imunizado(a).
+    dose_received_with_follow_up: |
+      %{name} tomou a %{sequence_number}a dose e está com a próxima dose agendada para %{date} nesta mesma unidade.
+    successful_patient_creation_title: Seu cadastro foi realizado com sucesso, mas isso não garante seu agendamento
+    successful_patient_creation_message: O agendamento não é automático, fique atento e prossiga para realizar um agendamento.
+    cannot_cancel_or_reschedule: |
+      Você só poderá cancelar ou reagendar seu atendimento (para outra data ou unidade) quando faltarem menos de %{days} dias a data do agendamento. Tente novamente mais próximo à data.
+    cannot_update_profile_due_to_appointment_condition: |
+      Não foi possível atualizar seu cadastro, já que esta alteração irá remover você do grupo que pode receber vacinas.
+      Para realizar esta alteração, primeiro cancele seu agendamento atual, para só então atualizar seu cadastro.
+    cannot_reschedule_yet: |
+      Ainda falta muito tempo para o reforço da sua vacina. Se você deseja cancelar ou mudar a data, volte aqui a partir
+      de %{datetime} e tente novamente.
+      Lembre-se que você só pode receber o reforço da vacina na mesma unidade que recebeu a primeira dose,
+      portanto caso hajam vagas poderá escolher outro dia e horário somente na mesma unidade.
+  buttons:
+    cancel_appointment: Cancelar este agendamento
+    reschedule_appointment: Reagendar e escolher outro dia, horário ou local
+  suspend_reasons:
+    follow_up_canceled_by_user: "Reforço cancelado pelo usuário"
   errors:
     messages:
       not_saved:
         one: 'Não foi possível salvar %{resource}: 1 erro'
         other: 'Não foi possível salvar %{resource}: %{count} erros.'
-
-  alerts:
-    patient_disabled_reschedule: >
-      Devido a alta demanda, o reagendamento está temporariamente desativado. Se você não poder comparecer no horário,
-      dia e local estabelecidos, tente reagendar novamente mais tarde, ou cancele seu agendamento e tente agende
-      novamente mais tarde ou quando mais doses forem disponibilizadas.
-
+  calendar:
+    weekdays:
+      "0": Domingo
+      "1": Segunda-feira
+      "2": Terça-feira
+      "3": Quarta-feira
+      "4": Quinta-feira
+      "5": Sexta-feira
+      "6": Sábado

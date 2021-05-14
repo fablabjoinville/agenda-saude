@@ -16,13 +16,11 @@
     </div>
 
     <% if @appointment.state == :suspended %>
-      <i class="fa fa-times-circle icons" aria-hidden="true" style="color: red"></i>
+      <i class="fa fa-times-circle icons color-red" aria-hidden="true"></i>
     <% elsif @appointment.state == :checked_out %>
-      <i class="fa fa-check-circle icons" aria-hidden="true" style="color: green"></i>
+      <i class="fa fa-check-circle icons color-green" aria-hidden="true"></i>
     <% elsif @appointment.state == :checked_in %>
-      <i class="fa fa-user-circle icons" aria-hidden="true" style="color: green"></i>
-    <% elsif @appointment.state == :checked_in %>
-      <i class="fa fa-hourglass-half" aria-hidden="true" style="color: blue"></i>
+      <i class="fa fa-play-circle icons color-green" aria-hidden="true"></i>
     <% end %>
 
     <div class="text-muted">
@@ -33,9 +31,9 @@
       Bairro: <%= @appointment.patient.neighborhood %>
     </div>
 
-    <p style="padding-top: 2%">
-      <% @appointment.patient.conditions.each do |group| %>
-        <span class="badge badge-pill badge-primary pills-groups"><%= group %></span>
+    <p class="mt-2">
+      <% @appointment.patient.conditions.each do |condition| %>
+        <span class="badge badge-pill badge-primary pills-groups"><%= condition.name %></span>
       <% end %>
     </p>
 
@@ -67,9 +65,16 @@
         <span class="badge badge-pill badge-info pills-info" data-cy="checkOutOkTag">Check-out OK</span>
       <% end -%>
 
-      <% if @appointment.vaccine_name.present? -%>
-        <span class="badge badge-pill badge-success pills-info" data-cy="vaccineNameTag">2<sup>a</sup> dose: <%= @appointment.vaccine_name.humanize.capitalize %></span>
-      <% end %>
+      <% if @appointment.follow_up_for_dose -%>
+        <small class="badge badge-pill bg-success pills-info text-light" data-cy="vaccineNameTag">
+          <%= @appointment.follow_up_for_dose.next_sequence_number %><sup>a</sup> dose
+          <%= @appointment.follow_up_for_dose.vaccine.name %>
+        </small>
+      <% else -%>
+        <small class="badge badge-pill bg-info pills-info text-light">
+          1<sup>a</sup> dose
+        </small>
+      <% end -%>
     </p>
   </div>
 </div>
@@ -77,7 +82,7 @@
 <% if @appointment.suspended? -%>
   <div class="row text-center mb-3">
     <div class="col-md-12">
-      <%= form_with model: @appointment, url: activate_operator_appointment_path, method: :patch, local: true do |f| %>
+      <%= form_with model: @appointment, url: activate_operator_ubs_appointment_path(@appointment.ubs), method: :patch, local: true do |f| %>
         <%= f.submit "Reativar agendamento (cancela a suspensão)",
                     class: "btn btn-outline-danger btn-lg",
                     data: {
@@ -89,23 +94,24 @@
 <% elsif @appointment.checked_out? %>
   <p>Atendimento finalizado.</p>
 <% elsif @appointment.checked_in? %>
-  <%= form_for @appointment, url: check_out_operator_appointment_path, local: true do |f| %>
+  <%= form_with url: check_out_operator_ubs_appointment_path(@appointment.ubs), method: :patch, local: true do |f| %>
     <div class="row">
       <div class="col text-center mb-2">
         <h3>Qual vacina foi aplicada?</h3>
       </div>
     </div>
-    <% if @appointment.vaccine_name.present? -%>
-      <p data-cy="secondDoseVaccineText">Paciente obrigatoriamente deverá receber o reforço com a vacina <strong><%= @appointment.vaccine_name %></strong>.</p>
+    <% if @appointment.follow_up_for_dose -%>
+      <%= hidden_field_tag :vaccine_id, @appointment.follow_up_for_dose.vaccine_id %>
+      <p data-cy="secondDoseVaccineText">Paciente obrigatoriamente deverá receber o reforço com a vacina <strong><%= @appointment.follow_up_for_dose.vaccine.name %></strong>.</p>
     <% else -%>
       <div class="row justify-content-md-center mb-4">
-        <% ReceptionService::VACCINES.sort.each do |vaccine_name_code| -%>
+        <% @vaccines.each do |vaccine| -%>
           <div class="col text-center col-lg-3">
-            <%= f.radio_button :vaccine_name, vaccine_name_code,
+            <%= f.radio_button :vaccine_id, vaccine.id,
                                autocomplete: false,
                                class: "btn-check",
                                data: { cy: "vaccineRadioButton" } %>
-            <%= f.label "vaccine_name_#{vaccine_name_code}", vaccine_name_code.humanize.capitalize,
+            <%= f.label "vaccine_id_#{vaccine.id}", vaccine.name,
                         class: "btn btn-secondary" %>
           </div>
         <% end -%>
@@ -126,7 +132,7 @@
   <div class="row text-center">
     <div class="col-md-12">
       <% if @appointment.in_allowed_check_in_window? -%>
-        <%= form_with model: @appointment, url: check_in_operator_appointment_path, method: :patch, local: true do |f| %>
+        <%= form_with model: @appointment, url: check_in_operator_ubs_appointment_path(@appointment.ubs), method: :patch, local: true do |f| %>
           <%= f.submit "Realizar Check-in",
                         class: "btn btn-success btn-block btn-lg",
                         data: {
@@ -142,7 +148,7 @@
 
   <div class="row text-center mt-5">
     <div class="col-md-12">
-      <%= form_with model: @appointment, url: suspend_operator_appointment_path, method: :patch, local: true do |f| %>
+      <%= form_with model: @appointment, url: suspend_operator_ubs_appointment_path(@appointment.ubs), method: :patch, local: true do |f| %>
         <div class="input-group mb-3">
           <%= f.text_field :suspend_reason, required: true, class: "form-control", placeholder: 'Informe o motivo da suspensão' %>
           <div class="input-group-append">
@@ -161,24 +167,38 @@
 <div class="mt-4 mb-5">
   <% if @other_appointments.any? -%>
     <h4>Outros agendamentos deste paciente:</h4>
-    <ol>
+    <ul>
       <% @other_appointments.each do |appointment| -%>
         <li>
-          <%= link_to l(appointment.start, format: :human), [:operator, appointment] %>
+          <%= link_to l(appointment.start, format: :human), operator_ubs_appointment_path(appointment.ubs, appointment) %>
           (<%= appointment.start.future? ? "em " : "foi a " %><%= distance_of_time_in_words_to_now(appointment.start) %>)
           na unidade <%= appointment.ubs.name %>
-          <% if appointment.vaccine_name.present? %>
-            para receber <%= appointment.vaccine_name.humanize.capitalize %>
+          <% if appointment.follow_up_for_dose %>
+            para receber <%= appointment.follow_up_for_dose.vaccine.name %>
           <% end %>
         </li>
       <% end -%>
-    </ol>
+    </ul>
+  <% end -%>
+
+  <% if @doses.any? -%>
+    <h4>Vacinas administradas neste paciente:</h4>
+    <ul>
+      <% @doses.each do |dose| -%>
+        <li>
+          <%= dose.sequence_number %><sup>a</sup> dose da
+          <%= dose.vaccine.name %> (<i><%= dose.vaccine.formal_name %></i>) no dia
+          <%= l dose.created_at, format: :human %> na unidade
+          <%= dose.appointment.ubs.name %>
+        </li>
+      <% end -%>
+    </ul>
   <% end -%>
 </div>
 
 <div class="row text-center">
   <div class="col-md-12">
-    <%= link_to "Voltar para agendamentos aguardando check-in", operator_appointments_path, class: "btn-lg",
+    <%= link_to "Voltar para agendamentos aguardando check-in", operator_ubs_appointments_path(@appointment.ubs), class: "btn-lg",
                 data: { cy: "backToCheckInListButton" } %>
   </div>
 </div>

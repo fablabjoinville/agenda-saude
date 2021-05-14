@@ -1,18 +1,10 @@
 module ApplicationHelper
-  def self.humanize_datetime(date)
-    date.strftime('%d/%m/%Y às %H:%M')
-  end
-
-  def self.humanize_date(date)
-    date.strftime('%d/%m/%Y')
-  end
-
-  def self.humanize_time(date)
-    date.strftime('%H:%M')
-  end
-
   def self.humanize_cpf(cpf)
     "#{cpf[0..2]}.#{cpf[3..5]}.#{cpf[6..8]}-#{cpf[9..11]}"
+  end
+
+  def humanize_phone_number(phone)
+    phone.to_s.gsub(/(\d{2})(\d{4,5})(\d{4})/, '(\1) \2-\3')
   end
 
   def search_link(current_search, total_count, path)
@@ -21,6 +13,18 @@ module ApplicationHelper
               path,
               class: 'nav-link active',
               data: 'searchListTab'
+    end
+  end
+
+  def error_messages_for(object)
+    return nil if object.errors.empty?
+
+    tag.div(class: 'alert alert-danger') do
+      tag.h4 do
+        quantity = object.errors.count > 1 ? 'other' : 'one'
+        t "errors.template.header.#{quantity}", model: object.model_name.human.downcase, count: object.errors.count
+      end +
+        error_messages_list(object.errors.full_messages)
     end
   end
 
@@ -38,5 +42,16 @@ module ApplicationHelper
       end
     end
   end
+
+  def embedded_page(path)
+    Page.find_by!(path: path).html
+  end
+
   # rubocop:enable Metrics/ParameterLists
+
+  protected
+
+  def error_messages_list(full_messages)
+    tag.ul { safe_join(full_messages.map { |msg| tag.li(msg) }) }
+  end
 end

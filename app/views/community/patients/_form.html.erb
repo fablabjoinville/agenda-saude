@@ -1,14 +1,4 @@
-<%# Temp way to present errors until we have something better %>
-<% if patient.errors.any? -%>
-  <div class="alert alert-danger">
-    <p>Não foi possível gravar:</p>
-    <ul>
-      <% patient.errors.full_messages.select { |m| m.is_a?(String) }.each do |msg| %>
-        <%= content_tag :li, msg, id: "error_#{msg}" %>
-      <% end %>
-    </ul>
-  </div>
-<% end -%>
+<%= error_messages_for(f.object) %>
 
 <p>
   As informações coletadas são de uso único e exclusivo do sistema de agendamento da vacina, afim de atestar a
@@ -31,6 +21,8 @@
 
 <h3>Dados pessoais</h3>
 
+<p>Todos os dados informados serão confirmados no momento da vacinação.</p>
+
 <div class="form-row">
   <div class="form-group col-md-4">
     <%= f.label :name %>
@@ -45,7 +37,7 @@
 
   <div class="form-group col-md-4">
     <%= f.label :birthday %>
-    <div class="form-row">
+    <div class="form-row date">
       <%= f.date_select :birthday,
                         {
                           start_year: (Date.current.year.to_i) - 17, # min age
@@ -72,6 +64,33 @@
   </div>
 </div>
 
+<h3>Grupos prioritários que pertence</h3>
+
+<%= embedded_page :patient_groups_priority -%>
+
+<p>Escolha ao menos uma das opções abaixo.</p>
+
+<div class="form-row">
+  <div class="form-group col-md-12">
+    <div class="form-check" data-group-context-priority="">
+      <%= render partial: 'group_boxes', locals: { group: Group.priority, f: f } %>
+    </div>
+  </div>
+</div>
+
+<h3>Comorbidades que possui</h3>
+
+<%= embedded_page :patient_groups_comorbidity -%>
+
+<p>Escolha ao menos uma das opções abaixo.</p>
+
+<div class="form-row">
+  <div class="form-group col-md-12">
+    <div class="form-check" data-group-context-comorbidity="">
+      <%= render partial: 'group_boxes', locals: { group: Group.comorbidity, f: f } %>
+    </div>
+  </div>
+</div>
 
 <h3>Endereço residencial</h3>
 
@@ -112,56 +131,6 @@
   </div>
 </div>
 
-<h3>Grupos que faz parte</h3>
-
-<div class="form-row">
-  <div class="form-group col-md-12">
-    <div class="form-check">
-      <%= f.collection_check_boxes :group_ids, Group.root.includes(:children), :id, :name do |b| %>
-        <div class="row">
-          <%= b.label do
-            b.check_box(
-              checked: patient.groups.map(&:id).map(&:to_i).include?(b.value.to_i),
-              class: "form-check-input #{"healthWorker" if b.object.health_worker?}",
-              onclick: "updateSubGroups(#{b.value});"
-            ) + b.text
-          end %>
-        </div>
-
-        <% if b.object.children.any? %>
-          <div class="form-row" hidden="true" id="<%= "subgroups-list-#{b.value}" %>">
-            <div class="form-group col-md-8">
-              <div class="form-check">
-                <%= f.collection_check_boxes :group_ids, b.object.children, :id, :name do |s| %>
-                  <div class="row">
-                    <%= s.label { s.check_box(checked: patient.groups.map(&:id).map(&:to_i).include?(s.value.to_i), class: "form-check-input #{"specificComorbidity" if s.object.specific_comorbidity? }") + s.text } %>
-                  </div>
-                  <% if s.object.specific_comorbidity? %>
-                    <div class="row" id="specific-comorbidity-input">
-                      <div class="form-group col-md-12">
-                        <%= f.text_field :specific_comorbidity, required: false, class: "form-control" %>
-                      </div>
-                    </div>
-                  <% end %>
-                <% end %>
-              </div>
-            </div>
-          </div>
-        <% end %>
-      <% end %>
-    </div>
-
-    <div class="row mt-3 mb-3" hidden=true id="alert-health-worker">
-      <div class="col">
-        <div class="alert alert-warning">
-          <strong>Atenção:</strong> Para receber a vacina, será necessário apresentar a comprovação de vínculo ativo em
-          algum estabelecimento de saúde na cidade de Joinville e/ou a carteira do conselho regional de classe.
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
 <h3>Dados complementares</h3>
 
 <div class="form-row">
@@ -190,24 +159,24 @@
   </div>
 </div>
 
-<div class="form-row">
-  <div class="form-group col-md-12">
-    <%= f.submit patient.new_record? ? "Cadastrar" : "Atualizar",
-                 class: "btn btn-primary btn-block pull-right",
-                 data: { cy: "patientSubmitButton" } %>
-  </div>
-</div>
-
 <script type="text/javascript">
   $(function () {
-    <% Group.root.pluck(:id).each do |id| %>
-    <%= "updateSubGroups(#{id});" %>
-    <% end %>
+    $('[data-group-parent]').on('change', function () {
+      groupToggle($(this))
+    }).each(function () {
+      groupToggle($(this))
+    })
 
-    initializeSpecificComorbidityOnChange();
-    toggleSpecificComorbidity();
-
-    initializeHealthWorkerOnChange();
-    toggleHealthWorker();
-  });
+    let selectors = [
+      '[data-group-context-priority] :checkbox',
+      '[data-group-context-comorbidity] :checkbox'
+    ];
+    selectors.forEach(function (selector) {
+      $(selector).on('change', function () {
+        requireToggle($(selector))
+      }).each(function () {
+        requireToggle($(selector))
+      })
+    })
+  })
 </script>

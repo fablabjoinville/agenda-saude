@@ -4,6 +4,7 @@
 
 $(document).ready(function(){
   $('.sp-celphones').mask(SPMaskBehavior, spOptions);
+  $('input[data-sel="cpf"]').mask('999.999.999-99');
 });
 
 var SPMaskBehavior = function (val) {

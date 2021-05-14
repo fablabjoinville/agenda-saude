@@ -5,15 +5,7 @@
     <%= render "home_can_schedule_no_available_slot" %>
   <% end -%>
 
-  <p class="mt-4">
-    Lembre-se que mesmo sendo parte de grupo que pode agendar, você <strong>não poderá</strong> agendar a receber a
-    vacina caso:
-  </p>
+  <p class="mt-4"></p>
 
-  <ul>
-    <li>Esteja em estado febril;</li>
-    <li>Tenha suspeita ou Covid-19 positivo nos últimos 30 dias;</li>
-    <li>Tenha tomado qualquer outro tipo de vacina nos últimos 15 dias;</li>
-    <li>Esteja gestante ou lactante (mulheres que estão amamentando).</li>
-  </ul>
+  <%= embedded_page :patient_can_schedule %>
 </div>

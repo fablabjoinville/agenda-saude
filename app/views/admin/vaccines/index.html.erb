@@ -1,0 +1,44 @@
+<div class="row">
+  <div class="col-10">
+    <h1 class="h4">
+      Vacinas
+    </h1>
+  </div>
+
+  <div class="col-2">
+    <%= link_to "Criar vacina", new_admin_vaccine_path, class: 'btn btn-primary btn-block' %>
+  </div>
+</div>
+
+<table class="table table-bordered table-hover table-sm mt-3">
+  <thead class="thead-dark">
+  <tr>
+    <th scope="col">#</th>
+    <th scope="col">Nome</th>
+    <th scope="col">Segunda dose em (dias)</th>
+    <th scope="col">Terceira dose em (dias)</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @vaccines.each do |vaccine| -%>
+    <tr data-cy="patient">
+      <td>
+        <%= link_to vaccine.id, admin_vaccine_path(vaccine) %>
+      </td>
+      <th scope="row">
+        <%= vaccine.name %>
+      </th>
+      <td>
+        <%= vaccine.second_dose_after_in_days %>
+      </td>
+      <td>
+        <%= vaccine.third_dose_after_in_days %>
+      </td>
+    </tr>
+  <% end -%>
+  </tbody>
+</table>
+
+<div>
+  <%= paginate @vaccines %>
+</div>
