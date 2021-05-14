@@ -69,7 +69,7 @@ Pacientes.
   * `public_place`: endereço residencial.
   * `place_number`: número residencial.
   * `neighborhood_id`:  bairro, ainda não em uso (usar neighborhood, como texto).
-  * `street_2`: complemento residencial, **ainda não em uso**.
+  * `street_2`: complemento residencial
   * `internal_note`: observação interna sobre o usuário, **ainda não em uso**.
 
 ## ubs
