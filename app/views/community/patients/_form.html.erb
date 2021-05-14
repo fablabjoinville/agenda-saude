@@ -179,14 +179,28 @@
     })
 
     let selectors = [
-      '[data-group-context-priority] :checkbox',
-      '[data-group-context-comorbidity] :checkbox'
+      $('[data-group-context-priority]'),
+      $('[data-group-context-comorbidity]')
     ];
     selectors.forEach(function (selector) {
-      $(selector).on('change', function () {
-        requireToggle($(selector))
+      selector.find(':checkbox').on('change', function (e) {
+        const target = $(e.target)
+
+        if (target.is('[data-blank]')) { // if blank one changes...
+          if (target.is(':checked')) { // ... to be checked...
+            selector.find(':checkbox:not([data-blank])').prop('checked', false) // ... then uncheck all others
+          } else { // ... to not be checked...
+            selector.find(':checkbox[data-blank]').prop('checked', true)  // ... then re-check it
+          }
+        } else { // if a not blank changes...
+          if (target.is(':checked')) { // ... to be checked...
+            selector.find(':checkbox[data-blank]').prop('checked', false) // ... then uncheck the blank one
+          } else { // ... to not be checked...
+            selector.find(':checkbox[data-blank]').prop('checked', selector.find(':checkbox:not([data-blank]):checked').size() === 0) // ... then check the blank one ONLY IF no other ones are checked
+          }
+        }
       }).each(function () {
-        requireToggle($(selector))
+        selector.find(':checkbox[data-blank]').prop('checked', !($(selector).find(':checkbox:not([data-blank])').is(':checked')))
       })
     })
   })

@@ -12,9 +12,3 @@ function groupToggle(parent) {
     child.prop("hidden", true)
   }
 }
-
-// Turns 'required' on and off in order to make sure at least one in the group is checked.
-function requireToggle(requiredCheckboxes) {
-  console.log(`required is ${!requiredCheckboxes.is(':checked')}`)
-  requiredCheckboxes.prop('required', !requiredCheckboxes.is(':checked'))
-}
