@@ -4,7 +4,4 @@ class ExceptionNotifierService
 
     Appsignal.send_error(exception)
   end
-
-  def self.tag_request(*args)
-  end
 end
