@@ -21,6 +21,7 @@ pt-BR:
         public_place: Endereço
         sus: Número do cartão SUS
         groups: Grupos que faz parte
+        street_2: Complemento
       group:
         name: Nome
         parent_group: Grupo pai
