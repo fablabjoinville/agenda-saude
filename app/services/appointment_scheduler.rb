@@ -53,9 +53,7 @@ class AppointmentScheduler
       [SUCCESS, new_appointment]
     end
   rescue StandardError => e
-    Sentry.capture_exception(e)
-
-    raise e unless Rails.env.production?
+    ExceptionNotifierService.call(e)
 
     [NO_SLOTS]
   end

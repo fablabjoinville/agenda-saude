@@ -60,6 +60,8 @@ GEM
       minitest (>= 5.1)
       tzinfo (~> 2.0)
       zeitwerk (~> 2.3)
+    appsignal (3.0.2)
+      rack
     ast (2.4.2)
     autoprefixer-rails (10.2.4.0)
       execjs
@@ -122,15 +124,6 @@ GEM
     factory_bot_rails (6.1.0)
       factory_bot (~> 6.1.0)
       railties (>= 5.0.0)
-    faraday (1.4.1)
-      faraday-excon (~> 1.1)
-      faraday-net_http (~> 1.0)
-      faraday-net_http_persistent (~> 1.1)
-      multipart-post (>= 1.2, < 3)
-      ruby2_keywords (>= 0.0.4)
-    faraday-excon (1.1.0)
-    faraday-net_http (1.0.1)
-    faraday-net_http_persistent (1.1.0)
     fasterer (0.9.0)
       colorize (~> 0.7)
       ruby_parser (>= 3.14.1)
@@ -193,7 +186,6 @@ GEM
     minitest (5.14.4)
     msgpack (1.4.2)
     multi_json (1.15.0)
-    multipart-post (2.1.1)
     nenv (0.3.0)
     newrelic_rpm (6.15.0)
     nio4r (2.5.7)
@@ -316,7 +308,6 @@ GEM
       rubocop (~> 1.0)
       rubocop-ast (>= 1.1.0)
     ruby-progressbar (1.11.0)
-    ruby2_keywords (0.0.4)
     ruby_parser (3.15.1)
       sexp_processor (~> 4.9)
     rubyzip (2.3.0)
@@ -330,16 +321,6 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
-    sentry-rails (4.4.0)
-      railties (>= 5.0)
-      sentry-ruby-core (~> 4.4.0.pre.beta)
-    sentry-ruby (4.4.1)
-      concurrent-ruby (~> 1.0, >= 1.0.2)
-      faraday (>= 1.0)
-      sentry-ruby-core (= 4.4.1)
-    sentry-ruby-core (4.4.1)
-      concurrent-ruby
-      faraday
     sexp_processor (4.15.2)
     shellany (0.0.1)
     simplecov (0.21.2)
@@ -385,6 +366,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  appsignal
   barnes
   bootsnap
   bootstrap
@@ -424,8 +406,6 @@ DEPENDENCIES
   rubocop-rails
   rubocop-rspec
   sass-rails
-  sentry-rails
-  sentry-ruby
   simplecov
   smarter_csv
   spring
