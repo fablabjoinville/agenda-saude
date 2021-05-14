@@ -116,6 +116,7 @@ class Patient < ApplicationRecord
   end
 
   def neighborhood=(string)
+    self[:neighborhood] = string
     self[:neighborhood_id] = Neighborhood.find_by(name: string.to_s)&.id
   end
 
