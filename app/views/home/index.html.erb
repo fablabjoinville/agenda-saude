@@ -64,13 +64,12 @@
               <div class="input-group-text">CPF</div>
             </div>
             <%= f.text_field :cpf,
-                             autofocus: true,
                              minlength: 11, maxlength: 14,
                              required: true,
                              class: "form-control form-control-lg",
                              aria: { describedby: 'cpfHelpInLine' },
                              placeholder: '000.000.000-00',
-                             data: { cy: "cpfInputField" } %>
+                             data: { cy: "cpfInputField", sel: "cpf" } %>
             <div class="input-group-append">
               <%= f.submit "Acessar",
                            class: "btn btn-primary",
