@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_10_142917) do
+ActiveRecord::Schema.define(version: 2021_05_14_022641) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -133,22 +133,17 @@ ActiveRecord::Schema.define(version: 2021_05_10_142917) do
     t.string "neighborhood"
     t.string "fake_mothers", default: [], array: true
     t.integer "login_attempts", default: 0
-    t.bigint "main_ubs_id"
-    t.integer "target_audience"
     t.string "public_place"
     t.string "place_number"
-    t.string "specific_comorbidity", default: ""
     t.bigint "neighborhood_id"
     t.string "street_2"
     t.string "internal_note"
     t.index ["cpf"], name: "index_patients_on_cpf", unique: true
-    t.index ["main_ubs_id"], name: "index_patients_on_main_ubs_id"
   end
 
   create_table "ubs", force: :cascade do |t|
     t.string "name"
     t.string "neighborhood"
-    t.bigint "user_id"
     t.string "shift_start"
     t.string "shift_end"
     t.string "break_start"
@@ -171,7 +166,6 @@ ActiveRecord::Schema.define(version: 2021_05_10_142917) do
     t.string "sunday_shift_end"
     t.bigint "neighborhood_id"
     t.index ["cnes"], name: "index_ubs_on_cnes", unique: true
-    t.index ["user_id"], name: "index_ubs_on_user_id"
   end
 
   create_table "ubs_users", force: :cascade do |t|
@@ -217,8 +211,6 @@ ActiveRecord::Schema.define(version: 2021_05_10_142917) do
   add_foreign_key "doses", "appointments", column: "follow_up_appointment_id"
   add_foreign_key "doses", "patients"
   add_foreign_key "doses", "vaccines"
-  add_foreign_key "patients", "ubs", column: "main_ubs_id"
-  add_foreign_key "ubs", "users"
   add_foreign_key "ubs_users", "ubs"
   add_foreign_key "ubs_users", "users"
 end
