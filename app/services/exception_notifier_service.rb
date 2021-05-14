@@ -2,6 +2,6 @@ class ExceptionNotifierService
   def self.call(exception)
     raise exception if Rails.env.development?
 
-    Sentry.capture_exception(exception)
+    Appsignal.send_error(exception)
   end
 end

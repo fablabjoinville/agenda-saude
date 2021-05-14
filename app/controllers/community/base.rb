@@ -6,7 +6,7 @@ module Community
 
     def authenticate!
       if current_patient
-        Sentry.set_user(id: current_patient.id, username: current_patient.cpf)
+        Appsignal.tag_request(patient_id: current_patient.id)
 
         return current_patient
       end
