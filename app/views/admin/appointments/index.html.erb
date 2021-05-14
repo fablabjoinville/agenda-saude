@@ -4,7 +4,7 @@
   </div>
 
   <div class="col-3">
-    <%= link_to "Criar agendamentos em massa", new_admin_appointments_bulk_path, class: 'btn btn-primary btn-block' %>
+    <%= link_to("Criar agendamentos em massa", new_admin_appointments_bulk_path, class: 'btn btn-primary btn-block') if current_user.admin? %>
   </div>
 </div>
 
@@ -20,13 +20,9 @@
                               data: { cy: "dateInput" } %>
           </div>
         </div>
-        <div class="form-group col-md-7">
+        <div class="form-group col-md-8">
           <label for="">Unidade</label>
-          <%= f.select "ubs_id", Ubs.order(:name).pluck(:name, :id), { prompt: "Unidade:", selected: @ubs&.id }, class: "form-control" %>
-        </div>
-        <div class="form-group col-md-1">
-          <label for="">Por página</label>
-          <%= f.select "per_page", [100, 1_000, 10_000], { selected: @per_page }, class: "form-control" %>
+          <%= f.select "ubs_id", @ubs_index.pluck(:name, :id), { prompt: "Unidade:", selected: @ubs&.id }, class: "form-control" %>
         </div>
         <div class="form-group col-md-1">
           <label for="">&nbsp;</label>
@@ -37,8 +33,8 @@
   </div>
 </div>
 
-<% if @ubs -%>
-  <div class="row">
+<% if @appointments.any? -%>
+  <div class="row mt-4">
     <div class="col-3">
       <strong>Dia da semana:</strong> <%= t "calendar.weekdays.#{@date.wday}" %>
     </div>
@@ -46,10 +42,49 @@
       <strong>Unidade ativa:</strong> <%= @ubs.active ? "Sim" : "Desativada" %>
     </div>
     <div class="col-7">
-      <strong>Horários de atendimento neste dia:</strong>
+      <strong>Horários neste dia da semana:</strong>
       <%= @ubs.time_windows(@date.wday).join(", ") %>
     </div>
   </div>
+
+  <table class="table mt-4">
+    <tbody>
+    <tr>
+      <th scope="row">
+        Agendamentos vagos:
+      </th>
+      <td>
+        <%= @appointments.select { |a| a.patient.blank? }.count %>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        Agendamentos p/ primeira dose:
+      </th>
+      <td>
+        <%= @appointments.select { |a| a.patient.present? && a.follow_up_for_dose.blank? }.count %>
+      </td>
+    </tr>
+    <% @vaccines.each do |vaccine| -%>
+      <tr>
+        <th scope="row">
+          Agendamentos p/ reforço <%= vaccine.name %>:
+        </th>
+        <td>
+          <%= @appointments.select { |a| a.follow_up_for_dose&.vaccine == vaccine }.count %>
+        </td>
+      </tr>
+    <% end -%>
+    <tr class="table-dark">
+      <th scope="row">
+        Total:
+      </th>
+      <td>
+        <%= @appointments.count %>
+      </td>
+    </tr>
+    </tbody>
+  </table>
 
   <table class="table table-bordered table-hover table-sm mt-4">
     <thead class="thead-dark">
@@ -64,7 +99,7 @@
     </tr>
     </thead>
     <tbody>
-    <% @appoitments.each do |appointment| -%>
+    <% @appointments.each do |appointment| -%>
       <tr class="<%= "table-dark" unless appointment.active %> <%= "table-success" if appointment.checked_out? %>">
         <td>
           <%= link_to appointment.id, admin_appointment_path(appointment) %>
@@ -108,49 +143,8 @@
     </tbody>
   </table>
 
-  <h5 class="mt-4">Nesta página:</h5>
-
-  <table class="table mt-4">
-    <tbody>
-    <tr>
-      <th scope="row">
-        Agendamentos vagos:
-      </th>
-      <td>
-        <%= @appoitments.select { |a| a.patient.blank? }.count %>
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">
-        Agendamentos para primeira dose:
-      </th>
-      <td>
-        <%= @appoitments.select { |a| a.patient.present? && a.follow_up_for_dose.blank? }.count %>
-      </td>
-    </tr>
-    <% @vaccines.each do |vaccine| -%>
-      <tr>
-        <th scope="row">
-          Agendamentos p/ reforço <%= vaccine.name %>:
-        </th>
-        <td>
-          <%= @appoitments.select { |a| a.follow_up_for_dose&.vaccine == vaccine }.count %>
-        </td>
-      </tr>
-    <% end -%>
-    <tr class="table-dark">
-      <th scope="row">
-        Total:
-      </th>
-      <td>
-        <%= @appoitments.count %>
-      </td>
-    </tr>
-    </tbody>
-  </table>
-
   <div>
-    <%= paginate @appoitments %>
+    <%= paginate @appointments %>
   </div>
 
 <% end -%>

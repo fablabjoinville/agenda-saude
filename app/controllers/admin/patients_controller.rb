@@ -1,6 +1,7 @@
 module Admin
   class PatientsController < Base
     before_action :set_patient, only: %i[show unblock]
+    skip_before_action :require_administrator!, only: %i[index show unblock]
 
     FILTERS = {
       search: 'search',

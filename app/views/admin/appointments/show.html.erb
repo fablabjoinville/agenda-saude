@@ -3,7 +3,7 @@
 </h1>
 
 <p>
-  <strong>Unidade:</strong> <%= link_to @appointment.ubs.name, admin_ubs_path(@appointment.ubs) %>
+  <strong>Unidade:</strong> <%= @appointment.ubs.name %>
   <br />
   <strong>Horário:</strong> <%= l @appointment.start, format: :short_date_hour %> até <%= l @appointment.end, format: :short_hour %>
   <br />
