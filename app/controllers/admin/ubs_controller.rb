@@ -13,7 +13,7 @@ module Admin
     end
 
     def create
-      @ubs = Condition.new(ubs_params)
+      @ubs = Ubs.new(ubs_params)
 
       if @ubs.save
         redirect_to admin_ubs_path(@ubs)
