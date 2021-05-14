@@ -5,7 +5,6 @@ ruby '3.0.1'
 gem 'pg' # Use postgresql as the database for Active Record
 gem 'rails', '~> 6.1', '< 6.2'
 
-gem 'appsignal'
 gem 'barnes', require: false
 gem 'bootsnap', require: false
 gem 'bootstrap'
@@ -18,10 +17,13 @@ gem 'font-awesome-sass'
 gem 'jquery-rails'
 gem 'kaminari'
 gem 'kramdown'
+gem 'newrelic_rpm'
 gem 'puma' # Use Puma as the app server
 gem 'rails_autoscale_agent'
 gem 'redis'
 gem 'sass-rails' # Use SCSS for stylesheets
+gem 'sentry-rails'
+gem 'sentry-ruby'
 gem 'smarter_csv'
 gem 'tod'
 
