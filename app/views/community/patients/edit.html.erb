@@ -2,10 +2,16 @@
   <h2 data-cy="signUpText">Alterar cadastro</h2>
 
   <%= form_for @patient, url: community_patient_path, method: :patch do |f| -%>
-    <%= render "form", f: f, patient: @patient %>
+    <%= render "form", f: f %>
 
     <div class="form-row">
-      <div class="form-group col-md-12">
+      <div class="form-group col-md-2">
+        <%= link_to "Cancelar e voltar", home_community_appointments_path,
+                    class: "btn btn-secondary btn-block" %>
+      </div>
+      <div class="form-group col-md-1">
+      </div>
+      <div class="form-group col-md-9">
         <%= f.submit "Atualizar",
                      class: "btn btn-primary btn-block pull-right",
                      data: { cy: "patientSubmitButton" } %>

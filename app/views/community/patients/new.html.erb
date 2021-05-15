@@ -1,13 +1,13 @@
 <div class="container">
   <div class="alert alert-info">
-    O CPF <%= @patient.cpf %> ainda não foi cadastrado.
+    O CPF <%= ApplicationHelper.humanize_cpf(@patient.cpf) %> ainda não foi cadastrado.
     Complete seu cadastro abaixo para acessar o agendamento da vacina.
   </div>
 
   <h2 data-cy="signUpText">Cadastro</h2>
 
   <%= form_for @patient, url: community_patient_path, method: :post do |f| -%>
-    <%= render "form", f: f, patient: @patient %>
+    <%= render "form", f: f %>
 
     <div class="form-row">
       <div class="form-group col-md-12">

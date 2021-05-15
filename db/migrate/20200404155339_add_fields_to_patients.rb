@@ -1,4 +1,5 @@
 class AddFieldsToPatients < ActiveRecord::Migration[6.0]
+  # rubocop:disable Rails/BulkChangeTable
   def change
     change_table :patients do |t|
       t.string :name, null: false, default: ''
@@ -13,4 +14,5 @@ class AddFieldsToPatients < ActiveRecord::Migration[6.0]
 
     add_index :patients, :cpf, unique: true
   end
+  # rubocop:enable Rails/BulkChangeTable
 end
