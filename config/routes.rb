@@ -37,7 +37,7 @@ Rails.application.routes.draw do
       resources :groups
       resources :neighborhoods
       resources :pages
-      resources :patients do
+      resources :patients, only: %i[index new create edit update show] do
         member do
           patch :unblock
         end

@@ -1,6 +1,6 @@
 module Admin
   class PatientsController < Base
-    before_action :set_patient, only: %i[show unblock edit update destroy]
+    before_action :set_patient, only: %i[show unblock edit update]
     skip_before_action :require_administrator!, only: %i[index show unblock new create edit update]
 
     FILTERS = {
@@ -43,11 +43,6 @@ module Admin
       else
         render :edit
       end
-    end
-
-    def destroy
-      @patient.destroy!
-      redirect_to admin_patients_path
     end
 
     def unblock
