@@ -14,8 +14,7 @@
         b.check_box(
           checked: f.object.group_ids.include?(b.value.to_i),
           class: "form-check-input",
-          data: { 'group-parent' => b.value },
-          required: true # disabled via JS in case one is set
+          data: { 'group-parent' => b.value }
         ) + b.text
       end %>
     </div>
@@ -29,8 +28,7 @@
                 <%= s.label do
                   s.check_box(
                     checked: f.object.group_ids.include?(s.value.to_i),
-                    class: "form-check-input",
-                    required: true # disabled via JS in case one is set
+                    class: "form-check-input"
                   ) + s.text
                 end %>
               </div>
