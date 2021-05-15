@@ -72,9 +72,7 @@
 
 <div class="form-row">
   <div class="form-group col-md-12">
-    <div class="form-check" data-group-context-priority="">
-      <%= render partial: 'group_boxes', locals: { group: Group.priority, f: f } %>
-    </div>
+    <%= render partial: '/shared/group_boxes', locals: { for_group: :priority, f: f } %>
   </div>
 </div>
 
@@ -86,9 +84,7 @@
 
 <div class="form-row">
   <div class="form-group col-md-12">
-    <div class="form-check" data-group-context-comorbidity="">
-      <%= render partial: 'group_boxes', locals: { group: Group.comorbidity, f: f } %>
-    </div>
+    <%= render partial: '/shared/group_boxes', locals: { for_group: :comorbidity, f: f } %>
   </div>
 </div>
 
@@ -169,41 +165,3 @@
     </small>
   </div>
 </div>
-
-<script type="text/javascript">
-  $(function () {
-    $('[data-group-parent]').on('change', function () {
-      groupToggle($(this))
-    }).each(function () {
-      groupToggle($(this))
-    })
-
-    let selectors = [
-      $('[data-group-context-priority]'),
-      $('[data-group-context-comorbidity]')
-    ];
-    selectors.forEach(function (selector) {
-      selector.find(':checkbox').on('change', function (e) {
-        const target = $(e.target)
-
-        if (target.is('[data-blank]')) { // if blank one changes...
-          if (target.is(':checked')) { // ... to be checked...
-            selector.find(':checkbox:not([data-blank])').prop('checked', false) // ... then uncheck all others
-          } else { // ... to not be checked...
-            selector.find(':checkbox[data-blank]').prop('checked', true)  // ... then re-check it
-          }
-
-          $('[data-group-parent]').each(function () { groupToggle($(this)) })
-        } else { // if a not blank changes...
-          if (target.is(':checked')) { // ... to be checked...
-            selector.find(':checkbox[data-blank]').prop('checked', false) // ... then uncheck the blank one
-          } else { // ... to not be checked...
-            selector.find(':checkbox[data-blank]').prop('checked', selector.find(':checkbox:not([data-blank]):checked').size() === 0) // ... then check the blank one ONLY IF no other ones are checked
-          }
-        }
-      }).each(function () {
-        selector.find(':checkbox[data-blank]').prop('checked', !($(selector).find(':checkbox:not([data-blank])').is(':checked')))
-      })
-    })
-  })
-</script>

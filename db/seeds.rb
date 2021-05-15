@@ -78,8 +78,6 @@ end
   { id: 93, name: 'Gestantes e puérperas sem comorbidades', parent_group_id: 1001, context: 'priority', position: 4 },
   { id: 94, name: 'Pessoas com deficiências permanentes cadastradas no Programa de Benefício de Prestação Continuada (BPC)', parent_group_id: nil, context: 'comorbidity', position: 5, active: false },
   { id: 95, name: 'Cirrose hepática - (Child-Pugh A, B ou C)', parent_group_id: nil, context: 'comorbidity', position: 11 },
-  { id: 998, name: 'Não me encaixo em nenhum dos grupos listados', parent_group_id: nil, context: 'priority', position: 0 },
-  { id: 999, name: 'Não possuo nenhuma das comorbidades ou a que tenho, não está na lista', parent_group_id: nil, context: 'comorbidity', position: 0 },
   { id: 1000, name: 'Transplantado de órgão sólido ou medula óssea', parent_group_id: nil, context: 'priority', position: 1 },
   { id: 1001, name: 'Gestantes e Puérperas (até 45 dias pós parto)', parent_group_id: nil, context: 'priority', position: 4 },
   { id: 1002, name: 'Recebe Benefício de Prestação Continuada (BPC)', parent_group_id: 35, context: 'priority', position: 1 },
@@ -102,7 +100,9 @@ end
   { id: 1019, name: 'Ensino Fundamental (professor, segundo professor, auxiliares, intérpretes de Libras) - Remoto', parent_group_id: 1015, context: 'priority', position: 0 },
   { id: 1020, name: 'Ensino Médio (professor, segundo professor, auxiliares, intérpretes de Libras) - Remoto', parent_group_id: 1015, context: 'priority', position: 0 },
   { id: 1021, name: 'Ensino Superior - Presencial', parent_group_id: 1006, context: 'priority', position: 0 },
-  { id: 1022, name: 'Profissionais que atuam em atividade remota, EAD ou similares', parent_group_id: 1015, context: 'priority', position: 0 }
+  { id: 1022, name: 'Profissionais que atuam em atividade remota, EAD ou similares', parent_group_id: 1015, context: 'priority', position: 0 },
+  { id: 998, name: 'Não me encaixo em nenhum dos grupos listados', parent_group_id: nil, context: 'priority', position: 0, active: false },
+  { id: 999, name: 'Não possuo nenhuma das comorbidades ou a que tenho, não está na lista', parent_group_id: nil, context: 'comorbidity', position: 0, active: false }
 ].each do |h|
   Group.find_or_initialize_by(id: h[:id]).tap do |group|
     group.attributes = { parent_group_id: nil, context: 'priority', active: true }.merge(h)
