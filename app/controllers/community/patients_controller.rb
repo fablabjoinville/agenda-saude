@@ -2,6 +2,7 @@ module Community
   class PatientsController < Base
     skip_before_action :authenticate!, only: %i[new create]
 
+    # rubocop:disable Naming/VariableNumber
     FIELDS = %i[
       birthday
       email
@@ -12,8 +13,10 @@ module Community
       phone
       place_number
       public_place
+      street_2
       sus
     ].freeze
+    # rubocop:enable Naming/VariableNumber
 
     def new
       @patient = Patient.new create_params

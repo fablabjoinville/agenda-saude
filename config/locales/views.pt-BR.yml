@@ -12,8 +12,8 @@ pt-BR:
         chronic: Crônico
         cpf: CPF
         email: Email
-        mother_name: Nome da mãe
-        name: Nome
+        mother_name: Nome completo da mãe
+        name: Nome completo
         neighborhood: Bairro
         other_phone: Telefone Secundário
         phone: Telefone

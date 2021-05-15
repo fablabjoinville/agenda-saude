@@ -1,3 +1,12 @@
+<div class="row">
+  <label for="patient_group_ids_0">
+    <input class="form-check-input" data-blank="" type="checkbox" value="" name="patient[group_ids][]" id="patient_group_ids_0">
+    <i>
+      Não me encaixo em nenhuma opção abaixo, ou não está na lista
+    </i>
+  </label>
+</div>
+
 <%= f.collection_check_boxes :group_ids, group.root.active.order(:position).includes(:children), :id, :name do |b| %>
   <div class="row">
     <%= b.label do
