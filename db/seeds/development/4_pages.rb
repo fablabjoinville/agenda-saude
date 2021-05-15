@@ -15,7 +15,7 @@
   {
     path: 'patient_groups_priority',
     title: 'Aviso sobre grupos Prioritários no cadastro',
-    body: "É **necessário comprovar com documento oficial** no momento da aplicação da vacina.",
+    body: 'É **necessário comprovar com documento oficial** no momento da aplicação da vacina.',
     context: 'embedded'
   },
   {

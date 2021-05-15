@@ -1,4 +1,3 @@
-# coding: utf-8
 module KaminariHelper
   def link_to_entries_previous_page(entries)
     link_to_previous_page entries, '< Página anterior', class: 'pagination-link', data: { cy: 'previousPageLink' }

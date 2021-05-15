@@ -5,19 +5,19 @@ module SlackNotifier
 
   class << self
     def error(message, async: true)
-      send_message("‼️ #{message}")
+      send_message("‼️ #{message}", async: async)
     end
 
     def info(message, async: true)
-      send_message("ℹ️ #{message}")
+      send_message("ℹ️ #{message}", async: async)
     end
 
     def warn(message, async: true)
-      send_message("⚠️ #{message}")
+      send_message("⚠️ #{message}", async: async)
     end
 
     def success(message, async: true)
-      send_message("✅ #{message}")
+      send_message("✅ #{message}", async: async)
     end
 
     def send_message(text, async: true)
