@@ -5,9 +5,8 @@ class ApplicationController < ActionController::Base
 
   def current_patient
     return if session[:patient_id].blank?
-    return @current_patient if @current_patient.present?
 
-    @current_patient = Patient.find session[:patient_id]
+    @current_patient ||= Patient.find session[:patient_id]
   end
 
   def date_from_params(params, date_key)
