@@ -115,6 +115,11 @@ class Patient < ApplicationRecord
     @age ||= ((Time.zone.now - Time.zone.parse("#{birthday} 00:00:00")) / 1.year.seconds).floor
   end
 
+  def neighborhood=(string)
+    self[:neighborhood] = string
+    self[:neighborhood_id] = Neighborhood.find_by(name: string.to_s)&.id
+  end
+
   def self.parse_cpf(cpf)
     cpf.gsub(/[^\d]/, '')
   end

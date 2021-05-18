@@ -74,4 +74,9 @@ class Ubs < ApplicationRecord
     [[Tod::TimeOfDay.parse(saturday_shift_start), Tod::TimeOfDay.parse(saturday_break_start)],
      [Tod::TimeOfDay.parse(saturday_break_end), Tod::TimeOfDay.parse(saturday_shift_end)]]
   end
+
+  def neighborhood=(string)
+    self[:neighborhood] = string
+    self[:neighborhood_id] = Neighborhood.find_by(name: string.to_s)&.id
+  end
 end

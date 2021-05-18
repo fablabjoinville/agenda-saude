@@ -66,13 +66,10 @@ Pacientes.
   * `neighborhood`: bairro como nome em texto, **a ser substituído pelo neighborhood_id no futuro**.
   * `fake_mothers`: nomes falsos de mães. Usado para desafiar o usuário no login.
   * `login_attempts`: tentativas falhas de login. Usado para bloquear acesso após um número de tentativas falhas.
-  * `main_ubs_id`: **a ser removido**.
-  * `target_audience`: **a ser removido**.
   * `public_place`: endereço residencial.
   * `place_number`: número residencial.
-  * `specific_comorbidity`: **a ser removido**.
   * `neighborhood_id`:  bairro, ainda não em uso (usar neighborhood, como texto).
-  * `street_2`: complemento residencial, **ainda não em uso**.
+  * `street_2`: complemento residencial
   * `internal_note`: observação interna sobre o usuário, **ainda não em uso**.
 
 ## ubs
@@ -81,7 +78,6 @@ Unidades de saúde.
 
   * `name`: nome da unidade de saúde.
   * `neighborhood`:
-  * `user_id`: usuário da unidade, **a ser substituído pela tabela associativa ubs_users**.
   * `shift_start`:
   * `shift_end`:
   * `break_start`:
