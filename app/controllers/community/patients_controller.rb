@@ -15,6 +15,7 @@ module Community
       street_2
       sus
     ].freeze
+
     def new
       @patient = Patient.new create_params
     end
