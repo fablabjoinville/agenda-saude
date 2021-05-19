@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_14_022641) do
+ActiveRecord::Schema.define(version: 2021_05_19_144951) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -93,7 +93,7 @@ ActiveRecord::Schema.define(version: 2021_05_14_022641) do
     t.bigint "patient_id", null: false
     t.bigint "group_id", null: false
     t.index ["group_id", "patient_id"], name: "index_groups_patients_on_group_id_and_patient_id"
-    t.index ["patient_id", "group_id"], name: "index_groups_patients_on_patient_id_and_group_id"
+    t.index ["patient_id", "group_id"], name: "index_groups_patients_on_patient_id_and_group_id", unique: true
   end
 
   create_table "neighborhoods", force: :cascade do |t|
