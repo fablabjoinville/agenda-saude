@@ -68,19 +68,30 @@
                        class: "form-control" %>
     </div>
 
-    <div class="form-group col-md-2">
+    <div class="form-group col-md-4">
       <%= f.label :place_number %>
       <%= f.text_field :place_number,
                        required: true,
                        class: "form-control" %>
     </div>
+  </div>
 
-    <div class="form-group col-md-2">
+  <div class="form-row">
+    <div class="form-group col-md-8">
+      <%= f.label :street_2 %>
+      <%= f.text_field :street_2,
+                       autocomplete: "place",
+                       class: "form-control" %>
+    </div>
+
+    <div class="form-group col-md-4">
       <%= f.label :neighborhood %>
       <%= f.select :neighborhood, Neighborhood.pluck(:name), {},
                    class: "form-control" %>
     </div>
+  </div>
 
+  <div class="form-row">
     <div class="form-group col-md-6">
       <%= f.label :phone %>
       <%= f.text_field :phone,
