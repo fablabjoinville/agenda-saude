@@ -1,7 +1,7 @@
 <div class="form-check" data-group-context-<%= for_group %>="">
   <div class="row">
-    <label for="patient_group_ids_0">
-      <input class="form-check-input" data-blank="" type="checkbox" value="" name="patient[group_ids][]" id="patient_group_ids_0">
+    <label for="patient_group_ids_<%= for_group %>_blank">
+      <input class="form-check-input" data-blank="" type="checkbox" value="" name="patient[group_ids][]" id="patient_group_ids_<%= for_group %>_blank">
       <i>
         Não me encaixo em nenhuma opção abaixo, ou não está na lista
       </i>
