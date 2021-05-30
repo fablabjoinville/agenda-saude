@@ -72,6 +72,15 @@ pt-BR:
         address: Endereço
         neighborhood: Bairro
         phone: Telefone
+      inquiry_question:
+        text: Texto
+        position: Posição
+        active: Ativo
+        form_type: Formato
+      inquiry_answer:
+        text: Texto
+        position: Posição
+        active: Ativo
 
     models:
       appointment: Agendamento
@@ -84,6 +93,8 @@ pt-BR:
       user: Usuário
       vaccine: Vacina
       page: Página
+      inquiry_question: Pergunta
+      inquiry_answer: Resposta
   activemodel:
     attributes:
       appointments_bulk:

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_19_144951) do
+ActiveRecord::Schema.define(version: 2021_05_30_143333) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -94,6 +94,25 @@ ActiveRecord::Schema.define(version: 2021_05_19_144951) do
     t.bigint "group_id", null: false
     t.index ["group_id", "patient_id"], name: "index_groups_patients_on_group_id_and_patient_id"
     t.index ["patient_id", "group_id"], name: "index_groups_patients_on_patient_id_and_group_id", unique: true
+  end
+
+  create_table "inquiry_answers", force: :cascade do |t|
+    t.string "text", null: false
+    t.bigint "inquiry_question_id", null: false
+    t.integer "position", default: 0, null: false
+    t.boolean "active", default: true, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["inquiry_question_id"], name: "index_inquiry_answers_on_inquiry_question_id"
+  end
+
+  create_table "inquiry_questions", force: :cascade do |t|
+    t.string "text", null: false
+    t.integer "form_type", default: 0, null: false
+    t.integer "position", default: 0, null: false
+    t.boolean "active", default: true, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "neighborhoods", force: :cascade do |t|

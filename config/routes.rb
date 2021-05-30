@@ -43,6 +43,9 @@ Rails.application.routes.draw do
         end
       end
       resources :conditions
+      resources :inquiry_questions do
+        resources :inquiry_answers
+      end
       resources :ubs
       resources :users
       resources :vaccines
