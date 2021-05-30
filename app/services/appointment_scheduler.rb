@@ -50,6 +50,7 @@ class AppointmentScheduler
         new_appointment.update!(vaccine_name: dose.vaccine.legacy_name) # TODO: remove me [jmonteiro]
       end
 
+      log :schedule, patient.id, new_appointment.id
       [SUCCESS, new_appointment]
     end
   rescue StandardError => e
@@ -59,8 +60,15 @@ class AppointmentScheduler
   end
   # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
+  def log(action, patient_id, appointment_id)
+    Rails.logger.info "[AppointmentScheduler logger] " \
+                        "patient #{patient_id} appointment #{appointment_id}: #{action}"
+  end
+
   # Cancels schedule for an appointment for a given patient, in a SQL efficient way
   def cancel_schedule(appointment:, new_appointment: nil)
+    log :cancel_schedule, appointment.patient_id, appointment.id
+
     attributes = { patient: nil, vaccine_name: nil, check_in: nil }
 
     dose = appointment.follow_up_for_dose
