@@ -54,7 +54,7 @@
 </div>
 
 <div class="card mt-3">
-  <h5 class="card-header">Cadastro e agendamento</h5>
+  <h5 class="card-header">Cadastro e agendamento do paciente a ser vacinado</h5>
   <div class="card-body">
     <%= form_for :patient, url: community_session_path, method: :post do |f| %>
       <div class="form-row">
@@ -77,8 +77,8 @@
             </div>
           </div>
           <small id="cpfInputField" class="text-muted">
-            Digite o número do CPF para cadastrar ou, caso já tenha feito o cadastro, agendar ou consultar seu
-            agendamento.
+            Digite o número do CPF do paciente a ser vacinado para criar um cadastro ou,
+            caso já tenha feito o cadastro, para agendar ou consultar o agendamento.
           </small>
         </div>
       </div>
