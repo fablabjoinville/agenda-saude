@@ -68,7 +68,8 @@ module Community
     def can_update_profile?
       !@patient.appointments.current || # if there's no appointment, allow
         @patient.doses.count.positive? || # if there's already a dose, allow
-        @patient.can_schedule? # if it's the user 1st dose and there's an appointment, check if they can still schedule
+        @patient.can_schedule? || # if it's the user 1st dose and there's an appointment, check if they can still schedule
+        @patient.could_schedule_in_the_past? # if user was every able to schedule in the past
     end
 
     def create_params
