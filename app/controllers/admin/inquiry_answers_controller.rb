@@ -4,7 +4,7 @@ module Admin
     before_action :set_inquiry_answer, only: %i[show edit update destroy]
 
     def index
-      redirect_to [:admin, @inquiry_question]
+      redirect_to([:admin, @inquiry_question])
     end
 
     def new
@@ -15,7 +15,7 @@ module Admin
       @inquiry_answer = @inquiry_question.inquiry_answers.build(inquiry_answer_params)
 
       if @inquiry_answer.save
-        redirect_to [:admin, @inquiry_question, @inquiry_answer]
+        redirect_to([:admin, @inquiry_question, @inquiry_answer])
       else
         render :new
       end
@@ -27,7 +27,7 @@ module Admin
 
     def update
       if @inquiry_answer.update(inquiry_answer_params)
-        redirect_to [:admin, @inquiry_question, @inquiry_answer]
+        redirect_to([:admin, @inquiry_question, @inquiry_answer])
       else
         render :edit
       end
@@ -35,7 +35,7 @@ module Admin
 
     def destroy
       @inquiry_answer.destroy!
-      redirect_to [:admin, @inquiry_question]
+      redirect_to([:admin, @inquiry_question])
     end
 
     private
