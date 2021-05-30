@@ -116,8 +116,8 @@ module Community
 
     def success_message(desired_date, scheduled_date)
       if desired_date.present? && (desired_date - scheduled_date).abs > AppointmentScheduler::ROUNDING
-        'Vacinação agendada, porém em horário diferente dado que o desejado já encontrava-se agendado. ' \
-          "O horário mais próximo disponível foi #{I18n.l scheduled_date, format: :short}."
+        'Vacinação agendada. No entanto, a data e/ou hora que você selecionou foi ocupada por outra pessoa. ' \
+          'Confira abaixo a nova data e horário que o sistema encontrou para você!'
       else
         'Vacinação agendada.'
       end
