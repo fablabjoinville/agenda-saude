@@ -61,8 +61,7 @@ class AppointmentScheduler
   # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
   def log(action, patient_id, appointment_id)
-    Rails.logger.info '[AppointmentScheduler logger] ' \
-                        "patient #{patient_id} appointment #{appointment_id}: #{action}"
+    Rails.logger.info "[AppointmentScheduler logger] patient #{patient_id} appointment #{appointment_id}: #{action}"
   end
 
   # Cancels schedule for an appointment for a given patient, in a SQL efficient way
