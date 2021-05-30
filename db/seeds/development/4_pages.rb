@@ -41,6 +41,12 @@
     title: 'Rodapé de todas páginas',
     body: "[Acompanhe as principais informações sobre o combate ao coronavírus em Joinville.](https://www.joinville.sc.gov.br/coronavirus/)\r\n\r\nLigue/Web Saúde: [(47) 3481-5165](tel:4734815165) ([WhatsApp](https://api.whatsapp.com/send?phone=554734815165)) — Segunda a sexta-feira — 07:00 às 20:00, exceto feriados e pontos facultativos",
     context: 'embedded'
+  },
+  {
+    path: 'patient_inquiry_intro',
+    title: 'Introdução para o inquérito no cadastro de pacientes',
+    body: 'Gostaria de participar de uma pesquisa epidemiológica? Sua contribuição pode ajudar muito ao município melhor planejar as ações de combate ao Covid 19.',
+    context: 'embedded'
   }
 ].each do |h|
   Page.find_or_initialize_by(path: h[:path]).tap do |page|

@@ -70,11 +70,11 @@ module Community
     end
 
     def create_params
-      params.require(:patient).permit(*(FIELDS + [:cpf]), group_ids: [])
+      params.require(:patient).permit(*(FIELDS + [:cpf]), group_ids: [], inquiry_answer_ids: [])
     end
 
     def update_params
-      params.require(:patient).permit(*FIELDS, group_ids: [])
+      params.require(:patient).permit(*FIELDS, group_ids: [], inquiry_answer_ids: [])
     end
   end
 end

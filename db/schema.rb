@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_30_143333) do
+ActiveRecord::Schema.define(version: 2021_05_30_153709) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -103,7 +103,9 @@ ActiveRecord::Schema.define(version: 2021_05_30_143333) do
     t.boolean "active", default: true, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["active"], name: "index_inquiry_answers_on_active"
     t.index ["inquiry_question_id"], name: "index_inquiry_answers_on_inquiry_question_id"
+    t.index ["position"], name: "index_inquiry_answers_on_position"
   end
 
   create_table "inquiry_questions", force: :cascade do |t|
@@ -113,6 +115,8 @@ ActiveRecord::Schema.define(version: 2021_05_30_143333) do
     t.boolean "active", default: true, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["active"], name: "index_inquiry_questions_on_active"
+    t.index ["position"], name: "index_inquiry_questions_on_position"
   end
 
   create_table "neighborhoods", force: :cascade do |t|
@@ -158,6 +162,15 @@ ActiveRecord::Schema.define(version: 2021_05_30_143333) do
     t.string "street_2"
     t.string "internal_note"
     t.index ["cpf"], name: "index_patients_on_cpf", unique: true
+  end
+
+  create_table "patients_inquiry_answers", force: :cascade do |t|
+    t.bigint "patient_id", null: false
+    t.bigint "inquiry_answer_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["inquiry_answer_id"], name: "index_patients_inquiry_answers_on_inquiry_answer_id"
+    t.index ["patient_id"], name: "index_patients_inquiry_answers_on_patient_id"
   end
 
   create_table "ubs", force: :cascade do |t|

@@ -109,6 +109,7 @@
 <div class="form-row">
   <div class="form-group col-md-8">
     <%= f.label :street_2 %>
+    <%= optional_field_tag %>
     <%= f.text_field :street_2,
                      autocomplete: "place",
                      class: "form-control" %>
@@ -160,8 +161,18 @@
                        autocomplete: "sus", required: false,
                        class: "form-control" %>
     <small id="susHelp" class="form-text text-muted">
-      Número do cartão SUS. Descubra o número acessando
-      <a href="https://conectesus-paciente.saude.gov.br" target="cartaosus">Cartão SUS Digital</a>.
+      Número do cartão SUS. Descubra o número acessando o
+      <a href="https://conectesus-paciente.saude.gov.br" target="cartaosus">ConecteSUS</a>.
     </small>
+  </div>
+</div>
+
+<h3>Inquérito</h3>
+
+<%= embedded_page :patient_inquiry_intro -%>
+
+<div class="form-row">
+  <div class="form-group col-md-12">
+    <%= render partial: '/shared/inquiry', locals: { f: f } %>
   </div>
 </div>

@@ -1,0 +1,20 @@
+<input type="hidden" name="patient[inquiry_answer_ids][]" value="">
+
+<% InquiryQuestion.active.order(:position).each do |question| -%>
+  <label for="inquiry_question_<%= question.id %>">
+    <%= question.text %>
+  </label>
+  <%= optional_field_tag %>
+
+  <div class="mb-3">
+    <% question.inquiry_answers.active.order(:position).each do |answer| -%>
+      <div class="form-check">
+        <input class="form-check-input" type="<%= question.form_type %>" value="<%= answer.id %>" name="patient[inquiry_answer_ids][]" id="patient_inquiry_answer_ids_<%= answer.id %>"
+          <%= 'checked' if f.object.inquiry_answer_ids.include?(answer.id) %>>
+        <label class="form-check-label" for="patient_inquiry_answer_ids_<%= answer.id %>">
+          <%= answer.text %>
+        </label>
+      </div>
+    <% end -%>
+  </div>
+<% end %>

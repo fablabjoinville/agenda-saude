@@ -29,4 +29,26 @@ namespace :oneoff do
           ubs.id = subquery.ubs_id
     })&.inspect
   end
+
+  task disable_no_answers: [:environment] do
+    Group.where(id: [998, 999]).each do |g|
+      g.update! active: false
+    end
+  end
+
+  task inquiry_page: [:environment] do
+    [
+      {
+        path: 'patient_inquiry_intro',
+        title: 'Introdução para o inquérito no cadastro de pacientes',
+        body: 'Gostaria de participar de uma pesquisa epidemiológica? Sua contribuição pode ajudar muito ao município melhor planejar as ações de combate ao Covid 19.',
+        context: 'embedded'
+      }
+    ].each do |h|
+      Page.find_or_initialize_by(path: h[:path]).tap do |page|
+        page.attributes = h
+        page.save!
+      end
+    end
+  end
 end
