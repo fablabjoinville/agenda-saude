@@ -21,7 +21,8 @@ begin_date = 0.days.from_now.to_date.in_time_zone
     public_place: 'Rua das Flores',
     place_number: '1',
     neighborhood: 'América',
-    groups: [Group.find_by!(name: 'Trabalhador(a) da Saúde')]
+    groups: [Group.find_by!(name: 'Trabalhador(a) da Saúde')],
+    user_updated_at: Time.zone.now
   )
 
   today_range = begin_date.beginning_of_day..begin_date.end_of_day

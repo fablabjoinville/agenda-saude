@@ -88,6 +88,5 @@ User.new.tap do |user|
   user.password_confirmation = 'dontpanic'
   user.administrator = true
   user.ubs = Ubs.all
-  user.user_updated_at = Time.zone.now
   user.save!
 end

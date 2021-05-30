@@ -24,7 +24,8 @@ end_of_day_minutes = [600, 620, 640, 660, 680, 700]
     public_place: 'Rua das Flores',
     place_number: '1',
     neighborhood: 'América',
-    groups: [Group.find_by!(name: 'Trabalhador(a) da Saúde')]
+    groups: [Group.find_by!(name: 'Trabalhador(a) da Saúde')],
+    user_updated_at: Time.zone.now
   )
 
   time_multiplier = end_of_day_minutes.sample.minutes
