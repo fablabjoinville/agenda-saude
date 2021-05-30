@@ -167,12 +167,17 @@
   </div>
 </div>
 
-<h3>Inquérito</h3>
+<% if InquiryQuestion.active.any? -%>
+  <h3>
+    Inquérito
+    <%= optional_field_tag %>
+  </h3>
 
-<%= embedded_page :patient_inquiry_intro -%>
+  <%= embedded_page :patient_inquiry_intro -%>
 
-<div class="form-row">
-  <div class="form-group col-md-12">
-    <%= render partial: '/shared/inquiry', locals: { f: f } %>
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <%= render partial: '/shared/inquiry', locals: { f: f } %>
+    </div>
   </div>
-</div>
+<% end -%>

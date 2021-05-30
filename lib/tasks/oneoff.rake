@@ -41,7 +41,8 @@ namespace :oneoff do
       {
         path: 'patient_inquiry_intro',
         title: 'Introdução para o inquérito no cadastro de pacientes',
-        body: 'Gostaria de participar de uma pesquisa epidemiológica? Sua contribuição pode ajudar muito ao município melhor planejar as ações de combate ao Covid 19.',
+        body: 'Gostaria de participar de uma pesquisa epidemiológica? ' \
+'Sua contribuição pode ajudar muito ao município melhor planejar as ações de combate ao Covid 19.',
         context: 'embedded'
       }
     ].each do |h|
@@ -50,5 +51,9 @@ namespace :oneoff do
         page.save!
       end
     end
+  end
+
+  task inquiry: [:environment] do
+    load Rails.root.join('db/seeds/development/5_inquiry.rb')
   end
 end
