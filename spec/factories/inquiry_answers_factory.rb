@@ -1,8 +1,8 @@
 FactoryBot.define do
   factory :inquiry_answer do
-    text { "MyString" }
-    question { "" }
+    text { 'MyString' }
+    question { '' }
     position { 1 }
-    active { "" }
+    active { '' }
   end
 end
