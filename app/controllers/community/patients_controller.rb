@@ -22,6 +22,7 @@ module Community
 
     def create
       @patient = Patient.new create_params
+      @patient.user_updated_at = Time.zone.now
 
       if @patient.save
         session[:patient_id] = @patient.id
@@ -42,6 +43,7 @@ module Community
     def update
       @patient = current_patient
       @patient.attributes = update_params
+      @patient.user_updated_at = Time.zone.now
 
       unless can_update_profile?
         flash.now[:cy] = 'cannotUpdateProfileDueToAppointmentConditionText'

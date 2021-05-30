@@ -3,6 +3,10 @@ module Community
     class CannotCancelAndReschedule < StandardError; end
 
     def home
+      if current_patient.force_user_update?
+        return redirect_to(edit_community_patient_path, flash: { alert: I18n.t('alerts.update_patient_profile') })
+      end
+
       return redirect_to(vaccinated_community_appointments_path) if current_patient.vaccinated?
 
       @doses = current_patient.doses.includes(:vaccine, appointment: [:ubs])

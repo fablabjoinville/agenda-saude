@@ -105,6 +105,8 @@ pt-BR:
     models:
       appointments_bulk: Agendamentos em massa
   alerts:
+    update_patient_profile: |
+      Por favor, atualize seu cadastro para continuar a acessar o agendamento.
     last_dose_received: |
       %{name} está imunizado(a).
     dose_received_with_follow_up: |

@@ -122,6 +122,11 @@ class Patient < ApplicationRecord
     self[:neighborhood_id] = Neighborhood.find_by(name: string.to_s)&.id
   end
 
+  def force_user_update?
+    user_updated_at.blank? ||
+      user_updated_at < Time.zone.parse(Rails.configuration.x.patient_force_update_before)
+  end
+
   def self.parse_cpf(cpf)
     cpf.gsub(/[^\d]/, '')
   end
