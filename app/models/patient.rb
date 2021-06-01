@@ -52,7 +52,7 @@ class Patient < ApplicationRecord
 
   # Find if patient was every able to schedule in the past
   def could_schedule_in_the_past?
-    Condition.active.start_at_past.select { |condition| condition.allowed? self }.any?
+    Condition.start_at_past.can_schedule.select { |condition| condition.allowed? self }.any?
   end
 
   def future_appointments?
