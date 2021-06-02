@@ -73,11 +73,20 @@ module Community
     end
 
     def create_params
-      params.require(:patient).permit(*(FIELDS + [:cpf]), group_ids: [], inquiry_answer_ids: [])
+      params.require(:patient).permit(*(FIELDS + [:cpf]), permitted_arrays)
     end
 
     def update_params
-      params.require(:patient).permit(*FIELDS, group_ids: [], inquiry_answer_ids: [])
+      params.require(:patient).permit(*FIELDS, permitted_arrays)
+    end
+
+    def permitted_arrays
+      array = {
+        group_ids: [],
+        inquiry_answers_via_questions: {}
+      }
+      InquiryQuestion.pluck(:id).map { |i| array[:inquiry_answers_via_questions][i.to_s.to_sym] = [] }
+      array
     end
   end
 end

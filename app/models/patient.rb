@@ -136,6 +136,10 @@ class Patient < ApplicationRecord
     cpf.gsub(/[^\d]/, '')
   end
 
+  def inquiry_answers_via_questions=(hash)
+    self.inquiry_answer_ids = hash.values.flatten
+  end
+
   private
 
   def valid_birth_date
