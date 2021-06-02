@@ -81,12 +81,12 @@ module Community
     end
 
     def permitted_arrays
-      array = {
+      {
         group_ids: [],
         inquiry_answers_via_questions: {}
-      }
-      InquiryQuestion.pluck(:id).map { |i| array[:inquiry_answers_via_questions][i.to_s.to_sym] = [] }
-      array
+      }.tap do |array|
+        InquiryQuestion.pluck(:id).map { |i| array[:inquiry_answers_via_questions][i.to_s.to_sym] = [] }
+      end
     end
   end
 end
