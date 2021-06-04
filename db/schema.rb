@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_19_144951) do
+ActiveRecord::Schema.define(version: 2021_05_30_185344) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -96,6 +96,29 @@ ActiveRecord::Schema.define(version: 2021_05_19_144951) do
     t.index ["patient_id", "group_id"], name: "index_groups_patients_on_patient_id_and_group_id", unique: true
   end
 
+  create_table "inquiry_answers", force: :cascade do |t|
+    t.string "text", null: false
+    t.bigint "inquiry_question_id", null: false
+    t.integer "position", default: 0, null: false
+    t.boolean "active", default: true, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["active"], name: "index_inquiry_answers_on_active"
+    t.index ["inquiry_question_id"], name: "index_inquiry_answers_on_inquiry_question_id"
+    t.index ["position"], name: "index_inquiry_answers_on_position"
+  end
+
+  create_table "inquiry_questions", force: :cascade do |t|
+    t.string "text", null: false
+    t.integer "form_type", default: 0, null: false
+    t.integer "position", default: 0, null: false
+    t.boolean "active", default: true, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["active"], name: "index_inquiry_questions_on_active"
+    t.index ["position"], name: "index_inquiry_questions_on_position"
+  end
+
   create_table "neighborhoods", force: :cascade do |t|
     t.string "name"
     t.index ["name"], name: "index_neighborhoods_on_name", unique: true
@@ -133,22 +156,27 @@ ActiveRecord::Schema.define(version: 2021_05_19_144951) do
     t.string "neighborhood"
     t.string "fake_mothers", default: [], array: true
     t.integer "login_attempts", default: 0
-    t.bigint "main_ubs_id"
-    t.integer "target_audience"
     t.string "public_place"
     t.string "place_number"
-    t.string "specific_comorbidity", default: ""
     t.bigint "neighborhood_id"
     t.string "street_2"
     t.string "internal_note"
+    t.datetime "user_updated_at"
     t.index ["cpf"], name: "index_patients_on_cpf", unique: true
-    t.index ["main_ubs_id"], name: "index_patients_on_main_ubs_id"
+  end
+
+  create_table "patients_inquiry_answers", force: :cascade do |t|
+    t.bigint "patient_id", null: false
+    t.bigint "inquiry_answer_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["inquiry_answer_id"], name: "index_patients_inquiry_answers_on_inquiry_answer_id"
+    t.index ["patient_id"], name: "index_patients_inquiry_answers_on_patient_id"
   end
 
   create_table "ubs", force: :cascade do |t|
     t.string "name"
     t.string "neighborhood"
-    t.bigint "user_id"
     t.string "shift_start"
     t.string "shift_end"
     t.string "break_start"
@@ -171,7 +199,6 @@ ActiveRecord::Schema.define(version: 2021_05_19_144951) do
     t.string "sunday_shift_end"
     t.bigint "neighborhood_id"
     t.index ["cnes"], name: "index_ubs_on_cnes", unique: true
-    t.index ["user_id"], name: "index_ubs_on_user_id"
   end
 
   create_table "ubs_users", force: :cascade do |t|
@@ -217,8 +244,6 @@ ActiveRecord::Schema.define(version: 2021_05_19_144951) do
   add_foreign_key "doses", "appointments", column: "follow_up_appointment_id"
   add_foreign_key "doses", "patients"
   add_foreign_key "doses", "vaccines"
-  add_foreign_key "patients", "ubs", column: "main_ubs_id"
-  add_foreign_key "ubs", "users"
   add_foreign_key "ubs_users", "ubs"
   add_foreign_key "ubs_users", "users"
 end

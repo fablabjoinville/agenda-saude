@@ -19,6 +19,9 @@ AllCops:
   NewCops: enable
   TargetRubyVersion: 3.0.1
 
+Naming/VariableNumber:
+  EnforcedStyle: snake_case
+
 Documentation:
   Enabled: false
 
