@@ -2,7 +2,12 @@ module Community
   class AppointmentsController < Base
     class CannotCancelAndReschedule < StandardError; end
 
+    # rubocop:disable Metrics/AbcSize
     def home
+      if current_patient.force_user_update?
+        return redirect_to(edit_community_patient_path, flash: { alert: I18n.t('alerts.update_patient_profile') })
+      end
+
       return redirect_to(vaccinated_community_appointments_path) if current_patient.vaccinated?
 
       @doses = current_patient.doses.includes(:vaccine, appointment: [:ubs])
@@ -16,6 +21,7 @@ module Community
                                        .where(start: from..to, ubs_id: allowed_ubs_ids)
                                        .count
     end
+    # rubocop:enable Metrics/AbcSize
 
     # Reschedules appointment (only if patient already has one scheduled)
     def index
@@ -116,8 +122,8 @@ module Community
 
     def success_message(desired_date, scheduled_date)
       if desired_date.present? && (desired_date - scheduled_date).abs > AppointmentScheduler::ROUNDING
-        'Vacinação agendada, porém em horário diferente dado que o desejado já encontrava-se agendado. ' \
-          "O horário mais próximo disponível foi #{I18n.l scheduled_date, format: :short}."
+        'Vacinação agendada. No entanto, a data e/ou hora que você selecionou foi ocupada por outra pessoa. ' \
+          'Confira abaixo a nova data e horário que o sistema encontrou para você!'
       else
         'Vacinação agendada.'
       end

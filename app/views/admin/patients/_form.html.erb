@@ -1,0 +1,136 @@
+<%= form_for [:admin, @patient] do |f| %>
+  <%= error_messages_for(f.object) %>
+
+  <h3>Dados pessoais</h3>
+
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <%= f.label :cpf %>
+      <%= f.text_field :cpf,
+                       required: true,
+                       class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-4">
+      <%= f.label :name %>
+      <%= f.text_field :name,
+                       autocomplete: "name", required: true,
+                       class: "form-control" %>
+    </div>
+
+    <div class="form-group col-md-4">
+      <%= f.label :birthday %>
+      <div class="form-row date">
+        <%= f.date_select :birthday,
+                          {
+                            start_year: (Date.current.year.to_i) - 17, # min age
+                            end_year: Date.current.year.to_i - 120, # max age
+                            with_css_classes: true
+                          },
+                          required: true,
+                          class: "form-control" %>
+      </div>
+    </div>
+
+    <div class="form-group col-md-4">
+      <%= f.label :mother_name %>
+      <%= f.text_field :mother_name,
+                       autocomplete: "mother_name", required: true,
+                       class: "form-control" %>
+    </div>
+  </div>
+
+  <h3>Grupos prioritários que pertence</h3>
+
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <%= render partial: '/shared/group_boxes', locals: { for_group: :priority, f: f } %>
+    </div>
+  </div>
+
+  <h3>Comorbidades que possui</h3>
+
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <%= render partial: '/shared/group_boxes', locals: { for_group: :comorbidity, f: f } %>
+    </div>
+  </div>
+
+  <h3>Endereço residencial</h3>
+
+  <div class="form-row">
+    <div class="form-group col-md-8">
+      <%= f.label :public_place %>
+      <%= f.text_field :public_place,
+                       autocomplete: "place", required: true,
+                       class: "form-control" %>
+    </div>
+
+    <div class="form-group col-md-4">
+      <%= f.label :place_number %>
+      <%= f.text_field :place_number,
+                       required: true,
+                       class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-8">
+      <%= f.label :street_2 %>
+      <%= f.text_field :street_2,
+                       autocomplete: "place",
+                       class: "form-control" %>
+    </div>
+
+    <div class="form-group col-md-4">
+      <%= f.label :neighborhood %>
+      <%= f.select :neighborhood, Neighborhood.pluck(:name), {},
+                   class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <%= f.label :phone %>
+      <%= f.text_field :phone,
+                       autocomplete: "phone", required: true,
+                       class: "form-control sp-celphones" %>
+    </div>
+
+    <div class="form-group col-md-6">
+      <%= f.label :other_phone %>
+      <%= optional_field_tag %>
+      <%= f.text_field :other_phone,
+                       autocomplete: "other_phone", required: false,
+                       class: "form-control sp-celphones" %>
+    </div>
+  </div>
+
+  <h3>Dados complementares</h3>
+
+  <div class="form-row">
+    <div class="form-group col-md-8">
+      <%= f.label :email %>
+      <%= optional_field_tag %>
+      <%= f.email_field :email,
+                        autocomplete: "email", required: false,
+                        class: "form-control" %>
+    </div>
+
+    <div class="form-group col-md-4">
+      <%= f.label :sus %>
+      <%= optional_field_tag %>
+      <%= f.number_field :sus,
+                         autocomplete: "sus", required: false,
+                         class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <%= f.submit class: 'form-control btn-primary' %>
+    </div>
+  </div>
+<% end %>

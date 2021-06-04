@@ -13,23 +13,10 @@
       <i class="fa fa-check-circle color-green" aria-hidden="true"></i>
       Disponível
     <% else %>
-      <i class="fa fa-circle color-red" aria-hidden="true"></i> Aguardando novas doses
+      <i class="fa fa-circle color-red" aria-hidden="true"></i> Não disponível, aguardando novas doses
     <% end %>
   </h5>
-</div>
 
-<div class="card mt-3">
-  <h5 class="card-header">Prioridade de cadastro:</h5>
-  <ul class="list-group list-group-flush">
-    <% @can_register_condition_names.each do |name| -%>
-      <li class="list-group-item">
-        <i class="fa fa-circle color-skyblue" aria-hidden="true"></i> <%= name %>
-      </li>
-    <% end -%>
-  </ul>
-</div>
-
-<div class="card mt-3">
   <h5 class="card-header">Grupos que podem agendar:</h5>
   <ul class="list-group list-group-flush">
     <% @can_schedule_conditions.each do |hash| -%>
@@ -54,7 +41,18 @@
 </div>
 
 <div class="card mt-3">
-  <h5 class="card-header">Cadastro e agendamento</h5>
+  <h5 class="card-header">Grupos que podem cadastrar:</h5>
+  <ul class="list-group list-group-flush">
+    <% @can_register_condition_names.each do |name| -%>
+      <li class="list-group-item">
+        <i class="fa fa-circle color-skyblue" aria-hidden="true"></i> <%= name %>
+      </li>
+    <% end -%>
+  </ul>
+</div>
+
+<div class="card mt-3">
+  <h5 class="card-header">Cadastro e agendamento do paciente a ser vacinado</h5>
   <div class="card-body">
     <%= form_for :patient, url: community_session_path, method: :post do |f| %>
       <div class="form-row">
@@ -77,8 +75,8 @@
             </div>
           </div>
           <small id="cpfInputField" class="text-muted">
-            Digite o número do CPF para cadastrar ou, caso já tenha feito o cadastro, agendar ou consultar seu
-            agendamento.
+            Digite o número do CPF do paciente a ser vacinado para criar um cadastro ou,
+            caso já tenha feito o cadastro, para agendar ou consultar o agendamento.
           </small>
         </div>
       </div>

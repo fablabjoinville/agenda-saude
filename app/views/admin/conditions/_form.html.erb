@@ -84,9 +84,7 @@
 
       <div class="form-row">
         <div class="form-group col-md-12 pr-4">
-          <div class="form-check" data-group-context-priority="">
-            <%= render partial: 'group_boxes', locals: { group: Group.priority, f: f } %>
-          </div>
+          <%= render partial: '/shared/group_boxes', locals: { for_group: :priority, f: f } %>
         </div>
       </div>
     </div>
@@ -96,9 +94,7 @@
 
       <div class="form-row">
         <div class="form-group col-md-12">
-          <div class="form-check" data-group-context-comorbidity="">
-            <%= render partial: 'group_boxes', locals: { group: Group.comorbidity, f: f } %>
-          </div>
+          <%= render partial: '/shared/group_boxes', locals: { for_group: :comorbidity, f: f } %>
         </div>
       </div>
     </div>

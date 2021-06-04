@@ -7,7 +7,8 @@ Patient.create!(
   public_place: 'Rua das Flores',
   place_number: '1',
   neighborhood: 'América',
-  groups: [Group.find_by!(name: 'Trabalhador(a) da Saúde')]
+  groups: [Group.find_by!(name: 'Trabalhador(a) da Saúde')],
+  user_updated_at: Time.zone.now
 ).tap do |patient|
   ubs = Ubs.first!
   vaccine = Vaccine.first!

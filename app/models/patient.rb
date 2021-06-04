@@ -10,7 +10,9 @@ class Patient < ApplicationRecord
 
   # belongs_to :neighborhood, optional: true # For future use [jmonteiro]
   has_and_belongs_to_many :groups
-  has_many :doses, dependent: :destroy # For future use [jmonteiro]
+  has_many :doses, dependent: :destroy
+  has_many :patients_inquiry_answers, dependent: :destroy
+  has_many :inquiry_answers, through: :patients_inquiry_answers, dependent: nil
 
   validates :cpf, presence: true, uniqueness: true, cpf_format: true
   validates :name, presence: true
@@ -46,6 +48,11 @@ class Patient < ApplicationRecord
   # Find if any conditions match
   def can_schedule?
     conditions.any?
+  end
+
+  # Find if patient was every able to schedule in the past
+  def could_schedule_in_the_past?
+    Condition.start_at_past.can_schedule.select { |condition| condition.allowed? self }.any?
   end
 
   def future_appointments?
@@ -115,8 +122,22 @@ class Patient < ApplicationRecord
     @age ||= ((Time.zone.now - Time.zone.parse("#{birthday} 00:00:00")) / 1.year.seconds).floor
   end
 
+  def neighborhood=(string)
+    self[:neighborhood] = string
+    self[:neighborhood_id] = Neighborhood.find_by(name: string.to_s)&.id
+  end
+
+  def force_user_update?
+    user_updated_at.blank? ||
+      user_updated_at < Time.zone.parse(Rails.configuration.x.patient_force_update_before)
+  end
+
   def self.parse_cpf(cpf)
     cpf.gsub(/[^\d]/, '')
+  end
+
+  def inquiry_answers_via_questions=(hash)
+    self.inquiry_answer_ids = hash.values.flatten
   end
 
   private

@@ -72,9 +72,7 @@
 
 <div class="form-row">
   <div class="form-group col-md-12">
-    <div class="form-check" data-group-context-priority="">
-      <%= render partial: 'group_boxes', locals: { group: Group.priority, f: f } %>
-    </div>
+    <%= render partial: '/shared/group_boxes', locals: { for_group: :priority, f: f } %>
   </div>
 </div>
 
@@ -86,9 +84,7 @@
 
 <div class="form-row">
   <div class="form-group col-md-12">
-    <div class="form-check" data-group-context-comorbidity="">
-      <%= render partial: 'group_boxes', locals: { group: Group.comorbidity, f: f } %>
-    </div>
+    <%= render partial: '/shared/group_boxes', locals: { for_group: :comorbidity, f: f } %>
   </div>
 </div>
 
@@ -102,19 +98,31 @@
                      class: "form-control" %>
   </div>
 
-  <div class="form-group col-md-2">
+  <div class="form-group col-md-4">
     <%= f.label :place_number %>
     <%= f.text_field :place_number,
                      required: true,
                      class: "form-control" %>
   </div>
+</div>
 
-  <div class="form-group col-md-2">
+<div class="form-row">
+  <div class="form-group col-md-8">
+    <%= f.label :street_2 %>
+    <%= optional_field_tag %>
+    <%= f.text_field :street_2,
+                     autocomplete: "place",
+                     class: "form-control" %>
+  </div>
+
+  <div class="form-group col-md-4">
     <%= f.label :neighborhood %>
     <%= f.select :neighborhood, Neighborhood.pluck(:name), {},
                  class: "form-control" %>
   </div>
+</div>
 
+<div class="form-row">
   <div class="form-group col-md-6">
     <%= f.label :phone %>
     <%= f.text_field :phone,
@@ -153,30 +161,23 @@
                        autocomplete: "sus", required: false,
                        class: "form-control" %>
     <small id="susHelp" class="form-text text-muted">
-      Número do cartão SUS. Descubra o número acessando
-      <a href="https://cartaosusdigital.saude.gov.br" target="cartaosus">Cartão SUS Digital</a>.
+      Número do cartão SUS. Descubra o número acessando o
+      <a href="https://conectesus-paciente.saude.gov.br" target="cartaosus">ConecteSUS</a>.
     </small>
   </div>
 </div>
 
-<script type="text/javascript">
-  $(function () {
-    $('[data-group-parent]').on('change', function () {
-      groupToggle($(this))
-    }).each(function () {
-      groupToggle($(this))
-    })
+<% if InquiryQuestion.active.any? -%>
+  <h3>
+    Inquérito
+    <%= optional_field_tag %>
+  </h3>
 
-    let selectors = [
-      '[data-group-context-priority] :checkbox',
-      '[data-group-context-comorbidity] :checkbox'
-    ];
-    selectors.forEach(function (selector) {
-      $(selector).on('change', function () {
-        requireToggle($(selector))
-      }).each(function () {
-        requireToggle($(selector))
-      })
-    })
-  })
-</script>
+  <%= embedded_page :patient_inquiry_intro -%>
+
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <%= render partial: '/shared/inquiry', locals: { f: f } %>
+    </div>
+  </div>
+<% end -%>

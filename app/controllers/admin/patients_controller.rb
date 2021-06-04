@@ -1,7 +1,7 @@
 module Admin
   class PatientsController < Base
-    before_action :set_patient, only: %i[show unblock]
-    skip_before_action :require_administrator!, only: %i[index show unblock]
+    before_action :set_patient, only: %i[show unblock edit update]
+    skip_before_action :require_administrator!, only: %i[index show unblock new create edit update]
 
     FILTERS = {
       search: 'search',
@@ -19,7 +19,31 @@ module Admin
                   .per(100)
     end
 
+    def new
+      @patient = Patient.new
+    end
+
+    def create
+      @patient = Patient.new(patient_params)
+
+      if @patient.save
+        redirect_to admin_patient_path(@patient)
+      else
+        render :new
+      end
+    end
+
     def show; end
+
+    def edit; end
+
+    def update
+      if @patient.update(patient_params)
+        redirect_to admin_patient_path(@patient)
+      else
+        render :edit
+      end
+    end
 
     def unblock
       @patient.record_successful_login!
@@ -59,6 +83,17 @@ module Admin
 
     def index_params
       params.permit(:page, :search, :filter)
+    end
+
+    def patient_params
+      params.require(:patient).permit(
+        :cpf,
+        :name, :birthday, :mother_name,
+        :phone, :other_phone,
+        :public_place, :place_number, :street_2, :neighborhood,
+        :email, :sus,
+        group_ids: []
+      )
     end
   end
 end

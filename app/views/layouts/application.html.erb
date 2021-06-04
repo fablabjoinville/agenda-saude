@@ -48,6 +48,7 @@
               <%= link_to("Bairros", admin_neighborhoods_path, class: "dropdown-item") if current_user.admin? %>
               <%= link_to("Condições", admin_conditions_path, class: "dropdown-item") if current_user.admin? %>
               <%= link_to("Grupos", admin_groups_path, class: "dropdown-item") if current_user.admin? %>
+              <%= link_to("Inquérito", admin_inquiry_questions_path, class: "dropdown-item") if current_user.admin? %>
               <%= link_to("Operadores", admin_users_path, class: "dropdown-item") if current_user.admin? %>
               <%= link_to("Pacientes", admin_patients_path, class: "dropdown-item") %>
               <%= link_to("Páginas", admin_pages_path, class: "dropdown-item") if current_user.admin? %>

@@ -15,7 +15,6 @@ Cypress.Commands.add('signupPatient', (cpf) => {
   cy.get('#patient_phone').type('4899999999')
   cy.get('#patient_other_phone').type('47988888888')
   cy.get('#patient_group_ids_23').check()
-  cy.get('#patient_group_ids_999').check()
   cy.get('[data-cy=patientSubmitButton]').click()
 })
 

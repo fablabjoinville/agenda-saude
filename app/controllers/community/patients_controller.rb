@@ -12,6 +12,7 @@ module Community
       phone
       place_number
       public_place
+      street_2
       sus
     ].freeze
 
@@ -67,15 +68,25 @@ module Community
     def can_update_profile?
       !@patient.appointments.current || # if there's no appointment, allow
         @patient.doses.count.positive? || # if there's already a dose, allow
-        @patient.can_schedule? # if it's the user 1st dose and there's an appointment, check if they can still schedule
+        @patient.can_schedule? || # if it's the user 1st dose and there's an appointment, check if they can still schedule
+        @patient.could_schedule_in_the_past? # if user was every able to schedule in the past
     end
 
     def create_params
-      params.require(:patient).permit(*(FIELDS + [:cpf]), group_ids: [])
+      params.require(:patient).permit(*(FIELDS + [:cpf]), permitted_arrays)
     end
 
     def update_params
-      params.require(:patient).permit(*FIELDS, group_ids: [])
+      params.require(:patient).permit(*FIELDS, permitted_arrays)
+    end
+
+    def permitted_arrays
+      {
+        group_ids: [],
+        inquiry_answers_via_questions: {}
+      }.tap do |array|
+        InquiryQuestion.pluck(:id).map { |i| array[:inquiry_answers_via_questions][i.to_s.to_sym] = [] }
+      end
     end
   end
 end

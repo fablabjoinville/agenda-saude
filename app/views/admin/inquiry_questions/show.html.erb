@@ -1,0 +1,68 @@
+<div class="row">
+  <div class="col-8">
+    <h1 class="h4">
+      Pergunta: <%= @inquiry_question.text %>
+    </h1>
+  </div>
+
+  <div class="col-2">
+    <%= link_to "Editar", edit_admin_inquiry_question_path(@inquiry_question), class: 'btn btn-primary btn-block' %>
+  </div>
+
+  <div class="col-2">
+    <%= link_to "Remover", admin_inquiry_question_path(@inquiry_question), method: :delete,
+                class: 'btn btn-danger btn-block',
+                data: { confirm: "Tem certeza?" } %>
+  </div>
+</div>
+
+<hr>
+
+<div class="row">
+  <div class="col-10">
+    <h1 class="h4">Respostas</h1>
+  </div>
+
+  <div class="col-2">
+    <%= link_to "Criar resposta", new_admin_inquiry_question_inquiry_answer_path(@inquiry_question), class: 'btn btn-primary btn-block' %>
+  </div>
+</div>
+
+<table class="table table-bordered table-hover table-sm mt-3">
+  <thead class="thead-dark">
+  <tr>
+    <th scope="col">#</th>
+    <th scope="col">Pergunta</th>
+    <th scope="col">Posição</th>
+    <th scope="col">Ativo</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @inquiry_answers.each do |inquiry_answer| -%>
+    <tr data-cy="inquiry_answer" class="<%= "table-dark" unless inquiry_answer.active %>">
+      <td>
+        <%= link_to inquiry_answer.id, [:admin, @inquiry_question, inquiry_answer] %>
+      </td>
+      <th scope="row">
+        <%= inquiry_answer.text %>
+      </th>
+      <td>
+        <%= inquiry_answer.position %>
+      </td>
+      <td>
+        <%= inquiry_answer.active ? "Sim" : "Não" %>
+      </td>
+    </tr>
+  <% end -%>
+  </tbody>
+</table>
+
+<div>
+  <%= paginate @inquiry_answers %>
+</div>
+
+<hr>
+
+<p>
+  <%= link_to "Voltar", admin_inquiry_questions_path %>
+</p>
