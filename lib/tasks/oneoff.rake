@@ -62,7 +62,7 @@ namespace :oneoff do
       UPDATE patients
       SET user_updated_at = updated_at
       WHERE
-        user_updated_at = NULL
+        user_updated_at IS NULL
     ))&.inspect
   end
 end
