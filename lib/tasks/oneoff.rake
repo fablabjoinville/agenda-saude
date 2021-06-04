@@ -1,57 +1,59 @@
 namespace :oneoff do
-  desc 'Conditions for production'
-  task conditions: [:environment] do
+  desc 'Backfill neighborhoods on patients and ubs (idempotent)'
+  task neighborhoods: [:environment] do
+    puts 'Populating patients:'
+    puts ActiveRecord::Base.connection.execute(%{
+      WITH subquery AS (
+        SELECT patients.id AS "patient_id", neighborhoods.id AS "neighborhood_id"
+          FROM patients
+          INNER JOIN neighborhoods ON
+            LOWER(neighborhoods.name) = LOWER(patients.neighborhood)
+      ) UPDATE patients
+        SET neighborhood_id = subquery.neighborhood_id
+        FROM subquery
+        WHERE
+          patients.id = subquery.patient_id
+    })&.inspect
+
+    puts 'Populating ubs:'
+    puts ActiveRecord::Base.connection.execute(%{
+      WITH subquery AS (
+        SELECT ubs.id AS "ubs_id", neighborhoods.id AS "neighborhood_id"
+          FROM ubs
+          INNER JOIN neighborhoods ON
+            LOWER(neighborhoods.name) = LOWER(ubs.neighborhood)
+      ) UPDATE ubs
+        SET neighborhood_id = subquery.neighborhood_id
+        FROM subquery
+        WHERE
+          ubs.id = subquery.ubs_id
+    })&.inspect
+  end
+
+  task disable_no_answers: [:environment] do
+    Group.where(id: [998, 999]).each do |g|
+      g.update! active: false
+    end
+  end
+
+  task inquiry_page: [:environment] do
     [
       {
-        'name' => 'Pessoas com qualquer comorbidade com 18 anos ou mais',
-        'start_at' => Time.zone.parse('2021-01-01 00:00:00'),
-        'end_at' => Time.zone.parse('2023-01-01 00:00:00'),
-        'min_age' => 18,
-        'max_age' => nil,
-        'can_register' => true,
-        'can_schedule' => false,
-        'ubs_ids' => Ubs.pluck(:id),
-        'group_ids' => [40, 1005, 36, 38, 39, 41, 42, 43, 44, 45, 62, 63, 64, 65, 66, 67, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80,
-                        81, 82, 83, 84, 85, 86, 87, 89, 90, 91, 95, 37]
-      },
-      {
-        'name' => 'Trabalhadores da Educação com 18 anos ou mais',
-        'start_at' => Time.zone.parse('2021-01-01 00:00:00'),
-        'end_at' => Time.zone.parse('2023-01-01 00:00:00'),
-        'min_age' => 18,
-        'max_age' => nil,
-        'can_register' => true,
-        'can_schedule' => false,
-        'ubs_ids' => Ubs.pluck(:id),
-        'group_ids' => [1006, 1007, 1008, 1009, 1010, 1011, 1012, 1013, 1014, 1015, 1016, 1017, 1018, 1019, 1020, 1021, 1022]
-      },
-      {
-        'name' => 'Trabalhadores da Saúde segundo OFÍCIO Nº 234/2021/CGPNI/DEIDT/SVS/MS com 18 anos ou mais',
-        'start_at' => Time.zone.parse('2021-01-01 00:00:00'),
-        'end_at' => Time.zone.parse('2023-01-01 00:00:00'),
-        'min_age' => 18,
-        'max_age' => nil,
-        'can_register' => true,
-        'can_schedule' => true,
-        'ubs_ids' => Ubs.pluck(:id),
-        'group_ids' => [46, 47, 55, 57, 23]
-      },
-      {
-        'name' => 'Pessoas com 60 anos ou mais',
-        'start_at' => Time.zone.parse('2021-01-01 00:00:00'),
-        'end_at' => Time.zone.parse('2023-01-01 00:00:00'),
-        'min_age' => 60,
-        'max_age' => nil,
-        'can_register' => true,
-        'can_schedule' => false,
-        'ubs_ids' => Ubs.pluck(:id),
-        'group_ids' => []
+        path: 'patient_inquiry_intro',
+        title: 'Introdução para o inquérito no cadastro de pacientes',
+        body: 'Gostaria de participar de uma pesquisa epidemiológica? ' \
+'Sua contribuição pode ajudar muito ao município melhor planejar as ações de combate ao Covid 19.',
+        context: 'embedded'
       }
     ].each do |h|
-      Condition.find_or_initialize_by(name: h['name']).tap do |c|
-        c.attributes = h
-        c.save!
+      Page.find_or_initialize_by(path: h[:path]).tap do |page|
+        page.attributes = h
+        page.save!
       end
     end
+  end
+
+  task inquiry: [:environment] do
+    load Rails.root.join('db/seeds/development/5_inquiry.rb')
   end
 end
