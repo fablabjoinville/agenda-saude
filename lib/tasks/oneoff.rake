@@ -56,4 +56,13 @@ namespace :oneoff do
   task inquiry: [:environment] do
     load Rails.root.join('db/seeds/development/5_inquiry.rb')
   end
+
+  task user_updated_at: [:environment] do
+    puts ActiveRecord::Base.connection.execute(%(
+      UPDATE patients
+      SET user_updated_at = updated_at
+      WHERE
+        user_updated_at = NULL
+    ))&.inspect
+  end
 end
