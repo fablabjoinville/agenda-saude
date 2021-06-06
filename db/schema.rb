@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_30_185344) do
+ActiveRecord::Schema.define(version: 2021_06_06_010620) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -153,7 +153,6 @@ ActiveRecord::Schema.define(version: 2021_05_30_185344) do
     t.string "phone"
     t.string "other_phone"
     t.string "sus"
-    t.string "neighborhood"
     t.string "fake_mothers", default: [], array: true
     t.integer "login_attempts", default: 0
     t.string "public_place"
@@ -176,7 +175,6 @@ ActiveRecord::Schema.define(version: 2021_05_30_185344) do
 
   create_table "ubs", force: :cascade do |t|
     t.string "name"
-    t.string "neighborhood"
     t.string "shift_start"
     t.string "shift_end"
     t.string "break_start"
