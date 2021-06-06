@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :ubs, class: 'Ubs' do
     name { 'UBS Norte' }
-    neighborhood
+    neighborhood { create(:neighborhood) }
     neighborhoods { [] }
     shift_start { '08:00' }
     shift_end { '18:00' }
