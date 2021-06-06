@@ -7,7 +7,7 @@ module Community
       email
       mother_name
       name
-      neighborhood
+      neighborhood_id
       other_phone
       phone
       place_number

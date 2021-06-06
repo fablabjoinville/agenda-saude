@@ -111,8 +111,9 @@
     </div>
 
     <div class="form-group col-md-2">
-      <%= f.label :neighborhood, class: 'small' %>
-      <%= f.text_field :neighborhood, require: true, class: "form-control" %>
+      <%= f.label :neighborhood_id %>
+      <%= f.collection_select :neighborhood_id, Neighborhood.order(:name), :id, :name, { prompt: '- Escolha o bairro -' },
+                              class: "form-control" %>
     </div>
 
     <div class="form-group col-md-2">

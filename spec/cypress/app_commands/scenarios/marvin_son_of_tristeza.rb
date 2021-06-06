@@ -6,7 +6,7 @@ Patient.create!(
   phone: '(47) 91234-5678',
   public_place: 'Rua das Flores',
   place_number: '1',
-  neighborhood: 'Glória',
+  neighborhood: Neighborhood.find_by!(name: 'Glória'),
   groups: [Group.find_by!(name: 'Trabalhador(a) da Saúde'), Group.find_by!(name: 'Anemia falciforme')],
   user_updated_at: Time.zone.now
 )

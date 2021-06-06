@@ -111,12 +111,11 @@ Pacientes.
   * `phone`: número telefônico primário.
   * `other_phone`: número telefônico secundário.
   * `sus`: número do cartão do SUS.
-  * `neighborhood`: bairro como nome em texto, **a ser substituído pelo neighborhood_id no futuro**.
   * `fake_mothers`: nomes falsos de mães. Usado para desafiar o usuário no login.
   * `login_attempts`: tentativas falhas de login. Usado para bloquear acesso após um número de tentativas falhas.
   * `public_place`: endereço residencial.
   * `place_number`: número residencial.
-  * `neighborhood_id`:  bairro, ainda não em uso (usar neighborhood, como texto).
+  * `neighborhood_id`:  bairro.
   * `street_2`: complemento residencial
   * `internal_note`: observação interna sobre o usuário, **ainda não em uso**.
   * `user_updated_at`: quando o paciente atualizou seu cadastro. Só registrado se foi o paciente (não registra se foi atualizado por operador).
@@ -130,7 +129,6 @@ Associativa entre pacientes e as respostas dos inquéritos.
 Unidades de saúde.
 
   * `name`: nome da unidade de saúde.
-  * `neighborhood`:
   * `shift_start`:
   * `shift_end`:
   * `break_start`:
@@ -148,6 +146,11 @@ Unidades de saúde.
   * `saturday_break_end`:
   * `saturday_shift_end`:
   * `appointments_per_time_slot`:
+  * `sunday_shift_start`:
+  * `sunday_break_start`:
+  * `sunday_break_end`:
+  * `sunday_shift_end`:
+  * `neighborhood_id`:
 
 ## ubs_users
 

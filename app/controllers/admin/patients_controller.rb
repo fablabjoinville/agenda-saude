@@ -90,7 +90,7 @@ module Admin
         :cpf,
         :name, :birthday, :mother_name,
         :phone, :other_phone,
-        :public_place, :place_number, :street_2, :neighborhood,
+        :public_place, :place_number, :street_2, :neighborhood_id,
         :email, :sus,
         group_ids: []
       )

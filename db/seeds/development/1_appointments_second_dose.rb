@@ -23,7 +23,7 @@ end_of_day_minutes = [600, 620, 640, 660, 680, 700]
     phone: '(47) 91234-5678',
     public_place: 'Rua das Flores',
     place_number: '1',
-    neighborhood: 'América',
+    neighborhood: Neighborhood.find_by!(name: 'América'),
     groups: [Group.find_by!(name: 'Trabalhador(a) da Saúde')],
     user_updated_at: Time.zone.now
   )
