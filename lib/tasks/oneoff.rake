@@ -12,7 +12,8 @@ namespace :oneoff do
         SET neighborhood_id = subquery.neighborhood_id
         FROM subquery
         WHERE
-          patients.id = subquery.patient_id
+          patients.id = subquery.patient_id AND
+          patients.neighborhood_id IS NULL
     })&.inspect
 
     puts 'Populating ubs:'
@@ -26,7 +27,8 @@ namespace :oneoff do
         SET neighborhood_id = subquery.neighborhood_id
         FROM subquery
         WHERE
-          ubs.id = subquery.ubs_id
+          ubs.id = subquery.ubs_id AND
+          ubs.neighborhood_id IS NULL
     })&.inspect
   end
 
@@ -36,33 +38,7 @@ namespace :oneoff do
     end
   end
 
-  task inquiry_page: [:environment] do
-    [
-      {
-        path: 'patient_inquiry_intro',
-        title: 'Introdução para o inquérito no cadastro de pacientes',
-        body: 'Gostaria de participar de uma pesquisa epidemiológica? ' \
-'Sua contribuição pode ajudar muito ao município melhor planejar as ações de combate ao Covid 19.',
-        context: 'embedded'
-      }
-    ].each do |h|
-      Page.find_or_initialize_by(path: h[:path]).tap do |page|
-        page.attributes = h
-        page.save!
-      end
-    end
-  end
-
   task inquiry: [:environment] do
     load Rails.root.join('db/seeds/development/5_inquiry.rb')
-  end
-
-  task user_updated_at: [:environment] do
-    puts ActiveRecord::Base.connection.execute(%(
-      UPDATE patients
-      SET user_updated_at = updated_at
-      WHERE
-        user_updated_at IS NULL
-    ))&.inspect
   end
 end
