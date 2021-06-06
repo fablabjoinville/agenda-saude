@@ -37,18 +37,11 @@ class AppointmentScheduler
       return [NO_SLOTS] unless success
 
       new_appointment = patient.appointments.waiting.where.not(id: current_appointment&.id).first!
-      if current_appointment
-        vaccine_name = current_appointment.vaccine_name
-        cancel_schedule(appointment: current_appointment, new_appointment: new_appointment)
-        new_appointment.update!(vaccine_name: vaccine_name) # TODO: remove me [jmonteiro]
-      end
+      cancel_schedule(appointment: current_appointment, new_appointment: new_appointment) if current_appointment
 
       # In case patient canceled a follow up in the past and is trying to reschedule it
       dose = patient.doses.where(follow_up_appointment: nil).first
-      if dose
-        dose.update! follow_up_appointment: new_appointment
-        new_appointment.update!(vaccine_name: dose.vaccine.legacy_name) # TODO: remove me [jmonteiro]
-      end
+      dose&.update!(follow_up_appointment: new_appointment)
 
       log :schedule, patient.id, new_appointment.id
       [SUCCESS, new_appointment]
@@ -68,10 +61,9 @@ class AppointmentScheduler
   def cancel_schedule(appointment:, new_appointment: nil)
     log :cancel_schedule, appointment.patient_id, appointment.id
 
-    attributes = { patient: nil, vaccine_name: nil, check_in: nil }
-
     dose = appointment.follow_up_for_dose
 
+    attributes = { patient: nil, check_in: nil }
     return appointment.update!(attributes) unless dose
 
     # For follow up we need to suspend the appointment and update the dose follow up appointment

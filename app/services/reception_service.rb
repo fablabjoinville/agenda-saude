@@ -19,8 +19,7 @@ class ReceptionService
 
     Appointment.transaction do
       dose = new_dose(vaccine)
-      # TODO: remove legacy_name [jmonteiro]
-      appointment.update!(check_out: Time.zone.now, vaccine_name: vaccine.legacy_name)
+      appointment.update!(check_out: Time.zone.now)
 
       next_appointment = create_follow_up_appointment!(dose)
       dose.follow_up_appointment = next_appointment
@@ -52,8 +51,7 @@ class ReceptionService
     ).tap do |a|
       a.attributes = {
         patient_id: appointment.patient_id,
-        active: true,
-        vaccine_name: dose.vaccine.legacy_name # TODO: remove legacy_name [jmonteiro]
+        active: true
       }
       a.save!
     end

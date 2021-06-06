@@ -46,7 +46,6 @@ pt-BR:
         ubs: Unidades
       vaccine:
         name: Nome
-        legacy_name: Código de legado
         formal_name: Nome formal completo da vacina
         second_dose_after_in_days: Segunda dose após (em dias)
         third_dose_after_in_days: Terceira dose após (em dias)

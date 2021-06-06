@@ -3,10 +3,9 @@ require 'rails_helper'
 RSpec.describe ReceptionService, type: :service do
   let!(:ubs) { create(:ubs) }
   let!(:appointment) { create(:appointment, patient: patient) }
-  let!(:vaccine) { Vaccine.find_by(legacy_name: vaccine_name) || create(:vaccine, legacy_name: vaccine_name) }
+  let!(:vaccine) { create(:vaccine) }
   let(:patient) { create(:patient) }
   let(:time) { Time.zone.local('2020-01-01') }
-  let(:vaccine_name) { 'coronavac' }
   let(:service) { described_class.new(appointment) }
 
   before do
@@ -21,12 +20,6 @@ RSpec.describe ReceptionService, type: :service do
     end
 
     describe 'check out' do
-      it 'updates vaccine_name' do
-        expect { service.check_out(vaccine) }
-          .to change { appointment.vaccine_name }
-          .from(nil)
-          .to(vaccine_name)
-      end
       it 'updates dose_vaccine' do
         expect { service.check_out(vaccine) }
           .to change { appointment.dose_vaccine }

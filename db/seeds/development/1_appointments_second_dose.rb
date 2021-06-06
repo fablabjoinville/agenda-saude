@@ -37,7 +37,6 @@ end_of_day_minutes = [600, 620, 640, 660, 680, 700]
     active: true,
     check_in: second_appointment_start - 4.weeks + time_multiplier,
     check_out: second_appointment_start - 4.weeks + 10.minutes + time_multiplier,
-    vaccine_name: 'astra_zeneca',
     ubs: Ubs.first!
   )
 end

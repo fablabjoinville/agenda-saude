@@ -2,17 +2,9 @@
   <%= error_messages_for(f.object) %>
 
   <div class="form-row">
-    <div class="form-group col-md-8">
+    <div class="form-group col-md-12">
       <%= f.label :name %>
       <%= f.text_field :name, required: true, class: "form-control" %>
-    </div>
-
-    <div class="form-group col-md-4">
-      <%= f.label :legacy_name, class: 'small' %>
-      <%= f.text_field :legacy_name, require: true, class: "form-control" %>
-      <small id="emailHelp" class="form-text text-muted">
-        Usado para vaccine_name legado, a ser removido no futuro.
-      </small>
     </div>
   </div>
 

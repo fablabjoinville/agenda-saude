@@ -12,7 +12,6 @@ Agendamentos, funciona como uma agenda onde vagas podem ser abertas. Agendamento
   * `check_in`: data e horário do check in na unidade. É realizado quando o paciente chega, se apresenta e todos os documentos estão em ordem.
   * `check_out`: data e horeario de check out na unidade. É realizado quando o paciente recebeu a dose e saiu.
   * `suspend_reason`: motivo pelo qual esta dose foi suspença (pode não ter motivo).
-  * `vaccine_name`: nome da vacina administrada ou agendada para o futuro, caso seja segunda dose. **A ser removido no futuro, mas por hora ainda usado.**
 
 ## conditions
 
@@ -174,4 +173,3 @@ Tipos de vacinas disponíveis no sistema.
   * `formal_name`: Nome formal da vacina, a título informativo.
   * `second_dose_after_in_days`: Após quantos dias a segunda dose deve ser administrada. Pode ser `NULL~ se não houver segunda dose.
   * `third_dose_after_in_days`: Após quantos dias a terceira dose deve ser administrada. Pode ser `NULL` se não houver terceira dose.
-  * `legacy_name`: Nome de legado, para migração de dados. A ser removida em breve.
