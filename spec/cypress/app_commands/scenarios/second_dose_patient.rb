@@ -12,17 +12,16 @@ Patient.create!(
   groups: [Group.find_by!(name: 'Trabalhador(a) da Saúde')],
   user_updated_at: Time.zone.now
 ).tap do |patient|
-  days_ago = command_options['days_ago'].days.ago
   vaccine = Vaccine.find_by!(name: command_options['vaccine'])
   ubs = Ubs.first!
+  start = command_options['days_ago'].days.ago
 
-  Timecop.freeze(days_ago) do
-    first_appointment = patient.appointments.create!(
-      start: Time.zone.now,
-      end: Time.zone.now + 15.minutes,
-      ubs: ubs
-    )
+  appointment = patient.appointments.create!(
+    start: start,
+    end: start + ubs.slot_interval_minutes.minutes,
+    ubs: ubs
+  )
 
-    ReceptionService.new(first_appointment).check_in_and_out(vaccine)
-  end
+  ReceptionService.new(appointment).check_in(at: start)
+  ReceptionService.new(appointment).check_out(vaccine, at: start + ubs.slot_interval_minutes.minutes)
 end

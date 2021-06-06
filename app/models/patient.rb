@@ -11,8 +11,9 @@ class Patient < ApplicationRecord
   belongs_to :neighborhood
   has_and_belongs_to_many :groups
   has_many :doses, dependent: :destroy
-  has_many :inquiry_answers, through: :patients_inquiry_answers, dependent: nil
   has_many :patients_inquiry_answers, dependent: :destroy
+
+  has_many :inquiry_answers, through: :patients_inquiry_answers, dependent: nil
 
   validates :birth_date, presence: true
   validates :cpf, presence: true, uniqueness: true, cpf_format: true

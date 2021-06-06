@@ -1,7 +1,5 @@
-today = Time.zone.now.at_beginning_of_day
-second_appointment_start = today + 7.hours + 40.minutes
-second_appointment_end = today + 8.hours
-end_of_day_minutes = [600, 620, 640, 660, 680, 700]
+vaccine = Vaccine.first
+ubs = Ubs.first!
 
 %w[
   65622137543
@@ -28,15 +26,16 @@ end_of_day_minutes = [600, 620, 640, 660, 680, 700]
     user_updated_at: Time.zone.now
   )
 
-  time_multiplier = end_of_day_minutes.sample.minutes
-
-  Appointment.create!(
-    start: second_appointment_start - 4.weeks + time_multiplier,
-    end: second_appointment_end - 4.weeks + time_multiplier,
+  start = Time.zone.now.at_beginning_of_day + 7.hours + # from 7 in the morning
+          i * ubs.slot_interval_minutes.minutes - # each slot on a different time
+          vaccine.follow_up_in_days(1).days # in the past so 2nd dose is today
+  appointment = Appointment.create!(
+    start: start,
+    end: start + ubs.slot_interval_minutes.minutes,
     patient_id: patient.id,
     active: true,
-    check_in: second_appointment_start - 4.weeks + time_multiplier,
-    check_out: second_appointment_start - 4.weeks + 10.minutes + time_multiplier,
-    ubs: Ubs.first!
+    ubs: ubs
   )
+  ReceptionService.new(appointment).check_in(at: start)
+  ReceptionService.new(appointment).check_out(vaccine, at: start + ubs.slot_interval_minutes.minutes)
 end
