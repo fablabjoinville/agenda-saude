@@ -78,6 +78,7 @@ class AppointmentScheduler
     appointments = Appointment.available_doses
                               .where(start: rounded_from(from)..to)
                               .order(:start) # in chronological order
+                              .includes(ubs: :neighborhood)
                               .select(:ubs_id, :start, :end) # only return what we care with
 
     appointments = appointments.where(ubs_id: filter_ubs_id) if filter_ubs_id

@@ -23,7 +23,8 @@ module Community
     end
     # rubocop:enable Metrics/AbcSize
 
-    # Reschedules appointment (only if patient already has one scheduled)
+    # Schedules appointment
+    # rubocop:disable Metrics/AbcSize
     def index
       appointment_can_cancel_and_reschedule
 
@@ -38,9 +39,11 @@ module Community
       @appointments = scheduler.open_times_per_ubs(from: @days.days.from_now.beginning_of_day,
                                                    to: @days.days.from_now.end_of_day,
                                                    filter_ubs_id: ubs_id)
+                               .sort_by { |ubs, _appointments| ubs.name }
     rescue AppointmentScheduler::NoFreeSlotsAhead
       redirect_to home_community_appointments_path, flash: { alert: 'Não há vagas disponíveis para reagendamento.' }
     end
+    # rubocop:enable Metrics/AbcSize
 
     # rubocop:disable Metrics/AbcSize
     def create
