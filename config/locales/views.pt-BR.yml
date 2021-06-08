@@ -123,6 +123,8 @@ pt-BR:
       de %{datetime} e tente novamente.
       Lembre-se que você só pode receber o reforço da vacina na mesma unidade que recebeu a primeira dose,
       portanto caso hajam vagas poderá escolher outro dia e horário somente na mesma unidade.
+    rate_limit_exceeded: |
+      Você excedeu o número de acessos por minuto ao sistema. Para evitar abusos e garantir o acesso a população, aguarde um minuto e acesse novamente.
   buttons:
     cancel_appointment: Cancelar este agendamento
     reschedule_appointment: Reagendar e escolher outro dia, horário ou local
