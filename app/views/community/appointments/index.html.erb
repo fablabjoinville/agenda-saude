@@ -79,7 +79,8 @@
 
           <% @appointments.each do |ubs, slots| -%>
             <li class="list-group-item mt-2">
-              <a class="" data-toggle="collapse" role="button" aria-expanded="false"
+              <a class=""
+                 data-toggle="collapse" role="button" aria-expanded="false"
                  href="#ubs<%= ubs.id %>"
                  aria-controls="ubs<%= ubs.id %>"
                  data-cy="ubs<%= ubs.id %>Button"
@@ -89,6 +90,9 @@
                   <small>
                     <%= ubs.full_address %>
                   </small>
+                  <% if ubs.neighborhood_id == current_patient.neighborhood_id -%>
+                    <span class="badge badge-success">No seu bairro</span>
+                  <% end -%>
                 </h5>
               </a>
 
