@@ -11,7 +11,7 @@ Cypress.Commands.add('signupPatient', (cpf) => {
   cy.get('#patient_sus').type('957774523900005')
   cy.get('#patient_public_place').type('Galáxia')
   cy.get('#patient_place_number').type('X9')
-  cy.get('#patient_neighborhood').select('Glória')
+  cy.get('#patient_neighborhood_id').select('Glória')
   cy.get('#patient_phone').type('4899999999')
   cy.get('#patient_other_phone').type('47988888888')
   cy.get('#patient_group_ids_23').check()

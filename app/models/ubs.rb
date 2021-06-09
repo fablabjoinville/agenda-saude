@@ -1,4 +1,5 @@
 class Ubs < ApplicationRecord
+  validates :neighborhood_id, presence: true
   validates :slot_interval_minutes, inclusion: 1...120
   validates :appointments_per_time_slot, numericality: { greater_than: 0 }
 
@@ -20,6 +21,7 @@ class Ubs < ApplicationRecord
   validates :sunday_break_start, time_of_day: true, presence: { if: proc { |u| u.sunday_break_end.present? } }
   validates :sunday_break_end, time_of_day: true, presence: { if: proc { |u| u.sunday_break_start.present? } }
 
+  belongs_to :neighborhood
   has_and_belongs_to_many :neighborhoods
   has_and_belongs_to_many :users
   has_many :appointments, dependent: :destroy
@@ -31,7 +33,7 @@ class Ubs < ApplicationRecord
   end
 
   def full_address
-    "#{address} (#{neighborhood})"
+    "#{address} (#{neighborhood.name})"
   end
 
   def time_windows(weekday)
@@ -73,10 +75,5 @@ class Ubs < ApplicationRecord
 
     [[Tod::TimeOfDay.parse(saturday_shift_start), Tod::TimeOfDay.parse(saturday_break_start)],
      [Tod::TimeOfDay.parse(saturday_break_end), Tod::TimeOfDay.parse(saturday_shift_end)]]
-  end
-
-  def neighborhood=(string)
-    self[:neighborhood] = string
-    self[:neighborhood_id] = Neighborhood.find_by(name: string.to_s)&.id
   end
 end

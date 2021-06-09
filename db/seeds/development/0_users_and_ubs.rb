@@ -27,7 +27,7 @@ Ubs.new.tap do |ubs|
   ubs.cnes = 13_371
   ubs.users = [mlabs]
   ubs.neighborhoods << america
-  ubs.neighborhood = america.name
+  ubs.neighborhood = america
   ubs.address = 'Rua Magrathea, 42'
   ubs.phone = '(47) 3443-3443'
 
@@ -57,7 +57,7 @@ Ubs.new.tap do |ubs|
   ubs.cnes = 13_372
   ubs.users = [mlabs_two]
   ubs.neighborhoods << gloria
-  ubs.neighborhood = gloria.name
+  ubs.neighborhood = gloria
   ubs.address = 'Rua dos Bobos, 0'
   ubs.phone = '(47) 3443-3455'
 

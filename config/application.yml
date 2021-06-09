@@ -1,7 +1,5 @@
 default: &default
-  show_navbar_background: true
   city_hall_website: joinville.sc.gov.br
-  city_hall_website_address: https://joinville.sc.gov.br/
   city_name: Joinville
 
 development:

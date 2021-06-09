@@ -5,7 +5,7 @@ FactoryBot.define do
     mother_name { 'Maria da Silva' }
     birth_date { '1950-01-01' }
     phone { '(47) 99999-9999' }
-    neighborhood { create(:neighborhood).name }
+    neighborhood { create(:neighborhood) }
     public_place { 'Rua das Flores' }
     place_number { '1' }
 

@@ -28,7 +28,7 @@
       <br>
       Telefones: <%= [@appointment.patient.phone.presence, @appointment.patient.other_phone.presence].compact.join(", ") %>
       <br>
-      Bairro: <%= @appointment.patient.neighborhood %>
+      Bairro: <%= @appointment.patient.neighborhood.name %>
     </div>
 
     <p class="mt-2">

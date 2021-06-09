@@ -39,7 +39,7 @@ describe('patient profile', () => {
 
       it('edit profile', () => {
         cy.get('[data-cy=patientEditButton]').click()
-        cy.get('#patient_neighborhood').select('América')
+        cy.get('#patient_neighborhood_id').select('América')
         cy.get('[data-cy=patientSubmitButton]').click()
         cy.get('[data-cy=noticeMessage]').should('exist')
       })

@@ -22,7 +22,7 @@ class AppointmentScheduler
   # Looks for appointments, and tries to schedule one. If it can't, it will return +NO_SLOTS+.
   # In case it can, it will also cancel the patient's current schedule for an existing appointment, and in the end it
   # returns +SUCCESS+ and the newly scheduled appointment.
-  # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+  # rubocop:disable Metrics/AbcSize
   def schedule(patient:, ubs_id:, from:)
     return [CONDITIONS_UNMET] unless patient.can_schedule?
 
@@ -37,18 +37,11 @@ class AppointmentScheduler
       return [NO_SLOTS] unless success
 
       new_appointment = patient.appointments.waiting.where.not(id: current_appointment&.id).first!
-      if current_appointment
-        vaccine_name = current_appointment.vaccine_name
-        cancel_schedule(appointment: current_appointment, new_appointment: new_appointment)
-        new_appointment.update!(vaccine_name: vaccine_name) # TODO: remove me [jmonteiro]
-      end
+      cancel_schedule(appointment: current_appointment, new_appointment: new_appointment) if current_appointment
 
       # In case patient canceled a follow up in the past and is trying to reschedule it
       dose = patient.doses.where(follow_up_appointment: nil).first
-      if dose
-        dose.update! follow_up_appointment: new_appointment
-        new_appointment.update!(vaccine_name: dose.vaccine.legacy_name) # TODO: remove me [jmonteiro]
-      end
+      dose&.update!(follow_up_appointment: new_appointment)
 
       log :schedule, patient.id, new_appointment.id
       [SUCCESS, new_appointment]
@@ -58,7 +51,7 @@ class AppointmentScheduler
 
     [NO_SLOTS]
   end
-  # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
+  # rubocop:enable Metrics/AbcSize
 
   def log(action, patient_id, appointment_id)
     Rails.logger.info "[AppointmentScheduler logger] patient #{patient_id} appointment #{appointment_id}: #{action}"
@@ -68,10 +61,9 @@ class AppointmentScheduler
   def cancel_schedule(appointment:, new_appointment: nil)
     log :cancel_schedule, appointment.patient_id, appointment.id
 
-    attributes = { patient: nil, vaccine_name: nil, check_in: nil }
-
     dose = appointment.follow_up_for_dose
 
+    attributes = { patient: nil, check_in: nil }
     return appointment.update!(attributes) unless dose
 
     # For follow up we need to suspend the appointment and update the dose follow up appointment
@@ -86,6 +78,7 @@ class AppointmentScheduler
     appointments = Appointment.available_doses
                               .where(start: rounded_from(from)..to)
                               .order(:start) # in chronological order
+                              .includes(ubs: :neighborhood)
                               .select(:ubs_id, :start, :end) # only return what we care with
 
     appointments = appointments.where(ubs_id: filter_ubs_id) if filter_ubs_id

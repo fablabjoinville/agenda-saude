@@ -12,7 +12,28 @@ Agendamentos, funciona como uma agenda onde vagas podem ser abertas. Agendamento
   * `check_in`: data e horário do check in na unidade. É realizado quando o paciente chega, se apresenta e todos os documentos estão em ordem.
   * `check_out`: data e horeario de check out na unidade. É realizado quando o paciente recebeu a dose e saiu.
   * `suspend_reason`: motivo pelo qual esta dose foi suspença (pode não ter motivo).
-  * `vaccine_name`: nome da vacina administrada ou agendada para o futuro, caso seja segunda dose. **A ser removido no futuro, mas por hora ainda usado.**
+
+## conditions
+
+Condições de agendamento, que possibilitam que vagas sejam agendadas.
+
+  * `name`: nome (título) da condição, a ser mostrado na página inicial.
+  * `start_at`: a partir de quando é válida.
+  * `end_at`: até quando é válida.
+  * `min_age`: idade mínima (opcional).
+  * `max_age`: idade máxima (opcional)
+  * `can_register`: mostra na lista de "grupos que podem cadastrar"
+  * `can_schedule`: mostra na lista de "grupos que podem agendar"
+  * `created_at`: data que condição foi criada.
+  * `updated_at`: data que condição foi atualizada.
+
+## conditions_groups
+
+Associativa entre condições e grupos.
+
+## conditions_ubs
+
+Associativa entre condições e unidades.
 
 ## doses
 
@@ -39,6 +60,24 @@ Grupos do qual o paciente participa.
 
 Tabela associativa entre `groups` e `patients`. É como sabemos quantos pacientes estão em quantos grupos.
 
+## inquiry_answers
+
+Respostas (alternativas) das perguntas do inquérito.
+
+  * `text`: texto da resposta.
+  * `inquiry_question_id`: de qual pergunta esta resposta faz parte.
+  * `position`: posição.
+  * `active`: se está ativa.
+
+## inquiry_questions
+
+Perguntas do inquérito.
+
+  * `text`: texto da pergunta.
+  * `form_type`: tipo de pergunta.
+  * `position`: posição.
+  * `active`: se está ativa.
+
 ## neighborhoods
 
 Bairros da cidade.
@@ -48,6 +87,14 @@ Bairros da cidade.
 ## neighborhoods_ubs
 
 Tabela associativa entre `ubs` e `neighborhood`, já que unidades de atendimento podem atender múltiplos bairros da cidade.
+
+pages", force: :cascade do |t|
+t.string "path", null: false
+t.string "title", null: false
+t.text "body", null: false
+t.integer "context", null: false
+t.datetime "created_at", precision: 6, null: false
+t.datetime "updated_at
 
 ## patients
 
@@ -63,21 +110,24 @@ Pacientes.
   * `phone`: número telefônico primário.
   * `other_phone`: número telefônico secundário.
   * `sus`: número do cartão do SUS.
-  * `neighborhood`: bairro como nome em texto, **a ser substituído pelo neighborhood_id no futuro**.
   * `fake_mothers`: nomes falsos de mães. Usado para desafiar o usuário no login.
   * `login_attempts`: tentativas falhas de login. Usado para bloquear acesso após um número de tentativas falhas.
   * `public_place`: endereço residencial.
   * `place_number`: número residencial.
-  * `neighborhood_id`:  bairro, ainda não em uso (usar neighborhood, como texto).
+  * `neighborhood_id`:  bairro.
   * `street_2`: complemento residencial
   * `internal_note`: observação interna sobre o usuário, **ainda não em uso**.
+  * `user_updated_at`: quando o paciente atualizou seu cadastro. Só registrado se foi o paciente (não registra se foi atualizado por operador).
+
+## patients_inquiry_answers
+
+Associativa entre pacientes e as respostas dos inquéritos.
 
 ## ubs
 
 Unidades de saúde.
 
   * `name`: nome da unidade de saúde.
-  * `neighborhood`:
   * `shift_start`:
   * `shift_end`:
   * `break_start`:
@@ -95,6 +145,11 @@ Unidades de saúde.
   * `saturday_break_end`:
   * `saturday_shift_end`:
   * `appointments_per_time_slot`:
+  * `sunday_shift_start`:
+  * `sunday_break_start`:
+  * `sunday_break_end`:
+  * `sunday_shift_end`:
+  * `neighborhood_id`:
 
 ## ubs_users
 
@@ -118,4 +173,3 @@ Tipos de vacinas disponíveis no sistema.
   * `formal_name`: Nome formal da vacina, a título informativo.
   * `second_dose_after_in_days`: Após quantos dias a segunda dose deve ser administrada. Pode ser `NULL~ se não houver segunda dose.
   * `third_dose_after_in_days`: Após quantos dias a terceira dose deve ser administrada. Pode ser `NULL` se não houver terceira dose.
-  * `legacy_name`: Nome de legado, para migração de dados. A ser removida em breve.

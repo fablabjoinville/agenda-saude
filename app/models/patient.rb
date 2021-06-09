@@ -8,18 +8,19 @@ class Patient < ApplicationRecord
     end
   end
 
-  # belongs_to :neighborhood, optional: true # For future use [jmonteiro]
+  belongs_to :neighborhood
   has_and_belongs_to_many :groups
   has_many :doses, dependent: :destroy
   has_many :patients_inquiry_answers, dependent: :destroy
+
   has_many :inquiry_answers, through: :patients_inquiry_answers, dependent: nil
 
-  validates :cpf, presence: true, uniqueness: true, cpf_format: true
-  validates :name, presence: true
   validates :birth_date, presence: true
+  validates :cpf, presence: true, uniqueness: true, cpf_format: true
   validates :mother_name, presence: true
+  validates :name, presence: true
+  validates :neighborhood_id, presence: true
   validates :phone, presence: true, phone_format: true
-  validates :neighborhood, presence: true
   validates :place_number, presence: true
   validates :public_place, presence: true
 
@@ -120,11 +121,6 @@ class Patient < ApplicationRecord
 
   def age
     @age ||= ((Time.zone.now - Time.zone.parse("#{birthday} 00:00:00")) / 1.year.seconds).floor
-  end
-
-  def neighborhood=(string)
-    self[:neighborhood] = string
-    self[:neighborhood_id] = Neighborhood.find_by(name: string.to_s)&.id
   end
 
   def force_user_update?

@@ -47,7 +47,7 @@ module Admin
     end
 
     def vaccine_params
-      params.require(:vaccine).permit(:name, :formal_name, :legacy_name,
+      params.require(:vaccine).permit(:name, :formal_name,
                                       :second_dose_after_in_days, :third_dose_after_in_days)
     end
 

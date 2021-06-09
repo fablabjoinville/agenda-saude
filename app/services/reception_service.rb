@@ -9,18 +9,17 @@ class ReceptionService
     @appointment = appointment
   end
 
-  def check_in
-    appointment.update!(check_in: Time.zone.now)
+  def check_in(at: Time.zone.now)
+    appointment.update!(check_in: at)
   end
 
-  def check_out(vaccine)
+  def check_out(vaccine, at: Time.zone.now)
     raise MissingVaccine unless vaccine.is_a?(Vaccine)
     raise MismatchVaccine if appointment.follow_up_for_dose && vaccine != appointment.follow_up_for_dose.vaccine
 
     Appointment.transaction do
-      dose = new_dose(vaccine)
-      # TODO: remove legacy_name [jmonteiro]
-      appointment.update!(check_out: Time.zone.now, vaccine_name: vaccine.legacy_name)
+      dose = new_dose(vaccine, at: at)
+      appointment.update!(check_out: at)
 
       next_appointment = create_follow_up_appointment!(dose)
       dose.follow_up_appointment = next_appointment
@@ -52,17 +51,18 @@ class ReceptionService
     ).tap do |a|
       a.attributes = {
         patient_id: appointment.patient_id,
-        active: true,
-        vaccine_name: dose.vaccine.legacy_name # TODO: remove legacy_name [jmonteiro]
+        active: true
       }
       a.save!
     end
   end
+
   # rubocop:enable Metrics/AbcSize
 
-  def new_dose(vaccine)
+  def new_dose(vaccine, at: Time.zone.now)
     appointment.build_dose patient_id: appointment.patient_id,
                            vaccine: vaccine,
-                           sequence_number: (appointment.follow_up_for_dose&.sequence_number || 0) + 1
+                           sequence_number: (appointment.follow_up_for_dose&.sequence_number || 0) + 1,
+                           created_at: at
   end
 end
