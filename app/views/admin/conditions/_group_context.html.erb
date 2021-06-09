@@ -1,0 +1,32 @@
+<div class="form-check" data-group-context-<%= for_group %>="">
+  <%= f.collection_check_boxes :group_ids, Group.send(for_group).root.active.order(:position).includes(:children), :id, :name do |b| %>
+    <div class="row">
+      <%= b.label do
+        b.check_box(
+          checked: f.object.group_ids.include?(b.value.to_i),
+          class: "form-check-input",
+          data: { 'group-parent' => b.value }
+        ) + b.text
+      end %>
+    </div>
+
+    <% if b.object.children.active.order(:position).any? %>
+      <div class="form-row" data-group-child="<%= b.value %>">
+        <div class="form-group col-md-8">
+          <div class="form-check">
+            <%= f.collection_check_boxes :group_ids, b.object.children.active.order(:position), :id, :name do |s| %>
+              <div class="row">
+                <%= s.label do
+                  s.check_box(
+                    checked: f.object.group_ids.include?(s.value.to_i),
+                    class: "form-check-input"
+                  ) + s.text
+                end %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+</div>

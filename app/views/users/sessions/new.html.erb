@@ -1,22 +1,28 @@
+<p>
+  Para uso exclusivo de operadores da saúde.
+</p>
+
 <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="field">
-    <%= f.label :name, "CNES" %><br />
-    <%= f.text_field :name, autofocus: true, autocomplete: "name", data: { cy: "nameInputField"} %>
-  </div>
-
-  <div class="field">
-    <%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "current-password", data: { cy: "passwordInputField"} %>
-  </div>
-
-  <% if devise_mapping.rememberable? %>
-    <div class="field">
-      <%= f.check_box :remember_me %>
-      <%= f.label :remember_me, "Lembre-se de mim" %>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <%= f.label :name, "Usuário/CNES" %>
+      <%= f.text_field :name, autofocus: true, autocomplete: "name", class: "form-control", data: { cy: "nameInputField" } %>
     </div>
-  <% end %>
+    <div class="form-group col-md-6">
+      <%= f.label :password %>
+      <%= f.password_field :password, autocomplete: "current-password", class: "form-control", data: { cy: "passwordInputField" } %>
+    </div>
+  </div>
 
-  <div class="actions">
-    <%= f.submit "Entrar", class: 'btn btn-primary', data: { cy: "loginButton"} %>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <% if devise_mapping.rememberable? -%>
+        <%= f.check_box :remember_me %>
+        <%= f.label :remember_me, "Lembre-se de mim" %>
+      <% end -%>
+    </div>
+    <div class="form-group col-md-6">
+      <%= f.submit "Entrar", class: 'btn btn-primary', data: { cy: "loginButton" } %>
+    </div>
   </div>
 <% end %>

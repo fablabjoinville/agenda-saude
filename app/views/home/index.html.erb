@@ -19,23 +19,35 @@
 
   <h5 class="card-header">Grupos que podem agendar:</h5>
   <ul class="list-group list-group-flush">
-    <% @can_schedule_conditions.each do |hash| -%>
-      <li class="list-group-item">
+    <% if @can_schedule_conditions.empty? -%>
+      <li class="list-group-item text-center">
         <h5 class="card-title">
-          <i class="fa fa-check-circle <%= hash[:doses_count].positive? ? 'color-green' : 'color-goldenrod' %>" aria-hidden="true"></i> <%= hash[:name] %>
+          Nenhum grupo liberado para agendar neste momento
         </h5>
-        <h6 class="card-subtitle mb-2">
-          <% if hash[:doses_count].positive? -%>
-            Até <%= hash[:doses_count] %> doses disponíveis
-          <% else -%>
-            Nenhuma dose disponível no momento, tente novamente mais tarde
-          <% end -%>
-        </h6>
-        <p class="card-text small text-muted">
-          Disponível nas unidades:
-          <%= hash[:ubs_names] %>
+        <p>
+          Fique atento à página inicial deste site e à imprensa oficial para saber quando você poderá agendar sua
+          vacina.
         </p>
       </li>
+    <% else -%>
+      <% @can_schedule_conditions.each do |hash| -%>
+        <li class="list-group-item">
+          <h5 class="card-title">
+            <i class="fa fa-check-circle <%= hash[:doses_count].positive? ? 'color-green' : 'color-goldenrod' %>" aria-hidden="true"></i> <%= hash[:name] %>
+          </h5>
+          <h6 class="card-subtitle mb-2">
+            <% if hash[:doses_count].positive? -%>
+              Até <%= hash[:doses_count] %> doses disponíveis
+            <% else -%>
+              Nenhuma dose disponível no momento, tente novamente mais tarde
+            <% end -%>
+          </h6>
+          <p class="card-text small text-muted">
+            Disponível nas unidades:
+            <%= hash[:ubs_names] %>
+          </p>
+        </li>
+      <% end -%>
     <% end -%>
   </ul>
 </div>
@@ -43,10 +55,18 @@
 <div class="card mt-3">
   <h5 class="card-header">Grupos que podem cadastrar:</h5>
   <ul class="list-group list-group-flush">
+    <% if @can_register_condition_names.empty? -%>
+      <li class="list-group-item text-center">
+        <h5 class="card-title">
+          Nenhum grupo pode se cadastrar no momento.
+        </h5>
+      </li>
+    <% else -%>
     <% @can_register_condition_names.each do |name| -%>
       <li class="list-group-item">
         <i class="fa fa-circle color-skyblue" aria-hidden="true"></i> <%= name %>
       </li>
+    <% end -%>
     <% end -%>
   </ul>
 </div>
