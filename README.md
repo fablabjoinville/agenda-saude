@@ -80,6 +80,10 @@ E acesse no ambiente local [http://localhost:3000](http://localhost:3000):
 bundle exec rails server
 ```
 
+#### Problemas conhecidos
+
+Caso você configure seu PostgreSQL localmente para não usar nenhuma senha, é provavável que precise [alterar o método de autenticação](https://stackoverflow.com/a/23377623/2761861)
+
 ## Testes
 
 Para executar os testes da aplicação e verificar se tudo está funcionando como
