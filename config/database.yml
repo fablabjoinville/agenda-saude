@@ -16,6 +16,6 @@ test:
 
 production:
   <<: *default
-  url: <%= ENV["DATABASE_URL"] %>
+  url: <%= ENV['DATABASE_CONNECTION_POOL_URL'] || ENV['DATABASE_URL'] %>
   # PgBouncer does not support prepared statements
   prepared_statements: false
