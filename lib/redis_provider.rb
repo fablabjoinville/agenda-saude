@@ -10,10 +10,10 @@ module RedisProvider
   end
 
   def self.redis_provider
-    ENV['REDIS_PROVIDER'] # rubocop:disable Rails/EnvironmentVariableAccess
+    ENV['REDIS_PROVIDER']
   end
 
   def self.redis_url
-    ENV[redis_provider] # rubocop:disable Rails/EnvironmentVariableAccess
+    ENV[redis_provider]
   end
 end

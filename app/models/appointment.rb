@@ -6,7 +6,7 @@ class Appointment < ApplicationRecord
                                dependent: :restrict_with_exception,
                                inverse_of: :follow_up_appointment
 
-  scope :today, -> { where(start: Time.zone.now.beginning_of_day..Time.zone.now.end_of_day) }
+  scope :today, -> { where(start: Time.zone.now.all_day) }
 
   scope :checked_in, -> { where.not(check_in: nil) }
   scope :not_checked_in, -> { where(check_in: nil) }
