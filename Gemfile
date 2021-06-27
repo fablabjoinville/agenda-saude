@@ -26,6 +26,7 @@ gem 'smarter_csv'
 gem 'tod'
 
 group :development, :test do
+  gem 'apparition'
   gem 'brakeman', require: false
   gem 'bullet'
   gem 'byebug'

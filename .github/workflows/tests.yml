@@ -42,8 +42,8 @@ jobs:
           ruby-version: 3.0.1
           bundler-cache: true
 
-      - name: Create and migrate test database
-        run: bundle exec rails db:create db:migrate
+      - name: Create test database
+        run: bundle exec rails db:create db:schema:load
 
       - name: Setup chromedriver
         uses: nanasess/setup-chromedriver@v1.0.5
@@ -92,5 +92,5 @@ jobs:
           ruby-version: 3.0.1
           bundler-cache: true
 
-      - name: Create, migrate and seed database
-        run: bundle exec rails db:create db:migrate db:seed
+      - name: Create, load and seed database
+        run: bundle exec rails db:create db:schema:load db:seed
