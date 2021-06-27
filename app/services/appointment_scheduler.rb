@@ -28,7 +28,7 @@ class AppointmentScheduler
 
     current_appointment = patient.appointments.current
 
-    Appointment.transaction(isolation: :repeatable_read) do
+    Appointment.isolated_transaction do
       success = update_appointment(
         patient_id: patient.id,
         ubs_id: ubs_id,

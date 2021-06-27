@@ -12,7 +12,7 @@ RSpec.feature 'Patients managing their profiles' do
     fill_in 'Nome completo', with: 'Marvin'
     select '1', from: 'patient_birthday_3i'
     select 'janeiro', from: 'patient_birthday_2i'
-    select '1950', from: 'patient_birthday_1i'
+    select 30.years.ago.year.to_s, from: 'patient_birthday_1i'
     fill_in 'Nome completo da mãe', with: 'Tristeza'
 
     check group.name
@@ -38,7 +38,7 @@ RSpec.feature 'Patients managing their profiles' do
     click_on 'Acessar'
 
     expect(page).to have_content('Validação de segurança')
-    click_on patient.mother_name.split.first
+    click_on patient.mothers_first_name
     expect(page).to have_content('Você não possui vacinação agendada')
   end
 
@@ -50,7 +50,7 @@ RSpec.feature 'Patients managing their profiles' do
     click_on 'Acessar'
 
     expect(page).to have_content('Validação de segurança')
-    click_on patient.mother_name.split.first
+    click_on patient.mothers_first_name
     expect(page).to have_content('Por favor, atualize seu cadastro para continuar a acessar o agendamento.')
     click_on 'Atualizar'
 
@@ -66,7 +66,7 @@ RSpec.feature 'Patients managing their profiles' do
     click_on 'Acessar'
 
     expect(page).to have_content('Validação de segurança')
-    click_on patient.mother_name.split.first
+    click_on patient.mothers_first_name
 
     click_on 'Alterar meus dados'
     fill_in 'Nome completo', with: 'Atualizaldo'

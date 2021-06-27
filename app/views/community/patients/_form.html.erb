@@ -40,9 +40,14 @@
     <div class="form-row date">
       <%= f.date_select :birthday,
                         {
-                          start_year: (Date.current.year.to_i) - 17, # min age
+                          start_year: (Date.current.year.to_i) - 1, # min age
                           end_year: Date.current.year.to_i - 120, # max age
-                          with_css_classes: true
+                          with_css_classes: true,
+                          prompt: {
+                            day: '- dia -',
+                            month: '- mês -',
+                            year: '- ano -'
+                          },
                         },
                         required: true,
                         aria: { describedby: "birthDateHelp" },
@@ -118,7 +123,7 @@
   <div class="form-group col-md-4">
     <%= f.label :neighborhood_id %>
     <%= f.collection_select :neighborhood_id, Neighborhood.order(:name), :id, :name, { prompt: '- Escolha o bairro -' },
-                 class: "form-control" %>
+                            class: "form-control" %>
   </div>
 </div>
 

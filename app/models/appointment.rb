@@ -3,8 +3,8 @@ class Appointment < ApplicationRecord
   belongs_to :ubs
   has_one :dose, dependent: :restrict_with_exception
   has_one :follow_up_for_dose, class_name: 'Dose', foreign_key: :follow_up_appointment_id,
-                               dependent: :restrict_with_exception,
-                               inverse_of: :follow_up_appointment
+          dependent: :restrict_with_exception,
+          inverse_of: :follow_up_appointment
 
   scope :today, -> { where(start: Time.zone.now.all_day) }
 
@@ -108,5 +108,14 @@ class Appointment < ApplicationRecord
   # Applied, or to be applied vaccine
   def dose_vaccine
     dose&.vaccine || follow_up_for_dose&.vaccine
+  end
+
+  # We need to disable this transaction on test env due to how RSpec and System tests run
+  def self.isolated_transaction
+    return yield if Rails.env.test?
+
+    transaction(isolation: :repeatable_read) do
+      yield
+    end
   end
 end
