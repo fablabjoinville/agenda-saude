@@ -16,19 +16,14 @@ jobs:
       DATABASE_URL: postgresql://postgres:postgres@localhost:5432/tests
 
     services:
-      redis:
-        image: redis
-        ports:
-          - 6379:6379
-        options: --entrypoint redis-server
       postgres:
         image: postgres:13
         ports:
           - 5432:5432
         env:
-          POSTGRES_USER: postgres
           POSTGRES_DB: tests
           POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
         options: >-
           --mount type=tmpfs,destination=/var/lib/postgresql/data
           --health-cmd pg_isready
