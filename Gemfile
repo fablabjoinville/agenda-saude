@@ -29,6 +29,7 @@ group :development, :test do
   gem 'brakeman', require: false
   gem 'bullet'
   gem 'byebug'
+  gem 'capybara'
   gem 'cypress-on-rails'
   gem 'database_cleaner-active_record'
   gem 'dotenv-rails'
@@ -44,6 +45,7 @@ group :development, :test do
   gem 'rubocop-rails', require: false
   gem 'rubocop-rspec', require: false
   gem 'timecop', require: false
+  gem 'webdrivers'
 end
 
 group :development do
