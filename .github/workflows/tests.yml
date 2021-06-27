@@ -42,16 +42,21 @@ jobs:
           ruby-version: 3.0.1
           bundler-cache: true
 
+      - name: Set up Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: "15.x"
+
       - name: Create test database
         run: bundle exec rails db:create db:schema:load
 
-      - name: Setup chromedriver
-        uses: nanasess/setup-chromedriver@v1.0.5
-      - name: Enable chromedriver
-        run: |
-          export DISPLAY=:99
-          chromedriver --url-base=/wd/hub &
-          sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 & # optional
+      # - name: Setup chromedriver
+      #   uses: nanasess/setup-chromedriver@v1.0.5
+      # - name: Enable chromedriver
+      #   run: |
+      #     export DISPLAY=:99
+      #     chromedriver --url-base=/wd/hub &
+      #     sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 & # optional
 
       - name: Run models and services specs
         run: bundle exec bin/rspec spec/models spec/services
