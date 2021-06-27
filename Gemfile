@@ -41,6 +41,7 @@ group :development, :test do
   gem 'rack-mini-profiler'
   gem 'reek', require: false
   gem 'rspec'
+  gem 'rspec_junit_formatter'
   gem 'rspec-rails'
   gem 'rubocop', require: false
   gem 'rubocop-rails', require: false
