@@ -45,6 +45,9 @@ jobs:
       - name: Create and migrate test database
         run: bundle exec rails db:create db:migrate
 
+      - name: Setup chromedriver
+        uses: nanasess/setup-chromedriver@v1.0.5
+
       - name: Run specs
         run: bundle exec rspec
 
