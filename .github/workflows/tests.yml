@@ -54,14 +54,6 @@ jobs:
       - name: Create test database
         run: bundle exec rails db:create db:schema:load
 
-      # - name: Setup chromedriver
-      #   uses: nanasess/setup-chromedriver@v1.0.5
-      # - name: Enable chromedriver
-      #   run: |
-      #     export DISPLAY=:99
-      #     chromedriver --url-base=/wd/hub &
-      #     sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 & # optional
-
       - name: Run models and services specs
         run: |
           bundle exec bin/rspec --format progress \
@@ -110,6 +102,13 @@ jobs:
         with:
           ruby-version: 3.0.1
           bundler-cache: true
+
+      - uses: actions/cache@v1
+        env:
+          cache-name: gem-cache
+        with:
+          path: ./vendor/bundle
+          key: build-${{ env.cache-name }}-${{ hashFiles('**/Gemfile.lock') }}
 
       - name: Create, load and seed database
         run: bundle exec rails db:create db:schema:load db:seed
