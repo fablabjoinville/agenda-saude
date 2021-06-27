@@ -12,7 +12,7 @@ development:
 
 test:
   <<: *default
-  url: <%= ENV.fetch("DATABASE_URL", "postgresql://postgres:postgres@localhost:5432/agendamento_covid_test") %>
+  url: <%= ENV.fetch("DATABASE_URL", "postgresql://postgres:@localhost:5432/agendamento_covid_test") %>
 
 production:
   <<: *default

@@ -1,1 +1,1 @@
-system 'rails db:seed db:seed:development'
+system 'rails db:seed'
