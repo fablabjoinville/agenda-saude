@@ -12,10 +12,10 @@ development:
 
 test:
   <<: *default
-  url: <%= ENV.fetch("DATABASE_URL", "postgresql://postgres:postgres@localhost:5432/agendamento_covid_test") %>
+  url: <%= ENV.fetch("DATABASE_URL", "postgresql://postgres:@localhost:5432/agendamento_covid_test") %>
 
 production:
   <<: *default
-  url: <%= ENV["DATABASE_URL"] %>
+  url: <%= ENV['DATABASE_CONNECTION_POOL_URL'] || ENV['DATABASE_URL'] %>
   # PgBouncer does not support prepared statements
   prepared_statements: false

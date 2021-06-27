@@ -19,7 +19,7 @@ gem 'jquery-rails'
 gem 'kaminari'
 gem 'kramdown'
 gem 'puma' # Use Puma as the app server
-gem 'rails_autoscale_agent'
+gem 'rack-timeout'
 gem 'redis'
 gem 'sass-rails' # Use SCSS for stylesheets
 gem 'smarter_csv'
@@ -37,7 +37,6 @@ group :development, :test do
   gem 'flay', require: false
   gem 'pry-rails'
   gem 'rack-mini-profiler'
-  gem 'rails_best_practices', require: false
   gem 'reek', require: false
   gem 'rspec'
   gem 'rspec-rails'

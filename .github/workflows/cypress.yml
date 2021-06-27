@@ -12,17 +12,21 @@ jobs:
   cypress-run:
     name: Cypress
     runs-on: ubuntu-latest
+    env:
+      RAILS_ENV: test
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/tests
 
     services:
       postgres:
-        image: postgres:12
+        image: postgres:13
+        ports:
+          - 5432:5432
         env:
-          POSTGRES_USER: postgres
-          POSTGRES_DB: agendamento_covid_test
+          POSTGRES_DB: tests
           POSTGRES_PASSWORD: postgres
-          DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/agendamento_covid_test"
-        ports: ["5432:5432"]
+          POSTGRES_USER: postgres
         options: >-
+          --mount type=tmpfs,destination=/var/lib/postgresql/data
           --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
@@ -39,20 +43,10 @@ jobs:
           bundler-cache: true
 
       - name: Setup test database
-        env:
-          RAILS_ENV: test
-          POSTGRESQL_HOST: localhost
-          POSTGRESQL_PASSWORD: postgres
-        run: |
-          bundle exec rails db:setup
+        run: bundle exec rails db:setup
 
       - name: Run Cypress
         uses: cypress-io/github-action@v2
-        env:
-          PGPORT: ${{ job.services.postgres.ports[5432] }}
-          POSTGRESQL_PASSWORD: postgres
-          POSTGRESQL_HOST: localhost
-          RAILS_ENV: test
         with:
           browser: firefox
           project: ./spec
