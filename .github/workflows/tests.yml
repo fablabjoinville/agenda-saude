@@ -33,19 +33,23 @@ jobs:
           --health-retries 5
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
+      - uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.0.1
           bundler-cache: true
 
-      - name: Set up Node
-        uses: actions/setup-node@v1
+      - uses: actions/setup-node@v1
         with:
           node-version: "15.x"
+
+      - uses: actions/cache@v1
+        env:
+          cache-name: gem-cache
+        with:
+          path: ./vendor/bundle
+          key: build-${{ env.cache-name }}-${{ hashFiles('**/Gemfile.lock') }}
 
       - name: Create test database
         run: bundle exec rails db:create db:schema:load
@@ -59,10 +63,20 @@ jobs:
       #     sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 & # optional
 
       - name: Run models and services specs
-        run: bundle exec bin/rspec spec/models spec/services
+        run: |
+          bundle exec bin/rspec --format progress \
+            --format RspecJunitFormatter \
+            --out /tmp/test-results/rspec.xml \
+            --format progress \
+            spec/models spec/services
 
       - name: Run system specs
-        run: bundle exec bin/rspec spec/system
+        run: |
+          bundle exec bin/rspec --format progress \
+            --format RspecJunitFormatter \
+            --out /tmp/test-results/rspec.xml \
+            --format progress \
+            spec/system
 
   seeds:
     name: Database Seeds
