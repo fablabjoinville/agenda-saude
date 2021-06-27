@@ -1,3 +1,4 @@
+# rubocop:disable Layout/LineLength
 [
   { id: 23, name: 'Trabalhador(a) da Saúde', parent_group_id: nil, context: 'priority', position: 1 },
   { id: 24, name: 'Trabalhador(a) da Educação', parent_group_id: nil, context: 'priority', position: 2, active: false },
@@ -100,5 +101,6 @@
     group.save!
   end
 end
+# rubocop:enable Layout/LineLength
 
 ActiveRecord::Base.connection.execute "ALTER SEQUENCE groups_id_seq RESTART WITH #{Group.order(id: :desc).pick(:id)}"
