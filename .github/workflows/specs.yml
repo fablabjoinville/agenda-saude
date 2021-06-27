@@ -11,11 +11,10 @@ on:
 jobs:
   specs:
     runs-on: ubuntu-latest
-    env: &env
+    env:
       RAILS_ENV: test
       DATABASE_URL: postgresql://postgres:postgres@localhost:5432/tests
-
-    services: &services
+    services:
       postgres:
         image: postgres:13
         ports:
@@ -50,10 +49,23 @@ jobs:
   seeds:
     runs-on: ubuntu-latest
     env:
-      <<: *env
-
+      RAILS_ENV: test
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/tests
     services:
-      <<: *services
+      postgres:
+        image: postgres:13
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_DB: tests
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+        options: >-
+          --mount type=tmpfs,destination=/var/lib/postgresql/data
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - name: Checkout
