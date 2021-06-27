@@ -1,5 +1,5 @@
 FactoryBot.define do
   factory :group do
-    name { 'Grupo' }
+    name { |n| "Grupo #{n.object_id}" }
   end
 end
