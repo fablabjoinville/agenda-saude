@@ -1,5 +1,3 @@
-# require 'webdrivers'
-
 require 'capybara'
 require 'capybara/apparition'
 
@@ -13,6 +11,6 @@ Capybara.register_driver :apparition do |app|
   )
 end
 
-Capybara.default_driver = :apparition
+Capybara.default_driver = :rack_test
 Capybara.javascript_driver = :apparition
 Capybara.server = :puma, { Silent: true }
