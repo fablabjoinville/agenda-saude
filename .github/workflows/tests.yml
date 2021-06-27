@@ -1,3 +1,5 @@
+name: Tests
+
 on:
   push:
     branches:
@@ -8,6 +10,8 @@ on:
 
 jobs:
   specs:
+    name: RSpec
+
     runs-on: ubuntu-latest
     env:
       RAILS_ENV: test
@@ -45,6 +49,8 @@ jobs:
         run: bundle exec rspec
 
   seeds:
+    name: Database Seeds
+
     runs-on: ubuntu-latest
     env:
       RAILS_ENV: test
