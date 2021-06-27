@@ -20,7 +20,6 @@ gem 'kaminari'
 gem 'kramdown'
 gem 'puma' # Use Puma as the app server
 gem 'rack-timeout'
-gem 'rails_autoscale_agent'
 gem 'redis'
 gem 'sass-rails' # Use SCSS for stylesheets
 gem 'smarter_csv'
