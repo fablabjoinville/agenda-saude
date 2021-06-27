@@ -31,6 +31,17 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+      hub:
+        image: selenium/hub:3.141.59-gold
+      firefox:
+        image: selenium/node-firefox:3.141.59-gold
+        env:
+          HUB_HOST: hub
+          HUB_PORT: 4444
+
+    container:
+      image: node:14.4
+      options: --network-alias testHost
 
     steps:
       - name: Checkout
