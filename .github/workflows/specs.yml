@@ -13,9 +13,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       RAILS_ENV: test
-      POSTGRES_USER: postgres
-      POSTGRES_DB: tests
-      POSTGRES_PASSWORD: ""
       DATABASE_URL: postgresql://postgres:@localhost:5432/tests
 
     services:
@@ -28,6 +25,10 @@ jobs:
         image: postgres:13
         ports:
           - 5432:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: tests
+          POSTGRES_PASSWORD: ""
         options: >-
           --mount type=tmpfs,destination=/var/lib/postgresql/data
           --health-cmd pg_isready
