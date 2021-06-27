@@ -38,7 +38,6 @@ group :development, :test do
   gem 'flay', require: false
   gem 'pry-rails'
   gem 'rack-mini-profiler'
-  gem 'rails_best_practices', require: false
   gem 'reek', require: false
   gem 'rspec'
   gem 'rspec-rails'
