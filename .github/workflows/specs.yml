@@ -9,20 +9,27 @@ on:
       - '**'
 
 jobs:
-  verify:
-    name: Specs
+  specs:
     runs-on: ubuntu-latest
+    env:
+      RAILS_ENV: test
+      POSTGRES_USER: postgres
+      POSTGRES_DB: tests
+      POSTGRES_PASSWORD: ""
+      DATABASE_URL: postgresql://postgres:@localhost:5432/tests
 
     services:
+      redis:
+        image: redis
+        ports:
+          - 6379:6379
+        options: --entrypoint redis-server
       postgres:
-        image: postgres:12
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_DB: agendamento_covid_test
-          POSTGRES_PASSWORD: postgres
-          DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/agendamento_covid_test"
-        ports: ["5432:5432"]
+        image: postgres:13
+        ports:
+          - 5432:5432
         options: >-
+          --mount type=tmpfs,destination=/var/lib/postgresql/data
           --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
@@ -38,18 +45,8 @@ jobs:
           ruby-version: 3.0.1
           bundler-cache: true
 
-      - name: Setup test database
-        env:
-          RAILS_ENV: test
-          POSTGRESQL_HOST: localhost
-          POSTGRESQL_PASSWORD: postgres
-        run: |
-          bundle exec rails db:setup
+      - name: Create and migrate test database
+        run: bundle exec rails db:create db:migrate
 
       - name: Run specs
-        env:
-          PGPORT: ${{ job.services.postgres.ports[5432] }}
-          POSTGRESQL_PASSWORD: postgres
-          POSTGRESQL_HOST: localhost
-          RAILS_ENV: test
         run: bundle exec rspec
