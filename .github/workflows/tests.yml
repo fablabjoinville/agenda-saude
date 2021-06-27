@@ -1,5 +1,3 @@
-name: Specs
-
 on:
   push:
     branches:
