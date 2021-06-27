@@ -1,10 +1,10 @@
 require 'rails_helper'
 
-RSpec.describe 'Patients managing their profiles', type: :system do
+RSpec.feature 'Patients managing their profiles' do
   let!(:neighborhood) { create(:neighborhood) }
   let!(:group) { create(:group) }
 
-  scenario 'sign up with a new patient' do
+  scenario 'sign up with a new patient', js: true do
     visit root_path
     fill_in 'patient_cpf', with: '832.742.297-92'
     click_on 'Acessar'

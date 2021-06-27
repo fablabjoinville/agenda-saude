@@ -70,13 +70,13 @@ jobs:
             --format progress \
             spec/models spec/services
 
-      - name: Run system specs
+      - name: Run features specs
         run: |
           bundle exec bin/rspec --format progress \
             --format RspecJunitFormatter \
             --out /tmp/test-results/rspec.xml \
             --format progress \
-            spec/system
+            spec/features
 
   seeds:
     name: Database Seeds
