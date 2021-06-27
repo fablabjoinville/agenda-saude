@@ -67,11 +67,11 @@ jobs:
             spec/features
 
   seeds:
-    name: Database Seeds
+    name: Development Database Seeds
 
     runs-on: ubuntu-latest
     env:
-      RAILS_ENV: test
+      RAILS_ENV: development
       DATABASE_URL: postgresql://postgres:postgres@localhost:5432/tests
     services:
       postgres:
