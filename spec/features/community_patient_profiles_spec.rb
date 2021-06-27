@@ -29,4 +29,49 @@ RSpec.feature 'Patients managing their profiles' do
     click_on 'Cadastrar'
     expect(page).to have_content('Seu cadastro foi realizado com sucesso')
   end
+
+  scenario 'patient already exists', js: true do
+    patient = create(:patient)
+
+    visit root_path
+    fill_in 'patient_cpf', with: ApplicationHelper.humanize_cpf(patient.cpf)
+    click_on 'Acessar'
+
+    expect(page).to have_content('Validação de segurança')
+    click_on patient.mother_name.split.first
+    expect(page).to have_content('Você não possui vacinação agendada')
+  end
+
+  scenario 'patient must update their profile' do
+    patient = create(:patient, user_updated_at: 100.years.ago)
+
+    visit root_path
+    fill_in 'patient_cpf', with: ApplicationHelper.humanize_cpf(patient.cpf)
+    click_on 'Acessar'
+
+    expect(page).to have_content('Validação de segurança')
+    click_on patient.mother_name.split.first
+    expect(page).to have_content('Por favor, atualize seu cadastro para continuar a acessar o agendamento.')
+    click_on 'Atualizar'
+
+    expect(page).to have_content('Você não possui vacinação agendada')
+  end
+
+  scenario 'patient can update their profile' do
+    patient = create(:patient)
+    expect(patient.name).not_to eq('Atualizaldo')
+
+    visit root_path
+    fill_in 'patient_cpf', with: ApplicationHelper.humanize_cpf(patient.cpf)
+    click_on 'Acessar'
+
+    expect(page).to have_content('Validação de segurança')
+    click_on patient.mother_name.split.first
+
+    click_on 'Alterar meus dados'
+    fill_in 'Nome completo', with: 'Atualizaldo'
+    click_on 'Atualizar'
+
+    expect(patient.reload.name).to eq('Atualizaldo')
+  end
 end
