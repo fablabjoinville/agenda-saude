@@ -345,7 +345,6 @@ GEM
     statsd-ruby (1.5.0)
     thor (1.1.0)
     tilt (2.0.10)
-    timecop (0.9.4)
     tod (3.0.0)
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
@@ -413,7 +412,6 @@ DEPENDENCIES
   smarter_csv
   spring
   spring-watcher-listen
-  timecop
   tod
   web-console
 
