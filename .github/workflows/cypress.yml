@@ -9,7 +9,8 @@ on:
       - '**'
 
 jobs:
-  cypress:
+  cypress-run:
+    name: Cypress
     runs-on: ubuntu-latest
     env:
       RAILS_ENV: test
