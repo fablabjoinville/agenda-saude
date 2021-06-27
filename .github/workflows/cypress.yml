@@ -43,7 +43,6 @@ jobs:
           bundler-cache: true
 
       - name: Setup test database
-        env:
         run: bundle exec rails db:setup
 
       - name: Run Cypress
