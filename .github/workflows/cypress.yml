@@ -48,7 +48,7 @@ jobs:
       - name: Run Cypress
         uses: cypress-io/github-action@v2
         with:
-          browser: firefox
+          browser: chrome
           project: ./spec
           start: bundle exec rails server -e test
 
