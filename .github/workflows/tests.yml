@@ -52,18 +52,14 @@ jobs:
 
       - name: Run models and services specs
         run: |
-          bundle exec bin/rspec --format progress \
-            --format RspecJunitFormatter \
-            --out /tmp/test-results/rspec.xml \
-            --format progress \
+          bundle exec bin/rspec \
             spec/models spec/services
 
       - name: Run features specs
+        env:
+          HEADLESS: true
         run: |
-          bundle exec bin/rspec --format progress \
-            --format RspecJunitFormatter \
-            --out /tmp/test-results/rspec.xml \
-            --format progress \
+          bundle exec bin/rspec \
             spec/features
 
   seeds:

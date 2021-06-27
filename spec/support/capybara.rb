@@ -5,7 +5,7 @@ Capybara.register_driver :apparition do |app|
   Capybara::Apparition::Driver.new(
     app,
     debug: false,
-    headless: ENV['OPEN_BROWSER'].blank?,
+    headless: ENV['HEADLESS'].present?,
     screen_size: [1200, 900],
     skip_image_loading: true
   )
