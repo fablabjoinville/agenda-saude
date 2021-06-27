@@ -11,11 +11,11 @@ on:
 jobs:
   specs:
     runs-on: ubuntu-latest
-    env:
+    env: &env
       RAILS_ENV: test
       DATABASE_URL: postgresql://postgres:postgres@localhost:5432/tests
 
-    services:
+    services: &services
       postgres:
         image: postgres:13
         ports:
@@ -46,3 +46,24 @@ jobs:
 
       - name: Run specs
         run: bundle exec rspec
+
+  seeds:
+    runs-on: ubuntu-latest
+    env:
+      <<: *env
+
+    services:
+      <<: *services
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.0.1
+          bundler-cache: true
+
+      - name: Create, migrate and seed database
+        run: bundle exec rails db:create db:migrate db:seed
