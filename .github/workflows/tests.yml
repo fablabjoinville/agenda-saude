@@ -33,27 +33,45 @@ jobs:
           --health-retries 5
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+      - uses: szenius/set-timezone@v1.0
+        with:
+          timezoneLinux: "America/Sao_Paulo"
 
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
+      - uses: actions/checkout@v2
+
+      - uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.0.1
           bundler-cache: true
 
-      - name: Create and migrate test database
-        run: bundle exec rails db:create db:migrate
+      - uses: actions/cache@v1
+        env:
+          cache-name: gem-cache
+        with:
+          path: ./vendor/bundle
+          key: build-${{ env.cache-name }}-${{ hashFiles('**/Gemfile.lock') }}
 
-      - name: Run specs
-        run: bundle exec rspec
+      - name: Create test database
+        run: bundle exec rails db:create db:schema:load
+
+      - name: Run models and services specs
+        run: |
+          bundle exec bin/rspec \
+            spec/models spec/services
+
+      - name: Run features specs
+        env:
+          HEADLESS: true
+        run: |
+          bundle exec bin/rspec \
+            spec/features
 
   seeds:
-    name: Database Seeds
+    name: Development Database Seeds
 
     runs-on: ubuntu-latest
     env:
-      RAILS_ENV: test
+      RAILS_ENV: development
       DATABASE_URL: postgresql://postgres:postgres@localhost:5432/tests
     services:
       postgres:
@@ -81,5 +99,12 @@ jobs:
           ruby-version: 3.0.1
           bundler-cache: true
 
-      - name: Create, migrate and seed database
-        run: bundle exec rails db:create db:migrate db:seed
+      - uses: actions/cache@v1
+        env:
+          cache-name: gem-cache
+        with:
+          path: ./vendor/bundle
+          key: build-${{ env.cache-name }}-${{ hashFiles('**/Gemfile.lock') }}
+
+      - name: Create, load and seed database
+        run: bundle exec rails db:create db:schema:load db:seed

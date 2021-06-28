@@ -15,7 +15,7 @@ module Admin
                       .includes(dose: :vaccine)
                       .includes(:follow_up_for_dose)
                       .includes(:patient)
-                      .where(ubs: @ubs, start: @date.beginning_of_day..@date.end_of_day)
+                      .where(ubs: @ubs, start: @date.all_day)
                       .order(:start, :id)
                       .page(index_params[:page])
                       .per(10_000)
