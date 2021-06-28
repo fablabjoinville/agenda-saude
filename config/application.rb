@@ -26,12 +26,13 @@ module AgendaSaude
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.0
 
-    config.x.schedule_from_hours = 1 # Patient can't schedule free appointments before 1 hour in the future
-    config.x.schedule_up_to_days = 10 # Patient can't schedule free appointments after 10 days in the future
+    config.x.schedule_from_hours = ENV.fetch('SCHEDULE_FROM_HOURS', 1).to_i # Patient can't schedule free appointments before 1 hour in the future
+    config.x.schedule_up_to_days = ENV.fetch('SCHEDULE_UP_TO_DAYS', 10).to_i # Patient can't schedule free appointments after 10 days in the future
     config.x.late_patient_tolerance_minutes = ENV.fetch('LATE_PATIENT_TOLERANCE_MINUTES', 10).to_i.minutes
     config.x.early_patient_warning_minutes = ENV.fetch('EARLY_PATIENT_WARNING_MINUTES', 30).to_i.minutes
     config.x.patient_force_update_before = ENV.fetch('PATIENT_FORCE_UPDATE_BEFORE', '2020-01-01 00:00:00')
     config.x.rate_limit_per_minute = ENV.fetch('RATE_LIMIT_PER_MINUTE', '60').to_i
+    config.x.site_title = ENV.fetch('SITE_TITLE', 'Agenda de Vacinação').to_s
 
     # https://guides.rubyonrails.org/autoloading_and_reloading_constants.html#autoload-paths
     config.autoload_paths += [
@@ -48,7 +49,7 @@ module AgendaSaude
     config.i18n.load_path += Dir[Rails.root.join('config/locales/**/*.{rb,yml}')]
     config.i18n.available_locales = %w[pt-BR en]
     config.i18n.default_locale = :'pt-BR'
-    config.time_zone = 'Brasilia'
+    config.time_zone = ENV.fetch('TIME_ZONE', 'Brasilia')
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers

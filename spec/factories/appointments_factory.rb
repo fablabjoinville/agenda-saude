@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :appointment do
-    start { '2020-01-01 14:00:00'.to_datetime.change(offset: Time.zone.now.strftime('%z')).in_time_zone }
-    add_attribute(:end) { '2020-01-01 14:15:00'.to_datetime.change(offset: Time.zone.now.strftime('%z')).in_time_zone }
+    start { 1.minute.from_now }
+    add_attribute(:end) { 1.minute.from_now + ubs.slot_interval_minutes.minutes }
     patient_id { nil }
     active { true }
     ubs

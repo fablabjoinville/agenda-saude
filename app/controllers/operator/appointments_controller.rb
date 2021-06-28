@@ -49,7 +49,7 @@ module Operator
       appointment = @ubs.appointments.scheduled.not_checked_in.find(params[:id])
       unless appointment.in_allowed_check_in_window?
         return redirect_to(operator_ubs_appointment_path(appointment.ubs, appointment),
-                           flash: { alert: t(:"appointments.messages.not_allowed_window") })
+                           flash: { alert: t(:'appointments.messages.not_allowed_window') })
       end
 
       ReceptionService.new(appointment).check_in

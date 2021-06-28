@@ -44,7 +44,7 @@ module ApplicationHelper
   end
 
   def embedded_page(path)
-    Page.find_by!(path: path).html
+    Page.find_by(path: path)&.html
   end
 
   # rubocop:enable Metrics/ParameterLists

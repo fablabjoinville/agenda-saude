@@ -26,10 +26,11 @@ gem 'smarter_csv'
 gem 'tod'
 
 group :development, :test do
+  gem 'apparition', require: false
   gem 'brakeman', require: false
   gem 'bullet'
   gem 'byebug'
-  gem 'cypress-on-rails'
+  gem 'capybara', require: false
   gem 'database_cleaner-active_record'
   gem 'dotenv-rails'
   gem 'factory_bot_rails'
@@ -43,7 +44,6 @@ group :development, :test do
   gem 'rubocop', require: false
   gem 'rubocop-rails', require: false
   gem 'rubocop-rspec', require: false
-  gem 'timecop', require: false
 end
 
 group :development do

@@ -11,5 +11,6 @@ FactoryBot.define do
     sequence(:cnes) { |n| n }
     phone { '9999-8888' }
     address { 'Rua Principal, 256' }
+    active { true }
   end
 end
