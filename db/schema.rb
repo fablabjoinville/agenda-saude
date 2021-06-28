@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_06_012658) do
+ActiveRecord::Schema.define(version: 2021_06_28_014708) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
 
   create_table "appointments", force: :cascade do |t|
@@ -72,6 +73,7 @@ ActiveRecord::Schema.define(version: 2021_06_06_012658) do
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "follow_up_appointment_id"
     t.index ["appointment_id"], name: "index_doses_on_appointment_id"
+    t.index ["follow_up_appointment_id"], name: "index_doses_on_follow_up_appointment_id"
     t.index ["patient_id"], name: "index_doses_on_patient_id"
     t.index ["vaccine_id"], name: "index_doses_on_vaccine_id"
   end

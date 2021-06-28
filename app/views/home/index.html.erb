@@ -1,10 +1,4 @@
-<div class="container">
-  <div class="row text-center">
-    <div class="col">
-      <h1>Vacinação Covid-19 <%= Settings[:city_name] %></h1>
-    </div>
-  </div>
-</div>
+<%= embedded_page :home_header %>
 
 <div class="card mt-3">
   <h5 class="card-header text-center">
@@ -71,7 +65,7 @@
   </ul>
 </div>
 
-<div class="card mt-3">
+<div class="card mt-3 mb-3">
   <h5 class="card-header">Cadastro e agendamento do paciente a ser vacinado</h5>
   <div class="card-body">
     <%= form_for :patient, url: community_session_path, method: :post do |f| %>
@@ -104,6 +98,4 @@
   </div>
 </div>
 
-<div class="info-page">
-  <%= embedded_page :home %>
-</div>
+<%= embedded_page :home %>

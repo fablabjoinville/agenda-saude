@@ -71,7 +71,7 @@ Para instalar as bibliotecas e configurar o banco de dados execute:
 
 ```sh
 bundle install
-bin/rails db:setup db:seed:development
+bin/rails db:setup
 ```
 
 E acesse no ambiente local [http://localhost:3000](http://localhost:3000):
@@ -79,6 +79,10 @@ E acesse no ambiente local [http://localhost:3000](http://localhost:3000):
 ```sh
 bundle exec rails server
 ```
+
+#### Problemas conhecidos
+
+Caso você configure seu PostgreSQL localmente para não usar nenhuma senha, é provavável que precise [alterar o método de autenticação](https://stackoverflow.com/a/23377623/2761861)
 
 ## Testes
 

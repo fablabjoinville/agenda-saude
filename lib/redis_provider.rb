@@ -4,16 +4,16 @@ module RedisProvider
   end
 
   def self.redis
-    return nil if blank?
+    return nil unless present? # rubocop:disable Rails/Blank
 
     @redis ||= Redis.new(url: redis_url, ssl_params: { verify_mode: OpenSSL::SSL::VERIFY_NONE })
   end
 
   def self.redis_provider
-    ENV['REDIS_PROVIDER'] # rubocop:disable Rails/EnvironmentVariableAccess
+    ENV['REDIS_PROVIDER']
   end
 
   def self.redis_url
-    ENV[redis_provider] # rubocop:disable Rails/EnvironmentVariableAccess
+    ENV[redis_provider]
   end
 end

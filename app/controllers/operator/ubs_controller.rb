@@ -3,7 +3,9 @@ module Operator
     before_action :set_ubs, only: %i[show activate suspend]
 
     def index
-      redirect_to operator_ubs_appointments_path(current_user.ubs.order(:id).first)
+      ubs = current_user.ubs.order(:id).first
+
+      redirect_to ubs ? operator_ubs_appointments_path(ubs) : admin_patients_path
     end
 
     def show; end

@@ -1,0 +1,110 @@
+name: Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - '**'
+
+jobs:
+  specs:
+    name: RSpec
+
+    runs-on: ubuntu-latest
+    env:
+      RAILS_ENV: test
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/tests
+    services:
+      postgres:
+        image: postgres:13
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_DB: tests
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+        options: >-
+          --mount type=tmpfs,destination=/var/lib/postgresql/data
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: szenius/set-timezone@v1.0
+        with:
+          timezoneLinux: "America/Sao_Paulo"
+
+      - uses: actions/checkout@v2
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.0.1
+          bundler-cache: true
+
+      - uses: actions/cache@v1
+        env:
+          cache-name: gem-cache
+        with:
+          path: ./vendor/bundle
+          key: build-${{ env.cache-name }}-${{ hashFiles('**/Gemfile.lock') }}
+
+      - name: Create test database
+        run: bundle exec rails db:create db:schema:load
+
+      - name: Run models and services specs
+        run: |
+          bundle exec bin/rspec \
+            spec/models spec/services
+
+      - name: Run features specs
+        env:
+          HEADLESS: true
+        run: |
+          bundle exec bin/rspec \
+            spec/features
+
+  seeds:
+    name: Development Database Seeds
+
+    runs-on: ubuntu-latest
+    env:
+      RAILS_ENV: development
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/tests
+    services:
+      postgres:
+        image: postgres:13
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_DB: tests
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+        options: >-
+          --mount type=tmpfs,destination=/var/lib/postgresql/data
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.0.1
+          bundler-cache: true
+
+      - uses: actions/cache@v1
+        env:
+          cache-name: gem-cache
+        with:
+          path: ./vendor/bundle
+          key: build-${{ env.cache-name }}-${{ hashFiles('**/Gemfile.lock') }}
+
+      - name: Create, load and seed database
+        run: bundle exec rails db:create db:schema:load db:seed

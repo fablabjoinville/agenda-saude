@@ -6,6 +6,8 @@ module RateLimited
   end
 
   def exceeded_rate_limit?
+    return false unless RedisProvider.redis
+
     RedisProvider.redis.get(rate_limit_key).to_i > Rails.configuration.x.rate_limit_per_minute
   end
 
@@ -14,7 +16,7 @@ module RateLimited
   end
 
   def record_on_rate_limit
-    RedisProvider.redis.multi do
+    RedisProvider.redis&.multi do
       RedisProvider.redis.incr rate_limit_key
       RedisProvider.redis.expire rate_limit_key, 59
     end
