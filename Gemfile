@@ -31,7 +31,6 @@ group :development, :test do
   gem 'bullet'
   gem 'byebug'
   gem 'capybara', require: false
-  gem 'cypress-on-rails'
   gem 'database_cleaner-active_record'
   gem 'dotenv-rails'
   gem 'factory_bot_rails'

@@ -109,8 +109,6 @@ GEM
     connection_pool (2.2.5)
     cpf_cnpj (0.5.0)
     crass (1.0.6)
-    cypress-on-rails (1.9.1)
-      rack
     database_cleaner-active_record (2.0.0)
       activerecord (>= 5.a)
       database_cleaner-core (~> 2.0.0)
@@ -381,7 +379,6 @@ DEPENDENCIES
   caxlsx_rails
   connection_pool
   cpf_cnpj
-  cypress-on-rails
   database_cleaner-active_record
   devise
   dotenv-rails
