@@ -41,8 +41,6 @@ RSpec.feature 'Operator appointments' do
         click_on 'Realizar Check-in'
       end
 
-      expect(page).not_to have_content(patient.name)
-
       click_on 'Aguardando check-out'
 
       expect(page).to have_content(patient.name)
@@ -112,8 +110,6 @@ RSpec.feature 'Operator appointments' do
       page.driver.accept_modal(:confirm) do
         click_on 'Realizar Check-in'
       end
-
-      expect(page).not_to have_content(patient.name)
 
       click_on 'Aguardando check-out'
 
