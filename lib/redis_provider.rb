@@ -4,7 +4,7 @@ module RedisProvider
   end
 
   def self.redis
-    return nil if blank?
+    return nil unless present? # rubocop:disable Rails/Blank
 
     @redis ||= Redis.new(url: redis_url, ssl_params: { verify_mode: OpenSSL::SSL::VERIFY_NONE })
   end
