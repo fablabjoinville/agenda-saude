@@ -31,6 +31,7 @@ module AgendaSaude
     config.x.late_patient_tolerance_minutes = ENV.fetch('LATE_PATIENT_TOLERANCE_MINUTES', 10).to_i.minutes
     config.x.early_patient_warning_minutes = ENV.fetch('EARLY_PATIENT_WARNING_MINUTES', 30).to_i.minutes
     config.x.patient_force_update_before = ENV.fetch('PATIENT_FORCE_UPDATE_BEFORE', '2020-01-01 00:00:00')
+    config.x.site_title = ENV.fetch('SITE_TITLE', 'Agenda de Vacinação')
 
     # https://guides.rubyonrails.org/autoloading_and_reloading_constants.html#autoload-paths
     config.autoload_paths += [
