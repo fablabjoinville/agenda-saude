@@ -21,8 +21,8 @@ RSpec.feature 'Patients managing their profiles' do
     fill_in 'Número', with: '1'
     fill_in 'Complemento', with: 'Ap 101'
     select neighborhood.name, from: 'Bairro'
-    fill_in 'Telefone', with: '47999999999'
-    fill_in 'Telefone Secundário', with: '47999999990'
+    fill_in 'Telefone', with: '(47) 3433-3333'
+    fill_in 'Telefone Secundário', with: ''
     fill_in 'Email', with: 'marvin@vacinajoinville.com.br'
     fill_in 'Número do cartão SUS', with: '957774523900005'
 
