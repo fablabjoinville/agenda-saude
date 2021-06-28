@@ -28,8 +28,8 @@ module AgendaSaude
 
     config.x.schedule_from_hours = ENV.fetch('SCHEDULE_FROM_HOURS', 1).to_i # Patient can't schedule free appointments before 1 hour in the future
     config.x.schedule_up_to_days = ENV.fetch('SCHEDULE_UP_TO_DAYS', 10).to_i # Patient can't schedule free appointments after 10 days in the future
-    config.x.late_patient_tolerance_minutes = ENV.fetch('LATE_PATIENT_TOLERANCE_MINUTES', 10).to_i.minutes
-    config.x.early_patient_warning_minutes = ENV.fetch('EARLY_PATIENT_WARNING_MINUTES', 30).to_i.minutes
+    config.x.late_patient_tolerance_minutes = ENV.fetch('LATE_PATIENT_TOLERANCE_MINUTES', 10).to_i.minutes # TODO: remove
+    config.x.early_patient_warning_minutes = ENV.fetch('EARLY_PATIENT_WARNING_MINUTES', 30).to_i.minutes # TODO: remove
     config.x.patient_force_update_before = ENV.fetch('PATIENT_FORCE_UPDATE_BEFORE', '2020-01-01 00:00:00')
     config.x.rate_limit_per_minute = ENV.fetch('RATE_LIMIT_PER_MINUTE', '60').to_i
     config.x.site_title = ENV.fetch('SITE_TITLE', 'Agenda de Vacinação').to_s

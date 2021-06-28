@@ -13,6 +13,13 @@ class ReceptionService
     appointment.update!(check_in: at)
   end
 
+  def undo_check_in
+    Appointment.transaction do
+      appointment.dose&.destroy
+      appointment.update!(check_in: nil, check_out: nil)
+    end
+  end
+
   def check_out(vaccine, at: Time.zone.now)
     raise MissingVaccine unless vaccine.is_a?(Vaccine)
     raise MismatchVaccine if appointment.follow_up_for_dose && vaccine != appointment.follow_up_for_dose.vaccine
@@ -26,6 +33,13 @@ class ReceptionService
       dose.save!
 
       OpenStruct.new dose: dose, next_appointment: next_appointment
+    end
+  end
+
+  def undo_check_out
+    Appointment.transaction do
+      appointment.dose&.destroy
+      appointment.update!(check_out: nil)
     end
   end
 
