@@ -33,6 +33,7 @@ class Patient < ApplicationRecord
       Patient.arel_table[:cpf]
              .eq(Patient.parse_cpf(text)) # Search for CPF without . and -
              .or(Patient.arel_table[:name].matches("%#{text.strip}%"))
+             .or(Patient.arel_table[:id].eq(text.strip))
     )
   }
 
