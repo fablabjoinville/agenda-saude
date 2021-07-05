@@ -1,0 +1,51 @@
+<div class='row'>
+  <div class='col'>
+    <strong>CPF:</strong> <%= ApplicationHelper.humanize_cpf(patient.cpf) %>
+  </div>
+
+  <div class='col'>
+    <strong>Nome da mãe:</strong> <%= patient.mother_name %>
+  </div>
+
+  <div class='col'>
+    <strong>Data de Nascimento:</strong> <%= l(patient.birth_date.to_date) %>
+  </div>
+</div>
+
+<div class='row'>
+  <div class='col'>
+    <strong>Bairro:</strong> <%= patient.neighborhood.name %>
+  </div>
+
+  <div class='col'>
+    <strong>Telefones:</strong> <%= [patient.phone.presence, patient.other_phone.presence].compact.join(", ") %>
+  </div>
+</div>
+
+<div class="mt-4">
+  <h4>Grupos que pertence</h4>
+  <% if patient.groups.any? -%>
+    <table class="table">
+      <thead>
+      <tr>
+        <th scope="col" width="1%">#</th>
+        <th scope="col">Grupo</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% patient.groups.admin_order.each do |group| -%>
+        <tr>
+          <td>
+            <%= group.id %>
+          </td>
+          <td>
+            <%= group.name_with_parent %>
+          </td>
+        </tr>
+      <% end -%>
+      </tbody>
+    </table>
+  <% else -%>
+    <p>Não preencheu nenhum grupo.</p>
+  <% end -%>
+</div>

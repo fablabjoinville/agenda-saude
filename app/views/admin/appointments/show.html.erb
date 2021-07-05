@@ -2,21 +2,7 @@
   Agendamento: <%= @appointment.id %>
 </h1>
 
-<p>
-  <strong>Unidade:</strong> <%= @appointment.ubs.name %>
-  <br />
-  <strong>Horário:</strong> <%= l @appointment.start, format: :short_date_hour %> até <%= l @appointment.end, format: :short_hour %>
-  <br />
-  <strong>Paciente:</strong> <%= @appointment.patient.present? ? link_to(@appointment.patient.name, admin_patient_path(@appointment.patient)) : "vago" %>
-  <br />
-  <strong>Dose:</strong>
-  <%= @appointment.dose_sequence_number %>
-  <br />
-  <strong>Vacina:</strong>
-  <%= @appointment.dose_vaccine&.name %>
-  <br />
-  <strong>Suspenso?</strong> <%= @appointment.active ? "Não" : "Suspenso por #{@appointment.suspend_reason}" %>
-</p>
+<%= render @appointment %>
 
 <p>
   <%= link_to "Voltar", admin_appointments_path %>

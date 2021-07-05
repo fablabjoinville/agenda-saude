@@ -112,6 +112,36 @@ class Appointment < ApplicationRecord
     dose&.vaccine || follow_up_for_dose&.vaccine
   end
 
+  def can_check_in?
+    patient_id.present? && !checked_in? && !checked_out? && active?
+  end
+
+  def can_undo_check_in?
+    can_check_out?
+  end
+
+  def can_check_out?
+    patient_id.present? && checked_in? && !checked_out? && active?
+  end
+
+  def can_undo_check_out?
+    patient_id.present? && checked_in? && checked_out? && active? &&
+      (!dose.follow_up_appointment || dose.follow_up_appointment.can_check_in?)
+  end
+
+  def can_suspend?
+    !checked_in? && !checked_out? && active?
+  end
+
+  def can_activate?
+    !active?
+  end
+
+  # Can only remove patient for 1st dose, can't remove for 2nd dose and up (due to complications on follow up process)
+  def can_remove_patient?
+    patient_id.present? && can_check_in? && dose_sequence_number == 1
+  end
+
   # We need to disable this transaction on test env due to how RSpec and System tests run
   def self.isolated_transaction(&block)
     return yield if Rails.env.test?

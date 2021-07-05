@@ -13,6 +13,13 @@ class ReceptionService
     appointment.update!(check_in: at)
   end
 
+  def undo_check_in
+    Appointment.transaction do
+      appointment.dose&.destroy
+      appointment.update!(check_in: nil, check_out: nil)
+    end
+  end
+
   def check_out(vaccine, at: Time.zone.now)
     raise MissingVaccine unless vaccine.is_a?(Vaccine)
     raise MismatchVaccine if appointment.follow_up_for_dose && vaccine != appointment.follow_up_for_dose.vaccine
@@ -29,9 +36,19 @@ class ReceptionService
     end
   end
 
-  def check_in_and_out(vaccine)
-    check_in
-    check_out(vaccine)
+  def undo_check_out
+    Appointment.transaction do
+      # Keep this in sync with AppointmentScheduler#cancel_schedule
+      appointment.dose&.follow_up_appointment&.update!(
+        patient: nil,
+        check_in: nil,
+        check_out: nil,
+        active: false,
+        suspend_reason: 'Check-out da dose anterior desfeita por operador.'
+      )
+      appointment.dose&.destroy
+      appointment.update!(check_out: nil)
+    end
   end
 
   private
@@ -51,7 +68,8 @@ class ReceptionService
     ).tap do |a|
       a.attributes = {
         patient_id: appointment.patient_id,
-        active: true
+        active: true,
+        suspend_reason: nil
       }
       a.save!
     end
