@@ -81,6 +81,10 @@ pt-BR:
         text: Texto
         position: Posição
         active: Ativo
+      appointment:
+        ubs: Unidade
+        start: Data e hora
+        vaccine: Vacina
 
     models:
       appointment: Agendamento

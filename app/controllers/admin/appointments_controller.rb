@@ -2,12 +2,13 @@ module Admin
   class AppointmentsController < Base
     before_action :set_appointment, only: %i[show check_in undo_check_in check_out undo_check_out suspend activate remove_patient]
     skip_before_action :require_administrator!,
-                       only: %i[index show check_in undo_check_in check_out undo_check_out suspend activate remove_patient]
+                       only: %i[index show new create check_in undo_check_in check_out undo_check_out suspend activate
+                                remove_patient]
+    helper_method :ubs_index
 
     # rubocop:disable Metrics/AbcSize
     def index
-      @ubs_index = current_user.admin? ? Ubs.order(:name) : current_user.ubs.order(:name)
-      @ubs = @ubs_index.one? ? @ubs_index.first : @ubs_index.find_by(id: index_params[:ubs_id])
+      @ubs = ubs_index.one? ? ubs_index.first : ubs_index.find_by(id: index_params[:ubs_id])
       @date = date_from_params params, :date
       @date ||= Time.zone.today
 
@@ -24,6 +25,32 @@ module Admin
     # rubocop:enable Metrics/AbcSize
 
     def show; end
+
+    def new
+      @appointment = Appointment.new(patient_id: params[:patient_id])
+    end
+
+    # Create appointment and vaccinate patient in a single go
+    # rubocop:disable Metrics/AbcSize
+    def create
+      Appointment.isolated_transaction do
+        @appointment = Appointment.new(create_params)
+        @appointment.end = @appointment.start + @appointment.ubs.slot_interval_minutes.minutes
+        vaccine = Vaccine.find_by id: params[:vaccine_id]
+
+        if vaccine && @appointment.save
+          ReceptionService.new(@appointment).tap do |service|
+            service.check_in(at: @appointment.start)
+            service.check_out(vaccine, at: @appointment.start)
+          end
+
+          redirect_to [:admin, @appointment]
+        else
+          render :new
+        end
+      end
+    end
+    # rubocop:enable Metrics/AbcSize
 
     def check_in
       unless @appointment.can_check_in?
@@ -122,6 +149,10 @@ module Admin
       params.permit(:page, :ubs_id, :date, :per_page)
     end
 
+    def create_params
+      params.require(:appointment).permit(:patient_id, :ubs_id, :start, :end)
+    end
+
     def set_appointment
       @appointment = Appointment.find(params[:id])
     end
@@ -135,6 +166,10 @@ module Admin
       else
         I18n.t('alerts.last_dose_received', name: appointment.patient.name)
       end
+    end
+
+    def ubs_index
+      @ubs_index ||= current_user.admin? ? Ubs.order(:name) : current_user.ubs.order(:name)
     end
   end
 end

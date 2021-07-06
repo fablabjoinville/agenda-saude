@@ -20,7 +20,7 @@ Rails.application.routes.draw do
     end
 
     namespace :admin do
-      resources :appointments, only: %i[index show] do
+      resources :appointments, only: %i[index show new create] do
         member do
           patch :check_in
           patch :undo_check_in

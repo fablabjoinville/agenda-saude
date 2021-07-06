@@ -20,35 +20,35 @@
 
 <div class='row'>
   <div class='col'>
-    <strong>Nome completo:</strong> <%= patient.name %>
+    <strong>Nome completo:</strong> <%= @patient.name %>
   </div>
 
   <div class='col'>
-    <strong>CPF:</strong> <%= ApplicationHelper.humanize_cpf(patient.cpf) %>
+    <strong>CPF:</strong> <%= ApplicationHelper.humanize_cpf(@patient.cpf) %>
   </div>
 
   <div class='col'>
-    <strong>Data de Nascimento:</strong> <%= l(patient.birth_date.to_date) %>
+    <strong>Data de Nascimento:</strong> <%= l(@patient.birth_date.to_date) %>
   </div>
 </div>
 
 <div class='row'>
   <div class='col'>
-    <strong>Nome da mãe:</strong> <%= patient.mother_name %>
+    <strong>Nome da mãe:</strong> <%= @patient.mother_name %>
   </div>
 
   <div class='col'>
-    <strong>Bairro:</strong> <%= patient.neighborhood.name %>
+    <strong>Bairro:</strong> <%= @patient.neighborhood.name %>
   </div>
 
   <div class='col'>
-    <strong>Telefones:</strong> <%= patient.phones %>
+    <strong>Telefones:</strong> <%= @patient.phones %>
   </div>
 </div>
 
 <div class="mt-4">
   <h4>Grupos que pertence</h4>
-  <% if patient.groups.any? -%>
+  <% if @patient.groups.any? -%>
     <table class="table">
       <thead>
       <tr>
@@ -57,7 +57,7 @@
       </tr>
       </thead>
       <tbody>
-      <% patient.groups.admin_order.each do |group| -%>
+      <% @patient.groups.admin_order.each do |group| -%>
         <tr>
           <td>
             <%= group.id %>
@@ -136,8 +136,19 @@
   <p>Paciente sem nenhum agendamento.</p>
 <% end -%>
 
-<div class="mt-4 mb-5">
-  <h4>Doses de vacinas</h4>
+<div class="row mt-4">
+  <div class="col-10">
+    <h1 class="h4">
+      Doses de vacinas
+    </h1>
+  </div>
+
+  <div class="col-2">
+    <%= link_to "Registrar dose", new_admin_appointment_path(patient_id: @patient.id), class: 'btn btn-success btn-block' %>
+  </div>
+</div>
+
+<div class="mb-5">
   <% if @patient.doses.any? -%>
     <p>
       Caso deseje remover uma dose registrada incorretamente, vá no agendamento onde ocorreu a vacinação e clique para desfazer o check-out do mesmo.
