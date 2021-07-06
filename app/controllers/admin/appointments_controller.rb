@@ -44,7 +44,7 @@ module Admin
             service.check_out(vaccine, at: @appointment.start)
           end
 
-          redirect_to [:admin, @appointment]
+          redirect_to([:admin, @appointment])
         else
           render :new
         end
