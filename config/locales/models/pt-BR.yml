@@ -37,6 +37,8 @@
         checked_in: Check-in realizado para %{name}.
         undid_check_in: Check-in DESFEITO para %{name}.
 
+        undid_check_out: Check-out DESFEITO para %{name}.
+
         suspended: Agendamento suspenso.
         activated: Agendamento reativado.
 

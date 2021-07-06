@@ -42,6 +42,10 @@ class Patient < ApplicationRecord
     self[:cpf] = Patient.parse_cpf(string)
   end
 
+  def phones
+    [phone.presence, other_phone.presence].compact.join(', ')
+  end
+
   # List all conditions allowed for patient
   def conditions
     Condition.active.can_schedule.select { |condition| condition.allowed? self }

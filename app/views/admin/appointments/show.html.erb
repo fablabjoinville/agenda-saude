@@ -4,6 +4,6 @@
 
 <%= render @appointment %>
 
-<p>
-  <%= link_to "Voltar", admin_appointments_path %>
-</p>
+<div class="text-center">
+  <%= link_to "Voltar", return_to || admin_appointments_path, class: "btn-lg" %>
+</div>

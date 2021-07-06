@@ -5,7 +5,7 @@
         <%= appointment.dose_sequence_number %><sup>a</sup> dose
         <% if appointment.dose_vaccine.present? -%>
           da <%= appointment.dose_vaccine&.name %>
-        <% end -%>
+        <% end -%> &mdash; <%= t(:"appointments.state.#{@appointment.state}") %>
       <% else -%>
         Agendamento vago
       <% end -%>
@@ -15,25 +15,52 @@
     <table class="table">
       <tbody>
       <tr>
-        <th scope="row">#</th>
-        <td>
-          <%= appointment.id %>
-        </td>
-      </tr>
-      <tr>
         <th scope="row">Paciente:</th>
         <td>
           <% if appointment.patient_id.present? -%>
-            <%= appointment.patient.name %>
-            (<%= ApplicationHelper.humanize_cpf(appointment.patient.cpf) %>)
+            <p>
+              <%= link_to appointment.patient.name, [:admin, appointment.patient] %>
+            </p>
+            <p>
+              <strong>CPF:</strong> <%= ApplicationHelper.humanize_cpf(appointment.patient.cpf) %>
+              <br/>
+              <strong>Data de Nascimento:</strong> <%= l(appointment.patient.birth_date.to_date) %>
+              <br/>
+              <strong>Nome da mãe:</strong> <%= appointment.patient.mother_name %>
+              <br/>
+              <strong>Bairro:</strong> <%= appointment.patient.neighborhood.name %>
+              <br/>
+              <strong>Telefones:</strong> <%= appointment.patient.phones %>
+            </p>
+            <p>
+              <strong>Grupos que pertence:</strong>
+              <% if appointment.patient.groups.any? -%>
+                <ul>
+                  <% appointment.patient.groups.admin_order.each do |group| -%>
+                    <li>
+                      <%= group.name_with_parent %>
+                    </li>
+                  <% end -%>
+                </ul>
+              <% else -%>
+                Não preencheu nenhum grupo.
+              <% end -%>
+            </p>
 
             <% if appointment.can_remove_patient? -%>
+              <hr>
               <%= form_with model: appointment, url: remove_patient_admin_appointment_path(appointment), method: :patch, local: true do |f| %>
-                <%= f.submit "Remover paciente desta vaga",
+                <%= return_to_tag %>
+                <%= f.submit "Cancelar agendamento",
                              class: "btn btn-danger",
                              data: {
                                confirm: t(:"appointments.confirmation.remove_patient", name: appointment.patient.name)
                              } %>
+                <p>
+                  <small>
+                    Remove o paciente desta vaga.
+                  </small>
+                </p>
               <% end -%>
             <% end -%>
           <% else -%>
@@ -61,7 +88,9 @@
             <%= l(appointment.check_in, format: :human) %>
 
             <% if appointment.can_undo_check_in? -%>
+              <hr>
               <%= form_with model: appointment, url: undo_check_in_admin_appointment_path(appointment), method: :patch, local: true do |f| %>
+                <%= return_to_tag %>
                 <%= f.submit "Desfazer Check-in",
                              class: "btn btn-danger",
                              data: {
@@ -73,7 +102,9 @@
             não realizado
 
             <% if appointment.can_check_in? -%>
+              <hr>
               <%= form_with model: appointment, url: check_in_admin_appointment_path(appointment), method: :patch, local: true do |f| %>
+                <%= return_to_tag %>
                 <%= f.submit "Realizar Check-in",
                              class: "btn btn-success",
                              data: {
@@ -91,7 +122,9 @@
             <%= l(appointment.check_out, format: :human) %>
 
             <% if appointment.can_undo_check_out? -%>
+              <hr>
               <%= form_with model: appointment, url: undo_check_out_admin_appointment_path(appointment), method: :patch, local: true do |f| %>
+                <%= return_to_tag %>
                 <%= f.submit "Desfazer Check-out",
                              class: "btn btn-danger",
                              data: {
@@ -103,39 +136,45 @@
             não realizado
 
             <% if appointment.can_check_out? -%>
-              <%= form_with url: check_out_admin_appointment_path(appointment), method: :patch, local: true do |f| %>
-                <div class="row">
-                  <div class="col text-center mb-2">
-                    <h3>Qual vacina foi aplicada?</h3>
-                  </div>
-                </div>
-                <% if appointment.follow_up_for_dose -%>
-                  <%= hidden_field_tag :vaccine_id, appointment.follow_up_for_dose.vaccine_id %>
-                  <p>Paciente obrigatoriamente deverá receber o reforço com a vacina
-                    <strong><%= appointment.follow_up_for_dose.vaccine.name %></strong>.</p>
-                <% else -%>
-                  <div class="row justify-content-md-center mb-4">
-                    <% Vaccine.order(:name).each do |vaccine| -%>
-                      <div class="col text-center col-lg-3">
-                        <%= f.radio_button :vaccine_id, vaccine.id,
-                                           autocomplete: false,
-                                           class: "btn-check" %>
-                        <%= f.label "vaccine_id_#{vaccine.id}", vaccine.name,
-                                    class: "btn btn-secondary" %>
-                      </div>
-                    <% end -%>
-                  </div>
-                <% end -%>
-                <div class="row">
-                  <div class="col-md-12 text-center mb-5">
-                    <%= f.submit "Realizar Check-out",
-                                 class: "btn btn-success",
+              <hr>
+              <a class="btn btn-success" data-toggle="collapse" href="#collapsableCheckOut" role="button" aria-expanded="false" aria-controls="collapsableCheckOut">
+                Realizar Check-out
+              </a>
+              <div class="collapse" id="collapsableCheckOut">
+                <%= form_with url: check_out_admin_appointment_path(appointment), method: :patch, local: true do |f| %>
+                  <hr>
+                  <%= return_to_tag %>
+                  <p>
+                    <strong>
+                      Qual vacina foi aplicada?
+                    </strong>
+                  </p>
+                  <% if appointment.follow_up_for_dose -%>
+                    <%= hidden_field_tag :vaccine_id, appointment.follow_up_for_dose.vaccine_id %>
+                    <p>Paciente obrigatoriamente deverá receber o reforço com a vacina
+                      <strong><%= appointment.follow_up_for_dose.vaccine.name %></strong>.</p>
+                  <% else -%>
+                    <div class="row justify-content-md-center">
+                      <% Vaccine.order(:name).each do |vaccine| -%>
+                        <div class="col text-center col-lg-3">
+                          <%= f.radio_button :vaccine_id, vaccine.id,
+                                             autocomplete: false,
+                                             class: "btn-check" %>
+                          <%= f.label "vaccine_id_#{vaccine.id}", vaccine.name,
+                                      class: "btn btn-secondary" %>
+                        </div>
+                      <% end -%>
+                    </div>
+                  <% end -%>
+                  <div class="text-center mt-2">
+                    <%= f.submit "Confirmar Vacinação",
+                                 class: "btn btn-primary",
                                  data: {
                                    confirm: t(:"appointments.confirmation.check_out", name: appointment.patient.name)
                                  } %>
                   </div>
-                </div>
-              <% end -%>
+                <% end -%>
+              </div>
             <% end -%>
           <% end -%>
         </td>
@@ -159,27 +198,37 @@
             Não
 
             <% if appointment.can_suspend? -%>
-              <%= form_with model: appointment, url: suspend_admin_appointment_path(appointment), method: :patch, local: true do |f| -%>
-                <div class="input-group mt-3">
-                  <%= f.text_field :suspend_reason, required: true, class: "form-control", placeholder: 'Informe aqui o motivo da suspensão' %>
-                  <div class="input-group-append">
-                    <%= f.submit "Suspender",
-                                 class: "btn btn-outline-danger",
-                                 data: {
-                                   confirm: t(:"appointments.confirmation.suspend")
-                                 } %>
+              <hr>
+              <a class="btn btn-danger" data-toggle="collapse" href="#collapsableSuspend" role="button" aria-expanded="false" aria-controls="collapsableSuspend">
+                Suspender agendamento
+              </a>
+              <div class="collapse" id="collapsableSuspend">
+                <%= form_with model: appointment, url: suspend_admin_appointment_path(appointment), method: :patch, local: true do |f| -%>
+                  <hr>
+                  <%= return_to_tag %>
+                  <div class="input-group mt-3">
+                    <%= f.text_field :suspend_reason, required: true, class: "form-control", placeholder: 'Informe aqui o motivo da suspensão' %>
+                    <div class="input-group-append">
+                      <%= f.submit "Confirmar",
+                                   class: "btn btn-danger",
+                                   data: {
+                                     confirm: t(:"appointments.confirmation.suspend")
+                                   } %>
+                    </div>
                   </div>
-                </div>
-              <% end -%>
+                <% end -%>
+              </div>
             <% end -%>
 
           <% else -%>
             Sim, suspenso por: <%= appointment.suspend_reason %>
 
             <% if appointment.can_activate? -%>
+              <hr>
               <%= form_with model: appointment, url: activate_admin_appointment_path(appointment), method: :patch, local: true do |f| -%>
+                <%= return_to_tag %>
                 <%= f.submit "Reativar agendamento (cancela a suspensão)",
-                             class: "btn btn-outline-danger",
+                             class: "btn btn-danger",
                              data: {
                                confirm: t(:"appointments.confirmation.activate")
                              } %>
@@ -192,7 +241,7 @@
         <th scope="row">Registrou dose #:</th>
         <td>
           <% if appointment.dose -%>
-            <%= appointment.dose.id %>
+            <%= link_to appointment.dose.id, [:admin, appointment.patient] %>
           <% end -%>
         </td>
       </tr>

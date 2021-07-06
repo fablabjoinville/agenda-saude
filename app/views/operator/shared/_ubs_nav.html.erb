@@ -17,10 +17,4 @@
 
 <ul class="nav nav-tabs mt-5 mb-1">
   <%= operator_nav_links(@ubs, @filter, @search, @appointments&.total_count) %>
-  <li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Configurações</a>
-    <div class="dropdown-menu">
-      <%= link_to "Status desta unidade", operator_ubs_path(@ubs), class: "dropdown-item" %>
-    </div>
-  </li>
 </ul>

@@ -18,13 +18,120 @@
   <% end -%>
 </p>
 
-<%= render @patient %>
+<div class='row'>
+  <div class='col'>
+    <strong>Nome completo:</strong> <%= patient.name %>
+  </div>
+
+  <div class='col'>
+    <strong>CPF:</strong> <%= ApplicationHelper.humanize_cpf(patient.cpf) %>
+  </div>
+
+  <div class='col'>
+    <strong>Data de Nascimento:</strong> <%= l(patient.birth_date.to_date) %>
+  </div>
+</div>
+
+<div class='row'>
+  <div class='col'>
+    <strong>Nome da mãe:</strong> <%= patient.mother_name %>
+  </div>
+
+  <div class='col'>
+    <strong>Bairro:</strong> <%= patient.neighborhood.name %>
+  </div>
+
+  <div class='col'>
+    <strong>Telefones:</strong> <%= patient.phones %>
+  </div>
+</div>
+
+<div class="mt-4">
+  <h4>Grupos que pertence</h4>
+  <% if patient.groups.any? -%>
+    <table class="table">
+      <thead>
+      <tr>
+        <th scope="col" width="1%">#</th>
+        <th scope="col">Grupo</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% patient.groups.admin_order.each do |group| -%>
+        <tr>
+          <td>
+            <%= group.id %>
+          </td>
+          <td>
+            <%= group.name_with_parent %>
+          </td>
+        </tr>
+      <% end -%>
+      </tbody>
+    </table>
+  <% else -%>
+    <p>Não preencheu nenhum grupo.</p>
+  <% end -%>
+</div>
 
 <h4>Agendamentos</h4>
 <% if @patient.appointments.any? -%>
-  <% @patient.appointments.order(:start).each do |appointment| -%>
-    <%= render appointment %>
-  <% end -%>
+  <p>Clique no # do agendamento para realizar procedimentos no mesmo.</p>
+  <table class="table">
+    <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Data agendada</th>
+      <th scope="col">Unidade</th>
+      <th scope="col">Check-in</th>
+      <th scope="col">Check-out</th>
+      <th scope="col">Dose</th>
+      <th scope="col">Vacina</th>
+      <th scope="col">Suspenso?</th>
+      <th scope="col">Criou dose #</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <% @patient.appointments.order(:start).each do |appointment| -%>
+      <tr>
+        <td>
+          <%= link_to appointment.id, admin_appointment_path(appointment) %>
+        </td>
+        <th scope="row">
+          <strong><%= l(appointment.start, format: :human) %></strong>
+        </th>
+        <td>
+          <%= appointment.ubs.name %>
+        </td>
+        <td>
+          <% if appointment.checked_in? -%>
+            <%= l(appointment.check_in, format: :human) %>
+          <% end -%>
+        </td>
+        <td>
+          <% if appointment.checked_out? -%>
+            <%= l(appointment.check_out, format: :human) %>
+          <% end -%>
+        </td>
+        <td>
+          <%= appointment.dose_sequence_number %>
+        </td>
+        <td>
+          <%= appointment.dose_vaccine&.name %>
+        </td>
+        <td>
+          <%= appointment.active ? "Não" : "Sim" %>
+        </td>
+        <td>
+          <% if appointment.dose -%>
+            <%= appointment.dose.id %>
+          <% end -%>
+        </td>
+      </tr>
+    <% end -%>
+    </tbody>
+  </table>
 <% else -%>
   <p>Paciente sem nenhum agendamento.</p>
 <% end -%>
@@ -32,6 +139,10 @@
 <div class="mt-4 mb-5">
   <h4>Doses de vacinas</h4>
   <% if @patient.doses.any? -%>
+    <p>
+      Caso deseje remover uma dose registrada incorretamente, vá no agendamento onde ocorreu a vacinação e clique para desfazer o check-out do mesmo.
+    </p>
+
     <table class="table">
       <thead>
       <tr>

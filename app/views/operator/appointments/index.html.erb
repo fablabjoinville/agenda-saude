@@ -17,7 +17,7 @@
             <%= l appointment.start, format: :short_hour %>
           </th>
           <td class="align-middle">
-            <%= link_to appointment.patient.name, operator_ubs_appointment_path(appointment.ubs, appointment) %>
+            <%= link_to appointment.patient.name, admin_appointment_path(appointment, return_to: request.url) %>
             <br>
             <small class="badge bg-light text-dark" data-cy="patientCpf"><%= ApplicationHelper.humanize_cpf appointment.patient.cpf %></small>
             <% if appointment.follow_up_for_dose -%>
@@ -33,7 +33,7 @@
           </td>
           <td class="align-middle">
             <small class="text-muted">
-              <%= [appointment.patient.phone.presence, appointment.patient.other_phone.presence].compact.join(", ") %>
+              <%= appointment.patient.phones %>
             </small>
           </td>
           <td class="align-middle">
@@ -41,20 +41,13 @@
               case appointment.state
               when :suspended
             -%>
-              <%= link_to "Reativar",
-                          activate_operator_ubs_appointment_path(appointment.ubs, appointment),
-                          method: :patch,
-                          class: "btn btn-block btn-warning",
-                          data: { confirm: t(:"appointments.confirmation.activate", name: appointment.patient.name) } %>
+              <%= link_to "Reativar", admin_appointment_path(appointment, return_to: request.url), class: "btn btn-block btn-warning" %>
             <% when :checked_out -%>
-              <%= link_to "Vacinado", operator_ubs_appointment_path(appointment.ubs, appointment), class: "btn btn-block btn-light",
-                          data: { cy: "vaccinatedButton" } %>
+              <%= link_to "Vacinado", admin_appointment_path(appointment, return_to: request.url), class: "btn btn-block btn-light" %>
             <% when :checked_in -%>
-              <%= link_to "Check-out", operator_ubs_appointment_path(appointment.ubs, appointment), class: "btn btn-block btn-success",
-                          data: { cy: "checkOutButton" } %>
+              <%= link_to "Check-out", admin_appointment_path(appointment, return_to: request.url), class: "btn btn-block btn-success" %>
             <% when :waiting -%>
-              <%= link_to "Check-in", operator_ubs_appointment_path(appointment.ubs, appointment), class: "btn btn-block btn-primary",
-                          data: { cy: "checkInButton" } %>
+              <%= link_to "Check-in", admin_appointment_path(appointment, return_to: request.url), class: "btn btn-block btn-primary" %>
             <% end -%>
           </td>
         </tr>

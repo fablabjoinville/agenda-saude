@@ -42,12 +42,17 @@ module ApplicationHelper
       end
     end
   end
+  # rubocop:enable Metrics/ParameterLists
 
   def embedded_page(path)
     Page.find_by(path: path)&.html
   end
 
-  # rubocop:enable Metrics/ParameterLists
+  def return_to_tag
+    return nil unless return_to
+
+    hidden_field_tag :return_to, return_to
+  end
 
   protected
 
