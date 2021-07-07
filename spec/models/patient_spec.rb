@@ -9,17 +9,17 @@ RSpec.describe Patient, type: :model do
 
   it 'has valid birth date' do
     expect(
-      Patient.new(birth_date: '1999-12-31').tap(&:valid?).errors[:birth_date]
+      Patient.new(birthday: '1999-12-31').tap(&:valid?).errors[:birthday]
     ).not_to be_present
   end
 
   it 'has validation against bad birth date' do
     expect(
-      Patient.new(birth_date: '1999-31-31').tap(&:valid?).errors[:birth_date]
+      Patient.new(birthday: '1999-31-31').tap(&:valid?).errors[:birthday]
     ).to be_present
 
     expect(
-      Patient.new(birth_date: '1999-12-32').tap(&:valid?).errors[:birth_date]
+      Patient.new(birthday: '1999-12-32').tap(&:valid?).errors[:birthday]
     ).to be_present
   end
 end

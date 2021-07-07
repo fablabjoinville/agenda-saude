@@ -16,7 +16,7 @@ begin_date = 0.days.from_now.to_date.in_time_zone
     name: "marvin#{i + 10}",
     cpf: cpf,
     mother_name: 'Tristeza',
-    birth_date: '1920-06-24',
+    birthday: '1920-06-24',
     phone: '(47) 91234-5678',
     public_place: 'Rua das Flores',
     place_number: '1',
