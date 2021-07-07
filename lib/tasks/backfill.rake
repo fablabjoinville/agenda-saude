@@ -12,4 +12,15 @@ namespace :backfill do
       })&.inspect
     end
   end
+
+  desc 'New birthday column'
+  task birthday: [:environment] do
+    puts 'Populating ubs:'
+    puts ActiveRecord::Base.connection.execute(%{
+      UPDATE patients
+      SET birthday = TO_DATE(patients.birth_date,'YYYY-MM-DD')
+      WHERE
+        patients.birthday IS NULL
+    })&.inspect
+  end
 end
