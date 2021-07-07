@@ -8,7 +8,7 @@ xlsx_package.workbook.add_worksheet do |sheet|
       appointment.patient.name,
       appointment.patient.cpf,
       appointment.patient.phone,
-      l(appointment.patient.birthday, format: :short_date_hour),
+      l(Date.parse(appointment.patient.birthday, format: :short_date_hour)),
       appointment.patient.public_place,
       appointment.patient.place_number,
       appointment.patient.neighborhood
