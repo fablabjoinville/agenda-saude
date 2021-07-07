@@ -10,10 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_28_014708) do
+ActiveRecord::Schema.define(version: 2021_07_07_142052) do
 
   # These are extensions that must be enabled in order to support this database
-  enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
 
   create_table "appointments", force: :cascade do |t|
@@ -162,6 +161,8 @@ ActiveRecord::Schema.define(version: 2021_06_28_014708) do
     t.string "street_2"
     t.string "internal_note"
     t.datetime "user_updated_at"
+    t.date "birthday"
+    t.index ["birthday"], name: "index_patients_on_birthday"
     t.index ["cpf"], name: "index_patients_on_cpf", unique: true
   end
 
