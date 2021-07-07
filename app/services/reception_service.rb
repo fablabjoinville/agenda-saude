@@ -15,8 +15,7 @@ class ReceptionService
 
   def undo_check_in
     Appointment.transaction do
-      appointment.dose&.destroy
-      appointment.update!(check_in: nil, check_out: nil)
+      appointment.update!(check_in: nil)
     end
   end
 
