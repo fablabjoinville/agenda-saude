@@ -54,7 +54,7 @@ Depois de clonar o repositório, você pode executar o seguinte no diretório da
 docker-compose up
 ```
 
-E acesse no ambiente local [http://localhost:4000](http://localhost:3000).
+E acesse no ambiente local [http://localhost:3000](http://localhost:3000).
 
 ### Instalando manualmente
 
