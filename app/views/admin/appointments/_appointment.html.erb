@@ -24,7 +24,7 @@
             <p>
               <strong>CPF:</strong> <%= ApplicationHelper.humanize_cpf(appointment.patient.cpf) %>
               <br/>
-              <strong>Data de Nascimento:</strong> <%= l(appointment.patient.birth_date.to_date) %>
+              <strong>Data de Nascimento:</strong> <%= l(appointment.patient.birthday) %>
               <br/>
               <strong>Nome da mãe:</strong> <%= appointment.patient.mother_name %>
               <br/>
