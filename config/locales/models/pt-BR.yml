@@ -40,7 +40,7 @@
                   taken: já cadastrado
                 mother_name:
                   blank: em branco
-                birth_date:
+                birthday:
                   blank: em branco
                   invalid: inválida
                 phone:
