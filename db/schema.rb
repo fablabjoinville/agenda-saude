@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_07_142052) do
+ActiveRecord::Schema.define(version: 2021_07_07_145029) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -149,7 +149,6 @@ ActiveRecord::Schema.define(version: 2021_07_07_142052) do
     t.string "name", default: "", null: false
     t.string "cpf", default: "", null: false
     t.string "mother_name", default: "", null: false
-    t.string "birth_date"
     t.string "phone"
     t.string "other_phone"
     t.string "sus"
@@ -161,7 +160,7 @@ ActiveRecord::Schema.define(version: 2021_07_07_142052) do
     t.string "street_2"
     t.string "internal_note"
     t.datetime "user_updated_at"
-    t.date "birthday"
+    t.date "birthday", null: false
     t.index ["birthday"], name: "index_patients_on_birthday"
     t.index ["cpf"], name: "index_patients_on_cpf", unique: true
   end

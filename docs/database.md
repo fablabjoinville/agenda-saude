@@ -106,7 +106,6 @@ Pacientes.
   * `name`: nome do paciente.
   * `cpf`: número de CPF, usado para login.
   * `mother_name`: nome da mãe.
-  * `birth_date`: data de nascimento.
   * `phone`: número telefônico primário.
   * `other_phone`: número telefônico secundário.
   * `sus`: número do cartão do SUS.
@@ -118,6 +117,7 @@ Pacientes.
   * `street_2`: complemento residencial
   * `internal_note`: observação interna sobre o usuário, **ainda não em uso**.
   * `user_updated_at`: quando o paciente atualizou seu cadastro. Só registrado se foi o paciente (não registra se foi atualizado por operador).
+  * `birthday`: data de nascimento.
 
 ## patients_inquiry_answers
 

@@ -15,7 +15,7 @@ class Patient < ApplicationRecord
 
   has_many :inquiry_answers, through: :patients_inquiry_answers, dependent: nil
 
-  validates :birth_date, presence: true
+  validates :birthday, presence: true
   validates :cpf, presence: true, uniqueness: true, cpf_format: true
   validates :mother_name, presence: true
   validates :name, presence: true
@@ -23,8 +23,6 @@ class Patient < ApplicationRecord
   validates :phone, presence: true, phone_format: true
   validates :place_number, presence: true
   validates :public_place, presence: true
-
-  validate :valid_birth_date
 
   scope :locked, -> { where(arel_table[:login_attempts].gteq(MAX_LOGIN_ATTEMPTS)) }
 
@@ -82,20 +80,6 @@ class Patient < ApplicationRecord
     can_schedule? || future_appointments?
   end
 
-  # TODO: Replace birth_date with birthday in the database (setting it to Date instead of String)
-  def birthday=(date)
-    date = [date[1], date[2].to_s.rjust(2, '0'), date[3].to_s.rjust(2, '0')].join('-') if date.is_a? Hash
-    self[:birth_date] = Date.iso8601(date)
-  end
-
-  def birthday
-    return nil if self[:birth_date].blank?
-
-    Date.iso8601(self[:birth_date])
-  rescue Date::Error
-    nil
-  end
-
   def mothers_first_name
     mother_name.split.first.downcase.camelize
   end
@@ -139,11 +123,5 @@ class Patient < ApplicationRecord
 
   def inquiry_answers_via_questions=(hash)
     self.inquiry_answer_ids = hash.values.flatten
-  end
-
-  private
-
-  def valid_birth_date
-    errors.add(:birth_date, :invalid) unless birthday
   end
 end

@@ -17,7 +17,7 @@ ubs = Ubs.first!
     name: "marvin#{i}",
     cpf: cpf,
     mother_name: 'Tristeza',
-    birth_date: '1920-01-31',
+    birthday: '1920-01-31',
     phone: '(47) 91234-5678',
     public_place: 'Rua das Flores',
     place_number: '1',
