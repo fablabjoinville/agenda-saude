@@ -22,7 +22,7 @@ module Operator
                       .joins(:patient)
                       .order(Patient.arel_table[:name].lower.asc)
                       .page(index_params[:page])
-                      .per([[10, index_params[:per_page].to_i].max, 10_000].min) # max of 10k is for exporting to XLS
+                      .per([[25, index_params[:per_page].to_i].max, 10_000].min) # max of 10k is for exporting to XLS
 
       respond_to do |format|
         format.html
@@ -31,70 +31,7 @@ module Operator
         end
       end
     end
-
     # rubocop:enable Metrics/AbcSize
-
-    def show
-      @appointment = @ubs.appointments.scheduled.find(params[:id])
-
-      @other_appointments = @appointment.patient.appointments.where.not(id: @appointment.id).order(:start)
-
-      @doses = @appointment.patient.doses.includes(:vaccine, appointment: [:ubs]).order(:created_at)
-
-      @vaccines = Vaccine.order(:name)
-    end
-
-    # Check-in single appointment
-    def check_in
-      appointment = @ubs.appointments.scheduled.not_checked_in.find(params[:id])
-      unless appointment.in_allowed_check_in_window?
-        return redirect_to(operator_ubs_appointment_path(appointment.ubs, appointment),
-                           flash: { alert: t(:'appointments.messages.not_allowed_window') })
-      end
-
-      ReceptionService.new(appointment).check_in
-
-      redirect_to operator_ubs_appointments_path(appointment.ubs),
-                  flash: { notice: "Check-in realizado para #{appointment.patient.name}." }
-    end
-
-    # Check-out single appointment
-    def check_out
-      appointment = @ubs.appointments.scheduled.not_checked_out.find(params[:id])
-      vaccine = Vaccine.find_by id: check_out_params[:vaccine_id]
-
-      unless vaccine
-        return redirect_to(operator_ubs_appointment_path(appointment.ubs, appointment),
-                           flash: { error: 'Selecione a vacina aplicada.' })
-      end
-
-      checked_out = ReceptionService.new(appointment).check_out(vaccine)
-
-      redirect_to operator_ubs_appointment_path(appointment.ubs, appointment),
-                  flash: { notice_title: notice_for_checked_out(checked_out, appointment) }
-    end
-
-    # Suspend single appointment
-    def suspend
-      appointment = @ubs.appointments.scheduled.not_checked_in.find(params[:id])
-      appointment.update!(active: false, suspend_reason: params[:appointment][:suspend_reason])
-
-      redirect_to operator_ubs_appointments_path(appointment.ubs),
-                  flash: {
-                    notice: "Agendamento suspenso para #{appointment.patient.name}"
-                  }
-    end
-
-    # Activate (un-suspend) single appointment
-    def activate
-      appointment = @ubs.appointments.scheduled.find(params[:id])
-      appointment.update!(active: true, suspend_reason: nil)
-
-      redirect_to operator_ubs_appointment_path(appointment.ubs, appointment),
-                  flash: {
-                    notice: "Agendamento reativado para #{appointment.patient.name}."
-                  }
-    end
 
     private
 
@@ -126,23 +63,8 @@ module Operator
       appointments
     end
 
-    def check_out_params
-      params.permit(:vaccine_id)
-    end
-
     def index_params
       params.permit(:per_page, :page, :search, :filter)
-    end
-
-    def notice_for_checked_out(checked_out, appointment)
-      if checked_out.dose.follow_up_appointment
-        I18n.t('alerts.dose_received_with_follow_up',
-               name: appointment.patient.name,
-               sequence_number: checked_out.dose.sequence_number,
-               date: I18n.l(checked_out.next_appointment.start, format: :human))
-      else
-        I18n.t('alerts.last_dose_received', name: appointment.patient.name)
-      end
     end
 
     def set_ubs

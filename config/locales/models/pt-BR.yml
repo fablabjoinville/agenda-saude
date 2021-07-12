@@ -21,12 +21,36 @@
         checked_in: Aguardando check-out
         waiting: Aguardando check-in
       confirmation:
-        suspend: Confirma suspender agendamento para %{name}?
-        activate: Confirma reativar agendamento para %{name}?
-        checkout: Confirma vacinação para %{name}?
-        checkin: Confirmar que %{name} fez check-in e está pronta(o) a entrar e receber vacina?
+        check_in: Confirmar que %{name} fez check-in e está pronta(o) a entrar e receber vacina?
+        undo_check_in: Confirma DESFAZER o check-in de %{name}?
+
+        check_out: Confirma vacinação para %{name}?
+        undo_check_out: Confirma DESFAZER o check-out de %{name}? Isso irá também apagar o registro da sua vacinação realizado neste atendimento!
+
+        suspend: Confirma suspender agendamento?
+        activate: Confirma reativar agendamento?
+
+        remove_patient: Confirma REMOVER o paciente %{name} deste agendamento? Isso irá liberar a vaga para que outro paciente possa agendar esta vaga.
       messages:
         not_allowed_window: Não é possível fazer checkin para outra data
+
+        checked_in: Check-in realizado para %{name}.
+        undid_check_in: Check-in DESFEITO para %{name}.
+
+        undid_check_out: Check-out DESFEITO para %{name}.
+
+        suspended: Agendamento suspenso.
+        activated: Agendamento reativado.
+
+        removed_patient: Paciente removido deste agendamento.
+
+        cannot_check_in: Não é possível realizar este check-in.
+        cannot_undo_check_in: Não é possível desfazer este check-in.
+        cannot_check_out: Não é possível realizar este check-out.
+        cannot_undo_check_out: Não é possível desfazer este check-out.
+        cannot_suspend: Não é possível suspender este agendamento.
+        cannot_activate: Não é possível reativar este agendamento.
+        cannot_remove_patient: Não é possível remover paciente deste agendamento.
     activerecord:
         errors:
           models:

@@ -11,9 +11,7 @@ module Admin
 
     # For now, only showing locked patients
     def index
-      patients = Patient.order(:cpf)
-
-      @patients = filter(search(patients))
+      @patients = filter(search(Patient.order(:cpf)))
                   .order(Patient.arel_table[:name].lower.asc)
                   .page(index_params[:page])
                   .per(100)
@@ -74,7 +72,7 @@ module Admin
         return patients.search_for(@search)
       end
 
-      patients
+      patients.where('TRUE IS FALSE') # to return empty
     end
 
     def set_patient

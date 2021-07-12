@@ -22,7 +22,7 @@
         </div>
         <div class="form-group col-md-8">
           <label for="">Unidade</label>
-          <%= f.select "ubs_id", @ubs_index.pluck(:name, :id), { prompt: "Unidade:", selected: @ubs&.id }, class: "form-control" %>
+          <%= f.select "ubs_id", ubs_index.pluck(:name, :id), { prompt: "Unidade:", selected: @ubs&.id }, class: "form-control" %>
         </div>
         <div class="form-group col-md-1">
           <label for="">&nbsp;</label>
@@ -65,7 +65,7 @@
         <%= @appointments.select { |a| a.patient.present? && a.follow_up_for_dose.blank? }.count %>
       </td>
     </tr>
-    <% @vaccines.each do |vaccine| -%>
+    <% Vaccine.where.not(second_dose_after_in_days: nil).order(:name).each do |vaccine| -%>
       <tr>
         <th scope="row">
           Agendamentos p/ reforço <%= vaccine.name %>:
@@ -92,6 +92,7 @@
       <th scope="col">#</th>
       <th scope="col">Horário</th>
       <th scope="col">Paciente</th>
+      <th scope="col">CPF</th>
       <th scope="col">C-in</th>
       <th scope="col">C-out</th>
       <th scope="col">Dose</th>
@@ -100,9 +101,9 @@
     </thead>
     <tbody>
     <% @appointments.each do |appointment| -%>
-      <tr class="<%= "table-dark" unless appointment.active %> <%= "table-success" if appointment.checked_out? %>">
+      <tr class="<%= "table-dark" unless appointment.active %> <%= "table-success" if appointment.checked_out? %> <%= "table-warning" if appointment.checked_in? && !appointment.checked_out? %>  <%= "table-info" if appointment.patient_id.blank? %>">
         <td>
-          <%= link_to appointment.id, admin_appointment_path(appointment) %>
+          <%= link_to appointment.id, admin_appointment_path(appointment, return_to: request.url) %>
         </td>
         <th scope="row">
           <%= l appointment.start, format: :short_hour %>
@@ -112,6 +113,13 @@
             <%= appointment.patient.name %>
           <% else -%>
             vago
+          <% end -%>
+        </td>
+        <td>
+          <% if appointment.patient.present? -%>
+            <small><%= ApplicationHelper.humanize_cpf appointment.patient.cpf %></small>
+          <% else -%>
+            -
           <% end -%>
         </td>
         <td>

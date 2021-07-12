@@ -31,12 +31,17 @@ class Patient < ApplicationRecord
       Patient.arel_table[:cpf]
              .eq(Patient.parse_cpf(text)) # Search for CPF without . and -
              .or(Patient.arel_table[:name].matches("%#{text.strip}%"))
+             .or(Patient.arel_table[:id].eq(text.strip))
     )
   }
 
   # Receives CPF, sanitizing everything different from a digit
   def cpf=(string)
     self[:cpf] = Patient.parse_cpf(string)
+  end
+
+  def phones
+    [phone.presence, other_phone.presence].compact.join(', ')
   end
 
   # List all conditions allowed for patient

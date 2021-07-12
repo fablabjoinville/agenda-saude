@@ -14,25 +14,26 @@ Rails.application.routes.draw do
   devise_for :users, controllers: { sessions: 'users/sessions' }
   devise_scope :user do
     namespace :operator do
-      resources :ubs, only: %i[index show] do
-        member do
-          patch :activate
-          patch :suspend
-        end
-
-        resources :appointments, only: %i[index show] do
-          member do
-            patch :check_in
-            patch :check_out
-            patch :suspend
-            patch :activate
-          end
-        end
+      resources :ubs, only: %i[index] do
+        resources :appointments, only: %i[index show]
       end
     end
 
     namespace :admin do
-      resources :appointments, only: %i[index show]
+      resources :appointments, only: %i[index show new create] do
+        member do
+          patch :check_in
+          patch :undo_check_in
+
+          patch :check_out
+          patch :undo_check_out
+
+          patch :suspend
+          patch :activate
+
+          patch :remove_patient
+        end
+      end
       resources :appointments_bulks, only: %i[new create]
       resources :groups
       resources :neighborhoods

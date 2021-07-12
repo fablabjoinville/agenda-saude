@@ -1,0 +1,75 @@
+<h1 class="h4">
+  Registrar dose aplicada em paciente
+</h1>
+
+<div class="mt-4 mb-5">
+  <%= form_with model: [:admin, @appointment], local: true do |f| %>
+    <%= f.hidden_field :patient_id, value: f.object.patient_id %>
+    <%= error_messages_for(f.object) %>
+
+    <p>
+      <strong>Paciente:</strong>
+      <%= f.object.patient.name %>
+      (<%= ApplicationHelper.humanize_cpf(f.object.patient.cpf) %>)
+    </p>
+
+    <div class="form-row">
+      <div class="form-group col-md-12">
+        <%= f.label :ubs %>
+        <%= f.collection_select :ubs_id, ubs_index, :id, :name, { prompt: "Selecione uma unidade" }, required: true, class: "form-control" %>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group col-md-6 datetime">
+        <%= f.label :start %>
+        <div class="clear"></div>
+        <%= f.datetime_select :start,
+                              {
+                                start_year: Date.current.year.to_i - 5,
+                                end_year: Date.current.year.to_i + 5,
+                                use_two_digit_numbers: true,
+                                with_css_classes: {
+                                  day: "form-control day",
+                                  month: "form-control month",
+                                  year: "form-control year",
+                                  hour: "form-control hour",
+                                  minute: "form-control minute"
+                                }
+                              },
+                              required: true,
+                              class: "form-control" %>
+      </div>
+    </div>
+
+    <%= label_tag "Qual vacina foi aplicada?" %>
+
+    <div class="row justify-content-md-center mb-4">
+      <% Vaccine.order(:name).each do |vaccine| -%>
+        <div class="col text-center col-lg-3">
+          <%= radio_button_tag :vaccine_id, vaccine.id,
+                               params[:vaccine_id] == vaccine.id.to_s,
+                               autocomplete: false,
+                               class: "btn-check" %>
+          <%= label_tag "vaccine_id_#{vaccine.id}", vaccine.name,
+                        class: "btn btn-secondary" %>
+        </div>
+      <% end -%>
+    </div>
+
+    <p>
+      Será criado um agendamento, para o paciente selecionado, e já será feito check-in e check-out automaticamente, bem como o agendamento de reforço de dose caso seja aplicável para a vacina selecionada.
+    </p>
+
+    <div class="form-row">
+      <div class="form-group col-md-12">
+        <%= f.submit class: 'form-control btn-primary' %>
+      </div>
+    </div>
+  <% end %>
+
+</div>
+
+<p>
+  <%= link_to "Cancelar e voltar", [:admin, @appointment.patient] %>
+</p>

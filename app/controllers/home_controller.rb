@@ -3,7 +3,7 @@ class HomeController < ApplicationController
 
   def index
     return redirect_to home_community_appointments_path if current_patient
-    return redirect_to operator_ubs_index_path if current_user
+    return redirect_to first_ubs_or_admin_path if current_user
 
     @can_register_condition_names = Rails.cache.fetch('home/condition_names', expires_in: CACHE_EXPIRES_IN) do
       condition_names
@@ -16,6 +16,12 @@ class HomeController < ApplicationController
   end
 
   protected
+
+  def first_ubs_or_admin_path
+    ubs = current_user.ubs.order(:id).first
+
+    ubs ? operator_ubs_appointments_path(ubs) : admin_patients_path
+  end
 
   def condition_names
     Condition.active.can_register.order(:name).pluck(:name)

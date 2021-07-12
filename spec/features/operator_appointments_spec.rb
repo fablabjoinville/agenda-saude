@@ -24,7 +24,7 @@ RSpec.feature 'Operator appointments' do
       create(:appointment, patient: patient, ubs: ubs)
     end
 
-    scenario 'check in and out', js: true do
+    scenario 'check in and out and verify on user dashboard', js: true do
       visit new_user_session_path
       fill_in 'Usuário/CNES', with: user.name
       fill_in 'Senha', with: 'password'
@@ -41,23 +41,22 @@ RSpec.feature 'Operator appointments' do
         click_on 'Realizar Check-in'
       end
 
-      click_on 'Aguardando check-out'
+      expect(page).to have_content('Check-in realizado para Fulano da Silva.')
+      expect(page).to have_content('Aguardando check-out')
 
-      expect(page).to have_content(patient.name)
-
-      click_on 'Check-out'
+      click_on 'Realizar Check-out'
 
       expect(page).to have_content('Qual vacina foi aplicada?')
 
       choose vaccine.name
       page.driver.accept_modal(:confirm) do
-        click_on 'Realizar Check-out'
+        sleep 1
+        click_on 'Confirmar Vacinação'
       end
 
-      expect(page).to have_content('tomou a 1a dose')
-      expect(page).to have_content('(em 28 dias) na unidade Central de Vacinas para receber Vacina')
+      expect(page).to have_content('Fulano da Silva tomou a 1a dose e está com a próxima dose agendada para')
 
-      click_on 'Voltar para agendamentos aguardando check-in'
+      click_on 'Voltar'
 
       expect(page).not_to have_content(patient.name)
       click_on 'Vacinado'
@@ -108,26 +107,28 @@ RSpec.feature 'Operator appointments' do
 
       click_on 'Check-in'
       page.driver.accept_modal(:confirm) do
+        sleep 1
         click_on 'Realizar Check-in'
       end
 
+      click_on 'Voltar'
       click_on 'Aguardando check-out'
 
       expect(page).to have_content(patient.name)
 
       click_on 'Check-out'
+      click_on 'Realizar Check-out'
 
       expect(page).to have_content('Paciente obrigatoriamente deverá receber o reforço com a vacina Vacina.')
 
       page.driver.accept_modal(:confirm) do
-        click_on 'Realizar Check-out'
+        sleep 1
+        click_on 'Confirmar Vacinação'
       end
 
       expect(page).to have_content('está imunizado(a)')
-      expect(page).to have_content('1a dose da Vacina')
-      expect(page).to have_content('2a dose da Vacina')
 
-      click_on 'Voltar para agendamentos aguardando check-in'
+      click_on 'Voltar'
 
       expect(page).not_to have_content(patient.name)
       click_on 'Vacinado'
