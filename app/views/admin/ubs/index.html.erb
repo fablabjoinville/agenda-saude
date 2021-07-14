@@ -26,7 +26,7 @@
         <%= link_to ubs.id, admin_ubs_path(ubs) %>
       </td>
       <th scope="row" class="align-middle">
-        <%= ubs.name %>
+        <%= link_to ubs.name, admin_ubs_path(ubs) %>
       </th>
       <td>
         <%= human_shifts(ubs, weekday: 0) %>

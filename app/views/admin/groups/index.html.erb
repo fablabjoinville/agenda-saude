@@ -26,7 +26,7 @@
         <%= link_to group.id, admin_group_path(group) %>
       </td>
       <th scope="row">
-        <%= group.name %>
+        <%= link_to group.name, admin_group_path(group) %>
       </th>
       <td>
         <%= group.context %>

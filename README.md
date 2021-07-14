@@ -62,8 +62,8 @@ Caso você queira instalar manualmente todas as dependências no seu ambiente GN
 precisará executar os seguintes comandos:
 
 ```sh
-apt-get update
-apt-get postgresql postgresql-contrib postgresql-server-dev-all cmake nodejs libpq-dev
+apt update
+apt install postgresql postgresql-contrib postgresql-server-dev-all cmake nodejs libpq-dev
 gem install bundler
 ```
 
