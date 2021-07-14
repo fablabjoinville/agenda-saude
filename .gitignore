@@ -54,7 +54,3 @@ spec/cypress/screenshots/
 spec/cypress/videos/
 coverage
 /.env*.local
-
-# Tive problemas com o database.yml
-config/database.yml
-
