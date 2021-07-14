@@ -8,11 +8,21 @@ default: &default
 
 development:
   <<: *default
-  url: <%= ENV.fetch("DATABASE_URL", "postgresql://postgres:@localhost:5432/agendamento_covid_development") %>
+  database: agendamento_covid_development
+  username: <%= ENV.fetch('POSTGRESQL_USERNAME') { 'postgres' } %>
+  password: <%= ENV.fetch('POSTGRESQL_PASSWORD') { 'postgres' } %>
+  host: <%= ENV.fetch('POSTGRESQL_HOST') { 'localhost' } %>
+  port: <%= ENV.fetch('POSTGRESQL_PORT') { '5432' } %>
 
 test:
   <<: *default
-  url: <%= ENV.fetch("DATABASE_URL", "postgresql://postgres:@localhost:5432/agendamento_covid_test") %>
+  encoding: utf8
+  timeout: 5000
+  database: agendamento_covid_test
+  username: <%= ENV.fetch('POSTGRESQL_USERNAME') { 'postgres' } %>
+  password: <%= ENV.fetch('POSTGRESQL_PASSWORD') { 'postgres' } %>
+  host:  <%= ENV.fetch('POSTGRESQL_HOST') { 'localhost' } %>
+  port: 5432
 
 production:
   <<: *default
