@@ -54,13 +54,9 @@ Após clonar o repositório, você pode executar o seguinte comando no diretóri
 docker-compose up --build
 ```
 
-Depois de executar o build da aplicação, você pode omitir a opção `--build`.
-
-```sh
-docker-compose up
-```
-
 E acesse no ambiente local [http://localhost:3000](http://localhost:3000).
+
+Obs.: Você pode omitir a opção `--build` depois de fazer o build da aplicação pela primeira vez. Dessa forma, subir o docker-compose fica consideravelmente mais rápido. Porém, quando há mudanças no Gemfile, é aconselhável executar com `--build` novamente.
 
 ### Instalando manualmente
 
