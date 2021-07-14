@@ -48,7 +48,13 @@ A forma mais fácil de executar este projeto no seu ambiente é usando o
 Docker Compose, ferramenta responsável por criar um ambiente virtualizado e
 instalar todas as outras dependências.
 
-Depois de clonar o repositório, você pode executar o seguinte no diretório da aplicação:
+Após clonar o repositório, você pode executar o seguinte comando no diretório da aplicação:
+
+```sh
+docker-compose up --build
+```
+
+Depois de executar o build da aplicação, você pode omitir a opção `--build`.
 
 ```sh
 docker-compose up
@@ -67,10 +73,17 @@ apt install postgresql postgresql-contrib postgresql-server-dev-all cmake nodejs
 gem install bundler
 ```
 
-Para instalar as bibliotecas e configurar o banco de dados execute:
+Para instalar as bibliotecas execute:
 
 ```sh
 bundle install
+```
+
+Para configurar o banco de dados execute:
+
+```sh
+cp .env.db.sample .env
+source .env
 bin/rails db:setup
 ```
 
