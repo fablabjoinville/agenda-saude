@@ -16,10 +16,10 @@ module Admin
       else
         @patients = filter(Patient.order(:cpf))
       end
-      
+
       @patients = @patients.order(Patient.arel_table[:name].lower.asc)
-                    .page(index_params[:page])
-                    .per(100)
+                           .page(index_params[:page])
+                           .per(100)
     end
 
     def new
@@ -73,7 +73,7 @@ module Admin
     def search(patients)
       @filter = FILTERS[:search] # In case we're searching, use special filter
       @search = index_params[:search]
-      return patients.search_for(@search)
+      patients.search_for(@search)
     end
 
     def set_patient
