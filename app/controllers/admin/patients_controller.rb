@@ -11,11 +11,11 @@ module Admin
 
     # For now, only showing locked patients
     def index
-      if index_params[:search].present? && index_params[:search].size >= 1
-        @patients = search(Patient.order(:cpf))
-      else
-        @patients = filter(Patient.order(:cpf))
-      end
+      @patients = if index_params[:search].present? && index_params[:search].size >= 1
+                    search(Patient.order(:cpf))
+                  else
+                    filter(Patient.order(:cpf))
+                  end
 
       @patients = @patients.order(Patient.arel_table[:name].lower.asc)
                            .page(index_params[:page])
