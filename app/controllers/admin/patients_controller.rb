@@ -11,15 +11,9 @@ module Admin
 
     # For now, only showing locked patients
     def index
-      @patients = if index_params[:search].present? && index_params[:search].size >= 1
-                    search(Patient.order(:cpf))
-                  else
-                    filter(Patient.order(:cpf))
-                  end
-
-      @patients = @patients.order(Patient.arel_table[:name].lower.asc)
-                           .page(index_params[:page])
-                           .per(100)
+      @patients = filter_search(Patient.order(:cpf)).order(Patient.arel_table[:name].lower.asc)
+                                                    .page(index_params[:page])
+                                                    .per(100)
     end
 
     def new
@@ -74,6 +68,14 @@ module Admin
       @filter = FILTERS[:search] # In case we're searching, use special filter
       @search = index_params[:search]
       patients.search_for(@search)
+    end
+
+    def filter_search(patients)
+      if index_params[:search].present? && index_params[:search].size >= 1
+        search(patients)
+      else
+        filter(patients)
+      end
     end
 
     def set_patient
