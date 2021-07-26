@@ -42,6 +42,8 @@ module Community
                                .sort_by { |ubs, _appointments| ubs.name }
     rescue AppointmentScheduler::NoFreeSlotsAhead
       redirect_to home_community_appointments_path, flash: { alert: 'Não há vagas disponíveis para reagendamento.' }
+    rescue CannotCancelAndReschedule
+      redirect_to home_community_appointments_path, flash: { alert: 'Você não pode cancelar ou reagendar.' }
     end
     # rubocop:enable Metrics/AbcSize
 
@@ -63,6 +65,8 @@ module Community
 
       redirect_to home_community_appointments_path,
                   flash: message_for(result, appointment: new_appointment, desired_start: parse_start)
+    rescue CannotCancelAndReschedule
+      redirect_to home_community_appointments_path, flash: { alert: 'Você não pode cancelar ou reagendar.' }
     end
     # rubocop:enable Metrics/AbcSize
 
