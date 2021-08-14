@@ -68,6 +68,7 @@ pt-BR:
         sunday_break_end: Fim da pausa de almoço de Domingo
         slot_interval_minutes: Duração de cada atendimento (min)
         appointments_per_time_slot: Atendimentos em paralelo
+        enabled_for_reschedule: Habilitado para Reagendamento da dose de reforço
         address: Endereço
         neighborhood: Bairro
         phone: Telefone

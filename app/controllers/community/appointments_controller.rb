@@ -28,9 +28,8 @@ module Community
     def index
       appointment_can_cancel_and_reschedule
 
-      # If patient already had a dose, keep it in the same UBS.
-      # This is an optimized query, hence a little odd using +pick+s.
-      ubs_id = Appointment.where(id: current_patient.doses.pick(:appointment_id)).pick(:ubs_id)
+      # If patient already had a dose, show only UBS that are 'enabled_for_reschedule'.
+      ubs_id = Ubs.where(enabled_for_reschedule: true).pluck(:id) if current_patient.doses.exists?
 
       # Otherwise limit to where they can schedule
       ubs_id = allowed_ubs_ids if ubs_id.blank?
