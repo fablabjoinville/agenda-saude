@@ -13,11 +13,10 @@
   <tr>
     <th scope="col">#</th>
     <th scope="col">Nome</th>
+    <th scope="col">Domingo</th>
     <th scope="col">2<sup>a</sup>-6<sup>a</sup></th>
     <th scope="col">Sábado</th>
-    <th scope="col">Domingo</th>
     <th scope="col">Ativa?</th>
-    <th scope="col">Hab. p/ Reagendamento dose reforço?</th>
   </tr>
   </thead>
   <tbody>
@@ -30,19 +29,16 @@
         <%= link_to ubs.name, admin_ubs_path(ubs) %>
       </th>
       <td>
+        <%= human_shifts(ubs, weekday: 0) %>
+      </td>
+      <td>
         <%= human_shifts(ubs) %>
       </td>
       <td>
         <%= human_shifts(ubs, weekday: 6) %>
       </td>
       <td>
-        <%= human_shifts(ubs, weekday: 0) %>
-      </td>
-      <td>
         <%= ubs.active ? "✅" : "❌" %>
-      </td>
-      <td>
-        <%= ubs.enabled_for_reschedule ? "✅" : "❌" %>
       </td>
     </tr>
   <% end -%>

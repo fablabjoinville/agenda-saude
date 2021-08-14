@@ -52,7 +52,7 @@ module Admin
         :saturday_shift_start, :saturday_break_start, :saturday_break_end, :saturday_shift_end,
         :sunday_shift_start, :sunday_break_start, :sunday_break_end, :sunday_shift_end,
         :slot_interval_minutes, :appointments_per_time_slot,
-        :address, :neighborhood_id, :phone, :enabled_for_reschedule
+        :address, :neighborhood_id, :phone
       )
     end
 

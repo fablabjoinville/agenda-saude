@@ -56,9 +56,11 @@ class Appointment < ApplicationRecord
     Time.zone.now > can_change_after
   end
 
-  # Patients can only cancel or reschedule after the date of next scheduled dose
+  # Patients can only cancel or reschedule after a certain cutoff, in this case being "schedule_up_to_days" related with
+  # when they should get the vaccine.
   def can_change_after
-    start
+    follow_up_for_dose.created_at + follow_up_for_dose.follow_up_in_days.days -
+      Rails.configuration.x.schedule_up_to_days.days
   end
 
   def in_allowed_check_in_window?

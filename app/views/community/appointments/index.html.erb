@@ -23,15 +23,9 @@
 <div class="container">
   <div class="row">
     <div class="col">
-      <% if current_patient.doses.exists? -%>
-        <div class="alert alert-info">
-          Serão exibidas apenas as unidades definidas pela Secretaria da Saúde para receber reagendamento da dose de reforço.
-        </div>
-      <% else -%>
-        <div class="alert alert-info">
-          Para agendar, escolha um dia, unidade e clique no horário disponível desejado.
-        </div>
-      <% end -%>
+      <div class="alert alert-info">
+        Para agendar, escolha um dia, unidade e clique no horário disponível desejado.
+      </div>
     </div>
   </div>
 </div>
