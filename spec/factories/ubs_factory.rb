@@ -12,6 +12,5 @@ FactoryBot.define do
     phone { '9999-8888' }
     address { 'Rua Principal, 256' }
     active { true }
-    enabled_for_reschedule { true }
   end
 end

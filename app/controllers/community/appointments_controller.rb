@@ -33,7 +33,7 @@ module Community
         ubs_id = Ubs.where(enabled_for_reschedule: true).pluck(:id)
       else
         # Otherwise limit to where they can schedule
-        ubs_id = allowed_ubs_ids if ubs_id.blank?
+        ubs_id = allowed_ubs_ids
       end
 
       @days = parse_days
