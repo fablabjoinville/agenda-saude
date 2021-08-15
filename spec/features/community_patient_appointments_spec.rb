@@ -210,7 +210,7 @@ RSpec.feature 'Patients managing their appointments' do
         expect(page).to have_content("Unidade: #{ubs.name}")
         expect(page).to have_content('Vacina: Vacina')
         expect(page).to have_content('Vacinas recebidas')
-        expect(page).not_to have_content('Ainda falta muito tempo para o reforço da sua vacina')
+        expect(page).to have_content('Ainda falta muito tempo para o reforço da sua vacina')
       end
 
       context 'no more appointments available' do

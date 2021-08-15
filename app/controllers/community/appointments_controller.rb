@@ -29,10 +29,12 @@ module Community
       appointment_can_cancel_and_reschedule
 
       # If patient already had a dose, show only UBS that are 'enabled_for_reschedule'.
-      ubs_id = Ubs.where(enabled_for_reschedule: true).pluck(:id) if current_patient.doses.exists?
-
-      # Otherwise limit to where they can schedule
-      ubs_id = allowed_ubs_ids if ubs_id.blank?
+      if current_patient.doses.exists?
+        ubs_id = Ubs.where(enabled_for_reschedule: true).pluck(:id)
+      else
+        # Otherwise limit to where they can schedule
+        ubs_id = allowed_ubs_ids if ubs_id.blank?
+      end
 
       @days = parse_days
       @appointments = scheduler.open_times_per_ubs(from: @days.days.from_now.beginning_of_day,
