@@ -48,10 +48,11 @@ A forma mais fácil de executar este projeto no seu ambiente é usando o
 Docker Compose, ferramenta responsável por criar um ambiente virtualizado e
 instalar todas as outras dependências.
 
-Após clonar o repositório, você pode executar o seguinte comando no diretório da aplicação:
+Após clonar o repositório, você pode executar os seguintes comandos no diretório da aplicação:
 
 ```sh
 docker-compose up --build
+docker-compose run web rails db:migrate
 ```
 
 E acesse no ambiente local [http://localhost:3000](http://localhost:3000).
