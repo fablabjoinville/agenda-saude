@@ -46,8 +46,8 @@ Ubs.new.tap do |ubs|
   ubs.sunday_break_end = ubs.break_end
   ubs.sunday_shift_end = ubs.shift_end
 
-  ubs.slot_interval_minutes = 10
-  ubs.appointments_per_time_slot = 50
+  ubs.slot_interval_minutes = 20
+  ubs.appointments_per_time_slot = 5
   ubs.active = true
   ubs.save!
 end
