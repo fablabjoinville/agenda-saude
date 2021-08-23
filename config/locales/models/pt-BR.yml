@@ -12,7 +12,7 @@
     patients:
       state:
         all: "Todos" # used as a filter on Admin's Patient's index
-        locked: "Bloqueado"
+        locked: "Bloqueados"
     appointments:
       state:
         all: "Agendamentos para hoje" # used as a filter on Operator's Appointment's index

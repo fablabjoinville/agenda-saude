@@ -11,10 +11,9 @@ module Admin
 
     # For now, only showing locked patients
     def index
-      @patients = filter(search(Patient.order(:cpf)))
-                  .order(Patient.arel_table[:name].lower.asc)
-                  .page(index_params[:page])
-                  .per(100)
+      @patients = filter_search(Patient.order(:cpf)).order(Patient.arel_table[:name].lower.asc)
+                                                    .page(index_params[:page])
+                                                    .per(100)
     end
 
     def new
@@ -60,19 +59,23 @@ module Admin
       when FILTERS[:locked]
         patients.locked
       else
-        patients
+        patients.where('TRUE IS FALSE') # For now, return nothing
       end
     end
 
     # Searches for specific patients
     def search(patients)
-      if index_params[:search].present? && index_params[:search].size >= 1
-        @filter = FILTERS[:search] # In case we're searching, use special filter
-        @search = index_params[:search]
-        return patients.search_for(@search)
-      end
+      @filter = FILTERS[:search] # In case we're searching, use special filter
+      @search = index_params[:search]
+      patients.search_for(@search)
+    end
 
-      patients.where('TRUE IS FALSE') # to return empty
+    def filter_search(patients)
+      if index_params[:search].present? && index_params[:search].size >= 1
+        search(patients)
+      else
+        filter(patients)
+      end
     end
 
     def set_patient
