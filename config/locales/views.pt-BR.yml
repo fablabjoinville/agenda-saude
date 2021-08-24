@@ -122,11 +122,10 @@ pt-BR:
     cannot_update_profile_due_to_appointment_condition: |
       Não foi possível atualizar seu cadastro, já que esta alteração irá remover você do grupo que pode receber vacinas.
       Para realizar esta alteração, primeiro cancele seu agendamento atual, para só então atualizar seu cadastro.
+    cannot_reschedule_yet_head: |
+      O cancelamento ou reagendamento só poderá ser feito após %{datetime}.
     cannot_reschedule_yet: |
-      Ainda falta muito tempo para o reforço da sua vacina. Se você deseja cancelar ou mudar a data, volte aqui a partir
-      de %{datetime} e tente novamente.
-      Lembre-se que você só pode receber o reforço da vacina na mesma unidade que recebeu a primeira dose,
-      portanto caso hajam vagas poderá escolher outro dia e horário somente na mesma unidade.
+      Caso você não possa comparecer, entre novamente no sistema após a data e hora acima e faça um novo agendamento.
     rate_limit_exceeded: |
       Você excedeu o número de acessos por minuto ao sistema. Para evitar abusos e garantir o acesso a população, aguarde um minuto e acesse novamente.
   buttons:
