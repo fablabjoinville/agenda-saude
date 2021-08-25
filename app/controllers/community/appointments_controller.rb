@@ -31,15 +31,18 @@ module Community
       # If patient already had a dose, show only UBS that are 'enabled_for_reschedule'.
       if current_patient.doses.exists?
         ubs_id = Ubs.where(enabled_for_reschedule: true).pluck(:id)
+        rescheduled = true
       else
         # Otherwise limit to where they can schedule
         ubs_id = allowed_ubs_ids
+        rescheduled = false
       end
 
       @days = parse_days
       @appointments = scheduler.open_times_per_ubs(from: @days.days.from_now.beginning_of_day,
                                                    to: @days.days.from_now.end_of_day,
-                                                   filter_ubs_id: ubs_id)
+                                                   filter_ubs_id: ubs_id,
+                                                   reschedule: rescheduled)
                                .sort_by { |ubs, _appointments| ubs.name }
     rescue AppointmentScheduler::NoFreeSlotsAhead
       redirect_to home_community_appointments_path, flash: { alert: 'Não há vagas disponíveis para reagendamento.' }
@@ -53,15 +56,25 @@ module Community
       appointment_can_cancel_and_reschedule
 
       # If patient already had a dose, keep it in the same UBS
-      ubs_id = current_patient.doses.first&.appointment&.ubs_id
+      if current_patient.doses.exists?
+        ubs_id = create_params[:ubs_id].to_i
+        rescheduled = true
 
       # Intersection between allowed and requested, will return nil (which is fine) if forbidden
-      ubs_id = (allowed_ubs_ids & [create_params[:ubs_id].to_i]).first if ubs_id.blank? && create_params[:ubs_id]
+      else
+        ubs_id = (allowed_ubs_ids & [create_params[:ubs_id].to_i]).first if ubs_id.blank? && create_params[:ubs_id]
+        rescheduled = false
+      end
+      
+      # ubs_id = current_patient.doses.first&.appointment&.ubs_id
+
+      # ubs_id = (allowed_ubs_ids & [create_params[:ubs_id].to_i]).first if ubs_id.blank? && create_params[:ubs_id]
 
       result, new_appointment = scheduler.schedule(
         patient: current_patient,
         ubs_id: ubs_id,
-        from: parse_start.presence
+        from: parse_start.presence,
+        reschedule: rescheduled
       )
 
       redirect_to home_community_appointments_path,
