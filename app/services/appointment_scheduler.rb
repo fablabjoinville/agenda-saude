@@ -37,9 +37,14 @@ class AppointmentScheduler
       )
       return [NO_SLOTS] unless success
 
-      new_appointment = patient.appointments.waiting.where.not(id: current_appointment&.id).first!
-      cancel_schedule(appointment: current_appointment, new_appointment: new_appointment) if current_appointment
+      if reschedule
+        new_appointment = patient.appointments.waiting.last!
+      else
+        new_appointment = patient.appointments.waiting.where.not(id: current_appointment&.id).first!
+      end
 
+      cancel_schedule(appointment: current_appointment, new_appointment: new_appointment) if current_appointment
+      
       # In case patient canceled a follow up in the past and is trying to reschedule it
       dose = patient.doses.where(follow_up_appointment: nil).first
       dose&.update!(follow_up_appointment: new_appointment)
