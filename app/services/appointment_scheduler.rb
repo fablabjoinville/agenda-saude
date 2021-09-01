@@ -22,7 +22,7 @@ class AppointmentScheduler
   # Looks for appointments, and tries to schedule one. If it can't, it will return +NO_SLOTS+.
   # In case it can, it will also cancel the patient's current schedule for an existing appointment, and in the end it
   # returns +SUCCESS+ and the newly scheduled appointment.
-  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
   def schedule(patient:, ubs_id:, from:, reschedule:)
     return [CONDITIONS_UNMET] unless patient.can_schedule?
 
@@ -44,7 +44,7 @@ class AppointmentScheduler
       end
 
       cancel_schedule(appointment: current_appointment, new_appointment: new_appointment) if current_appointment
-      
+
       # In case patient canceled a follow up in the past and is trying to reschedule it
       dose = patient.doses.where(follow_up_appointment: nil).first
       dose&.update!(follow_up_appointment: new_appointment)
@@ -57,7 +57,7 @@ class AppointmentScheduler
 
     [NO_SLOTS]
   end
-  # rubocop:enable Metrics/AbcSize
+  # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
 
   def log(action, patient_id, appointment_id)
     Rails.logger.info "[AppointmentScheduler logger] patient #{patient_id} appointment #{appointment_id}: #{action}"
