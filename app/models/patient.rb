@@ -51,7 +51,7 @@ class Patient < ApplicationRecord
 
   # Find if any conditions match
   def can_schedule?
-    conditions.any?
+    got_first_dose? || conditions.any?
   end
 
   # Find if patient was every able to schedule in the past

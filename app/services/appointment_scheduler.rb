@@ -22,8 +22,8 @@ class AppointmentScheduler
   # Looks for appointments, and tries to schedule one. If it can't, it will return +NO_SLOTS+.
   # In case it can, it will also cancel the patient's current schedule for an existing appointment, and in the end it
   # returns +SUCCESS+ and the newly scheduled appointment.
-  # rubocop:disable Metrics/AbcSize
-  def schedule(patient:, ubs_id:, from:)
+  # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
+  def schedule(patient:, ubs_id:, from:, reschedule:)
     return [CONDITIONS_UNMET] unless patient.can_schedule?
 
     current_appointment = patient.appointments.current
@@ -32,11 +32,17 @@ class AppointmentScheduler
       success = update_appointment(
         patient_id: patient.id,
         ubs_id: ubs_id,
-        start: rounded_from(from)..latest_allowed
+        start: rounded_from(from)..latest_allowed,
+        rescheduled: reschedule
       )
       return [NO_SLOTS] unless success
 
-      new_appointment = patient.appointments.waiting.where.not(id: current_appointment&.id).first!
+      if reschedule
+        new_appointment = patient.appointments.waiting.last!
+      else
+        new_appointment = patient.appointments.waiting.where.not(id: current_appointment&.id).first!
+      end
+
       cancel_schedule(appointment: current_appointment, new_appointment: new_appointment) if current_appointment
 
       # In case patient canceled a follow up in the past and is trying to reschedule it
@@ -51,7 +57,7 @@ class AppointmentScheduler
 
     [NO_SLOTS]
   end
-  # rubocop:enable Metrics/AbcSize
+  # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
 
   def log(action, patient_id, appointment_id)
     Rails.logger.info "[AppointmentScheduler logger] patient #{patient_id} appointment #{appointment_id}: #{action}"
@@ -72,14 +78,19 @@ class AppointmentScheduler
     dose.update! follow_up_appointment: new_appointment
   end
 
-  def open_times_per_ubs(from:, to:, filter_ubs_id: nil)
+  def open_times_per_ubs(from:, to:, filter_ubs_id: nil, reschedule: false)
     from = [from, earliest_allowed].compact.max - ROUNDING
 
-    appointments = Appointment.available_doses
-                              .where(start: rounded_from(from)..to)
-                              .order(:start) # in chronological order
-                              .includes(ubs: :neighborhood)
-                              .select(:ubs_id, :start, :end) # only return what we care with
+    if reschedule
+      appointments = Appointment.waiting.not_scheduled
+    else
+      appointments = Appointment.available_doses
+    end
+
+    appointments = appointments.where(start: rounded_from(from)..to)
+                               .order(:start) # in chronological order
+                               .includes(ubs: :neighborhood)
+                               .select(:ubs_id, :start, :end) # only return what we care with
 
     appointments = appointments.where(ubs_id: filter_ubs_id) if filter_ubs_id
 
@@ -106,11 +117,16 @@ class AppointmentScheduler
     [earliest_allowed, from].compact.max - ROUNDING
   end
 
-  def update_appointment(patient_id:, start:, ubs_id:)
+  def update_appointment(patient_id:, start:, ubs_id:, rescheduled:)
     # Single SQL query to update the first available record it can find
     # it will either return 0 if no rows could be found, or 1 if it was able to schedule an appointment
-    appointment = Appointment.available_doses
-                             .order(:start)
+    if rescheduled
+      appointment = Appointment.waiting.not_scheduled
+    else
+      appointment = Appointment.available_doses
+    end
+
+    appointment = appointment.order(:start)
                              .where(start: start)
                              .limit(1)
 
