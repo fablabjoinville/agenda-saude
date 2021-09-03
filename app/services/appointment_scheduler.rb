@@ -99,11 +99,13 @@ class AppointmentScheduler
   end
 
   # Returns how many days ahead there are available appointments
-  def days_ahead_with_open_slot
-    next_available_appointment = Appointment.available_doses
-                                            .where(start: earliest_allowed..latest_allowed)
-                                            .order(:start)
-                                            .pick(:start)
+  def days_ahead_with_open_slot(reschedule: false)
+    appointments = Appointment.waiting.not_scheduled if reschedule
+    appointments ||= Appointment.available_doses    
+
+    next_available_appointment = appointments.where(start: earliest_allowed..latest_allowed)
+                                             .order(:start)
+                                             .pick(:start)
 
     raise NoFreeSlotsAhead unless next_available_appointment
 
