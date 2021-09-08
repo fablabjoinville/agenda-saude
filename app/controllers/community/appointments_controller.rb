@@ -17,9 +17,15 @@ module Community
 
       return unless current_patient.can_schedule?
 
-      @appointments_count = Appointment.available_doses
-                                       .where(start: from..to, ubs_id: allowed_ubs_ids)
-                                       .count
+      if current_patient.doses.exists?
+        @appointments_count = Appointment.waiting.not_scheduled
+                                        .where(start: from..to, ubs_id: allowed_ubs_ids)
+                                        .count
+      else
+        @appointments_count = Appointment.available_doses
+                                         .where(start: from..to, ubs_id: allowed_ubs_ids)
+                                         .count
+      end
     end
     # rubocop:enable Metrics/AbcSize
 
@@ -30,18 +36,15 @@ module Community
 
       # If patient already had a dose, show only UBS that are 'enabled_for_reschedule'.
       if current_patient.doses.exists?
-        ubs_id = Ubs.where(enabled_for_reschedule: true).pluck(:id)
         rescheduled = true
       else
-        # Otherwise limit to where they can schedule
-        ubs_id = allowed_ubs_ids
         rescheduled = false
       end
 
-      @days = parse_days
+      @days = parse_days(rescheduled)
       @appointments = scheduler.open_times_per_ubs(from: @days.days.from_now.beginning_of_day,
                                                    to: @days.days.from_now.end_of_day,
-                                                   filter_ubs_id: ubs_id,
+                                                   filter_ubs_id: allowed_ubs_ids,
                                                    reschedule: rescheduled)
                                .sort_by { |ubs, _appointments| ubs.name }
     rescue AppointmentScheduler::NoFreeSlotsAhead
@@ -147,11 +150,11 @@ module Community
     end
 
     # Loads pages for the Index, between 0 and max possible allowed
-    def parse_days
+    def parse_days(reschedule)
       [
         [
           0,
-          params[:page].presence&.to_i || scheduler.days_ahead_with_open_slot
+          params[:page].presence&.to_i || scheduler.days_ahead_with_open_slot(reschedule: reschedule)
         ].compact.max,
         Rails.configuration.x.schedule_up_to_days
       ].min
@@ -164,7 +167,11 @@ module Community
     end
 
     def allowed_ubs_ids
-      current_patient.conditions.flat_map(&:ubs_ids).uniq
+      if current_patient.doses.exists?
+        Ubs.where(enabled_for_reschedule: true).pluck(:id)
+      else
+        current_patient.conditions.flat_map(&:ubs_ids).uniq
+      end
     end
 
     def create_params
