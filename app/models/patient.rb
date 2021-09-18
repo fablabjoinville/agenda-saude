@@ -51,7 +51,7 @@ class Patient < ApplicationRecord
 
   # Find if any conditions match
   def can_schedule?
-    got_first_dose? || conditions.any?
+    doses.count.positive? || conditions.any?
   end
 
   # Find if patient was every able to schedule in the past
@@ -66,9 +66,23 @@ class Patient < ApplicationRecord
       .any?
   end
 
-  # Until we have a proper way to remember vaccines for patients
-  def got_first_dose?
-    appointments.active.checked_out.count.positive?
+  # Flow to know if patient was able to reschedule if got a dose at least
+  def got_reschedule_condition?
+    vaccine = doses.last.vaccine
+
+    if vaccine.name == 'Pfizer'
+      time_for_reschedule = doses.last.appointment.start + vaccine.second_dose_after_in_days.days
+    else
+      current_appointment = appointments.not_checked_out.current
+
+      if current_appointment
+        time_for_reschedule = current_appointment.start
+      else
+        time_for_reschedule = doses.last.appointment.start + vaccine.second_dose_after_in_days.days
+      end
+    end
+
+    Time.zone.now >= time_for_reschedule
   end
 
   def vaccinated?
