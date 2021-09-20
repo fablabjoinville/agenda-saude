@@ -68,21 +68,22 @@ class Patient < ApplicationRecord
 
   # Flow to know if patient was able to reschedule if got a dose at least
   def got_reschedule_condition?
-    vaccine = doses.last.vaccine
+    Time.zone.now >= change_reschedule_after
+  end
 
-    if vaccine.name == 'Pfizer'
-      time_for_reschedule = doses.last.appointment.start + vaccine.second_dose_after_in_days.days
+  def change_reschedule_after
+    # This is a transitory change on update of only doses Pfizer at moment
+    if doses.last.vaccine.name == 'Pfizer'
+      doses.last.appointment.start + doses.last.vaccine.second_dose_after_in_days.days
     else
       current_appointment = appointments.not_checked_out.current
 
-      if current_appointment
-        time_for_reschedule = current_appointment.start
+      if current_appointment.present?
+        current_appointment.start
       else
-        time_for_reschedule = doses.last.appointment.start + vaccine.second_dose_after_in_days.days
+        doses.last.appointment.start + vaccine.second_dose_after_in_days.days
       end
     end
-
-    Time.zone.now >= time_for_reschedule
   end
 
   def vaccinated?

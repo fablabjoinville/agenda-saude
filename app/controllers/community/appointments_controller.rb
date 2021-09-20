@@ -15,6 +15,7 @@ module Community
 
       if @appointment.present?
         @can_cancel_or_reschedule = can_cancel_and_reschedule?
+        @can_change_after = current_patient.change_reschedule_after
         return
       end
 
