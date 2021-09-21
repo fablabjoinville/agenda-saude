@@ -71,6 +71,7 @@ class Patient < ApplicationRecord
     Time.zone.now >= change_reschedule_after
   end
 
+  # rubocop:disable Metrics/AbcSize
   def change_reschedule_after
     # This is a transitory change on update of only doses Pfizer at moment
     if doses.last.vaccine.name == 'Pfizer'
@@ -85,6 +86,7 @@ class Patient < ApplicationRecord
       end
     end
   end
+  # rubocop:enable Metrics/AbcSize
 
   def vaccinated?
     # If there are any doses and the last one doesn't have a follow up date, it means user is vaccinated

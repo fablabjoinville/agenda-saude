@@ -12,7 +12,6 @@ module Community
 
       @doses = current_patient.doses.includes(:vaccine, appointment: [:ubs])
       @appointment = current_patient.appointments.current
-
       if @appointment.present?
         @can_cancel_or_reschedule = can_cancel_and_reschedule?
         @can_change_after = current_patient.change_reschedule_after
@@ -106,21 +105,18 @@ module Community
     private
 
     def appointment_can_cancel_and_reschedule
-      raise CannotCancelAndReschedule if !can_cancel_and_reschedule?
+      raise CannotCancelAndReschedule unless can_cancel_and_reschedule?
 
-      current_appointment = current_patient.appointments.not_checked_out.current
-      current_appointment
+      current_patient.appointments.not_checked_out.current
     end
 
     def can_cancel_and_reschedule?
       current_appointment = current_patient.appointments.not_checked_out.current
 
       if current_patient.doses.exists?
-        return false if !current_patient.got_reschedule_condition?
-      else
-        if current_appointment.present?
-          return false if current_appointment.follow_up_for_dose && Time.zone.now < current_appointment.start
-        end
+        return false unless current_patient.got_reschedule_condition?
+      elsif current_appointment.present?
+        return false if current_appointment.follow_up_for_dose && Time.zone.now < current_appointment.start
       end
 
       true
