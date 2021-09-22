@@ -2,7 +2,7 @@ module Community
   class AppointmentsController < Base
     class CannotCancelAndReschedule < StandardError; end
 
-    # rubocop:disable Metrics/AbcSize Metrics/MethodLength
+    # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     def home
       if current_patient.force_user_update?
         return redirect_to(edit_community_patient_path, flash: { alert: I18n.t('alerts.update_patient_profile') })
@@ -31,7 +31,7 @@ module Community
                                          .count
       end
     end
-    # rubocop:enable Metrics/AbcSize Metrics/MethodLength
+    # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
     # Schedules appointment
     # rubocop:disable Metrics/AbcSize
