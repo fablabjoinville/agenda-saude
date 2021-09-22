@@ -152,19 +152,20 @@ RSpec.feature 'Patients managing their appointments' do
   context 'patient with second dose appointment' do
     let(:vaccine) { create(:vaccine) }
     let!(:condition) { create(:condition, min_age: 18, max_age: nil, group_ids: [], can_schedule: true) }
-
+    
     context 'to have second dose in the future' do
+      let!(:first_appointment_day) { vaccine.second_dose_after_in_days.days.ago.beginning_of_day + 1.days + 7.hours }
       let!(:first_appointment) do
         patient.appointments.create!(ubs: ubs,
-                                     start: tomorrow_morning,
-                                     end: tomorrow_morning + ubs.slot_interval_minutes.minutes)
+                                     start: first_appointment_day,
+                                     end: first_appointment_day + ubs.slot_interval_minutes.minutes)
       end
 
       let!(:second_appointment) do
         s = ReceptionService.new(first_appointment)
-        s.check_in(at: tomorrow_morning)
+        s.check_in(at: first_appointment_day)
         s.check_out(vaccine,
-                    at: tomorrow_morning + ubs.slot_interval_minutes.minutes)
+                    at: first_appointment_day + ubs.slot_interval_minutes.minutes)
          .next_appointment
       end
 
@@ -184,7 +185,7 @@ RSpec.feature 'Patients managing their appointments' do
     end
 
     context 'to have second dose today' do
-      let(:past_date) { vaccine.second_dose_after_in_days.days.ago + 1.minute }
+      let(:past_date) { vaccine.second_dose_after_in_days.days.ago - 1.hour }
 
       let!(:first_appointment) do
         patient.appointments.create!(ubs: ubs,
@@ -231,8 +232,10 @@ RSpec.feature 'Patients managing their appointments' do
       end
 
       context 'appointments available' do
+        let!(:ubs_for_reschedule) { create(:ubs_for_reschedule) }
+
         scenario 'can reschedule with same vaccine' do
-          Appointment.create!(ubs: ubs, start: tomorrow_morning, end: tomorrow_morning + 15.minutes)
+          Appointment.create!(ubs: ubs_for_reschedule, start: tomorrow_morning, end: tomorrow_morning + 15.minutes)
 
           visit root_path
           fill_in 'patient_cpf', with: ApplicationHelper.humanize_cpf(patient.cpf)
@@ -243,11 +246,11 @@ RSpec.feature 'Patients managing their appointments' do
 
           expect(page).to have_content('Unidades com disponibilidade nesta data')
 
-          click_on ubs.name
+          click_on ubs_for_reschedule.name
           click_on '07:00'
 
           expect(page).to have_content('Vacinação agendada')
-          expect(page).to have_content("Unidade: #{ubs.name}")
+          expect(page).to have_content("Unidade: #{ubs_for_reschedule.name}")
           expect(page).to have_content('às 07:00')
           expect(page).to have_content('Vacinas recebidas')
         end

@@ -73,17 +73,21 @@ class Patient < ApplicationRecord
 
   # rubocop:disable Metrics/AbcSize
   def change_reschedule_after
-    # This is a transitory change on update of only doses Pfizer at moment
-    if doses.last.vaccine.name == 'Pfizer'
-      doses.last.appointment.start + doses.last.vaccine.second_dose_after_in_days.days
-    else
-      current_appointment = appointments.not_checked_out.current
-
-      if current_appointment.present?
-        current_appointment.start
+    if doses.count.positive?
+      # This is a transitory change on update of only doses Pfizer at the moment
+      if doses.last.vaccine.name == 'Pfizer'
+        doses.last.appointment.start + doses.last.vaccine.second_dose_after_in_days.days
       else
-        doses.last.appointment.start + vaccine.second_dose_after_in_days.days
+        current_appointment = appointments.not_checked_out.current
+
+        if current_appointment.present?
+          current_appointment.start
+        else
+          doses.last.appointment.start + vaccine.second_dose_after_in_days.days
+        end
       end
+    else
+      Time.zone.now - 1.hour
     end
   end
   # rubocop:enable Metrics/AbcSize
