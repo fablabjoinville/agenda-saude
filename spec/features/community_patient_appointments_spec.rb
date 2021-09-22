@@ -154,18 +154,18 @@ RSpec.feature 'Patients managing their appointments' do
     let!(:condition) { create(:condition, min_age: 18, max_age: nil, group_ids: [], can_schedule: true) }
     
     context 'to have second dose in the future' do
-      let!(:first_appointment_day) { vaccine.second_dose_after_in_days.days.ago.beginning_of_day + 1.days + 7.hours }
+      let!(:first_appointment_time) { vaccine.second_dose_after_in_days.days.ago.beginning_of_day + 1.days + 7.hours }
       let!(:first_appointment) do
         patient.appointments.create!(ubs: ubs,
-                                     start: first_appointment_day,
-                                     end: first_appointment_day + ubs.slot_interval_minutes.minutes)
+                                     start: first_appointment_time,
+                                     end: first_appointment_time + ubs.slot_interval_minutes.minutes)
       end
 
       let!(:second_appointment) do
         s = ReceptionService.new(first_appointment)
-        s.check_in(at: first_appointment_day)
+        s.check_in(at: first_appointment_time)
         s.check_out(vaccine,
-                    at: first_appointment_day + ubs.slot_interval_minutes.minutes)
+                    at: first_appointment_time + ubs.slot_interval_minutes.minutes)
          .next_appointment
       end
 
@@ -180,7 +180,7 @@ RSpec.feature 'Patients managing their appointments' do
         expect(page).to have_content('às 07:00')
         expect(page).to have_content('Vacina: Vacina')
         expect(page).to have_content('Vacinas recebidas')
-        expect(page).to have_content('Ainda falta muito tempo para o reforço da sua vacina')
+        expect(page).to have_content('O cancelamento ou reagendamento só poderá ser feito após')
       end
     end
 
@@ -211,7 +211,42 @@ RSpec.feature 'Patients managing their appointments' do
         expect(page).to have_content("Unidade: #{ubs.name}")
         expect(page).to have_content('Vacina: Vacina')
         expect(page).to have_content('Vacinas recebidas')
-        expect(page).to have_content('Ainda falta muito tempo para o reforço da sua vacina')
+        expect(page).to have_content('Reagendar e escolher outro dia, horário ou local')
+      end
+
+      context 'for Pfizer vaccine' do
+        let!(:pfizer_vaccine) { create(:pfizer_vaccine)}
+        let!(:past_date_pfizer) { 58.days.ago }
+
+        let!(:first_appointment_pfizer) do
+          patient.appointments.create!(ubs: ubs,
+                                       start: past_date_pfizer,
+                                       end: past_date_pfizer + ubs.slot_interval_minutes.minutes)
+        end
+
+        let!(:second_appointment_pfizer) do
+          s = ReceptionService.new(first_appointment_pfizer)
+          s.check_in(at: past_date_pfizer)
+          s.check_out(pfizer_vaccine,
+                      at: past_date_pfizer + ubs.slot_interval_minutes.minutes)
+            .next_appointment
+        end
+        
+        
+        scenario 'can see and change it' do
+          pfizer_vaccine.update!(second_dose_after_in_days: 56)
+
+          visit root_path
+          fill_in 'patient_cpf', with: ApplicationHelper.humanize_cpf(patient.cpf)
+          click_on 'Acessar'
+          click_on patient.mothers_first_name
+
+          expect(page).to have_content('Sua vacinação agendada')
+          expect(page).to have_content("Unidade: #{ubs.name}")
+          expect(page).to have_content("Vacina: #{pfizer_vaccine.name}")
+          expect(page).to have_content('Vacinas recebidas')
+          expect(page).to have_content('Reagendar e escolher outro dia, horário ou local')
+        end
       end
 
       context 'no more appointments available' do
