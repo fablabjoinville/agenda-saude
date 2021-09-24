@@ -26,7 +26,7 @@
         <%= embedded_page :patient_scheduled -%>
       </li>
       <li class="list-group-item d-print-none">
-        <% if @appointment.can_cancel_and_reschedule? -%>
+        <% if @can_cancel_or_reschedule -%>
           <div class="row">
             <div class="col">
               <%= button_to community_appointment_path(id: @appointment.id), method: :delete,
@@ -52,7 +52,7 @@
             <div class="col">
                 <div class="alert alert-danger" role="danger" data-cy="cannotCancelAndRescheduleText">
                   <h4 class="alert-title">
-                  <%= t("alerts.cannot_reschedule_yet_head", datetime: l(@appointment.can_change_after, format: :human)) %>
+                  <%= t("alerts.cannot_reschedule_yet_head", datetime: l(@can_change_after, format: :human)) %>
                   </h4>
                   <%= t("alerts.cannot_reschedule_yet") %>
                 </div>

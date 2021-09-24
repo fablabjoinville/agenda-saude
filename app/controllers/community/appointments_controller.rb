@@ -2,7 +2,7 @@ module Community
   class AppointmentsController < Base
     class CannotCancelAndReschedule < StandardError; end
 
-    # rubocop:disable Metrics/AbcSize
+    # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     def home
       if current_patient.force_user_update?
         return redirect_to(edit_community_patient_path, flash: { alert: I18n.t('alerts.update_patient_profile') })
@@ -13,7 +13,11 @@ module Community
       @doses = current_patient.doses.includes(:vaccine, appointment: [:ubs])
       @appointment = current_patient.appointments.current
 
-      return if @appointment
+      if @appointment.present?
+        @can_cancel_or_reschedule = can_cancel_and_reschedule?
+        @can_change_after = current_patient.change_reschedule_after
+        return
+      end
 
       return unless current_patient.can_schedule?
 
@@ -27,7 +31,7 @@ module Community
                                          .count
       end
     end
-    # rubocop:enable Metrics/AbcSize
+    # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
     # Schedules appointment
     # rubocop:disable Metrics/AbcSize
@@ -102,10 +106,21 @@ module Community
     private
 
     def appointment_can_cancel_and_reschedule
-      appointment = current_patient.appointments.not_checked_out.current
-      raise CannotCancelAndReschedule if appointment && !appointment.can_cancel_and_reschedule?
+      raise CannotCancelAndReschedule unless can_cancel_and_reschedule?
 
-      appointment
+      current_patient.appointments.not_checked_out.current
+    end
+
+    def can_cancel_and_reschedule?
+      current_appointment = current_patient.appointments.not_checked_out.current
+
+      if current_patient.doses.exists?
+        return false unless current_patient.got_reschedule_condition?
+      elsif current_appointment.present?
+        return false if current_appointment.follow_up_for_dose && Time.zone.now < current_appointment.start
+      end
+
+      true
     end
 
     def from
