@@ -53,7 +53,7 @@
       <i class="fa fa-check-circle color-green" aria-hidden="true"></i>
       Disponível
     <% else %>
-      <i class="fa fa-circle color-red" aria-hidden="true"></i> Não disponível, aguardando novas doses
+      <i class="fa fa-circle color-red" aria-hidden="true"></i> Não disponível, aguardando novos horários
     <% end %>
   </h5>
 
@@ -68,7 +68,7 @@
       <li class="list-group-item">
       <h5 class="card-title">
         <i class="fa fa-check-circle <%= @reschedule_appointments.count.positive? ? 'color-green' : 'color-goldenrod' %>" aria-hidden="true"></i> 
-        Pessoas que podem reagendar sua segunda dose
+        Pessoas que receberam a dose primeira dose da Pfizer com mais de 56 dias
       </h5>
       <h6 class="card-subtitle mb-2">
         <% if @reschedule_appointments.count.positive? -%>
@@ -79,7 +79,7 @@
       </h6>
       <p class="card-text small text-muted">
         Disponível nas unidades:
-        <%= @reschedule_ubs_names %>
+        <%= @reschedule_appointments_ubs_names %>
       </p>
     <% end -%>
   </ul>
