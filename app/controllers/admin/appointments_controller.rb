@@ -38,7 +38,21 @@ module Admin
         @appointment.end = @appointment.start + @appointment.ubs.slot_interval_minutes.minutes
         vaccine = Vaccine.find_by id: params[:vaccine_id]
 
-        if vaccine && @appointment.save
+        if @appointment.patient.doses.exists? && @appointment.save
+          last_dose = @appointment.patient.doses.order(:sequence_number).last
+          patient = @appointment.patient
+          last_dose.update!(follow_up_appointment: @appointment)
+
+          @appointment.update!(check_in: @appointment.start, check_out: @appointment.end)
+
+          Dose.create!(patient: patient,
+                       vaccine: vaccine,
+                       sequence_number: last_dose.next_sequence_number,
+                       appointment: @appointment)
+
+          redirect_to([:admin, @appointment])
+
+        elsif vaccine && @appointment.save
           ReceptionService.new(@appointment).tap do |service|
             service.check_in(at: @appointment.start)
             service.check_out(vaccine, at: @appointment.start)
