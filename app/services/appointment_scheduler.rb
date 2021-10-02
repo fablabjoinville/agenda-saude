@@ -98,12 +98,9 @@ class AppointmentScheduler
 
   # Returns how many days ahead there are available appointments
   def days_ahead_with_open_slot(filter_ubs_id: nil, reschedule: false)
+    appointments = Appointment.waiting.not_scheduled.where(ubs_id: filter_ubs_id) if reschedule
 
-    if reschedule
-      appointments = Appointment.waiting.not_scheduled.where(ubs_id: filter_ubs_id)
-    else
-      appointments = Appointment.available_doses  
-    end  
+    appointments = Appointment.available_doses unless reschedule
 
     next_available_appointment = appointments.where(start: earliest_allowed..latest_allowed)
                                              .order(:start)

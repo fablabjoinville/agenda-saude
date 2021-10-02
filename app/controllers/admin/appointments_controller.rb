@@ -37,18 +37,11 @@ module Admin
         @appointment = Appointment.new(create_params)
         @appointment.end = @appointment.start + @appointment.ubs.slot_interval_minutes.minutes
         vaccine = Vaccine.find_by id: params[:vaccine_id]
+        last_dose = @appointment.patient.doses.order(:sequence_number).last
+        patient = @appointment.patient
 
         if @appointment.patient.doses.exists? && @appointment.save
-          last_dose = @appointment.patient.doses.order(:sequence_number).last
-          patient = @appointment.patient
-          last_dose.update!(follow_up_appointment: @appointment)
-
-          @appointment.update!(check_in: @appointment.start, check_out: @appointment.end)
-
-          Dose.create!(patient: patient,
-                       vaccine: vaccine,
-                       sequence_number: last_dose.next_sequence_number,
-                       appointment: @appointment)
+          create_booster_dose(@appointment, vaccine, patient, last_dose)
 
           redirect_to([:admin, @appointment])
 
@@ -180,6 +173,17 @@ module Admin
       else
         I18n.t('alerts.last_dose_received', name: appointment.patient.name)
       end
+    end
+
+    def create_booster_dose(appointment, vaccine, patient, last_dose)
+      last_dose.update!(follow_up_appointment: appointment)
+
+      appointment.update!(check_in: appointment.start, check_out: appointment.end)
+
+      Dose.create!(patient: patient,
+                    vaccine: vaccine,
+                    sequence_number: last_dose.next_sequence_number,
+                    appointment: appointment)
     end
 
     def ubs_index
