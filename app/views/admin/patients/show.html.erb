@@ -174,7 +174,7 @@
             <%= dose.id %>
           </td>
           <th scope="row">
-            <strong><%= l(dose.created_at, format: :human) %></strong>
+            <strong><%= l(dose.appointment.check_out, format: :human) %></strong>
           </th>
           <td>
             <%= dose.appointment.ubs.name %>
