@@ -181,9 +181,9 @@ module Admin
       appointment.update!(check_in: appointment.start, check_out: appointment.end)
 
       Dose.create!(patient: patient,
-                    vaccine: vaccine,
-                    sequence_number: last_dose.next_sequence_number,
-                    appointment: appointment)
+                  vaccine: vaccine,
+                  sequence_number: last_dose.next_sequence_number,
+                  appointment: appointment)
     end
 
     def ubs_index

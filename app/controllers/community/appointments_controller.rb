@@ -169,7 +169,7 @@ module Community
       [
         [
           0,
-          params[:page].presence&.to_i || scheduler.days_ahead_with_open_slot(filter_ubs_id: allowed_ubs_ids, 
+          params[:page].presence&.to_i || scheduler.days_ahead_with_open_slot(filter_ubs_id: allowed_ubs_ids,
                                                                               reschedule: reschedule)
         ].compact.max,
         Rails.configuration.x.schedule_up_to_days
