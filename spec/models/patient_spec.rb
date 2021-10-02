@@ -22,4 +22,14 @@ RSpec.describe Patient, type: :model do
       Patient.new(birthday: '1999-12-32').tap(&:valid?).errors[:birthday]
     ).to be_present
   end
+
+  it 'change_reschedule_after' do
+    patient = create(:patient)
+    appointment = create(:appointment)
+    vaccine = create(:vaccine)
+
+    create(:dose, patient: patient, appointment: appointment, vaccine: vaccine)
+
+    patient.change_reschedule_after
+  end
 end
