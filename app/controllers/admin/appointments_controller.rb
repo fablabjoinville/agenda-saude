@@ -37,10 +37,10 @@ module Admin
         @appointment = Appointment.new(create_params)
         @appointment.end = @appointment.start + @appointment.ubs.slot_interval_minutes.minutes
         vaccine = Vaccine.find_by id: params[:vaccine_id]
-        last_dose = @appointment.patient.doses.order(:sequence_number).last
         patient = @appointment.patient
-
+        
         if @appointment.patient.doses.exists? && @appointment.save
+          last_dose = @appointment.patient.doses.order(:sequence_number).last
           create_booster_dose(@appointment, vaccine, patient, last_dose)
 
           redirect_to([:admin, @appointment])

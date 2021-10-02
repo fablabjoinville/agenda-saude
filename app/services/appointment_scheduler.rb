@@ -37,7 +37,7 @@ class AppointmentScheduler
       )
       return [NO_SLOTS] unless success
 
-      new_appointment = patient.appointments.order(:updated_at).last!
+      new_appointment = patient.appointments.not_checked_out.order(:updated_at).last!
 
       cancel_schedule(appointment: current_appointment, new_appointment: new_appointment) if current_appointment
 
