@@ -51,6 +51,10 @@
         cannot_suspend: Não é possível suspender este agendamento.
         cannot_activate: Não é possível reativar este agendamento.
         cannot_remove_patient: Não é possível remover paciente deste agendamento.
+    groups:
+      context:
+        priority: Prioridade
+        comorbidity: Comorbidade
     activerecord:
         errors:
           models:
