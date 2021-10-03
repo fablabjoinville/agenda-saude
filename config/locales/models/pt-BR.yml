@@ -55,6 +55,10 @@
       context:
         priority: Prioridade
         comorbidity: Comorbidade
+    pages:
+      context:
+        embedded: Embutida
+        user_created: Criada por usuário
     activerecord:
         errors:
           models:
