@@ -57,6 +57,11 @@ docker-compose run web rails db:migrate
 
 E acesse no ambiente local [http://localhost:3000](http://localhost:3000).
 
+Inicialmente a aplicação não possui nenhum dado, para popular o banco de dados utiliza as seeds:
+```sh
+docker-compose run web rails db:seed
+```
+
 Obs.: Você pode omitir a opção `--build` depois de fazer o build da aplicação pela primeira vez. Dessa forma, subir o docker-compose fica consideravelmente mais rápido. Porém, quando há mudanças no Gemfile, é aconselhável executar com `--build` novamente.
 
 ### Instalando manualmente
