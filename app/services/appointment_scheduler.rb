@@ -132,11 +132,12 @@ class AppointmentScheduler
                              .limit(1)
 
     appointment = appointment.where(ubs_id: ubs_id) if ubs_id.present?
-
+    
+    # rubocop:disable Rails/SkipsModelValidations
     appointment
-      .update_all(patient_id: patient_id, 
-                  updated_at: Time.zone.now,
-                  active: true) # rubocop:disable Rails/SkipsModelValidations
-      .positive? # 0 = false, 1 = true
+    .update_all(patient_id: patient_id, 
+                updated_at: Time.zone.now,
+                active: true)
+    .positive? # 0 = false, 1 = true
   end
 end
