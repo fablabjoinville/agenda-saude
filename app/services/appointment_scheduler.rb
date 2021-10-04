@@ -135,9 +135,10 @@ class AppointmentScheduler
     
     # rubocop:disable Rails/SkipsModelValidations
     appointment
-    .update_all(patient_id: patient_id, 
-                updated_at: Time.zone.now,
-                active: true)
-    .positive? # 0 = false, 1 = true
+      .update_all(patient_id: patient_id, 
+                  updated_at: Time.zone.now,
+                  active: true)
+      .positive? # 0 = false, 1 = true
+    # rubocop:enable Rails/SkipsModelValidations
   end
 end
