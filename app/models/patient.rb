@@ -83,7 +83,7 @@ class Patient < ApplicationRecord
         if current_appointment.present?
           current_appointment.start
         else
-          doses.last.appointment.start + vaccine.second_dose_after_in_days.days
+          doses.last.appointment.start + doses.last.vaccine.second_dose_after_in_days.days
         end
       end
     else
