@@ -20,4 +20,12 @@ class Group < ApplicationRecord
   def used?
     patients.any? || conditions.any?
   end
+
+  def context_i18n
+    I18n.t(context, scope: %i[groups context])
+  end
+
+  def self.contexts_for_select
+    contexts.map { |key, value| [I18n.t(key, scope: %i[groups context]), value] }
+  end
 end
