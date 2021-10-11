@@ -9,18 +9,18 @@
     teacher: Professor
     over55: Entre 55 anos e 59 anos
     without_target: Nenhum
-    patients:
-      state:
+    patients: Pacientes
+      state: Status
         all: "Todos" # used as a filter on Admin's Patient's index
         locked: "Bloqueados"
-    appointments:
-      state:
+    appointments: Consultas
+      state: Status
         all: "Agendamentos para hoje" # used as a filter on Operator's Appointment's index
         suspended: Suspenso
         checked_out: Vacinado
         checked_in: Aguardando check-out
         waiting: Aguardando check-in
-      confirmation:
+      confirmation: Confirmação
         check_in: Confirmar que %{name} fez check-in e está pronta(o) a entrar e receber vacina?
         undo_check_in: Confirma DESFAZER o check-in de %{name}?
 
@@ -31,7 +31,7 @@
         activate: Confirma reativar agendamento?
 
         remove_patient: Confirma REMOVER o paciente %{name} deste agendamento? Isso irá liberar a vaga para que outro paciente possa agendar esta vaga.
-      messages:
+      messages: Mensagens
         not_allowed_window: Não é possível fazer checkin para outra data
 
         checked_in: Check-in realizado para %{name}.
@@ -51,32 +51,32 @@
         cannot_suspend: Não é possível suspender este agendamento.
         cannot_activate: Não é possível reativar este agendamento.
         cannot_remove_patient: Não é possível remover paciente deste agendamento.
-    groups:
-      context:
+    groups: Grupos
+      context: Contexto
         priority: Prioridade
         comorbidity: Comorbidade
-    pages:
-      context:
+    pages: Páginas
+      context: Contexto
         embedded: Embutida
         user_created: Criada por usuário
-    activerecord:
-        errors:
-          models:
-            patient:
-              attributes:
-                name:
+    activerecord: Registro Ativo
+        errors: Erros
+          models: Modelos
+            patient: Pacientes
+              attributes: Atriutos
+                name: Nome
                   blank: em branco
-                cpf:
+                cpf: CPF
                   blank: em branco
                   invalid: inválido
                   taken: já cadastrado
-                mother_name:
+                mother_name: Nome da mãe
                   blank: em branco
-                birthday:
+                birthday: Data de nascimento
                   blank: em branco
                   invalid: inválida
-                phone:
+                phone: Telefone
                   blank: em branco
                   invalid: inválido
-                neighborhood:
+                neighborhood: Bairro
                   blank: em branco
