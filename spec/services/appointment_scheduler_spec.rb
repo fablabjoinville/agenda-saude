@@ -30,7 +30,7 @@ RSpec.describe AppointmentScheduler, type: :service, use_transactional_tests: fa
     it 'returns no slots result with no changes to appointments' do
       expect do
         expect(
-          scheduler.schedule(patient: patient, ubs_id: nil, from: earliest_allowed)
+          scheduler.schedule(patient: patient, ubs_id: nil, from: earliest_allowed, reschedule: false)
         ).to eq([AppointmentScheduler::NO_SLOTS])
       end.not_to(change { Appointment.order(:id).map(&:attributes) })
     end
@@ -50,7 +50,7 @@ RSpec.describe AppointmentScheduler, type: :service, use_transactional_tests: fa
     it 'returns no slots result with no changes to appointments' do
       expect do
         expect(
-          scheduler.schedule(patient: patient, ubs_id: nil, from: earliest_allowed)
+          scheduler.schedule(patient: patient, ubs_id: nil, from: earliest_allowed, reschedule: false)
         ).to eq([AppointmentScheduler::NO_SLOTS])
       end.not_to(change { Appointment.order(:id).map(&:attributes) })
     end
@@ -64,7 +64,7 @@ RSpec.describe AppointmentScheduler, type: :service, use_transactional_tests: fa
     it 'returns conditions unmet result with no changes to appointments' do
       expect do
         expect(
-          scheduler.schedule(patient: patient, ubs_id: nil, from: earliest_allowed)
+          scheduler.schedule(patient: patient, ubs_id: nil, from: earliest_allowed, reschedule: false)
         ).to eq([described_class::CONDITIONS_UNMET])
       end.not_to(change { Appointment.order(:id).map(&:attributes) })
     end
@@ -81,7 +81,8 @@ RSpec.describe AppointmentScheduler, type: :service, use_transactional_tests: fa
       expect do
         expect(
           scheduler.schedule(patient: patient, ubs_id: nil,
-                             from: past_max_schedule_time_ahead)
+                             from: past_max_schedule_time_ahead,
+                             reschedule: false)
         ).to eq([AppointmentScheduler::NO_SLOTS])
       end.not_to(change { Appointment.order(:id).map(&:attributes) })
     end
@@ -101,7 +102,7 @@ RSpec.describe AppointmentScheduler, type: :service, use_transactional_tests: fa
     it 'updates exactly one appointment' do
       expect do
         expect(
-          scheduler.schedule(patient: patient, ubs_id: nil, from: earliest_allowed)
+          scheduler.schedule(patient: patient, ubs_id: nil, from: earliest_allowed, reschedule: false)
         ).to eq([described_class::SUCCESS, Appointment.find_by(patient_id: patient.id)])
       end.to change { patient.appointments.count }.by(1)
     end

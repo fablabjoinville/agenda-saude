@@ -16,7 +16,7 @@
 
     <div class="form-group col-md-2">
       <%= f.label :context %>
-      <%= f.select :context, Group.contexts.keys, {}, required: true, class: "form-control" %>
+      <%= f.select :context, Group.contexts_for_select, {}, required: true, class: "form-control" %>
     </div>
 
     <div class="form-group col-md-1">

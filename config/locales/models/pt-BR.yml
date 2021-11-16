@@ -12,7 +12,7 @@
     patients:
       state:
         all: "Todos" # used as a filter on Admin's Patient's index
-        locked: "Bloqueado"
+        locked: "Bloqueados"
     appointments:
       state:
         all: "Agendamentos para hoje" # used as a filter on Operator's Appointment's index
@@ -51,6 +51,14 @@
         cannot_suspend: Não é possível suspender este agendamento.
         cannot_activate: Não é possível reativar este agendamento.
         cannot_remove_patient: Não é possível remover paciente deste agendamento.
+    groups:
+      context:
+        priority: Prioridade
+        comorbidity: Comorbidade
+    pages:
+      context:
+        embedded: Embutida
+        user_created: Criada por usuário
     activerecord:
         errors:
           models:

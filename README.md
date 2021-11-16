@@ -48,13 +48,21 @@ A forma mais fácil de executar este projeto no seu ambiente é usando o
 Docker Compose, ferramenta responsável por criar um ambiente virtualizado e
 instalar todas as outras dependências.
 
-Depois de clonar o repositório, você pode executar o seguinte no diretório da aplicação:
+Após clonar o repositório, você pode executar os seguintes comandos no diretório da aplicação:
 
 ```sh
-docker-compose up
+docker-compose up --build
+docker-compose run web rails db:migrate
 ```
 
 E acesse no ambiente local [http://localhost:3000](http://localhost:3000).
+
+Inicialmente a aplicação não possui nenhum dado, para popular o banco de dados utiliza as seeds:
+```sh
+docker-compose run web rails db:seed
+```
+
+Obs.: Você pode omitir a opção `--build` depois de fazer o build da aplicação pela primeira vez. Dessa forma, subir o docker-compose fica consideravelmente mais rápido. Porém, quando há mudanças no Gemfile, é aconselhável executar com `--build` novamente.
 
 ### Instalando manualmente
 
@@ -62,15 +70,22 @@ Caso você queira instalar manualmente todas as dependências no seu ambiente GN
 precisará executar os seguintes comandos:
 
 ```sh
-apt-get update
-apt-get postgresql postgresql-contrib postgresql-server-dev-all cmake nodejs libpq-dev
+apt update
+apt install postgresql postgresql-contrib postgresql-server-dev-all cmake nodejs libpq-dev
 gem install bundler
 ```
 
-Para instalar as bibliotecas e configurar o banco de dados execute:
+Para instalar as bibliotecas execute:
 
 ```sh
 bundle install
+```
+
+Para configurar o banco de dados execute:
+
+```sh
+cp .env.db.sample .env
+source .env
 bin/rails db:setup
 ```
 

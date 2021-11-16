@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_07_145029) do
+ActiveRecord::Schema.define(version: 2021_08_14_203449) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -197,6 +197,7 @@ ActiveRecord::Schema.define(version: 2021_07_07_145029) do
     t.string "sunday_break_end"
     t.string "sunday_shift_end"
     t.bigint "neighborhood_id"
+    t.boolean "enabled_for_reschedule", default: false, null: false
     t.index ["cnes"], name: "index_ubs_on_cnes", unique: true
   end
 

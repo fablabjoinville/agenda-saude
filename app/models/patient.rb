@@ -51,7 +51,7 @@ class Patient < ApplicationRecord
 
   # Find if any conditions match
   def can_schedule?
-    conditions.any?
+    doses.count.positive? || conditions.any?
   end
 
   # Find if patient was every able to schedule in the past
@@ -66,10 +66,31 @@ class Patient < ApplicationRecord
       .any?
   end
 
-  # Until we have a proper way to remember vaccines for patients
-  def got_first_dose?
-    appointments.active.checked_out.count.positive?
+  # Flow to know if patient was able to reschedule if got a dose at least
+  def got_reschedule_condition?
+    Time.zone.now >= change_reschedule_after
   end
+
+  # rubocop:disable Metrics/AbcSize
+  def change_reschedule_after
+    if doses.count.positive?
+      # This is a transitory change on update of only doses Pfizer at the moment
+      if doses.last.vaccine.name == 'Pfizer'
+        doses.last.appointment.start + doses.last.vaccine.second_dose_after_in_days.days
+      else
+        current_appointment = appointments.not_checked_out.current
+
+        if current_appointment.present?
+          current_appointment.start
+        else
+          doses.last.appointment.start + doses.last.vaccine.second_dose_after_in_days.days
+        end
+      end
+    else
+      Time.zone.now - 1.hour
+    end
+  end
+  # rubocop:enable Metrics/AbcSize
 
   def vaccinated?
     # If there are any doses and the last one doesn't have a follow up date, it means user is vaccinated

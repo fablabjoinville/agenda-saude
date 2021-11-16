@@ -42,7 +42,7 @@
         <%= link_to patient.id, admin_patient_path(id: patient.id) %>
       </td>
       <th scope="row" class="align-middle">
-        <%= patient.cpf %>
+        <%= link_to patient.cpf, admin_patient_path(id: patient.id) %>
       </th>
       <td>
         <%= patient.name %>
