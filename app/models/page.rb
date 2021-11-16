@@ -16,4 +16,8 @@ class Page < ApplicationRecord
       Kramdown::Document.new(body).to_html.html_safe # rubocop:disable Rails/OutputSafety
     end
   end
+
+  def context_i18n
+    I18n.t(context, scope: %i[pages context])
+  end
 end
