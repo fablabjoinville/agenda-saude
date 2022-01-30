@@ -155,7 +155,7 @@
         </h1>
       </div>
       <div class="col-2">
-        <%= link_to "Registrar dose", new_admin_appointment_path(patient_id: @patient.id), class: 'btn btn-success' %>
+        <%= register_appointment(@patient) %>
       </div>
     </div>
   </div>
